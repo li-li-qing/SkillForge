@@ -1,0 +1,8 @@
+[
+  {"id":"CPP-T01","prompt":"把这个 UObject 函数暴露给蓝图，并检查模块依赖。","context":"UE5 C++ 模块","expected":"trigger","reason":"反射与跨模块接口。"},
+  {"id":"CPP-T02","prompt":"异步加载回调切关后崩溃。","context":"UE5 C++ UserWidget","expected":"trigger","reason":"对象与回调生命周期，可组合排障。"},
+  {"id":"CPP-T03","prompt":"用 C++ 写一个控制台计算器。","context":"标准 C++","expected":"no_trigger","reason":"没有 Unreal 工程。"},
+  {"id":"CPP-T04","prompt":"MFC 工具布局需要调整。","context":"MFC 桌面工具","expected":"no_trigger","reason":"同为 C++ 不代表适用 UE 规则。"},
+  {"id":"CPP-T05","prompt":"这个组件初始化有问题。","context":"需由代码和工程判断是否为 UE C++ 组件","expected":"conditional","reason":"组件一词跨框架，不能单靠词语匹配。"},
+  {"id":"CPP-T06","prompt":"背包接口改一下。","context":"如果改动 C++ 的反射接口则触发；纯蓝图连线不触发","expected":"conditional","reason":"以实际修改层确定技能。"}
+]

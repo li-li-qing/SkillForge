@@ -1,0 +1,8 @@
+[
+  {"id":"DBG-T01","prompt":"插件面板偶尔不更新，帮我定位并修复。","context":"游戏 Lua 插件","expected":"trigger","reason":"明确异常及诊断目标，不限语言。"},
+  {"id":"DBG-T02","prompt":"切换关卡后异步回调崩溃。","context":"UE5 C++","expected":"trigger","reason":"运行故障，可组合 UE C++。"},
+  {"id":"DBG-T03","prompt":"设计一个新的背包界面。","context":"没有现有故障","expected":"no_trigger","reason":"功能与布局设计不自动启动排障。"},
+  {"id":"DBG-T04","prompt":"解释这个正常函数的输入输出。","context":"无错误或审查要求","expected":"no_trigger","reason":"普通代码阅读。"},
+  {"id":"DBG-T05","prompt":"这个不对。","context":"需要由附件或前文确定是否存在异常","expected":"conditional","reason":"先确定用户指的是故障还是审美偏好。"},
+  {"id":"DBG-T06","prompt":"帮我优化。","context":"若现有证据是性能回退才触发","expected":"conditional","reason":"没有问题指标时不能推断故障。"}
+]

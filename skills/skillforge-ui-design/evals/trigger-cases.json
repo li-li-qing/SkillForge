@@ -1,0 +1,8 @@
+[
+  {"id":"UI-T01","prompt":"给战斗 HUD 重新安排团队血量与技能冷却。","context":"游戏 UI，沿用当前框架","expected":"trigger","reason":"HUD 信息层级和布局。"},
+  {"id":"UI-T02","prompt":"MFC 工具窗口增加底部日志，考虑键盘操作和缩放。","context":"已有 MFC 左中右布局","expected":"trigger","reason":"通用工具界面设计，不触发 UE 专属流程。"},
+  {"id":"UI-T03","prompt":"优化排序算法的时间复杂度。","context":"纯后台数据处理，无界面变化","expected":"no_trigger","reason":"不涉及 UI 设计。"},
+  {"id":"UI-T04","prompt":"用 Photoshop 修去照片背景的电线。","context":"图片修整，无界面设计任务","expected":"no_trigger","reason":"仅制作图片不在边界内。"},
+  {"id":"UI-T05","prompt":"按钮没反应。","context":"若涉及命中层级、焦点或不可用状态则触发；若只是服务请求失败则按故障层排查","expected":"conditional","reason":"先确定故障层，不能只按按钮一词加载布局流程。"},
+  {"id":"UI-T06","prompt":"整理这个面板。","context":"需要确认是软件界面布局、代码文件还是实体面板","expected":"conditional","reason":"需要任务对象才能判断。"}
+]

@@ -1,0 +1,64 @@
+{
+  "revision": "2026.09.13-r3",
+  "recorded_date": "2026-09-13",
+  "skill_baseline": {
+    "archive": "skillforge-archerage-addon(2).zip",
+    "sha256": "519cb68d5cb1a989624a22f9cb4227ce2ca616970bdb8c29e81809f93849b7c0"
+  },
+  "scope": "本次仅更新技能知识、评测和验证记录；不修改Replicated Suite运行代码。",
+  "lessons": [
+    "RS-L31",
+    "RS-L32",
+    "RS-L33",
+    "RS-L34",
+    "RS-L35",
+    "RS-L36",
+    "RS-L37",
+    "RS-L38"
+  ],
+  "user_observed_symptoms": [
+    "今日金币曾长期显示未接入/基线，随后余额差分显示金额与实际袋子收益不一致",
+    "暂停统计按钮曾点击无响应",
+    "跑商正式选项卡可查询，但今日总览嵌入跑商为空/卡查询",
+    "经验变化获得经验后仍不显示"
+  ],
+  "external_semantic_sources": [
+    {
+      "repo": "Noviern/aagamedump",
+      "commit": "05b989aa52678b7332502c44b7fa37c63e133ab5",
+      "path": "scriptsbin/globalui/chat/chat_msg_event.lua",
+      "scope": "PLAYER_MONEY/HONOR/LIVING event consumer signatures"
+    },
+    {
+      "repo": "Noviern/aagamedump",
+      "commit": "05b989aa52678b7332502c44b7fa37c63e133ab5",
+      "path": "scriptsbin/x2ui/hud/main_menu_bar/exp_bar_set.lua",
+      "scope": "EXP_CHANGED signature and player exp UI refresh"
+    },
+    {
+      "repo": "Noviern/aagamedump",
+      "commit": "05b989aa52678b7332502c44b7fa37c63e133ab5",
+      "path": "scriptsbin/x2ui/combattext/combat_text.lua",
+      "scope": "EXP_CHANGED player UnitId filtering and gained exp display"
+    },
+    {
+      "repo": "Noviern/aagamedump",
+      "commit": "05b989aa52678b7332502c44b7fa37c63e133ab5",
+      "path": "scriptsbin/x2ui/specialty/info.lua",
+      "scope": "specialty query cooldown vs async result event"
+    },
+    {
+      "repo": "Noviern/aagamedump",
+      "commit": "05b989aa52678b7332502c44b7fa37c63e133ab5",
+      "path": "scriptsbin/commonui/logic/money.lua",
+      "scope": "money string unit formatting"
+    }
+  ],
+  "validation_limits": [
+    "未执行RU客户端",
+    "未执行独立Agent without/with skill A/B",
+    "外部客户端源码不覆盖当前RU capability权限",
+    "新增行为题全部保持not_run"
+  ],
+  "privacy": "不包含玩家名称、原始诊断全文、截图、账号配置或Replicated Suite源码。"
+}

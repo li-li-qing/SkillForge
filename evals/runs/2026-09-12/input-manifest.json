@@ -1,0 +1,99 @@
+{
+  "recorded_date": "2026-09-12",
+  "snapshot": "final-candidate",
+  "note": "Final skill inputs only. The first UE C++ forward run predates the explicit build-target delivery paragraph; CPP-01 was rerun separately. Debugging source attribution was corrected after its forward run without changing the guidance. Do not treat these hashes as proof of historical inputs or a fixed backend model ID.",
+  "files": [
+    {
+      "path": "skills/skillforge-debugging/evals/behavior-cases.json",
+      "sha256": "5362c1ef63b7a33063a723d2a0f1f095ba4b320297d12a90005a710b43c37537"
+    },
+    {
+      "path": "skills/skillforge-debugging/evals/trigger-cases.json",
+      "sha256": "d76ee53d22a5ab2f9284a302b779d927b1c8a850a8089f3f6969d778a7d56135"
+    },
+    {
+      "path": "skills/skillforge-debugging/references/diagnostic-boundaries.md",
+      "sha256": "9ceb3cc506e27eac06fb4893955f63aca5c8e90889c9baa7805d979b2193fa8d"
+    },
+    {
+      "path": "skills/skillforge-debugging/references/verified-cases.md",
+      "sha256": "bfdcae885ae9a60e8d40a61b64fc7fda471d3092f4c41047263872b5cd894d74"
+    },
+    {
+      "path": "skills/skillforge-debugging/SKILL.md",
+      "sha256": "b637ab91eef6f2efa3de8f6f958bd9cdeb565b8ada66118166ed53244ae7d8fc"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/evals/behavior-cases.json",
+      "sha256": "57efce966ab55e4e5723e984a5645f8bf1f14062eb85382847a3d9407f223acc"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/evals/trigger-cases.json",
+      "sha256": "bf533a1f6c95ee541582b6a09bf01695821e2386be2f22aeb58ddc2904d3c8ba"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/references/asset-delivery.md",
+      "sha256": "75277c630a4b05dcc487277f930415eb5610ea08e1bb45d63c3aca7a3825885c"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/references/cases.md",
+      "sha256": "e90ef4c7a560ee9fa5622ba9df83989efa19af5c7594d20d84dc92c23a182729"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/references/initialization-communication.md",
+      "sha256": "68ed138e53eee7d699f0b62cba74184189894ec6be05c2bb6eec42efbba3d1fa"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/SKILL.md",
+      "sha256": "00a04b1297cd1fc295dcb2fc430d5793308ee157cc0cd5c768203e1a1a689314"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "sha256": "3a759c910fbcb58fef99e41503ba9c6abc7cdba8e921f90d456d5c6156da04f0"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/trigger-cases.json",
+      "sha256": "f50562cc9b9e03cbb7387766641a70e0a33f869aa77c883bd66f314a5770bbd2"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/cases.md",
+      "sha256": "c1897a4f60c0ee148627ed364bf7c41d0cf549226f16b51f25416c6f51ba9222"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/ownership-lifecycle.md",
+      "sha256": "fadaaa19c44c7fc2fb077e1045a51bfa3bb40f30e2a3cd6244c8f9f311a70986"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/reflection-build.md",
+      "sha256": "51d77c6f92a8df26757efc0f69a306fc3d97527a3cf79646d9f674b17cb0a662"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/SKILL.md",
+      "sha256": "4026e0749f5d4ef70013ed8621c35de2570550bc190fa92ad93c1e128dc2b7af"
+    },
+    {
+      "path": "skills/skillforge-ui-design/evals/behavior-cases.json",
+      "sha256": "61af957c86354c195cd9638f5811731ab780e371f1634612c6d19bb0a2a1ae67"
+    },
+    {
+      "path": "skills/skillforge-ui-design/evals/trigger-cases.json",
+      "sha256": "aff6fa6c8562fe904e752027f6c762fb7f2e7dee21a58fbfc3c1a7b883a82a75"
+    },
+    {
+      "path": "skills/skillforge-ui-design/references/cases.md",
+      "sha256": "926234c92365c7675997b1d9223217d95a41d8f430f9e1d9ae325e40621d6e6b"
+    },
+    {
+      "path": "skills/skillforge-ui-design/references/interaction-states.md",
+      "sha256": "9606b7df6c874770ace3a086e698bdc9bd560502b22e6cee42f8c859359d2864"
+    },
+    {
+      "path": "skills/skillforge-ui-design/references/layout-patterns.md",
+      "sha256": "cca5dac82b1731f02558cc07700f48d22f8dc0ce283e55b1f36206830ae01e7c"
+    },
+    {
+      "path": "skills/skillforge-ui-design/SKILL.md",
+      "sha256": "0d350c8a04f5aba3d562f8dc737101905f6852d68ceff5acea5100293b500841"
+    }
+  ]
+}

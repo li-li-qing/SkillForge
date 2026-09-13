@@ -1,0 +1,8 @@
+[
+  {"id":"BP-T01","prompt":"蓝图里两个 Actor 怎么通过接口通信？","context":"UE5 Blueprint","expected":"trigger","reason":"蓝图通信设计。"},
+  {"id":"BP-T02","prompt":"Widget Blueprint 首次打开 Accessed None。","context":"UE5 事件图","expected":"trigger","reason":"蓝图初始化故障，可组合排障。"},
+  {"id":"BP-T03","prompt":"调整 Maya 节点网络。","context":"Maya","expected":"no_trigger","reason":"其他软件节点图不是 Unreal Blueprint。"},
+  {"id":"BP-T04","prompt":"修复这个纯 C++ UObject 成员声明。","context":"没有蓝图资产或图表任务","expected":"no_trigger","reason":"交由 UE C++，不重复加载蓝图图表流程。"},
+  {"id":"BP-T05","prompt":"这个节点连不上。","context":"需要截图、节点文本或工程确定是否为蓝图而非材质图","expected":"conditional","reason":"以实际图类型确定边界。"},
+  {"id":"BP-T06","prompt":"修改背包初始化。","context":"若改动是蓝图节点则触发；只修改 C++ 实现则不触发","expected":"conditional","reason":"按实际修改层选择。"}
+]

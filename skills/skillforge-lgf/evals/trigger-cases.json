@@ -1,0 +1,10 @@
+[
+  {"id":"LGF-T01","prompt":"用 LGameplayFramework 做一个蓝图开门交互。","context":"工程已启用 LGF","expected":"trigger","reason":"使用插件现有扩展点接入玩法。"},
+  {"id":"LGF-T02","prompt":"LGF 的 CommonUI 页面返回后输入被锁住。","context":"LGameplayFrameworkUINavigation 与 Presenter","expected":"trigger","reason":"LGF 页面和本地输入所有权，按需组合 UI/排障。"},
+  {"id":"LGF-T03","prompt":"继续维护 LGameplayFramework 的 API 和教程。","context":"能够读取当前插件源码","expected":"trigger","reason":"项目文档与实现一致性。"},
+  {"id":"LGF-T04","prompt":"解释 UE5 Actor BeginPlay。","context":"没有使用 LGF 的证据","expected":"no_trigger","reason":"通用 UE 问题不应用项目专属规则。"},
+  {"id":"LGF-T05","prompt":"修复 Replicated Suite 的 Lua HUD。","context":"ArcheRage RU 插件","expected":"no_trigger","reason":"不同宿主和项目。"},
+  {"id":"LGF-T06","prompt":"做一个 CommonUI 主菜单。","context":"尚不知是否使用 LGF","expected":"conditional","reason":"先确认项目框架；普通 CommonUI 不强制 LGF 路由。"},
+  {"id":"LGF-T07","prompt":"给我的 LGame 做背包界面。","context":"目录名本身不能证明使用哪版插件","expected":"conditional","reason":"核对实际插件与相关模块，确认 LGF 后组合领域与 UI 技能。"},
+  {"id":"LGF-T08","prompt":"在新工程接入 LGF，使用纯 UMG。","context":"LGameplayFramework 接入任务","expected":"trigger","reason":"应沿现有中立路由和 UMG Presenter 接入，不能限定只支持 CommonUI。"}
+]

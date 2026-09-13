@@ -1,0 +1,7 @@
+[
+  {"id":"COM-01","prompt":"用蓝图做一个背包界面，给出数据更新和布局方案。","context":"UE5，现有项目，尚无故障；本轮只做说明，没有资产工具","expected_skills":["skillforge-ue-blueprint","skillforge-ui-design"],"expectations":["蓝图负责对象、节点和数据流，UI 负责布局与交互，复用同一份任务目标","没有故障时不额外启动排障","准确交付说明，不声称已经修改或保存蓝图"]},
+  {"id":"COM-02","prompt":"C++ UserWidget 的按钮看得见但点不到，怀疑被 Overlay 遮挡，帮我排查。","context":"UE5，明确包含控件祖先层级与 C++ 回调","expected_skills":["skillforge-ue-cpp","skillforge-debugging","skillforge-ui-design"],"expectations":["先共享一条输入到业务回调的证据链，不重复三遍启动流程","既检查命中路径，也检查绑定、生命周期和业务回显","按当前运行实例与版本验证，不把单一属性建议当成所有根因"]},
+  {"id":"COM-03","prompt":"现有 MFC 工具增加底部日志面板，调整缩小窗口时的布局。","context":"Windows MFC，没有 UE 或故障","expected_skills":["skillforge-ui-design"],"expectations":["保留 MFC 和既有工作台布局","不触发 UE 技能或引入 UMG/Slate","给出空间不足、键盘焦点和日志更新的相关验证"]},
+  {"id":"COM-04","prompt":"MFC 日志列表滚动时不断回到顶部，定位并修复。","context":"MFC，实时更新导致界面交互异常","expected_skills":["skillforge-ui-design","skillforge-debugging"],"expectations":["按更新与滚动状态边界查原因","区分跟随最新和用户手动浏览状态","不触发 UE 技能"]},
+  {"id":"COM-05","prompt":"写一个普通 C++ 命令行程序输出 hello。","context":"没有 UE、UI 或故障","expected_skills":[],"expectations":["四个技能均不应触发","不因为 C++ 字样推断 Unreal 工程"]}
+]
