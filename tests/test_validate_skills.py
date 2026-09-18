@@ -87,6 +87,26 @@ class ValidateSkillsTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertRegex(result.stdout, r"1 skill.*0 error")
 
+    def test_optional_quoted_metadata_is_portable(self):
+        p = self.skill / "SKILL.md"
+        text = p.read_text(encoding="utf-8")
+        p.write_text(text.replace('\n---\n#', '\ncompatibility: "Python 3.10+"\nmetadata:\n  revision: "2026.09"\n---\n#'), encoding="utf-8")
+        result = self.run_validator(self.skill, flags=("--self-contained",))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_bad_metadata_is_rejected(self):
+        for extra in ('metadata:\n  revision: 123', 'metadata:\n  revision: "a"\n  revision: "b"', 'compatibility: 42', 'compatibility: ""'):
+            with self.subTest(extra=extra):
+                p = self.skill / "SKILL.md"
+                p.write_text('---\nname: skillforge-example\ndescription: "Example."\n' + extra + '\n---\n# Body\n', encoding="utf-8")
+                self.assert_invalid()
+
+    def test_tools_suffix_in_filename_is_not_host_api(self):
+        (self.skill / "references" / "verification-tools.md").write_text('# Tools\n', encoding="utf-8")
+        self.append('[tools](references/verification-tools.md)')
+        result = self.run_validator(self.skill)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_self_contained_copy_keeps_all_relative_resources_valid(self):
         result = self.run_validator(self.skill, flags=("--self-contained",))
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

@@ -35,3 +35,28 @@
 验证 UMG/CommonUI 所选路线、Back/Close/Replace、加载失败、过期 InstanceId、多 LocalPlayer、Controller 替换、Travel、HUD 与菜单共存、焦点与游戏输入恢复。Runtime/ClientOnly 依赖变化还需真实 Server 构建；学习阶段只记录待验证项。
 
 当前 UIEditor 提供 `LGameplayUIMigration` Commandlet；它的用途、报告和局限见[验证与演进](validation-and-evolution.md)。扫描通过不能代替实际页面和网络运行。
+
+## XistCommonGameSample / CommonGame 对照补充
+
+UE5.7 `XistCommonGameSample` 提供了一个有价值的 CommonUI/Input 参照，但 README 明确是单机简化 Lyra。LGF 只吸收其可复用 UI 生命周期语义，不复制其简化 ownership。
+
+- **Root UI owner**：完整 Root Layout 应跟随 LocalPlayer/Controller UI 生命周期；Pawn 只提供 Avatar-scoped HUD projection。当前 `ULGameplayUINavigationSubsystem` 仍是每 LocalPlayer 的唯一逻辑 route/back/input arbiter，CommonUI `PrimaryGameLayout` 只能作为 Presenter root/layer 实现。
+- **IMC owner**：禁止在 LGF 复杂消费工程中用 `ClearAllMappings()` 作为 Pawn Possess/UnPossess 清理。FoundationUIInput、Gameplay、Avatar/Vehicle、Feature、Accessibility 等 context 必须 source-owned add/remove，teardown 只撤本 source。
+- **Input policy**：普通页面默认不抢 input mode；只有顶层 route/modal 声明 Game/Menu/All policy，由 UINavigation/Input Arbiter 统一应用。Widget 自己不保存第二份“旧 input mode”。
+- **UI action**：注册 Back/MainMenu 等 action 时保存 exact handle/source，Destruct/Deactivate/LocalPlayer teardown 对称注销，避免复用 Widget 后 ghost binding。
+- **Layer transition**：并发 transition 使用 suspend token/refcount 成对恢复；不要用单 bool。
+- **GameplayMessage**：只作为 typed presentation signal；不是 RPC、复制、JIP snapshot 或业务 truth。UI 仍需 initial snapshot + delta/message。
+- **Modal**：不默认用 blank widget 遮低层；优先走现有 layer/input arbiter。若特定 Presenter 需要 blocker，必须保存 exact instance 并处理 nested modal。
+- **多人边界**：样例中的 `GetFirstPlayerController()`、Pawn-owned HUD 与单机 pause 逻辑不作为 LGF 网络证据。
+
+升级 UE5.8+ 时重新核对 CommonGame/CommonUser/GameplayMessageRouter 的来源与 CommonUI+Enhanced Input 插件成熟度；复制自 Lyra 5.7 的插件源码不能自动视为永远 Current。
+
+## 抑制条件里的隐含假设会被批次推进模式推翻
+
+制作台领取提示曾按“队列里还有 Pending/InProgress 条目 ⇒ 没有可领取产物”来抑制世界提示。这个蕴含只在**整批完成**语义下成立。
+
+配方字段 `BatchProgressMode`（`ULCraftingRecipeDefinition`，默认 `WholeBatch`）改为 `SequentialPerUnit` 后，批次仍在推进与已有可领取产物**同时成立**：`GetAvailableCraftCount() = CompletedCraftCount - ClaimedCraftCount` 中途就大于 0，于是提示被一直压到整批结束才出现，表现为“做 5 个时前 4 个做完了却不提示领取”。
+
+排查方法：把 UI 的抑制/显示条件与队列真值定义逐条对照，找出其中隐含的“状态 A ⇒ 数量 B”推断，再核对当前推进模式下该推断是否仍成立。同类风险适用于任何按“阶段”而非“数量”判定的提示。
+
+另记：`SequentialPerUnit` 下批次总耗时为 `N × CraftDuration`（整批模式是共用一次计时），调整表现时长时不要把它当成不变量。

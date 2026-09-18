@@ -1,0 +1,74 @@
+[
+  {
+    "file": "skills/skillforge-archerage-addon/evals/behavior-cases.json",
+    "preserved": true,
+    "old": 60,
+    "new": 60
+  },
+  {
+    "file": "skills/skillforge-archerage-addon/evals/trigger-cases.json",
+    "preserved": true,
+    "old": 35,
+    "new": 35
+  },
+  {
+    "file": "skills/skillforge-debugging/evals/behavior-cases.json",
+    "preserved": true,
+    "old": 2,
+    "new": 3
+  },
+  {
+    "file": "skills/skillforge-debugging/evals/trigger-cases.json",
+    "preserved": true,
+    "old": 6,
+    "new": 6
+  },
+  {
+    "file": "skills/skillforge-lgf/evals/behavior-cases.json",
+    "preserved": true,
+    "old": 6,
+    "new": 12
+  },
+  {
+    "file": "skills/skillforge-lgf/evals/trigger-cases.json",
+    "preserved": true,
+    "old": 8,
+    "new": 10
+  },
+  {
+    "file": "skills/skillforge-ue-blueprint/evals/behavior-cases.json",
+    "preserved": true,
+    "old": 2,
+    "new": 3
+  },
+  {
+    "file": "skills/skillforge-ue-blueprint/evals/trigger-cases.json",
+    "preserved": true,
+    "old": 6,
+    "new": 6
+  },
+  {
+    "file": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+    "preserved": true,
+    "old": 2,
+    "new": 2
+  },
+  {
+    "file": "skills/skillforge-ue-cpp/evals/trigger-cases.json",
+    "preserved": true,
+    "old": 6,
+    "new": 6
+  },
+  {
+    "file": "skills/skillforge-ui-design/evals/behavior-cases.json",
+    "preserved": true,
+    "old": 2,
+    "new": 3
+  },
+  {
+    "file": "skills/skillforge-ui-design/evals/trigger-cases.json",
+    "preserved": true,
+    "old": 6,
+    "new": 6
+  }
+]

@@ -8,4 +8,6 @@
 
 `runs/` 保存真实评测输出和审阅汇总。无法复现的改善写为“未证明”，已经正确的基线写为“保持正确”；不得为了得到失败基线而更改成功标准。单次对比属于冒烟验证，不能证明其他模型、Agent 或真实编辑器任务通过。回答者自查与独立审阅分别标注，两者都不冒充用户验收。
 
+**静态语义探针不等于 Behavior Eval。** `grep`、关键词/anchor、Reference coverage probe、JSON schema check 只能证明“规则文本存在/结构可解析”，不能证明 Agent 在无技能时会失败、加载技能后会遵守。正式 RED→GREEN 若缺少新上下文的 raw answer + 冻结后逐项 judgment，必须标记 `not_run` / `pending` / `未证明`，不能把 0/N→N/N semantic coverage 写成行为通过。若当前宿主没有隔离 subagent/model runner，应保存可复现 eval packet，并把行为执行留待具备该能力的宿主完成。
+
 组合验证使用 `composition-cases.json`。触发评测先只提供名称和描述，判断案例应如何选择，再揭示期望；这是描述匹配检查，不是对宿主自动发现机制的实测。首版结构校验只检查规范与可移植性，行为结果单独记录。

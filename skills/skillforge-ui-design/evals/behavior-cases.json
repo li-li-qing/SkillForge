@@ -2,11 +2,97 @@
   {
     "id": "UI-01",
     "prompt": "做一个游戏战斗 HUD：屏幕中央要看清角色和目标，显示团队血量、技能冷却、伤害统计。数据每秒更新多次，玩家可以拖动面板。请给出信息分区、交互状态和布局验证方案，不指定新 UI 框架，也不用做图片。",
-    "expectations": ["按战斗任务与信息优先级分区，保护中心视野", "处理更新时的行高、排序与数值宽度稳定性", "区分正常交互和布局编辑模式，包含拖拽取消及屏外恢复", "覆盖缩放、不同分辨率和密集数据条件验证，不虚构视觉已验收"]
+    "expectations": [
+      "按战斗任务与信息优先级分区，保护中心视野",
+      "处理更新时的行高、排序与数值宽度稳定性",
+      "区分正常交互和布局编辑模式，包含拖拽取消及屏外恢复",
+      "覆盖缩放、不同分辨率和密集数据条件验证，不虚构视觉已验收"
+    ]
   },
   {
     "id": "UI-02",
     "prompt": "现有 MFC 辅助工具已有左侧列表、中央预览、右侧属性。我要加实时日志和错误定位，窗口可以缩到 900×600，用户需要键盘操作。请给布局与组件职责方案，沿用 MFC，不引入网页或 UE 框架，不要求先做完整设计系统。",
-    "expectations": ["沿用现有工具框架和工作台结构，说明日志位置与空间不足时的处理", "错误列表到对象/属性定位的关系明确，保留键盘焦点与导航", "把数据更新和布局责任分开，并考虑空、错误、加载等相关状态", "建议与任务规模匹配，不强制迁移框架或建立大规模设计系统"]
+    "expectations": [
+      "沿用现有工具框架和工作台结构，说明日志位置与空间不足时的处理",
+      "错误列表到对象/属性定位的关系明确，保留键盘焦点与导航",
+      "把数据更新和布局责任分开，并考虑空、错误、加载等相关状态",
+      "建议与任务规模匹配，不强制迁移框架或建立大规模设计系统"
+    ]
+  },
+  {
+    "id": "UI-MIG-01",
+    "prompt": "武器编辑器把源角色和外观重叠，用户无法选预览动画、独立调位置；先手搓全新预览编辑器吗？",
+    "expectations": [
+      "先检查官方Skeleton/Socket/预览动画及重定向工具能力",
+      "明确编辑对象与坐标、草稿/保存/运行刷新差异",
+      "有缺口才扩展既有工具，不默认新建完整框架"
+    ]
+  },
+  {
+    "id": "UI-04",
+    "slug": "commonui-layer-viewmodel-domain-command",
+    "prompt": "UE5项目有CommonUI层栈、FastArray背包和GAS快捷栏。团队准备让每个Widget直接查PlayerState/ASC并自己判断“点击快捷栏是使用消耗品还是装备武器”，同时每帧Tick刷新。请给UI职责、重绑定、焦点和结果反馈方案。",
+    "expectations": [
+      "布局/导航层用CommonUI或现有layer stack管理Push/Pop、焦点、输入暂停/恢复；业务Widget不自己维护第二套导航状态，transition时token/计数必须成对恢复",
+      "FastArray/ASC等canonical gameplay state通过WidgetController/ViewModel投影为只读UI snapshot；ViewModel可丢弃重建，不反向成为业务真值，Host/Remote/JIP从canonical state收敛",
+      "Inventory/Equipment事件驱动内容刷新；若Pawn/PlayerState可能替换，可用低频resolver或明确possess事件compare-and-rebind，但不能把0.25s轮询误写成业务刷新频率或每帧Tick扫描",
+      "鼠标点击、手柄/键盘Input Ability调用同一个domain command来决定Use/Equip/Toggle；RPC返回的optimistic true不当成功提示，成功/失败从Authority result或复制状态驱动UI",
+      "关闭/切层/重Possess时解除旧delegate并恢复焦点/输入；验证鼠标、键盘/手柄、快速Pawn切换、拒绝请求和异步资源未就绪"
+    ]
+  },
+  {
+    "id": "UI-05",
+    "slug": "commonui-localplayer-root-layout-lifecycle",
+    "prompt": "UE5.7 CommonUI项目准备把根HUD挂在Pawn PossessedBy里，并让切Pawn时销毁再重建整个Root Layout。Split-screen和Controller替换后偶发重复HUD/焦点丢失。请审查。",
+    "expectations": [
+      "Root Layout/Policy应按LocalPlayer生命周期拥有，Controller替换时重挂/恢复；Pawn possession只驱动当前Avatar相关内容，不作为整个本地UI平台唯一owner",
+      "多LocalPlayer各自拥有独立root layout、focus/input context；Primary/Secondary player切换不得靠全局单例HUD",
+      "HUD/page presentation必须与逻辑导航owner分离；若项目已有UINavigation，CommonUI root只做Presenter，不另建第二套route/back truth",
+      "验证split-screen、Controller替换、repossess、travel、主副玩家切换以及旧widget/delegate泄漏"
+    ]
+  },
+  {
+    "id": "UI-06",
+    "slug": "commonui-input-mode-and-action-binding-lifecycle",
+    "prompt": "团队让每个CommonActivatableWidget激活时都SetInputMode、抢焦点，并在Construct里注册Esc动作但不保存handle。菜单层叠后经常无法回到游戏输入。请审查。",
+    "expectations": [
+      "默认普通ActivatableWidget不应改全局input config；只有真正拥有输入策略的顶层route/modal通过统一arbiter返回Game/Menu/All策略",
+      "UI Action/Enhanced Input binding必须保存handle或source identity并在Destruct/Deactivate/owner teardown对称注销，防止重复注册与ghost callback",
+      "layer transition的Suspend/Resume必须token或引用计数成对，不能某个页面完成就恢复全部输入",
+      "验证键鼠/手柄、快速push-pop、重复Construct、异步transition、焦点恢复与页面销毁后无旧回调"
+    ]
+  },
+  {
+    "id": "UI-07",
+    "slug": "enhanced-input-context-source-ownership",
+    "prompt": "Pawn被Possess时示例代码先ClearAllMappings再添加自己的IMC，UnPossess又ClearAllMappings。团队准备直接用于复杂ARPG。请审查。",
+    "expectations": [
+      "ClearAllMappings只适合高度受控的教学/单机样例；生产中UI、系统、无障碍、载具、技能feature可能共同拥有contexts，必须按source/handle只移除自己添加的IMC",
+      "IMC生命周期按LocalPlayer/feature/avatar职责选择，不默认等同Pawn生命周期；Avatar切换只替换Avatar-scoped contexts",
+      "InputAction到GameplayTag DataAsset可保留，并要求唯一/可诊断映射；native command与ability input可以共享tag namespace但业务owner分开",
+      "验证菜单打开、载具/变身、feature启停、repossess、多LocalPlayer，确保不存在context泄漏或误删"
+    ]
+  },
+  {
+    "id": "UI-08",
+    "slug": "gameplay-message-router-not-network-truth",
+    "prompt": "GameState通过GameplayMessageRouter广播状态变化，UI订阅后更新。有人因此认为GameplayMessage可以代替复制、FastArray和初始快照。请审查。",
+    "expectations": [
+      "GameplayMessage是进程内/世界内解耦总线，不是网络复制、持久化或Authority truth；Remote/JIP仍需canonical replicated state或显式网络协议",
+      "UI打开时先读initial snapshot再订阅message/delta；只监听future message会漏掉已发生状态",
+      "listener按widget/localplayer生命周期注册并注销；消息payload不长期充当第二份真值，必要时收到signal后重新query canonical state",
+      "验证Host/Remote/JIP、晚打开UI、Travel、重复订阅和message丢失/顺序变化"
+    ]
+  },
+  {
+    "id": "UI-09",
+    "slug": "layer-suppression-without-dummy-widgets",
+    "prompt": "主菜单打开时，样例通过向Game和GameMenu层各Push一个空白Widget来遮住低层UI。准备把这个模式推广到所有Modal。请审查。",
+    "expectations": [
+      "空白Widget遮层是简化样例的可行技巧但不是通用页面权限模型；优先使用统一layer visibility/input policy、modal priority或项目现有UINavigation arbiter",
+      "遮挡视觉与阻止输入必须分别定义，不能靠透明/空白控件偶然截获hit test",
+      "关闭modal要精确恢复之前layer状态/焦点，而不是Pop错误实例；并发modal需stack identity/refcount",
+      "若保留blank blocker，应明确owner、instance identity、异常teardown和可访问性影响，并做nested modal回归"
+    ]
   }
 ]

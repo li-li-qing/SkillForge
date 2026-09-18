@@ -51,3 +51,14 @@ FastArray 已有条目/容器回调，不机械给每个 Item 加 OnRep。普通
 当前 Dialogue 选项协议关联 SessionId、ExpectedNodeId 和 OptionId；不能仅凭 OptionId 把迟到点击应用到新节点。节点指纹由当前 Agent 路径处理，项目 UI 应使用公开 Request 门面，不直接拼内部 RPC。
 
 对所有这些操作，分别验证 Authority 修改次数、结果关联、UI 呈现次数和持久化结果。有效重复应幂等，参数改变、会话过期、权限变化应按契约拒绝。
+
+## 表现层驱动源：队列条目事件与 UIData 事件的可见范围不同
+
+`ULCraftingStationComponent` 同时暴露 `OnCraftingQueueEntryChanged` / `OnCraftingQueueEntryRemoved` 和 `OnCraftingStationUIDataChanged`。三者可见范围**不等价**：
+
+- 队列条目事件的唯一广播链在**复制接收侧**：`HandleReplicatedQueueEntryChanged/Removed` → `QueueDeferredReplicatedQueueEntry*` → `Schedule/FlushDeferredQueueRepBroadcast`。Listen Host 或单机本地推进队列时不走这条链，因此这些事件**不广播**。
+- `OnCraftingStationUIDataChanged` 在服务器每次推进完成后由 `BroadcastStationUIChanged()` 直接广播，客户端 OnRep 也广播。
+
+结论：给制作台一类 Actor 挂表现层（动画、特效、进度显示）时驱动源用 UIData 事件；用队列条目事件会在 Host/单机上完全不动，而远端客户端看似正常，最容易误判为“资产或特效没配好”。
+
+审计方法：判断一个委托的可见范围时，读**广播点的调用者链**，不要只读广播语句本身；“存在 Broadcast”不等于“本机会收到”。真值仍从复制队列的 view data 读取，事件只当“变化了”的信号。

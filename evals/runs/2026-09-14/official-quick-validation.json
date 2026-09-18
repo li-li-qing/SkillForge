@@ -1,0 +1,32 @@
+[
+  {
+    "skill": "skillforge-archerage-addon",
+    "exit": 1,
+    "output": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n"
+  },
+  {
+    "skill": "skillforge-debugging",
+    "exit": 0,
+    "output": "Skill is valid!\n"
+  },
+  {
+    "skill": "skillforge-lgf",
+    "exit": 0,
+    "output": "Skill is valid!\n"
+  },
+  {
+    "skill": "skillforge-ue-blueprint",
+    "exit": 0,
+    "output": "Skill is valid!\n"
+  },
+  {
+    "skill": "skillforge-ue-cpp",
+    "exit": 0,
+    "output": "Skill is valid!\n"
+  },
+  {
+    "skill": "skillforge-ui-design",
+    "exit": 0,
+    "output": "Skill is valid!\n"
+  }
+]

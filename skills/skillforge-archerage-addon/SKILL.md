@@ -3,7 +3,7 @@ name: skillforge-archerage-addon
 description: "Use when developing or debugging ArcheRage RU Lua addons or Replicated Suite: PVP图标延迟/抖动、首领倒计时、HUD校准/默认模板、存档回读、RS-ERROR-PAGE复制、Buff追踪、询价及生命周期，或更新本技能。泛用Lua、UE5/UE Lua、AAEmu服务端和仅AAClassic不触发；服务器不明时先确认。"
 compatibility: "阅读无需依赖；随包离线工具需Python 3.10+。Lua语法门禁另需可信的Lua 5.1可执行文件；不安装依赖、不联网、不操作客户端。"
 metadata:
-  revision: "2026.09.13-r3"
+  revision: "2026.09.14-r4"
 ---
 
 # ArcheRage RU 插件开发与排障
@@ -40,6 +40,7 @@ metadata:
 | 增量交付、模拟全绿、验收口径 | [回归与发布](references/regression-and-release.md) |
 | 当前确为Replicated Suite | [项目边界](references/replicated-suite.md) |
 | 增补Skills与经验分级 | [反馈](references/feedback.md)、[案例](references/maintenance-lessons-2026-09.md)、[来源](references/sources.md) |
+| 数据与代码回滚、发布和容量边界 | [旧库补充](references/migration-release-boundaries.md) |
 | 需要机器检查 | [工具说明](references/verification-tools.md)、[行为评测办法](evals/README.md) |
 
 只读取当前问题需要的主题，不把整个参考库压进每次任务。
@@ -52,7 +53,7 @@ metadata:
 
 **事件数字不能靠形状猜语义。** 先读Native发布端、客户端消费端、项目包装器与当前门禁，确认每个参数是本次变化、当前余额、ID、字符串金额还是状态码。测试桩必须复刻真实参数顺序（含EventBus owner-first）；否则“离线全绿”也可能把余额差分、经验归属或按钮状态做反。
 
-**能力存在不等于允许。** 本地 `z_api_functions`/Capability 的允许分类优先于“对象上有这个方法”或外部客户端源码。外部源码可证明某个事件/字段的语义候选，不能把 `Available/not allowed` 的Getter通过 `pcall` 升级成Allowed。
+**能力存在不等于允许。** 本地 `z_api_functions` 与 Capability 的允许分类优先于“对象上有这个方法”或外部客户端源码。外部源码可证明某个事件/字段的语义候选，不能把 `Available/not allowed` 的Getter通过 `pcall` 升级成Allowed。
 
 **保存、默认、导出是不同动作。** 负数与旧指纹按真实codec验证；不排除差异字段、不清档。发行默认仅用于新建或用户明确恢复，旧canonical先验证再迁移。校准草稿导出不代表已保存；传输校验成功不代表默认值已应用。
 
@@ -66,8 +67,8 @@ metadata:
 python scripts/verify_skill.py .
 python -m unittest discover -s tests -v
 python scripts/verify_report.py pages.txt --hud --output verified-layout.txt
-python scripts/check_lua51.py --lua /path/to/lua5.1 /path/to/changed.lua
-python scripts/audit_patch.py --base /path/to/baseline --current /path/to/current --zip /path/to/patch.zip
+python scripts/check_lua51.py --lua <trusted-lua51> <changed.lua>
+python scripts/audit_patch.py --base <baseline> --current <current> --zip <patch.zip>
 ```
 
 工具不提供无限安全保证。包结构通过≠Agent行为通过；复制一致≠源数据真实；ZIP一致≠运行测试通过。缺Lua5.1时门禁返回blocked，不用其他版本绿灯替代。文件名隐私筛查不能替代内容审阅。

@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "scope": "structure_only",
+  "errors": []
+}
+

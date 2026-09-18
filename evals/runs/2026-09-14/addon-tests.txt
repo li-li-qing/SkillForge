@@ -1,0 +1,100 @@
+
+test_bytecode_guard_with_synthetic_version_does_not_execute (test_tools.LuaTests.test_bytecode_guard_with_synthetic_version_does_not_execute) ... ok
+test_bytecode_rejected_before_loading (test_tools.LuaTests.test_bytecode_rejected_before_loading) ... skipped 'RS_TEST_LUA51 not supplied'
+test_luajit_version_alias_is_not_accepted_as_puc_lua51 (test_tools.LuaTests.test_luajit_version_alias_is_not_accepted_as_puc_lua51) ... ok
+test_missing_interpreter_blocks_not_passes (test_tools.LuaTests.test_missing_interpreter_blocks_not_passes) ... ok
+test_no_files_is_not_green (test_tools.LuaTests.test_no_files_is_not_green) ... ok
+test_real_lua51_compile_only_and_bad_syntax (test_tools.LuaTests.test_real_lua51_compile_only_and_bad_syntax) ... skipped 'RS_TEST_LUA51 not supplied; real parser not run'
+test_version_probe_timeout_is_not_green (test_tools.LuaTests.test_version_probe_timeout_is_not_green) ... ok
+test_wrong_interpreter_version_rejected_without_compiling (test_tools.LuaTests.test_wrong_interpreter_version_rejected_without_compiling) ... ok
+test_deleted_file_requires_explicit_exact_approval (test_tools.PatchTests.test_deleted_file_requires_explicit_exact_approval) ... ok
+test_directory_symlink_rejected (test_tools.PatchTests.test_directory_symlink_rejected) ... skipped 'symlink unsupported'
+test_duplicate_and_case_collision_rejected (test_tools.PatchTests.test_duplicate_and_case_collision_rejected) ... ok
+test_exact_delta_and_untouched_are_verified (test_tools.PatchTests.test_exact_delta_and_untouched_are_verified) ... ok
+test_expanded_budget_checked_before_payload_read (test_tools.PatchTests.test_expanded_budget_checked_before_payload_read) ... ok
+test_final_archive_is_read_not_assumed_from_worktree (test_tools.PatchTests.test_final_archive_is_read_not_assumed_from_worktree) ... ok
+test_missing_extra_unchanged_or_wrong_payload_rejected (test_tools.PatchTests.test_missing_extra_unchanged_or_wrong_payload_rejected) ... ok
+test_private_payloads_and_symlink_zip_rejected (test_tools.PatchTests.test_private_payloads_and_symlink_zip_rejected) ... ok
+test_traversal_absolute_backslash_colon_and_reserved_rejected (test_tools.PatchTests.test_traversal_absolute_backslash_colon_and_reserved_rejected) ... ok
+test_zip_file_directory_collision_is_rejected (test_tools.PatchTests.test_zip_file_directory_collision_is_rejected) ... ok
+test_recent_runtime_failures_are_distilled_into_r3 (test_tools.R3RegressionLessonsTests.test_recent_runtime_failures_are_distilled_into_r3) ... FAIL
+test_all_three_checksum_layers_are_required (test_tools.ReportTests.test_all_three_checksum_layers_are_required) ... ok
+test_cli_output_no_overwrite_and_no_raw_in_stdout (test_tools.ReportTests.test_cli_output_no_overwrite_and_no_raw_in_stdout) ... ok
+test_complete_hud_numeric_values_are_preserved (test_tools.ReportTests.test_complete_hud_numeric_values_are_preserved) ... ok
+test_display_wraps_are_removed_but_data_spaces_retained (test_tools.ReportTests.test_display_wraps_are_removed_but_data_spaces_retained) ... ok
+test_empty_report_is_valid_not_omitted (test_tools.ReportTests.test_empty_report_is_valid_not_omitted) ... ok
+test_hud_duplicate_missing_unknown_nonfinite_and_boolean_rejected (test_tools.ReportTests.test_hud_duplicate_missing_unknown_nonfinite_and_boolean_rejected) ... ok
+test_identical_duplicate_is_counted_not_counted_as_new_page (test_tools.ReportTests.test_identical_duplicate_is_counted_not_counted_as_new_page) ... ok
+test_invalid_escape_with_valid_wire_checksum_rejected (test_tools.ReportTests.test_invalid_escape_with_valid_wire_checksum_rejected) ... ok
+test_missing_mixed_conflicting_damaged_and_trailing_garbage_rejected (test_tools.ReportTests.test_missing_mixed_conflicting_damaged_and_trailing_garbage_rejected) ... ok
+test_roundtrip_utf8_escapes_literal_marker_and_out_of_order (test_tools.ReportTests.test_roundtrip_utf8_escapes_literal_marker_and_out_of_order) ... ok
+test_size_limits_and_invalid_utf8 (test_tools.ReportTests.test_size_limits_and_invalid_utf8) ... ok
+test_wrong_offsets_lengths_totals_and_checks_rejected (test_tools.ReportTests.test_wrong_offsets_lengths_totals_and_checks_rejected) ... ok
+test_broken_link_duplicate_case_and_eval_id_fail (test_tools.SkillTests.test_broken_link_duplicate_case_and_eval_id_fail) ... ERROR
+test_duplicate_json_keys_are_not_silently_accepted (test_tools.SkillTests.test_duplicate_json_keys_are_not_silently_accepted) ... ok
+test_new_routes_and_behavior_specs_present_not_claimed_executed (test_tools.SkillTests.test_new_routes_and_behavior_specs_present_not_claimed_executed) ... ERROR
+test_package_structure_valid (test_tools.SkillTests.test_package_structure_valid) ... ok
+test_python_syntax_error_is_detected_without_running_script (test_tools.SkillTests.test_python_syntax_error_is_detected_without_running_script) ... ok
+test_scenario_marked_passed_requires_real_execution_record (test_tools.SkillTests.test_scenario_marked_passed_requires_real_execution_record) ... ERROR
+test_wrong_metadata_name_fails (test_tools.SkillTests.test_wrong_metadata_name_fails) ... ERROR
+
+======================================================================
+ERROR: test_broken_link_duplicate_case_and_eval_id_fail (test_tools.SkillTests.test_broken_link_duplicate_case_and_eval_id_fail)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Skiils\SkillForge\skills\skillforge-archerage-addon\tests\test_tools.py", line 243, in test_broken_link_duplicate_case_and_eval_id_fail
+    cases=json.loads((root/'evals/behavior-cases.json').read_text());cases.append(cases[0]);(root/'evals/behavior-cases.json').write_text(json.dumps(cases))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\llq\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x86 in position 68: illegal multibyte sequence
+
+======================================================================
+ERROR: test_new_routes_and_behavior_specs_present_not_claimed_executed (test_tools.SkillTests.test_new_routes_and_behavior_specs_present_not_claimed_executed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Skiils\SkillForge\skills\skillforge-archerage-addon\tests\test_tools.py", line 268, in test_new_routes_and_behavior_specs_present_not_claimed_executed
+    cases=json.loads((ROOT/'evals/behavior-cases.json').read_text())
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\llq\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x86 in position 68: illegal multibyte sequence
+
+======================================================================
+ERROR: test_scenario_marked_passed_requires_real_execution_record (test_tools.SkillTests.test_scenario_marked_passed_requires_real_execution_record)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Skiils\SkillForge\skills\skillforge-archerage-addon\tests\test_tools.py", line 263, in test_scenario_marked_passed_requires_real_execution_record
+    p=root/'evals/behavior-cases.json';rows=json.loads(p.read_text());rows[-1]['execution_status']='passed';p.write_text(json.dumps(rows))
+                                                       ^^^^^^^^^^^^^
+  File "C:\Users\llq\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x86 in position 68: illegal multibyte sequence
+
+======================================================================
+ERROR: test_wrong_metadata_name_fails (test_tools.SkillTests.test_wrong_metadata_name_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Skiils\SkillForge\skills\skillforge-archerage-addon\tests\test_tools.py", line 248, in test_wrong_metadata_name_fails
+    p=root/'SKILL.md';p.write_text(p.read_text().replace('name: skillforge-archerage-addon','name: Wrong_Name'))
+                                   ^^^^^^^^^^^^^
+  File "C:\Users\llq\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+UnicodeDecodeError: 'gbk' codec can't decode byte 0xa6 in position 157: illegal multibyte sequence
+
+======================================================================
+FAIL: test_recent_runtime_failures_are_distilled_into_r3 (test_tools.R3RegressionLessonsTests.test_recent_runtime_failures_are_distilled_into_r3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Skiils\SkillForge\skills\skillforge-archerage-addon\tests\test_tools.py", line 282, in test_recent_runtime_failures_are_distilled_into_r3
+    self.assertIn('2026.09.13-r3', skill)
+AssertionError: '2026.09.13-r3' not found in '---\nname: skillforge-archerage-addon\ndescription: "Use when developing or debugging ArcheRage RU Lua addons or Replicated Suite: PVPͼ���ӳ�/���������쵹��ʱ��HUDУ׼/Ĭ��ģ�塢�浵�ض���RS-ERROR-PAGE���ơ�Buff׷�١�ѯ�ۼ��������ڣ�����±����ܡ�����Lua��UE5/UE Lua��AAEmu����˺ͽ�AAClassic������������������ʱ��ȷ�ϡ�"\ncompatibility: "�Ķ�����������������߹�����Python 3.10+��Lua�﷨�Ž�������ŵ�Lua 5.1��ִ���ļ�������װ���������������������ͻ��ˡ�"\nmetadata:\n  revision: "2026.09.14-r4"\n---\n\n# ArcheRage RU �������������\n\n���û��ɼ���Ϊ��Ӧ��ʵ�ʵ����������޸��״�ʧЧ�ı߽硣��ǰ���롢�û���ȷ�������ֳ�֤�ݾ�����������ʷ�������ο�����������еĲ���ֻ�Ǵ���Χ��������\n\n## ��ʼ�뽻����������\n\n1. **����**����ȡ��ʵ��ڡ�TOC����ǰ˵�����й��ļ���ȷ��ԭ��������˳��Դ��ժҪ���Ѽ��ر�Ǻ����ð汾�����в��Ͽɽ�����������ж�ȡ��ȱʧ�ľɰ����ܿ��Ի��ܽ��ؽ��������޸Ĳ������޸���Ϸ���д��롣\n2. **��Լ**��д�������Ŀɼ���������������ߡ���λ/ʱ��/����ռ䡢ʧ����δ֪��ͣ��������Lua�����Authority����UE����Authority����ֲ��UObject��OnRep��FastArray��\n3. **֤��**���ֱ����û��۲졢�Ѷ�Դ�롢����ִ�С���ʷ���Ժͼ��衣API�Ȳ鱾�زο�/��ǰ�Ž�������������ܱ����Ȩ���ٺ˶������ڵ�һ����Դ������������pcall�ɹ���������ҵ��ɹ���\n4. **����**���ȱ����ܱ�¶ԭ�ϵ�ķ�����ԭNative�������о�����ȷ����ģ�ͣ���������ʵ���ȡ�EventBus��Diff�����ֻ�codec��������йصĲ㡣����ģ��ͨ����Ϊ�û�ʵ�����֡�\n5. **����**��ʹ������Core/Services/Feature/UI��owner/generation��ֻ����֤ʵͬ��ĵ��õ㡣ÿ���޸ĵ�дԭ������Ȩ/�����������ݱ߽���ά�����ա��������һ�֣�����С����Ҫȷ�ϣ��ƻ���д����޷��ƶϵĲ�Ʒ��������ȷ�ϡ�\n6. **��֤�뷢��**������ʧ����������������·����������ZIP��ȷ���������ؽ������⡣Lua5.4+shim���ܴ���Lua5.1��Lua5.1�﷨Ҳ��֤��RU���С�ȱ����/�ļ�����������ʷͨ���ֱ𱨸档������������ݡ��ļ������ܡ����ݷ��պͲ��Խ��顣\n\n## ��֢״ȡ��\n\n| ֢״/���� | �ض��ο� |\n|---|---|\n| ���ء�API���¼�����������Lua�汾 | [����ʱ��API](references/runtime-and-api.md) |\n| ���/����/������ֵ���ԡ��¼��������岻�� | [����ʱ��API](references/runtime-and-api.md)��[�����������˱�](references/server-day-ledger.md) |\n| ����ض�����������㡢������/Ĭ��ֵ | [�浵�����](references/persistence-and-diagnostics.md) |\n| HUD�ƶ��������˶໻װͼ�겻�䡢���˴�ͼ | [PVPʱЧ����Ⱦ](references/pvp-hud-and-freshness.md) |\n| �Լ�װ��/�����������͡�ְҵͼ�ꡢ��״̬/���ÿ� | [״̬׷����Լ](references/status-tracking-contracts.md) |\n| ����ʱ��ס���ظ�����������©���ܡ�HUD���ܵ��� | [�����ʱ�벼��](references/boss-alert-clock-and-layout.md) |\n| ���������У׼������λ�á����÷���Ĭ�� | [HUDģ����Ĭ��ֵ](references/hud-template-and-defaults.md) |\n| ������ݸ塢���㡢���֡����������� | [UI����������](references/ui-and-lifecycle.md) |\n| �ص����롢ȡ������������򡢸��ô����� | [�ص���������Լ](references/callback-and-request-contracts.md) |\n| ��ѯһֱ�����ڽ��С�����ȴ/��ʱ���� | [�ص���������Լ](references/callback-and-request-contracts.md) |\n| ��ʽҳ��������������/Ƕ�뿨Ƭû���� | [UI����������](references/ui-and-lifecycle.md)��[�ص���������Լ](references/callback-and-request-contracts.md) |\n| �������桢��ҳ���ȴ���Ctrl+Cʧ�� | [�̶������븴��](references/diagnostic-report-workflow.md) |\n| DPS/HPS�����ۡ���ʷ���� | [ս����۸�](references/combat-and-price-contracts.md) |\n| ÿ�վ����桢ԭʼ�������岻�� | [�����������˱�](references/server-day-ledger.md) |\n| ����������ģ��ȫ�̡����տھ� | [�ع��뷢��](references/regression-and-release.md) |\n| ��ǰȷΪReplicated Suite | [��Ŀ�߽�](references/replicated-suite.md) |\n| ����Skills�뾭��ּ� | [����](references/feedback.md)��[����](references/maintenance-lessons-2026-09.md)��[��Դ](references/sources.md) |\n| ���������ع��������������߽� | [�ɿⲹ��](references/migration-release-boundaries.md) |\n| ��Ҫ������� | [����˵��](references/verification-tools.md)��[��Ϊ����취](evals/README.md) |\n\nֻ��ȡ��ǰ������Ҫ�����⣬���������ο���ѹ��ÿ������\n\n## ���뱣�����ж�\n\n**ʱЧ������Ƶ�ʡ�** �ƶ�ֻ����λ�ã���ʵ���¼����н粹��ˢ�£���̬Ԫ���ݻ��档�����¼��ϲ���������𣬱����������ޣ����ܳ���ȡ�����ţ����������¶��������۲�����ȡ�ͶӰ��ԭ��д���ÿ��ʱ�䣬����ŵ50ms���Ƕ˵����ӳ١�\n\n**δ֪��αװ����ʵ��** APIδ֪����ʾ�㣻�з����Ͳ����ھ�����Ʒ��δ�۲�״̬�����ڲ����ڡ���Ŀ��/��generation�������д��ǰHUD��ԭ����дʱ�����ƽ�������ʾ�����档\n\n**�¼����ֲ��ܿ���״�����塣** �ȶ�Native�����ˡ��ͻ������Ѷˡ���Ŀ��װ���뵱ǰ�Ž���ȷ��ÿ�������Ǳ��α仯����ǰ��ID���ַ�������״̬�롣����׮���븴����ʵ����˳�򣨺�EventBus owner-first������������ȫ�̡�Ҳ���ܰ�����֡����������ť״̬������\n\n**�������ڲ�����������** ���� `z_api_functions` �� Capability ���������������ڡ���������������������ⲿ�ͻ���Դ�롣�ⲿԴ���֤��ĳ���¼�/�ֶε������ѡ�����ܰ� `Available/not allowed` ��Getterͨ�� `pcall` ������Allowed��\n\n**���桢Ĭ�ϡ������ǲ�ͬ������** �������ָ�ư���ʵcodec��֤�����ų������ֶΡ����嵵������Ĭ�Ͻ������½����û���ȷ�ָ�����canonical����֤��Ǩ�ơ�У׼�ݸ嵼���������ѱ��棻����У��ɹ�������Ĭ��ֵ��Ӧ�á�\n\n**�����ǹ̶����ա�** �༭��ʵ�ʻض�������ҳ����ʽǰ��ҳ����ҳ������/����/��ID���ȴ������ڼ䲻������д���Ļ��ظ���ê�㣻����֤��ָ�ϡ�2��ˢ�¡�����ȫ�������콹�㡣\n\n## ��ִ�м��\n\n�ӱ�����Ŀ¼���У��ȿ�`--help`����Ҫ�½ű�������\n\n```text\npython scripts/verify_skill.py .\npython -m unittest discover -s tests -v\npython scripts/verify_report.py pages.txt --hud --output verified-layout.txt\npython scripts/check_lua51.py --lua <trusted-lua51> <changed.lua>\npython scripts/audit_patch.py --base <baseline> --current <current> --zip <patch.zip>\n```\n\n���߲��ṩ���ް�ȫ��֤�����ṹͨ����Agent��Ϊͨ��������һ�¡�Դ������ʵ��ZIPһ�¡����в���ͨ����ȱLua5.1ʱ�Ž�����blocked�����������汾�̵�������ļ�����˽ɸ�鲻������������ġ�\n\nͬһ���϶���û����֤��ʱ��ֹͣ�ٷ�ͬ��²ⲹ�����������״�ʧЧ����ȡ֤ȱ�ڡ��û���ȷ�ϵ��޹ع��ܲ������־�������ŸĶ����¹���ֻ������֤��ʱ���֡���ʵ�����ա������Զ��Ƴ���δ��ɡ���\n'
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.636s
+
+FAILED (failures=1, errors=4, skipped=3)

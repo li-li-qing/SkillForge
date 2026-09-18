@@ -1,0 +1,37 @@
+[
+  {
+    "path": "Docs/Design/TWINKATANA_SINGLE_SOURCE_SOCKET_DESIGN.md",
+    "sha256": "a4de016d0c90ff2dfc10f905543d15fd6f3eab021649609ba8e8deb47e233b2c",
+    "scope": "selected_source_or_contract_read_not_runtime"
+  },
+  {
+    "path": "Docs/Design/TWINKATANA_OVERLAY_CONTRACT.md",
+    "sha256": "5f4feb9a7e8b8db6c40f0d49614958f59f4af09547be59b7baf3b86c84f2c706",
+    "scope": "selected_source_or_contract_read_not_runtime"
+  },
+  {
+    "path": "Source/LGame/Private/Weapon/LGameWeaponLoadoutPresentationComponent.cpp",
+    "sha256": "c4aed9464117c4307929e994782a2623a9d07cc538e326ca749440a4b93fbc24",
+    "scope": "selected_source_or_contract_read_not_runtime"
+  },
+  {
+    "path": "Source/LGame/Private/Animation/FAnimNode_WeaponOverlay.cpp",
+    "sha256": "e529367e1df20a97b6dc569f8e3a83d1de0582041cec6347a5fc4d147d36878e",
+    "scope": "selected_source_or_contract_read_not_runtime"
+  },
+  {
+    "path": "Source/LGame/Public/Animation/FAnimNode_WeaponOverlay.h",
+    "sha256": "1ed5dd6589f101ec6b4798fc928fd1292f024402cd867a0af4d416d02be8233b",
+    "scope": "selected_source_or_contract_read_not_runtime"
+  },
+  {
+    "path": "Source/LGame/Public/Animation/LGameWeaponPoseCoverage.h",
+    "sha256": "28ca7342f36736363fff1b576ba2623be7342cce068fab16c6918dd0e9b2b6a2",
+    "scope": "selected_source_or_contract_read_not_runtime"
+  },
+  {
+    "path": "Source/LGameEditor/Private/Tests/LGameTwinKatanaCoverageTests.cpp",
+    "sha256": "a0e4a948df923f3584d45ae5e7f7ac5b13e5ae6a56634db4dddba455cc1505ec",
+    "scope": "selected_source_or_contract_read_not_runtime"
+  }
+]

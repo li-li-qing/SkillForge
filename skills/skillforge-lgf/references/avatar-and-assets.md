@@ -36,3 +36,58 @@ Avatar 或骨骼改变时重建对应绑定。Dedicated Server 不依赖客户�
 MotionWarp 辅助可写入/清理已有组件的 Warp Target，不等于通用 Montage→Mover 根运动桥。动画通知可以参与受控窗口信号，Proxy 动画时点不能决定服务器伤害、死亡或奖励。
 
 回归包含已加载/未加载/错误资产、旧加载晚到、重复授予、Avatar 切换、死亡复活、不同 Mesh 用途、Host/Remote/Dedicated 与 Travel。构建、资产加载和实际网络行为分别记录。
+
+## Persistent Loadout 与 Applied Avatar 状态
+
+外部 Framework 的一个可复用证据是把长期 assignment 与当前 Pawn applied state 分开。LGF 做吸收变身、Prop 形态、骑乘或换 Pawn 时沿用已有 Full Foundation，不另建一套 Inventory/GAS：
+
+- PlayerState/Player Agent 继续持有长期 ASC、Inventory、Loadout、Progression 与 stable ItemId；
+- Pawn/Character 只持当前形态的 Mover、Mesh、AnimInstance、Attachment、Trace 与 applied equipment/presentation；
+- 旧 Avatar 在 PlayerState/ASC 链接失效前撤销 Pawn 来源 GrantHandle、解绑旧 ASC/Inventory delegate、停止形态异步任务；
+- 新 Avatar 在 ActorInfo、Mover/动画和必要资源 ready 后，再按该形态的兼容规则 reapply persistent loadout；
+- 不兼容装备保持 loadout assignment，但不在不支持的形态强制创建 Mesh/Ability。回到兼容形态后可重新应用。
+
+Delegate 必须 compare-and-rebind：同一 Pawn 被不同 PlayerState/Controller 重新 Possess 时，从旧长期对象解除绑定后再接新对象。异步加载和 delayed callback 同时检查 stable player identity、当前 Avatar 与 switch generation，禁止旧形态回调污染新 Avatar。
+
+验收增加：死亡重生、NPC 变身往返、Prop 形态、载具/宠物骑乘、同 Pawn 换 Controller、形态切换中断、Host/Remote/SimulatedProxy/JIP，以及旧装备 Actor/Ability/动画 layer 没有残留或重复授予。
+
+## GASP/Mover Avatar 切换：动画、物理与 Camera 的重绑定
+
+吸收 NPC、Prop 形态和骑乘不仅是换 SkeletalMesh。对 GASP/Mover 路线，Avatar generation 至少覆盖：
+
+- Mover backend / Movement Modes / persistent sync state；
+- SkeletalMesh、AnimInstance、Runtime Retarget source；
+- Linked Anim Layers 与 Overlay/Delta/Override task；
+- PoseHistory、Trajectory Predictor、MotionWarp targets；
+- PhysicsControl asset/profile 与正在运行的 Ragdoll task；
+- Local GameplayCamera context / camera variables；
+- 当前形态的 equipment actor、socket/AuthorityTrace binding。
+
+### Detach old Avatar
+
+在旧 owner 引用失效前：
+
+1. Cancel 由旧 Avatar 发起/承载的 Traversal、Roll、Slide、Montage 等 action Ability；
+2. Cancel matching Mover Layered Move，并清 MotionWarp targets；
+3. End overlay/ragdoll task，Unlink 旧动态 Linked Anim Layer；
+4. 撤销 Pawn 来源 GrantedHandles、equipment actor、AuthorityTrace；
+5. Unbind old ASC/Inventory/Mover/Anim delegates 和 input；
+6. LocalPlayer 停止旧 camera rigs/context；
+7. 递增 Avatar generation，让迟到 async/notify/callback 自动失效。
+
+### Attach new Avatar
+
+按依赖顺序：
+
+1. 建立 stable owner -> new Pawn 的 ASC ActorInfo；
+2. 初始化/验证 Mover、collision、PhysicsControl；
+3. 验证 Skeleton、AnimClass、Linked Layer Interface、Runtime Retarget；
+4. 重建/重新播种 Trajectory 与 PoseHistory，不能继承旧骨架 history；
+5. 注册 overlay/delta/override mapping，重新解析 linked instance；
+6. 初始化 MotionWarp/Traversal 目标容器；
+7. 本地拥有玩家激活新的 GameplayCamera context；
+8. 最后按形态兼容规则 reapply loadout/equipment/presentation。
+
+不兼容形态继续保留 persistent loadout assignment，但 applied equipment 为空或降级。恢复兼容形态后再重建，禁止因为 Prop 没有手骨就删除玩家的长期武器归属。
+
+验证必须包含“动作进行中变形”：Traversal/Ragdoll/RootMotion/Overlay 切换一半时换 NPC/Prop/坐骑，旧 Layer、旧 Warp、旧 Mover move、旧 physics task 和旧 camera rig 都不能继续控制新 Avatar。

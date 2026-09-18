@@ -1,0 +1,23 @@
+{
+  "baseline": "SkillForge_Lyra_R8.zip",
+  "round": "R9 XistCommonGameSample",
+  "added": [
+    "docs/project-distillations/xist-common-game-sample.md",
+    "evals/runs/2026-09-14/xist-commonui-changed-files.json",
+    "evals/runs/2026-09-14/xist-commonui-validation.md",
+    "skills/skillforge-ui-design/references/commonui-input-routing-patterns.md"
+  ],
+  "modified": [
+    "docs/implementation-progress.md",
+    "docs/project-distillations/README.md",
+    "docs/research.md",
+    "skills/skillforge-lgf/evals/behavior-cases.json",
+    "skills/skillforge-lgf/references/external-project-patterns.md",
+    "skills/skillforge-lgf/references/ui-platform.md",
+    "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+    "skills/skillforge-ue-cpp/references/framework-composition-patterns.md",
+    "skills/skillforge-ui-design/SKILL.md",
+    "skills/skillforge-ui-design/evals/behavior-cases.json"
+  ],
+  "deleted": []
+}

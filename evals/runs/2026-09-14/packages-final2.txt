@@ -1,0 +1,2 @@
+Validated 6 skill(s): 0 error(s); 6 standalone copies validated.
+

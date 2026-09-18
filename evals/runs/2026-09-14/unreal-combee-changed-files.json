@@ -1,0 +1,26 @@
+{
+  "round": "R10-unreal-combee",
+  "baseline": "SkillForge_XistCommonGame_R9",
+  "external_repository": "nulla-sutra/unreal-combee",
+  "external_commit": "971fa227179a99d308956b7031d5422634cefbfd",
+  "added": [
+    "docs/project-distillations/unreal-combee.md",
+    "evals/runs/2026-09-14/unreal-combee-distillation-validation.md",
+    "skills/skillforge-lgf/references/container-transaction-contracts.md",
+    "skills/skillforge-ue-cpp/references/container-transactions-and-subobjects.md",
+    "evals/runs/2026-09-14/unreal-combee-changed-files.json"
+  ],
+  "modified": [
+    "docs/implementation-progress.md",
+    "docs/project-distillations/README.md",
+    "docs/research.md",
+    "skills/skillforge-lgf/SKILL.md",
+    "skills/skillforge-lgf/evals/behavior-cases.json",
+    "skills/skillforge-lgf/references/external-project-patterns.md",
+    "skills/skillforge-ue-cpp/SKILL.md",
+    "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+    "skills/skillforge-ue-cpp/references/external-project-freshness-and-lyra.md"
+  ],
+  "deleted": [],
+  "note": "__pycache__/*.pyc generation artifacts are excluded from delivery; self manifest hash intentionally omitted."
+}

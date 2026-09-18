@@ -1,0 +1,64 @@
+[
+  {
+    "name": "validator-tests-final",
+    "command": [
+      "C:\\Users\\llq\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "cwd": "D:\\Project\\Skiils\\SkillForge",
+    "exit": 0
+  },
+  {
+    "name": "packages-final",
+    "command": [
+      "C:\\Users\\llq\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "scripts/validate_skills.py",
+      "--self-contained"
+    ],
+    "cwd": "D:\\Project\\Skiils\\SkillForge",
+    "exit": 0
+  },
+  {
+    "name": "inspector-tests-final",
+    "command": [
+      "C:\\Users\\llq\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "cwd": "D:\\Project\\Skiils\\SkillForge\\skills\\skillforge-lgf",
+    "exit": 0
+  },
+  {
+    "name": "addon-structure-final",
+    "command": [
+      "C:\\Users\\llq\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "scripts/verify_skill.py",
+      "."
+    ],
+    "cwd": "D:\\Project\\Skiils\\SkillForge\\skills\\skillforge-archerage-addon",
+    "exit": 0
+  },
+  {
+    "name": "addon-tests-final",
+    "command": [
+      "C:\\Users\\llq\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "cwd": "D:\\Project\\Skiils\\SkillForge\\skills\\skillforge-archerage-addon",
+    "exit": 0
+  }
+]

@@ -2,11 +2,1264 @@
   {
     "id": "CPP-01",
     "prompt": "UE5 项目中异步加载图标时回调捕获 [this]，完成后更新缓存的 UUserWidget*。玩家切关后偶发崩溃。有人建议把所有指针换成 TObjectPtr 或 AddToRoot 就行。当前只有这段描述，项目版本、回调线程和代码都未提供。请给出需要检查的内容、最小修复方向及验证办法，别假装已经改过工程。",
-    "expectations": ["区分对象所有权、GC 可达性与非拥有观察引用，不把 TObjectPtr 当万能保活或线程保证", "检查对象生命周期、回调线程以及加载请求是否仍属于当前界面或关卡", "给出弱引用重新校验、失效请求处理和必要时游戏线程派发的有条件方案", "根据实际工程识别构建目标与版本，区分源码建议、编译和切关回归状态"]
+    "expectations": [
+      "区分对象所有权、GC 可达性与非拥有观察引用，不把 TObjectPtr 当万能保活或线程保证",
+      "检查对象生命周期、回调线程以及加载请求是否仍属于当前界面或关卡",
+      "给出弱引用重新校验、失效请求处理和必要时游戏线程派发的有条件方案",
+      "根据实际工程识别构建目标与版本，区分源码建议、编译和切关回归状态"
+    ]
   },
   {
     "id": "CPP-02",
     "prompt": "我在一个普通 UE5 工具项目新增 UFUNCTION 给蓝图用。同事让我照搬 LGame 的 DebugGame Editor 编译命令，还说所有项目都必须按 Listen Server 权威架构做。项目的 .uproject 和 Build.cs 可以读取，但这里没有提供内容。现在请说明你如何确定模块依赖、蓝图暴露方式、构建命令与验证范围。",
-    "expectations": ["从当前项目而非旧项目路径推断模块、Target 和构建配置", "检查 reflected declaration、generated include、跨模块符号与蓝图使用契约", "仅在任务实际涉及多人状态时引入网络权限检查", "提出 C++ 构建与受影响蓝图编译/调用验证，未执行时不声称通过"]
+    "expectations": [
+      "从当前项目而非旧项目路径推断模块、Target 和构建配置",
+      "检查 reflected declaration、generated include、跨模块符号与蓝图使用契约",
+      "仅在任务实际涉及多人状态时引入网络权限检查",
+      "提出 C++ 构建与受影响蓝图编译/调用验证，未执行时不声称通过"
+    ]
+  },
+  {
+    "id": "CPP-03",
+    "slug": "replicated-subobject-host-proxy",
+    "prompt": "UE5 联机项目里 ActorComponent 在服务器 NewObject 出一批运行时 Action UObject 和一个 Attribute UObject。远端偶尔没有技能，Listen Host UI 却正常。有人说只要 Component SetIsReplicatedByDefault(true)，所有 UObject 指针换 TObjectPtr 就行；另一人建议把 Action 全改 FastArray。请给复制闭环、Host/Proxy/JIP 和清理检查路线。",
+    "expectations": [
+      "区分UObject内存安全与网络复制：核对复制宿主、IsSupportedForNetworking、registered subobject或实际ReplicateSubobjects路径，以及Add/Remove成对生命周期",
+      "重要复制字段核对ReplicatedUsing/OnRep、GetLifetimeReplicatedProps和宿主引用/集合注册；OnRep刷新派生状态而Authority本地写走共享刷新，不假设Host会靠OnRep更新",
+      "Authority负责创建授予移除，Remote只请求；检查JIP后集合、Tag、缓存和UI可由当前复制快照重建",
+      "不因数组存在就机械FastArray；大量高churn集合才评估FastArray，并保留稳定业务ID、Dirty和回调契约"
+    ]
+  },
+  {
+    "id": "CPP-04",
+    "slug": "client-candidate-authority-revalidation",
+    "prompt": "交互系统在本地 Controller Tick 里找最近可交互 Actor 并高亮，按键时把 FocusedActor 通过 Reliable Server RPC 传给服务器。现在要上线多人，有人认为客户端已经做了范围检测，所以服务器直接调用目标 Interact 即可。请审查 Authority、RPC owner、Tick 和验证边界。",
+    "expectations": [
+      "本地候选与高亮只属于intent/presentation，Authority必须重新校验距离LOS、存活、目标状态、权限成本、频率和陈旧上下文",
+      "RPC必须从Remote player实际拥有的Controller/Pawn/PlayerState/Agent等进入，不假设世界Actor或GameState可作为客户端Server RPC宿主",
+      "Tick只在需要的LocalController执行并控制频率/候选规模，禁止在其中同步加载、全局扫描或复杂Tag构造匹配",
+      "Authority修改真值后以复制/业务结果驱动Host与Remote表现，并验证拒绝、竞态和JIP而不是只测本地高亮"
+    ]
+  },
+  {
+    "id": "CPP-05",
+    "slug": "primaryasset-async-spawn-transaction",
+    "prompt": "刷怪 Director 每0.1秒可能从 DataTable 按权重选怪，再加载怪物蓝图并Spawn。有人准备为了简单在 Tick 的for循环里 StaticLoadObject；另一个方案先扣Spawn Credit，再做EQS和异步加载。请给数据布局、异步事务和性能方案。",
+    "expectations": [
+      "把轻量选择数据与重量级PrimaryDataAsset/类资源分开，用稳定PrimaryAssetId和AssetManager异步加载，不在Tick循环StaticLoadObject/FObjectFinder/LoadSynchronous",
+      "重复权重选择按数据规模在初始化或配置变化时缓存候选/累计权重，并说明失效条件，不每次反射或复杂Tag重建",
+      "异步回调带World/owner/director/request generation校验，旧回调不得污染新波次或新Avatar",
+      "先扣预算的流程定义reserve/commit/refund与幂等，EQS/Load/Spawn失败不能静默吞成本；Authority是最终Spawn/Grant入口"
+    ]
+  },
+  {
+    "id": "CPP-06",
+    "slug": "savegame-stable-id-authority",
+    "prompt": "现有SaveGame每次保存都TActorRange扫描世界，把实现接口的Actor按FName存Transform和UPROPERTY(SaveGame)二进制。现在项目变成多人World Partition，并准备每30秒自动保存。团队说这套代码教学项目能用，所以直接扩大即可。请给生产化边界。",
+    "expectations": [
+      "保留Save participant和SaveGame字段/Load后rebuild的思路，但不用Actor FName做动态对象、跨地图或World Partition的永久业务ID，改用稳定GUID/业务键",
+      "全世界扫描与同步磁盘IO只适合低频小规模checkpoint；大世界autosave改注册/脏集/分区快照并测序列化和IO预算",
+      "多人由Authority保存业务真值，Remote只能请求；UI/Proxy快照和FastArray内部ReplicationID不能成为存档真值",
+      "恢复顺序考虑schema迁移、缺资产、部分失败，并触发复制dirty/Host刷新，验证Remote与JIP最终一致"
+    ]
+  },
+  {
+    "id": "CPP-07",
+    "slug": "pool-deferred-hot-cold",
+    "prompt": "为了优化大量投射物，团队计划同时上Actor Pool、延迟任务队列和FastArray。Pool只重置位置/隐藏，延迟Lambda用[&]捕获BT Service局部变量，FastArray里既放每帧Position/Velocity又放FHitResult、NiagaraComponent和配置UObject。请给审查和改造方向。",
+    "expectations": [
+      "Pool先定义完整reset contract，覆盖owner/instigator、collision/movement、VFX/audio、timer/delegate/async、Gameplay状态、复制子对象/dormancy，并保留fallback和多轮复用验证",
+      "延迟到后续帧即生命周期边界，不按引用捕获离栈局部；UObject使用弱引用/代次并执行时重校验，预算切片需有最大延迟和Insights证据",
+      "把高频Position/Velocity/ID等hot data与FHitResult、UObject/VFX等cold metadata拆开；关注sizeof/padding、临时分配、线性交叉查找和cache miss",
+      "FastArray只复制低频权威metadata并正确Dirty/回调；客户端预测使用独立transient cache，不修改authoritative FastArray"
+    ]
+  },
+  {
+    "id": "CPP-08",
+    "slug": "arpg-item-definition-instance-replication",
+    "prompt": "UE5多人ARPG的每件ItemInstance都是可复制UObject。团队把ItemDef、Category、图标Texture、StaticMesh、DisplayName、Description、GridSpan、随机词缀、Stack和当前位置全部逐实例DOREPLIFETIME，理由是客户端UI拿数据最方便。背包可能有几百件、共享仓库更多。请审查Definition/Instance/Fragment边界、复制负载与JIP。",
+    "expectations": [
+      "把静态Definition/Fragment配置与运行Instance状态分离；图标、描述、基础Mesh、类别等优先由稳定Definition标识在客户端解析，网络只传真正变化的实例状态",
+      "根据规模决定ItemInstance是否必须是UObject；大量纯值物品优先紧凑struct/FastArray，复杂行为/独立subobject状态才使用replicated UObject",
+      "若使用UObject，完整检查IsSupportedForNetworking、GetLifetimeReplicatedProps/必要OnRep、registered subobject、ReadyForReplication补注册、Remove注销以及Host本地刷新",
+      "FastArray条目只复制业务状态，本地Grid/Id/Slot缓存从Add/Change/Remove/JIP快照重建；稳定ItemId不得使用FastArray内部ReplicationID"
+    ]
+  },
+  {
+    "id": "CPP-09",
+    "slug": "inventory-equipment-stash-transaction",
+    "prompt": "玩家把双手武器从共享仓库直接拖到右手。当前代码依次：从仓库Remove、卸下左右手、尝试把旧装备塞背包、装备新武器、广播UI；如果背包满就在中间return。团队认为每个函数自己有HasAuthority就够了。请设计联网下的容器事务和回滚边界。",
+    "expectations": [
+      "HasAuthority只解决谁能改，不解决多步骤原子性；先验证稳定ItemId、source位置、目标slot、双手冲突、背包容量、ActionLock和共享仓库权限",
+      "在修改前reserve目标空间/资源，形成validate-reserve-move-side-effects-commit流程；任何中间失败恢复容器、装备、GAS grants和presentation到一致状态",
+      "同一Item在Inventory/Equipment/Stash间移动保持业务身份唯一，禁止两个容器同时拥有同一ItemId或移动时无故复制新实例",
+      "FastArray dirty与GameplayMessage/UI成功事件在业务commit后对应最终结果；Host/Remote/JIP看到同一结果，并考虑重复Request/idempotency"
+    ]
+  },
+  {
+    "id": "CPP-10",
+    "slug": "equipment-gas-grants-and-asset-loading",
+    "prompt": "装备每条随机Affix可能关联一个Soft AbilitySet。现实现遍历Affix时LoadSynchronous，然后GiveAbility/ApplyEffect；卸装时团队准备按GameplayTag遍历ASC把匹配能力全删掉。批量换装会一次处理几十条Affix。请给生产级方案。",
+    "expectations": [
+      "装备热路径/affix循环禁止LoadSynchronous/StaticLoadObject/FObjectFinder；通过AssetManager/DeveloperSettings预加载并缓存，未就绪时走Pending/AssetNotReady或带generation的异步事务",
+      "每个装备来源保存精确FGameplayAbilitySpecHandle/FActiveGameplayEffectHandle等Authority-only GrantedHandles，unequip/swap/death/load按来源精确撤销",
+      "不能按Tag/Class广泛删除，因为同一Ability/Effect可能来自技能树、职业、Buff或其他装备；可使用SourceObject关联来源但存档仍用稳定ItemId",
+      "异步完成时重校验Owner/ASC/Avatar/ItemId/slot/request generation，批量装备要有失败/回滚和Host/Remote表现验证"
+    ]
+  },
+  {
+    "id": "CPP-11",
+    "slug": "authority-loot-save-domains-p2p",
+    "prompt": "Listen Server ARPG中客户端击杀怪后本地Roll稀有度和Affix，再把生成的Item数据发给Host以减少延迟；共享仓库和角色存档都写进同一个ULocalPlayerSaveGame。有人说P2P没有真正服务器，所以这样更自然。请审查掉落Authority和存档分域。",
+    "expectations": [
+      "Listen/P2P仍有Gameplay Authority；最终Definition/ItemId/rarity/stack/affix/value由Host/Authority生成并验证，Remote client不能提交最终掉落真值",
+      "需要可复现时用显式FRandomStream/seed，保存最终生成结果并可记录generation version/seed用于审计，加载时不能重新roll",
+      "按生命周期/所有权拆Master/Profile index、Per-Hero mutable state、Shared Stash/Account、World/Session，并加入SchemaVersion/迁移/稳定Definition与Item ID",
+      "ULocalPlayerSaveGame是存储API不是网络Authority；online/shared状态由Host/服务器/后端从authoritative state构建快照，客户端只发保存/操作请求"
+    ]
+  },
+  {
+    "id": "CPP-12",
+    "slug": "struct-first-item-cost-ladder",
+    "prompt": "UE5.7 联机ARPG计划同时支持5万份材料/弹药堆叠、数百件随机装备、少量可嵌套背包与有独立行为的神器。团队想所有物品统一做replicated UObject，另一组想全部塞一个巨大FastArray struct。请设计Definition/Stack/State/ItemInstance成本分层，并说明Authority、GC、复制和保存边界。",
+    "expectations": [
+      "静态Definition/Fragment与运行状态分开；高数量普通物品优先紧凑FRockItemStack式value struct/FastArray，不为每份材料创建UObject",
+      "可变但仍适合值语义的耐久/metadata等使用typed ItemState/FInstancedStruct或等价结构；只有需要独立网络身份、嵌套复制对象图、复杂生命周期/行为时升级replicated UObject",
+      "同一业务物品只有一个canonical truth，Stack/State/Instance之间定义谁拥有身份和持久化字段，静态FText/Mesh/Icon不按实例重复复制",
+      "Authority创建/修改运行真值，Proxy只消费复制结果；UObject escape hatch完整实现IsSupportedForNetworking、GetLifetimeReplicatedProps/OnRep、registered subobject与清理"
+    ]
+  },
+  {
+    "id": "CPP-13",
+    "slug": "generation-handle-free-list-stale-reference",
+    "prompt": "背包Item存放在TArray，UI拖拽和异步请求直接保存数组Index。删除第3项后数组压缩/复用，迟到的客户端请求把旧Index=3当成另一件新物品。团队准备用FastArray ReplicationID解决。请设计稳定引用和复用方案。",
+    "expectations": [
+      "业务/运行时引用不要长期裸存TArray index或FastArray ReplicationID；使用稳定ItemId或index+generation handle，并在每次解引用时同时校验index范围和generation",
+      "可用free-list/FreeIndices复用固定槽而不为删除频繁压缩canonical数组；释放时递增generation，使旧UI/异步/网络handle自动失效",
+      "Handle位宽、generation wrap、最大槽数、存档身份要单独设计；短生命周期运行handle不能替代跨会话稳定ItemId/GUID",
+      "Authority请求携带handle/ItemId和必要expected version，服务器重新解析当前状态；失败返回stale/conflict而不是操作新占用者"
+    ]
+  },
+  {
+    "id": "CPP-14",
+    "slug": "fastarray-item-slot-split-host-refresh",
+    "prompt": "Grid Inventory把完整Item数据复制进每个Slot；旋转或移动一把武器会重复发送Definition/stack/耐久等字段。准备改成ItemData和SlotData两个FastArray，Slot只存ItemHandle。请审查复制、Host本地刷新、JIP和缓存顺序。",
+    "expectations": [
+      "canonical item state与layout/slot state分离，Slot只引用稳定handle/identity，使同库存移动主要产生Slot delta而不是复制整件Item",
+      "两个FastArray分别有NetDeltaSerialize/Traits/Dirty和AddChangeRemove回调；非复制PreviousHandle/索引只用于分类事件，JIP必须从当前Item+Slot快照重建",
+      "Listen Host的Authority本地写不会等待OnRep/FastArray远端回调，mutation入口要主动广播与Remote等价的item/slot delta且防双播",
+      "考虑复制到达顺序：Slot可能先看到handle而Item子对象/条目尚未ready，消费端容忍暂缺并在相关delta到达后重新解析"
+    ]
+  },
+  {
+    "id": "CPP-15",
+    "slug": "mutation-passkey-and-dirty-contract",
+    "prompt": "为了避免调用者忘记MarkItemDirty，团队把FRockItemStack所有字段public，让各系统直接改StackCount/耐久，然后每周靠Code Review找漏标记。另一人建议friend所有系统。请给更窄的写权限和复制事件合同。",
+    "expectations": [
+      "外部默认只读ItemStack，不暴露可长期持有的mutable ref；所有业务写通过Inventory/Transaction入口集中处理MarkItemDirty/MarkArrayDirty与本地Host事件",
+      "可用passkey/MutationKey能力令牌只开放特定setter，比给整个类friend全部private字段更窄；但令牌本身不能绕过Authority和dirty/event合同",
+      "写入口验证Authority、handle generation/ItemId、容器所有权和不变量，并在成功commit后一次性投影UI/消息",
+      "批量操作避免每字段重复dirty/广播；定义transaction/batch边界后统一标记与发布，测FastArray带宽和cache影响"
+    ]
+  },
+  {
+    "id": "CPP-16",
+    "slug": "nested-inventory-recursive-replication",
+    "prompt": "新增背包套背包：某ItemInstance的ItemState里创建NestedInventory UObject，NestedInventory又能装带NestedInventory的物品。希望支持复制、保存、拖拽和断线重连。请给所有权、Authority、递归网络与安全边界。",
+    "expectations": [
+      "嵌套容器需要明确top-level replication owner与Outer/ownership chain，nested inventory和需要的ItemInstance逐级registered subobject，并在detach/reparent/destroy时对称注销",
+      "设置最大嵌套深度、cycle prevention和容量/重量规则，禁止把容器放进自身或形成A->B->A；保存使用稳定container/item identity而非UObject地址",
+      "跨层移动作为Authority transaction，校验source/target access、generation、reservation和最终不变量；Remote client不能借可见UObject指针访问不属于自己的容器",
+      "验证JIP、listen host、remote、断线重连、父容器移动/销毁、子对象复制顺序和保存迁移；必要时按相关性/owner做条件复制避免整棵树无差别广播"
+    ]
+  },
+  {
+    "id": "CPP-17",
+    "slug": "inventory-transaction-client-parameters-validation",
+    "prompt": "多人拖拽系统把SourceInventory、TargetInventory、SlotHandle、DropLocationOffset和Impulse作为Server RPC参数；Vector已用NetQuantize压缩，所以团队认为够安全。Loot只检查世界物品距离，Move只检查slot是否被别人claim。请审查服务端授权、事务和预测。",
+    "expectations": [
+      "NetQuantize只省带宽不提供信任；服务器clamp/重算drop offset与impulse、检查LOS/碰撞/距离，并验证source/target inventory确实属于或授权给Instigator",
+      "服务器重新解析handle generation、slot当前item、访问权限、section filter、stack amount、pending reservation和ActionLock；客户端传来的UObject/Actor仅是候选引用",
+      "TransactionID需要幂等/去重/过期策略，预测必须有明确reconcile/rollback；未实现resync/undo的样例不能宣称生产级prediction",
+      "CanExecute与Execute共享同一完整不变量或Execute再次验证易变条件，commit/失败结果驱动Host/Remote UI，不接受部分修改后无回滚"
+    ]
+  },
+  {
+    "id": "CPP-18",
+    "slug": "abilityset-grant-handle-registry-publication",
+    "prompt": "一个ASC初始化PawnData时先创建局部GrantedHandles，把这个空struct Add进TArray，然后再把局部变量指针传给AbilitySet::GiveToAbilitySystem填写。ClearAbilitySets以后遍历TArray撤销。装备系统另一处则先把NewEntry的GrantedHandles填满，最后才把NewEntry加入FastArray。请审查两种生命周期，并给可逆授予合同。",
+    "expectations": [
+      "grant registry必须保存真正被GiveToAbilitySystem填充的同一份handle状态：可先填局部后Move/Copy入容器，或先取得稳定entry再直接填它；不能先复制空handle再修改另一个局部变量",
+      "Ability/Effect/Attribute等动态授予由grant source拥有撤销句柄，Authority撤销使用精确handle，不通过AbilityClass/GameplayTag全局扫描猜来源",
+      "包含可重入操作时优先construct fully -> publish once；发布前完成SourceObject、spawned presentation、GrantedHandles和必要反向索引，避免监听者看到半初始化entry",
+      "验证重复Grant/Clear、Pawn切换/死亡、装备替换、部分grant失败和Listen Host本地事件；TakeFrom后清空registry或generation，防重复撤销旧handle"
+    ]
+  },
+  {
+    "id": "CPP-19",
+    "slug": "client-inventory-grant-and-stat-rpc-default-deny",
+    "prompt": "PlayerState上的InventoryComponent公开BlueprintCallable AddItem(ItemDefinitionID, Count)，客户端调用会直接Server_AddItem；服务端只校验ID/数量/容量。另有Server_SetItemStat(ItemID, StatTag, Count)，只禁止写Grade，Condition/耐久等仍属于Item.Stat树。团队认为有Authority RPC就安全。请审查。",
+    "expectations": [
+      "把Server RPC本身与授权分开：客户端不能通过通用AddItem/Grant接口选择任意Definition和数量；客户端请求应携带可验证的loot/shop/quest/crafting/use来源或服务器能力令牌，最终grant只由Authority内部API执行",
+      "客户端可变stat采用default-deny/operation-specific policy，不以Item.Stat父树+少量黑名单当权限；Condition、货币价值、等级、稀有度、词缀等经济/来源状态只能由对应Authority流程修改",
+      "服务器重新解析ItemID/ownership/current state，限制数量、tag集合增长、频率/重放并验证成本和前置条件；不能相信客户端absolute值，计数类更新优先发送intent/delta由服务器read-modify-write",
+      "客户端API返回的optimistic true只表示请求已提交；UI/后续逻辑等待replicated state、明确Result RPC或事务结果，拒绝路径可观测且不产生半状态"
+    ]
+  },
+  {
+    "id": "CPP-20",
+    "slug": "persistent-playerstate-ephemeral-pawn-applied-state",
+    "prompt": "ARPG的ASC、背包、快捷栏、装备效果都放在Character。死亡重生、吸收NPC变身、上车换Pawn或被另一Controller重新Possess后，经常丢背包或重复授予装备Ability。请设计长期玩家状态和可替换Avatar的所有权/重绑定。",
+    "expectations": [
+      "区分persistent player identity与ephemeral avatar：长期ASC/Inventory/Loadout/credits/progression优先放PlayerState或其他稳定Authority owner；Pawn只保存形态/移动/当前应用装备表现等可重建状态",
+      "UnPossessed/EndPlay在PlayerState链接失效前撤销Pawn来源GrantedHandles、销毁/解绑Pawn presentation并移除对旧Inventory/ASC的delegate；新Pawn完成ActorInfo后再Apply/Rebuild persistent loadout",
+      "delegate绑定使用compare-and-rebind而非一次绑定永久有效；重Possess到不同PlayerState/ASC时先从旧对象解绑定，避免旧玩家状态被新Pawn继续修改",
+      "验证死亡重生、换Pawn/车辆/变形、同Pawn换Controller、Listen Host/Remote/JIP；AI或无PlayerState对象走明确fallback而不是假定所有Pawn都有玩家长期状态"
+    ]
+  },
+  {
+    "id": "CPP-21",
+    "slug": "reentrant-container-publication-and-stable-relookup",
+    "prompt": "FastArray装备/背包修改期间会触发delegate、GameplayEvent、Asset加载回调，这些监听器可能同步移除/新增同一数组。现有代码拿着Entries里的引用一路执行，偶发悬空或广播半初始化状态。请给re-entry安全的mutation/event顺序。",
+    "expectations": [
+      "跨可重入边界前不要长期持有TArray元素指针/引用/index；先复制需要的数据或稳定ItemID/Handle，delegate/gameplay event/load/ability apply返回后按稳定身份重新解析当前状态",
+      "新增复杂entry采用construct fully -> publish once：在本地值完成校验、派生字段、GrantedHandles/SourceObject等，再写入canonical array并一次dirty/event，监听者不应看到半初始化条目",
+      "删除/卸装若事件合同要求监听者看到live resources，则先snapshot，再广播，再按稳定身份re-locate/remove，随后撤销grants/销毁presentation；明确事件发生在pre还是post mutation",
+      "若重入导致目标已被别的操作修改/删除，返回stale/conflict或幂等成功；不要继续用旧slot/index完成第二阶段，批量操作定义transaction/rollback边界"
+    ]
+  },
+  {
+    "id": "CPP-22",
+    "slug": "gameplay-inputtag-spec-index-hotpath",
+    "prompt": "Enhanced Input通过DataAsset把InputAction映射到InputTag，AbilitySet再把InputTag放进AbilitySpec动态标签。角色后期可能有150~300个可激活Ability，目前每次Pressed/Held/Released都线性遍历GetActivatableAbilities并HasTagExact。请保留数据驱动优点并给规模化方案。",
+    "expectations": [
+      "保留InputAction -> config/DataAsset -> InputTag -> AbilitySpec的解耦，不退化成PlayerController里巨型switch或硬编码AbilityClass",
+      "小型ability集可接受线性扫描但先用Insights/计数测量；当输入热路径和spec规模达到阈值时维护InputTag -> AbilitySpecHandle(s)索引，Pressed/Held/Released只访问候选spec",
+      "索引在Grant/Remove/Clear以及动态InputTag变化时原子更新，spec handle失效后不留stale entry；多ability共用tag和优先级/阻断规则需显式定义",
+      "预测键和AbilitySpecInputPressed/Released语义仍由GAS处理；索引只是lookup cache，不成为第二份Ability激活真值，JIP/重新授予后可重建"
+    ]
+  },
+  {
+    "id": "CPP-23",
+    "slug": "server-spawn-director-budget-eqs-registry",
+    "prompt": "服务器每2秒遍历整个World统计活着的AI，低于上限就跑EQS找点，再从DataTable均匀随机一个怪。表里其实有Weight、SpawnCost、KillReward但没进入选择。以后要支持数百AI和波次/区域预算。请给Director分层和性能边界。",
+    "expectations": [
+      "Authority-only spawn director把人口/预算真值与Pawn/Proxy表现分开；用spawn/death/register事件维护活体计数或分区registry，高规模时不靠周期性TActorRange全世界扫描",
+      "把selection metadata（weight/cost/category/level）与重资源PawnData分离；先按预算/权重选stable PrimaryAssetId，再用AssetManager async load，EQS只负责空间候选而不是承担经济/难度决策",
+      "异步回调带wave/request generation并重验World、director、预算、location和capacity；失败refund/reserve，避免多个并发查询一起超出上限",
+      "定时器频率、EQS运行模式、候选数量和spawn batch有预算/trace指标；随机权重预计算或按规模缓存，不把DataTable每次全扫/均匀RandRange当生产Director"
+    ]
+  },
+  {
+    "id": "CPP-24",
+    "slug": "mover-recorded-input-replay-contract",
+    "prompt": "Pawn+Mover联机角色在Ragdoll/蹲伏/冲刺时，Mover模拟里直接读取当前Mesh物理姿势、ASC Tag和Character成员。发生网络校正/Resim后远端和Authority偶尔走不同结果。请设计可重演的Mover输入/同步合同。",
+    "expectations": [
+      "区分ProduceInput等模拟外采样与Mover simulation/resimulation：需要影响重演结果的GAS/物理/姿态决定先捕获到自定义Input/Sync/Persistent State，resim不重新读取实时Mesh、PhysicsControl、ASC或非确定World查询",
+      "自定义Mover data同时定义NetSerialize、operator/equality+ShouldReconcile、Interpolate、Merge语义；GameplayTag/enum/flags等离散状态采用明确的closest/step策略，连续向量再插值，不新增字段却遗漏网络语义",
+      "Autonomous/Authority/SimulatedProxy以及Listen Host走同一simulation contract；Proxy finalization消费同步状态重建几何/表现，不自己重跑本地stance计时或重新决定权威状态",
+      "瞬时业务副作用如伤害、耐力扣除、奖励不放进可重演模拟重复执行；PredictionKey、Mover frame/input identity与Gameplay transaction身份分域，并用校正/丢包/低帧率测试验证"
+    ]
+  },
+  {
+    "id": "CPP-25",
+    "slug": "animation-game-thread-worker-thread-posehistory-fence",
+    "prompt": "GASP风格AnimInstance既要读取ASC/Mover/PhysicsControl，又希望NativeThreadSafeUpdateAnimation和PoseSearch保持并行。Traversal/Roll Ability还要从PoseHistory做MotionMatch。请给线程边界和性能合同。",
+    "expectations": [
+      "Game Thread阶段读取可变UObject/GAS/Mover/World并写入稳定动画快照；NativeThreadSafeUpdateAnimation/AnimGraph/Linked Layer只消费线程安全缓存、AnimInstanceProxy/PropertyAccess或不可变数据，不在AnyThread遍历ASC/Actor/组件",
+      "PoseHistory若由并行动画评估写入而Ability在Game Thread读取，必须使用引擎允许的同步/fence保证数据竞争安全；这种阻塞只允许离散动作选择等有界路径，禁止Tick/每帧Ability循环调用",
+      "MotionMatch/Chooser的搜索数据与Authority gameplay state分开：动画线程选择pose不直接授予伤害、位移权限或改变服务器真值；ABP可计算IsMoving/Pivot/Land等pose语义但不成为Movement/GAS状态owner",
+      "用Unreal Insights/Anim Insights测parallel evaluation stall、PoseSearch耗时和动作连发峰值；缓存候选/Chooser输入并避免同步资源加载，换Mesh/AnimInstance后显式重新播种PoseHistory/缓存"
+    ]
+  },
+  {
+    "id": "CPP-26",
+    "slug": "client-traversal-targetdata-authority-envelope-validation",
+    "prompt": "为了Traversal手感，AutonomousProxy本地Trace+Chooser+MotionMatch后把SelectedMontage、TargetPrimitive、Front/BackLedge和Warp数据NetSerialize给服务器，服务器不想重复昂贵MotionMatch。怎样既保留预测又不信任客户端？",
+    "expectations": [
+      "客户端选择只作为candidate/prediction；Authority至少重新验证当前ability/tag/stance、目标对象可用性/访问范围、距离/方向/高度/深度/坡度/可行走性、动态目标速度与碰撞约束，失败拒绝或校正",
+      "客户端传来的SelectedMontage/UObject引用必须属于服务器批准的Chooser/动作候选集合并与当前动作标签兼容；Warp点和play rate/time做范围约束，不能因为UPackageMap/NetSerialize能解析引用就视为可信",
+      "允许服务器避免完全重复PoseSearch，但需要cheap authoritative envelope validation并用服务器当前transform/目标状态计算最终可接受warp envelope；移动平台还要验证目标generation/相对变换没有过期",
+      "TargetData定义版本/NetSerialize成功条件、无效对象/JIP/丢包处理；预测失败时清理MotionWarp target、Mover action和ability state，并验证作弊式远距离ledge/任意montage/高速动态平台输入"
+    ]
+  },
+  {
+    "id": "CPP-27",
+    "slug": "montage-rootmotion-mover-layeredmove-lifecycle",
+    "prompt": "GAS Ability播放带RootMotion Montage时关闭AnimInstance root motion，再把动画位移交给Mover LayeredMove。当前取消Ability只停Montage，偶尔胶囊还继续位移或WarpTarget残留。请设计完整生命周期。",
+    "expectations": [
+      "Montage负责动画时间/notify，Mover LayeredMove负责模拟位移，MotionWarp只修正目标；同一root delta只能有一个movement consumer，禁止AnimInstance和Mover双吃或SetActorLocation补偿",
+      "创建LayeredMove时保存可取消的handle/operation identity并记录montage instance/section/start time；End/Cancel/Interrupt/Avatar switch必须成对停止Montage、取消对应Mover move、清理Warp targets/temporary effects和delegate",
+      "取消与网络校正按当前spec/prediction/move identity幂等处理，迟到notify或旧Montage instance不能终止新动作；section跳转、反向play rate、blend out、moving target和Resim要有明确时间语义",
+      "验证Authority/Autonomous/SimulatedProxy最终胶囊收敛、取消中途不漂移、RootMotion与视觉脚步一致；不要把Montage结束自动等价为Mover LayeredMove已结束"
+    ]
+  },
+  {
+    "id": "CPP-28",
+    "slug": "ragdoll-single-lifecycle-owner-mover-physics-animation",
+    "prompt": "角色Ragdoll同时涉及GAS Ability、PhysicsControl、Mover capsule和Linked Anim Layer。现在几个系统都根据Tag各自Start/Stop物理，远端服务器又不跑完整动画，容易双Stop或永远等Blend结束。请划分所有权。",
+    "expectations": [
+      "定义单一ragdoll lifecycle owner（如task/operation）：Ability决定政策/转移，task唯一调用Start/Stop PhysicsControl；GameplayTag是信号/状态，不让PhysicsControl、AnimLayer、Mover各自推导第二套生命周期",
+      "PhysicsControl拥有body simulation/profile/freeze，Mover拥有actor frame/capsule/预测位移，Anim Layer只拥有pose snapshot与blend表现；Mover finalization不得把simulated bodies当普通mesh一起teleport并改掉其velocity",
+      "需要进入Mover重演的pelvis/physics transform在simulation外捕获进Mover input/sync；服务器remote pawn若不评估动画，不得把结束条件绑死在Anim blend callback上，Authority能在无动画评估下完成生命周期",
+      "End/Cancel/reentry幂等且只由owner释放物理；恢复collision/stance/profile顺序有合同，测试ground/air ragdoll、settled freeze、get-up、remote server、sim proxy、网络校正和中途销毁"
+    ]
+  },
+  {
+    "id": "CPP-29",
+    "slug": "gameplaycamera-possession-context-ownership",
+    "prompt": "Pawn上有GameplayCamera状态组件，第三/第一人称和左右肩意图要复制，但真正camera rig/context只应该存在本地拥有玩家。换Pawn、临时ViewTarget、重Possess时经常出现旧rig引用旧Pawn。请给所有权和清理合同。",
+    "expectations": [
+      "区分replicated desired camera intent与local active camera context：Perspective/Shoulder等可按需要复制，实际GameplayCamera evaluator/rig由LocalController/PlayerCameraManager possession/focus生命周期拥有，不作为Authority玩法真值",
+      "Possess激活context必须幂等；UnPossess/EndPlay先停止或blend out相关rig，再移除/deactivate context并清旧Pawn引用；临时别的camera覆盖时不每Tick强制ViewTarget或反复重启context",
+      "换Pawn/变身/骑乘重新绑定camera variables/settings并验证旧manager/context已释放；普通PlayerCameraManager fallback与GameplayCameras manager路径分别测试，不用一个静态全局camera单例跨LocalPlayer",
+      "如果服务器使用客户端camera transform做瞄准/trace，只把其视为untrusted view sample并做速率/角度/位置合理性与Authority hit validation；Unreliable camera RPC不能直接决定伤害/奖励"
+    ]
+  },
+  {
+    "id": "CPP-30",
+    "slug": "legacy-cmc-saved-move-semantics-to-mover-not-transplant",
+    "prompt": "参考ALS-Refactored时看到自定义FSavedMove/FCharacterNetworkMoveData同步RotationMode、Stance、Gait，并在PrepMoveFor/MoveAutonomous重放。LGF已经是Pawn+Mover。应该直接搬UAlsCharacterMovementComponent吗？",
+    "expectations": [
+      "不把CharacterMovementComponent、FSavedMove或复制来的PhysWalking实现移植进Pawn+Mover；先抽象其真正语义：会改变预测结果的rotation/stance/gait等必须进入运动输入/同步/重演合同，而不是只靠普通Replicated属性或AnimBP",
+      "在Mover中用目标版本实际Input/Sync/Persistent State/Movement Mode/Layered Move等机制表达同一语义，并为自定义state实现序列化、reconcile/interpolate/merge；Host、Remote Autonomous、SimulatedProxy均验证",
+      "识别复制Engine PhysWalking这类源码分叉的长期维护成本：引擎升级需diff上游，除非目标工程确有不可替代需求，否则不把它作为新架构基础",
+      "把CMC样例作为网络语义和失败模式证据，而不是类层级模板；迁移前后用相同网络场景验证输入合并、prediction correction、movement base与动作切换"
+    ]
+  },
+  {
+    "id": "CPP-31",
+    "slug": "push-model-iris-custom-network-struct-complete-contract",
+    "prompt": "项目说支持Push Model和Iris，于是有人只把DOREPLIFETIME改成bIsPushBased=true，并给自定义RootMotion/Movement struct写NetSerialize，就认为完成了。请审查。",
+    "expectations": [
+      "Push Model是配置+声明+mutation三段合同：项目/引擎启用Push Model，属性使用push-based replication params，每个Authority写入口在值真正变化时MARK_PROPERTY_DIRTY或等价dirty API；漏任一段都不算完成",
+      "Iris兼容不能由Legacy NetSerialize自动推出；自定义RootMotionSource/Movement/State struct需检查目标引擎Iris serializer/descriptor注册要求、对象引用与量化字段是否被支持，并做Iris实际网络测试",
+      "区分owner prediction数据、skip-owner presentation和Authority truth，避免同一状态既走movement prediction又无理由重复高频property replication；记录为何需要双通道",
+      "验证Legacy replication与Iris、Dedicated/Listen、JIP、loss/latency、moving base和取消/校正路径；统计带宽与dirty频率而不是只看功能能跑"
+    ]
+  },
+  {
+    "id": "CPP-32",
+    "slug": "simproxy-view-smoothing-uro-footlock-role-matrix",
+    "prompt": "多人 locomotion 在SimulatedProxy脚底打滑、转身抖动；开URO后Listen Server看远程玩家更严重。有人建议全局AlwaysTickPose或全局absolute mesh rotation。如何处理？",
+    "expectations": [
+      "先把actor movement smoothing与view/aim rotation smoothing视为不同频道；SimulatedProxy的移动平滑不自动保证相机/视角驱动的aim offset或turn-in-place连续，需要独立时间戳/目标/插值合同或目标框架等价机制",
+      "动画tick/URO策略按角色和网络角色选择：远程AutonomousProxy在Listen Authority上若玩法/RootMotion依赖pose可提高tick保证，但不能把所有角色全局AlwaysTickPose；Dedicated/不可见NPC仍按需求降级",
+      "absolute mesh rotation或等价视觉修正只在低频动画/URO/listen remote等确有需要时启用，并对rotating movement base单独处理，不能用一个全局开关解决所有jitter",
+      "建立Standalone、Listen Host local、Listen remote Autonomous、client SimProxy、Dedicated、URO on/off、moving/static base、teleport/correction矩阵；用脚锁误差/旋转差/CPU而不是肉眼一次通过作为证据"
+    ]
+  },
+  {
+    "id": "CPP-33",
+    "slug": "anim-property-access-write-phase-thread-contract",
+    "prompt": "Linked Anim Blueprint使用Property Access读取父AnimInstance变量，函数都标BlueprintThreadSafe，所以团队想直接读任意父变量、ASC和Actor字段。请给线程合同。",
+    "expectations": [
+      "BlueprintThreadSafe或Property Access不是万能线程安全证明；为每个动画字段声明唯一write phase/owner，只有在并行动画求值前已完成且求值期间不再变化的snapshot才允许worker/linked layer读取",
+      "Game Thread NativeUpdate或等价采样阶段读取Actor/Mover/ASC/World并写animation snapshot；NativeThreadSafe/linked layer只消费snapshot、proxy curves和纯值，不跨线程追可变UObject gameplay state",
+      "若字段会在PostUpdate、其他component tick、async callback或worker自身修改，Property Access读取必须改成双缓冲/快照/显式同步，而不是靠标注压住检测",
+      "验证parallel anim evaluation开启、URO、reinitialize、linked layer切换、teleport和高频装备/状态变化；TSAN/UE_MT断言或压力测试用于发现竞态"
+    ]
+  },
+  {
+    "id": "CPP-34",
+    "slug": "moving-base-root-motion-transaction-identity",
+    "prompt": "Mantle/Traversal需要跟随移动平台。ALS-R用可NetSerialize的RootMotionSource并保存RootMotionSourceId；LGF用Mover。怎样迁移这个思想？",
+    "expectations": [
+      "迁移的是“movement transaction”语义而不是FRootMotionSource类：操作有稳定identity/handle、start/target状态、duration/time、target primitive或base identity、可序列化/预测/校正/取消；Mover用当前版本LayeredMove/Effect表达",
+      "移动目标优先保存target primitive/base局部空间参数，在simulation时解析到world，避免平台移动后warp到旧世界坐标；目标销毁/换base/teleport时定义abort或fallback",
+      "动画montage时间跟随movement transaction的权威/预测时间，不能让AnimBP成为胶囊位移真值；Cancel/AbilityEnd/Avatar switch必须用真实movement handle撤销并清warp/notifies",
+      "客户端可做本地trace/候选选择以降延迟，但Authority重校验距离、方向、坡度、空间、目标速度和允许的动画/动作；测试moving base、packet loss、correction、late cancel和target destruction"
+    ]
+  },
+  {
+    "id": "CPP-35",
+    "slug": "camera-single-runtime-owner-component-vs-gameplaycamera",
+    "prompt": "ALS-Refactored有自包含CameraComponent，GASP-ALS-R使用GameplayCamera manager/context。LGF想“两个都接上，哪个效果好就用哪个”。请给架构建议。",
+    "expectations": [
+      "一个LocalPlayer/Pawn在同一runtime camera domain只允许一个active camera owner/evaluator链；ALS Camera与GameplayCamera可以做研究对照，但生产不能同时各自tick、lag、trace并争夺最终POV",
+      "LGF既定GameplayCamera路线继续作为默认；可复用ALS的pivot/trace/movement-base相对空间/lag算法，但应实现为当前camera policy/rig/data，而不是并挂第二个完整camera subsystem",
+      "camera只拥有本地表现和untrusted aim sample；Authority命中/伤害仍独立验证。Possess/UnPossess/Avatar switch定义context teardown/rebind，不能保留旧Pawn camera引用",
+      "如果要A/B迁移，使用feature gate让同一时刻只有一条owner链，并比较功能、CPU、网络、first/third person、shoulder、moving base、vehicle/riding与split-screen，而不是双系统同时运行"
+    ]
+  },
+  {
+    "id": "CPP-36",
+    "slug": "gas-owner-avatar-source-lifecycle",
+    "prompt": "玩家ASC放在PlayerState，死亡/变身后更换Pawn；双刀又会授予同一个AbilityClass。有人只按AbilityClass删除能力并假设Avatar切换后SourceObject仍可靠。请审查。",
+    "expectations": [
+      "区分稳定OwnerActor与可替换AvatarActor；Avatar切换必须在Authority和owner client重新InitAbilityActorInfo并清理旧Avatar相关Task/Montage/TargetData/表现绑定，持久Gameplay状态留在稳定Owner域",
+      "FGameplayAbilitySpec::SourceObject用于标识授予来源，但应视为运行时弱引用/来源上下文，不当永久ItemId；同一AbilityClass来自不同武器时用SourceObject加SpecHandle/GrantHandle区分",
+      "授予方保存最终SpecHandle并Authority精确撤销；不要仅扫描AbilityClass/Tag猜来源，必要的扫描也要在ability list锁/安全迭代语义下先收集再删除",
+      "测试respawn、NPC变身、双刀同AbilityClass、丢弃一把武器、JIP与旧Avatar迟到回调，确认另一来源的Ability和持久ASC状态不被误删"
+    ]
+  },
+  {
+    "id": "CPP-37",
+    "slug": "gas-prediction-window-latent-continuation",
+    "prompt": "一个LocalPredicted连招Ability激活时PredictionKey有效，于是团队认为WaitDelay、Montage Section切换、异步Trace回调里的Cost/Effect都自动沿用这把Key。请审查。",
+    "expectations": [
+      "PredictionKey只在明确prediction window内有效；激活时的Activation PredictionKey不能自动跨越latent AbilityTask/异步回调继续预测",
+      "每个需要继续预测的异步边界必须证明当前UE版本如何建立新的Scoped Prediction Window/同步点；否则改为Authority continuation或仅本地cosmetic prediction，不能伪造/复用陈旧Key",
+      "预测副作用必须有accept/reject/reconcile路径；被拒绝时撤销本地GE/Cue/Montage/HitWindow/Movement preview，Authority业务真值不能被客户端自然结束事件强行提前结束",
+      "对高延迟、多Section、cancel、packet loss、ability end与Avatar switch测试每个window的SpecHandle/ActivationKey/ScopedKey/generation，而不是只记录第一次Activate成功"
+    ]
+  },
+  {
+    "id": "CPP-38",
+    "slug": "gas-targetdata-consume-validate-race",
+    "prompt": "客户端Trace得到HitResult后通过TargetData发给服务器。有人认为NetSerialize成功就可以直接ApplyDamage，并且服务器只在AbilityTask开始后注册回调。怎么做？",
+    "expectations": [
+      "TargetData是网络载荷不是授权；服务器按动作类型sanitize/retrace/revalidate距离、LOS、目标状态、时间窗、来源Item/Ability和允许的Hit/动作参数，必要时把客户端数据降级为confirm/候选",
+      "TargetData按SpecHandle加ActivationPredictionKey或当前版本等价identity消费，并保证一次性Consume；处理数据先到、listener后注册的race，注册后检查already-set data",
+      "自定义TargetData只序列化完成请求所需的紧凑字段并实现当前引擎要求的NetSerialize/traits；不要把整个Actor状态或持久业务对象塞进TargetData",
+      "重复包、迟到包、重放、cancel后到达、JIP与两把同类武器同时激活都必须被identity/generation拒绝或归属正确，不能串到另一Ability实例"
+    ]
+  },
+  {
+    "id": "CPP-39",
+    "slug": "gas-abilitytask-reusable-targeter-cleanup",
+    "prompt": "为了自动武器/近战Trace性能，团队复用一个TargetActor/Targeter并在多个AbilityTask间共享。怎样避免delegate残留、旧数据和GC问题？",
+    "expectations": [
+      "复用对象需要reset contract：Owner/ASC/Ability/SpecHandle/PredictionKey/trace config/filter/debug state/previous hits/delegates/confirm-cancel绑定和generation都必须在Begin/Stop间有明确生命周期",
+      "AbilityTask Activate注册所需回调，OnDestroy/EndTask先解除外部delegate和targeting状态，再调用Super清理会被置空的Ability/ASC引用；迟到回调必须检查task/generation仍有效",
+      "服务器remote路径在等待客户端数据时登记waiting state并支持数据早到；任务结束后Consume/解绑，避免下一次复用读到旧TargetData",
+      "只有profile证明spawn/GC/初始化成本值得时才池化或复用；短生命周期轻量query可直接值类型/函数化，不能为了复用引入全局共享可变TargetActor"
+    ]
+  },
+  {
+    "id": "CPP-40",
+    "slug": "gas-rpc-batching-is-transport-not-transaction",
+    "prompt": "一个近战技能同一帧Activate、发TargetData、End。团队想开启GAS Ability RPC batching，并据此删掉服务器幂等、权限和rollback检查。请审查。",
+    "expectations": [
+      "Ability RPC batching只压缩同一原子范围内Activate/TargetData/End等网络消息，是transport optimization；不提供权限、幂等、rollback、可靠业务提交或作弊防护",
+      "只对真实同帧原子能力且经profile证明RPC成本值得时考虑；持续连招/自动攻击后续每段或每HitWindow不应为了凑batch而改变能力生命周期",
+      "批处理内TargetData仍须Authority验证，End仍须符合Server termination policy；batch rejection/partial gameplay side effects的清理与普通路径保持同一合同",
+      "使用目标UE版本实际GAS API和网络抓包验证batch数量、payload、loss/latency与未batch fallback，旧FScopedServerAbilityRPCBatcher类名只能作为历史参考"
+    ]
+  },
+  {
+    "id": "CPP-41",
+    "slug": "gas-item-local-state-vs-dynamic-attributeset",
+    "prompt": "每把武器都有耐久、弹匣、热量。有人建议每件Item都动态挂AttributeSet甚至独立ASC，卸下时立即RemoveSpawnedAttribute。如何选？",
+    "expectations": [
+      "只有需要GAS aggregator/GE modifier/capture语义的角色共享属性才优先AttributeSet；item-local ammo/durability/heat通常放Item runtime state/compact fields，由Ability通过SourceObject/ItemId访问",
+      "动态AttributeSet移除存在复制竞态：客户端先移除而服务器迟到Attribute更新可能找不到Set；若必须动态set，定义Authority removal、replication fence/ack或延迟销毁与JIP顺序，不能立即两端随意Remove",
+      "每Item独立ASC会增加复制、生命周期、Owner/Avatar和GC复杂度，除非该Item本身真的是独立AbilitySystem主体且有明确收益，否则避免",
+      "预测item-local值必须有明确reconciliation owner；不能仅在firing时停止复制就结束设计，需定义server correction、generation和切武器/掉落时flush规则"
+    ]
+  },
+  {
+    "id": "CPP-42",
+    "slug": "gas-effectcontext-cue-bandwidth-separation",
+    "prompt": "一次双刀AOE会产生很多命中和VFX。团队想把完整Inventory/伤害业务数据都塞进GameplayEffectContext，再为每个采样点发GameplayCue。请审查。",
+    "expectations": [
+      "GameplayEffectContext用于本次执行来源/命中/TargetData等短生命周期provenance，不是持久Inventory/Item identity或Save容器；自定义context只带执行所需最小可序列化数据",
+      "Authority伤害真值与GameplayCue表现分离；Cue可不可靠/本地重建，不能承担扣血、掉落、消耗等业务真值",
+      "多命中表现先做带宽预算：可把同一动作的多个cosmetic impact批成紧凑struct、seed或少量权威事件再本地重建，不盲目每pellet/blade sample发送独立Cue RPC",
+      "验证EffectContext Duplicate/NetSerialize/traits与目标UE版本AbilitySystemGlobals分配路径；测试丢包时业务结果仍正确、只允许表现降级"
+    ]
+  },
+  {
+    "id": "CPP-43",
+    "slug": "external-project-freshness-gate",
+    "prompt": "你在GitHub找到一个UE5项目，架构很漂亮但最后提交是2022年，README写UE5.0。团队想直接把它的GameFeature、GAS、网络代码写进当前UE5.7项目Skills。请审查。",
+    "expectations": [
+      "先做技术时效性分级：项目最后维护时间、目标UE版本、当前引擎对应官方文档/源码、关键API是否已弃用或语义变化、是否已有更现代替代；不能用stars或仓库知名度代替版本证据",
+      "将结论标成Current、Stable-but-old、Historical或Reject，并对每条可迁移模式写出“机制仍成立”和“具体API必须重新核对”的边界",
+      "若旧项目与当前官方样例/引擎源码冲突，以当前目标UE版本源码/官方文档/用户实际工程为Authority；旧项目只保留历史设计意图、反例或迁移线索",
+      "进入Skills前必须附固定commit、license、UE版本证据、已核对的现代替代方案与拒绝项；不把旧API类名、宏、初始化顺序直接升级成通用规则"
+    ]
+  },
+  {
+    "id": "CPP-44",
+    "slug": "lyra-init-state-race-barrier",
+    "prompt": "模块化Pawn在网络复制、GameFeature注入、PlayerState、InputComponent到达顺序不确定。有人建议继续在BeginPlay里按固定顺序初始化Ability/Input。请审查。",
+    "expectations": [
+      "对模块化Pawn使用显式初始化状态机/依赖门而不是假设BeginPlay顺序；至少区分Spawned、DataAvailable、DataInitialized、GameplayReady或项目等价阶段",
+      "每个feature只在自己的依赖满足时推进，并允许乱序、重入与重复CheckDefaultInitialization；初始化动作必须幂等或有generation防重复",
+      "Pawn-specific Ability/Input/Camera绑定只有在PawnData、Controller/Authority、PlayerState/ASC、InputComponent等所需依赖就绪后才能提交；卸载/UnPossess对称撤销",
+      "明确5.0版Lyra早期流程属于Historical，5.1+基于IGameFrameworkInitStateInterface的模式用于修复复制竞态；当前目标UE仍需重新核对实际接口"
+    ]
+  },
+  {
+    "id": "CPP-45",
+    "slug": "lyra-playerstate-pawn-grant-domains",
+    "prompt": "项目把ASC放在PlayerState，同时不同PawnData、装备和Experience都会授予AbilitySet。怎么区分哪些能力跨Pawn保留、哪些要随Pawn卸载？",
+    "expectations": [
+      "把persistent player GAS state与pawn-scoped grants分域：ASC可稳定存在于PlayerState，但由特定Pawn/Equipment/Feature带来的grant必须由grant source保存GrantedHandles并在来源结束时精确撤销",
+      "OwnerActor与AvatarActor分离时每次Possess/Avatar切换都重新InitAbilityActorInfo或等价绑定；OnSpawn能力不能因为AbilitySet已提前授予就提前在无有效Avatar时执行",
+      "PawnData负责描述Pawn class、AbilitySets、InputConfig、TagRelationshipMapping、Camera等组合数据，但不是运行时真值容器；Experience/GameFeature只是grant来源之一",
+      "验证死亡重生、UnPossess/Repossess、NPC/Prop变身、装备切换、JIP时persistent effects与pawn-scoped ability不会重复、泄漏或丢失"
+    ]
+  },
+  {
+    "id": "CPP-46",
+    "slug": "lyra-experience-gamefeature-readiness",
+    "prompt": "一个Lyra式项目把玩法拆进GameFeature Plugin，Experience异步激活后才可用。团队仍在BeginPlay里直接查插件组件并启动比赛。请审查。",
+    "expectations": [
+      "Experience/GameFeature激活是异步readiness barrier；BeginPlay只代表Actor/World开始生命周期，不代表Experience、注入组件、Ability/Input/UI已可用",
+      "玩法启动应等待Experience loaded或feature ready事件或项目等价gate；异步load callback携带world/session/generation并在完成时重新验证上下文",
+      "GameFeature activation/deactivation必须可逆：注入组件、输入、AbilitySet、HUD extension、注册句柄都要有对称remove路径，避免PIE/reconnect/Experience切换残留",
+      "GameFeatures在当前UE5.8官方API页仍标Beta，应把“Lyra正在使用”与“你的发行项目是否接受Beta依赖”分开决策，必要时保留静态模块或自有feature layer替代"
+    ]
+  },
+  {
+    "id": "CPP-47",
+    "slug": "lyra-inventory-equipment-lifetime-split",
+    "prompt": "背包里有一把武器。团队想让Inventory Item一直持有世界Actor、装备Ability、Mesh和所有运行时表现，省得Equip时再创建。请审查。",
+    "expectations": [
+      "区分Inventory ownership与Equipment presentation/runtime：Inventory item可长期存在于持有者容器；Equipment instance、可见Actor和装备Ability只在装备期间存在并由equip source拥有",
+      "Inventory到Equipment转换保持稳定Item identity或source linkage，但不要把装备Actor、Linked Layer、reticle、Ability grant等表现生命周期永久挂在Inventory entry上",
+      "Equip按construct fully→grant/spawn/bind→publish，Unequip按snapshot→unpublish/broadcast→revoke/destroy/clear；重复装备、切槽、掉落、死亡必须幂等",
+      "Lyra当前官方5.8文档仍明确Inventory与Equipment的生命周期区别，但Lyra inventory本身是样例/原型风格，不应当作复杂ARPG容器能力上限"
+    ]
+  },
+  {
+    "id": "CPP-48",
+    "slug": "lyra-gamefeature-input-registration",
+    "prompt": "每个玩法插件都有自己的输入。有人想把所有InputAction硬编码进PlayerController并永远加载所有IMC。请审查。",
+    "expectations": [
+      "Input action定义、InputConfig/InputTag和IMC注册应按feature/experience生命周期组合；插件激活时注册可映射配置和binding，停用时对称移除",
+      "CommonUI/input routing决定输入是否进入game；Enhanced Input只处理当前激活contexts。UI打开时不能靠Pawn自己抢回输入，避免两套input owner",
+      "Ability input通过稳定InputTag/Spec映射而不是巨大switch；高频输入查找需要缓存或索引，Feature重载和Avatar重绑时重建",
+      "当前官方5.8 Lyra输入文档仍使用GameFeatureAction_AddInputConfig等模式，但目标项目应核对5.7/5.8具体类名与PlayerMappable设置变化，不复制旧教程截图配置"
+    ]
+  },
+  {
+    "id": "CPP-49",
+    "slug": "sample-framework-selective-adoption",
+    "prompt": "团队想“既然Lyra是Epic官方样例，就把Experience、GameFeatures、CommonUI、Inventory、Equipment、GAS全部整套搬进现有项目”。请审查。",
+    "expectations": [
+      "官方样例不是必须整套采用的架构Authority；先按项目问题选择可复用机制，保留现有数据所有权和模块边界，避免平行双框架",
+      "对每个子系统分别做收益、迁移成本、成熟度、版本锁定评估；例如InitState、AbilitySet bookkeeping可独立吸收，而GameFeatures Beta依赖或Lyra prototype inventory可拒绝",
+      "用户实际项目和当前UE源码优先；当现有LGF已经有Inventory/Equipment/GASP/Mover/UI平台时，Lyra只补缺失合同，不创建第二套Lyra运行时",
+      "迁移必须有退出策略和验证：Listen/Remote/JIP、feature enable-disable、Avatar swap、input/UI focus、save compatibility、packaged build，不以“Epic在用”替代测试"
+    ]
+  },
+  {
+    "id": "CPP-50",
+    "slug": "localplayer-ui-policy-and-controller-replacement",
+    "prompt": "多人/分屏项目把整个HUD根布局绑定到Pawn，并用全局GetFirstPlayerController寻找UI owner。请给现代UE5职责方案。",
+    "expectations": [
+      "UI root/policy绑定LocalPlayer而不是Pawn或全局FirstPlayerController；每个LocalPlayer维护独立root context",
+      "Controller替换、travel、repossess时UI policy负责remove/readd/rebind，旧Slate/Widget引用应可诊断泄漏",
+      "Pawn只提供Avatar scoped projection，不能持有全局菜单导航真值；Dedicated Server不创建客户端layout",
+      "若参考单机样例中的GetFirstPlayerController必须标注样例边界，不能外推为多人模式"
+    ]
+  },
+  {
+    "id": "CPP-51",
+    "slug": "input-mapping-context-owned-mutations",
+    "prompt": "多个系统会动态添加Enhanced Input Mapping Context。有人用ClearAllMappings作为统一清理并靠priority解决冲突。请审查。",
+    "expectations": [
+      "mapping context变更使用source-owned add/remove或注册handle，teardown只撤本source副作用；ClearAllMappings不适合作为共享LocalPlayer的生产清理",
+      "priority只解决同存contexts的解析顺序，不提供ownership、生命周期或回滚语义",
+      "feature/avatar/UI context分域并在Controller/LocalPlayer替换时重建；pressed-key策略明确",
+      "验证重复enable-disable、不同添加顺序、菜单/游戏切换、载具/变身和多LocalPlayer"
+    ]
+  },
+  {
+    "id": "CPP-52",
+    "slug": "external-project-active-code-evidence-over-readme-claim",
+    "prompt": "一个2026年仍活跃的UE插件README写着Iris FastArray、rollback和thread-safe，但固定提交里相关Iris继承被#if 0，rollback函数被注释，锁只出现在writer。能否按README直接纳入生产Skill？",
+    "expectations": [
+      "维护时间新只说明freshness，不证明某能力在active runtime path；README/依赖/header/注释都低于可执行源码和目标版本验证",
+      "逐项区分declared、compiled、runtime-active、tested；被#if 0或注释掉的能力不能标成已实现",
+      "Experimental插件即使源码新，也先标Current source / Experimental adoption，并要求目标UE版本UBT/网络/JIP/perf验证后才能升级production结论",
+      "报告明确Accepted、API recheck、Rejected/Incomplete，不把仓库整体用一个“现代/过时”标签代替机制级判断"
+    ]
+  },
+  {
+    "id": "CPP-53",
+    "slug": "registered-subobject-symmetric-container-transfer",
+    "prompt": "FastArray cell引用replicated UObject item，容器用registered subobject list。加入新item时会AddReplicatedSubObject，但替换/清空/跨容器move时只改Outer和cell，没有明确Remove旧注册。请审查。",
+    "expectations": [
+      "FastArray引用复制与UObject subobject属性复制是两个独立合同；进入/离开网络可见集合必须成对register/unregister",
+      "跨容器转移定义old host unregister descendants -> business/container mutation -> reparent/outer update -> new host register descendants的明确顺序或等价原子流程",
+      "stable ItemId/ContainerId是业务身份；Outer、slot index、FastArray ReplicationID和subobject registration都不能替代持久身份",
+      "验证JIP、move、eject、replace、destroy、disconnect/reconnect、不同relevancy/replication condition下无stale registration或双重owner"
+    ]
+  },
+  {
+    "id": "CPP-54",
+    "slug": "fastarray-frame-coalesced-presentation-delta",
+    "prompt": "一个容器每次canonical mutation立即MarkItemDirty，但把Add/Change/Remove UI通知合并到next tick再广播。什么时候合理，必须补什么合同？",
+    "expectations": [
+      "canonical authority state和FastArray dirty立即commit；next-tick coalescing只属于presentation/event projection，业务逻辑不能等待它",
+      "定义同一index一帧内Add+Remove、Remove+Add、Change+Change的folding语义以及最终事件顺序，避免UI收到不可解释组合",
+      "Listen Host本地提交与Remote FastArray callback进入同一语义分类，但避免双播；JIP初始快照与增量事件分开",
+      "异步/next-tick callback使用lifetime-safe绑定或teardown取消，禁止裸this迟到回调访问已销毁对象"
+    ]
+  },
+  {
+    "id": "CPP-55",
+    "slug": "frwlock-does-not-make-uobject-inventory-threadsafe",
+    "prompt": "容器声明FRWLock，写cell时用FWriteScopeLock，但所有GetCell/遍历无FReadScopeLock，同时锁区外还会调用UObject、Blueprint delegate和replication函数。有人据此宣称库存thread-safe。请审查。",
+    "expectations": [
+      "先声明线程所有权；UObject/Blueprint/replication canonical inventory默认GameThread，不因存在FRWLock自动获得多线程安全",
+      "若POD/native数据确实跨线程共享，writer和reader必须参与同一同步合同；只有writer lock而reader无锁不能证明安全",
+      "锁内避免调用Blueprint/UObject delegate/网络/可重入业务；先复制必要POD或构建write-set，再在正确线程做UObject side effects",
+      "用TSAN/并发压力或至少明确的thread-affinity assertions验证；没有多线程需求时删掉装饰性锁比制造虚假安全更好"
+    ]
+  },
+  {
+    "id": "CPP-56",
+    "slug": "server-owned-inventory-operation-registry",
+    "prompt": "Owner-only Bridge提供Server_RequestTransaction(TSubclassOf<Transaction>, FInstancedStruct)以及Server ConventionalRemoteCall(RemoteClass, FuncName, Payload)，客户端可选择服务器执行类/函数。请设计生产边界。",
+    "expectations": [
+      "拥有RPC通道不等于拥有任意操作权限；客户端只能提交typed operation id/tag + bounded payload，服务器从allowlist/registry解析实现",
+      "禁止客户端直接决定任意TSubclassOf server command或FName ProcessEvent路径；未知operation/default-deny并记录审计信息",
+      "服务器重新解析请求者身份、container capability/access、ItemId/generation/revision、目标slot和业务前置条件，raw UObject pointer/index仅作候选",
+      "敏感操作按operation-specific validator/rate limit/idempotency处理，并验证伪造类/函数、跨玩家容器、过期slot和重复request"
+    ]
+  },
+  {
+    "id": "CPP-57",
+    "slug": "nested-transaction-failure-is-not-atomicity",
+    "prompt": "Swap由Eject->Assign A->Assign B三个child transaction组成，child失败会bubble parent为Failed，但已经完成的前两步没有undo；README仍称atomic/rollback。请审查。",
+    "expectations": [
+      "failure propagation只改变状态，不等于rollback/atomicity；必须证明失败后canonical state恢复或commit phase本身不可失败",
+      "跨容器操作优先preflight/reserve/build write-set并验证所有目标，再在单一commit point应用；否则保存before-image并实现可测试rollback/compensation",
+      "每个child mutation result必须显式gate后续步骤；child对象存在或parent最终Failed不能代替ResultContext/commit检查",
+      "提交后再触发GAS/UI/ownership/delegate等side effects；测试在每个child边界注入失败，验证无半移动、duplication、loss或stale subobject"
+    ]
+  },
+  {
+    "id": "CPP-58",
+    "slug": "snapshot-rebuild-stable-identity-graph",
+    "prompt": "Snapshot保存ItemClassPath、fragment JSON、slot和stack；Apply时先ClearContainer，然后只对当前cell已有item套fragment数据，没有稳定ItemId/ContainerId/schema version。请评估能否作为Save/Load。",
+    "expectations": [
+      "完整持久化必须包含SchemaVersion、stable ItemId/ContainerId、DefinitionId/class identity、instance state和引用关系；runtime slot/version/Outer不是save identity",
+      "load采用parse/migrate/validate -> instantiate canonical objects -> resolve links/nested references second pass -> atomic replace/publish，禁止先清空live state再边解析边失败",
+      "class path/soft asset缺失有migration/fallback/reject策略；同步LoadClass/LoadSynchronous不得潜入高频或在线事务路径",
+      "保存与JIP是不同合同；验证重复ItemId、循环nested/link、缺class、旧schema、中途失败和断线重连后引用重建"
+    ]
+  },
+  {
+    "id": "CPP-59",
+    "slug": "uobject-world-context-must-follow-stable-outer",
+    "prompt": "Replicated item UObject的GetWorld()直接返回GEngine->GetCurrentPlayWorld()，而RPC又通过TypedOuter Actor路由。请审查多PIE/DS/编辑器风险。",
+    "expectations": [
+      "replicated UObject world/context应从稳定Outer/owner/host Actor或显式world context解析，不使用global current play world作为生产默认",
+      "Outer业务转移时必须保证world、RPC callspace、NetDriver和registered-subobject host仍一致；业务identity不依赖Outer地址",
+      "多PIE、listen server、dedicated server、editor preview/commandlet分别验证world获取；不存在world时安全返回null或拒绝操作",
+      "如果UObject需要跨world持久身份，保存stable IDs并在目标world重建，不能保存runtime UObject指针"
+    ]
+  },
+  {
+    "id": "CPP-60",
+    "slug": "mass-project-freshness-api-active-path",
+    "prompt": "一个热门 MassCommunitySample 文档仍以 UE5.1 为基线，项目 2025 还有提交；团队准备把其中 Processor/Query/Signal/Replication 写法直接复制到 UE5.8。请审查技术时效性。",
+    "expectations": [
+      "仓库最近有提交不等于 API current；固定 commit、README target version、uplugin/module maturity 与目标 UE5.8 官方文档/Engine Source 分开核对",
+      "UE5.8 Mass 有重大改动（MassCore、Signals core、off-thread entity creation、sparse/virtual fragments、processor scheduling/dependency overhaul、QueryExecutor）；旧样例具体 API 默认 Stable-but-old/Historical，先迁移语义再选现行接口",
+      "只把 active runtime path 晋级为规则；注释代码、README 宣称、include/插件依赖或旧教程不能证明目标引擎路径已采用",
+      "报告 Current/Stable-but-old/Historical/Reject 以及未执行的 UBT/PIE/perf/replication 验证，不能用 stars/更新时间替代兼容性证据"
+    ]
+  },
+  {
+    "id": "CPP-61",
+    "slug": "mass-archetype-fragment-cost-and-churn",
+    "prompt": "要给 5 万个 Mass NPC 增加大量可选状态：受伤、对话、任务、骑乘候选、战斗警戒。有人建议每个布尔状态都 Add/Remove 普通 Tag/Fragment。请设计数据布局。",
+    "expectations": [
+      "先区分 hot per-entity fragment、shared/config fragment、tag、sparse/virtual optional state、external canonical identity；按访问频率/变更频率/尺寸设计而不是按面向对象类层级",
+      "高频结构变化会改变 archetype/chunk composition并有迁移成本；UE5.8 sparse/virtual fragment 能力存在时优先评估其适用性，仍需对目标引擎 API 和性能实测",
+      "不要把 FString/TObjectPtr/大容器或稀疏冷数据塞进每实体 hot fragment；shared config 不可承载 per-entity mutable truth",
+      "用 Mass Debugger/Insights 量 archetype 数、chunk 利用率、结构迁移、processor cache/访问重叠，再决定优化"
+    ]
+  },
+  {
+    "id": "CPP-62",
+    "slug": "mass-query-access-thread-contract",
+    "prompt": "Mass Processor 声明 Query 只读 Transform，但 lambda 里又写 WorldSubsystem、SpawnActor、修改别的 Fragment；作者说 Mass 会自动多线程，所以这样更快。请审查。",
+    "expectations": [
+      "Query/Executor 必须准确声明 fragment/tag/shared fragment/subsystem 的 ReadOnly/ReadWrite/Presence 要求；调度与并发安全依赖这些合同",
+      "parallel processor 不得在未声明/未证明线程安全时访问 UObject、World、Actor、Subsystem 或旁路修改 entity composition；外部 subsystem 要有当前版本认可的 thread-safety traits/同步方案",
+      "结构性变化用当前 Mass deferred command/entity builder/安全 mutation 路径，在 iteration 边界提交；不要持有 chunk view/entity view 跨 deferred/reentry 边界",
+      "需要 Actor/GT side effect 时输出命令/队列/结果，在 GameThread 或明确 phase 消费，并验证 ordering 与 one-shot 语义"
+    ]
+  },
+  {
+    "id": "CPP-63",
+    "slug": "mass-signal-event-driven-wakeup",
+    "prompt": "10 万个实体只有少量实体偶尔需要重新寻路或刷新行为。有人让每个 Processor 每帧扫描全部实体检查 Dirty bool。如何利用现代 Mass？",
+    "expectations": [
+      "Mass Signal/事件只作为 wakeup/调度提示，不承载 canonical payload；真值放 fragment/subsystem/authority state，signal 丢失或重复不应改变业务结果",
+      "稀疏事件用 signal/observer/LOD variable tick 或分组调度，避免全实体每帧 polling；持续物理/移动才使用必要的周期 processor",
+      "signal handler仍遵守 query access、thread、lifetime 和 generation/identity revalidation，不能把 callback 当任意线程 RPC",
+      "测量被唤醒实体数、processor executions、chunk scans、signal storm/backpressure，设计去重或批处理策略"
+    ]
+  },
+  {
+    "id": "CPP-64",
+    "slug": "mass-representation-actor-is-ephemeral",
+    "prompt": "Mass NPC 远处用 ISM，靠近玩家变成 Actor，离开又回 ISM。团队想把 InventoryId、任务状态和永久血量只存在高 LOD Actor 里。请设计。",
+    "expectations": [
+      "MassRepresentation 的 Actor/ISM/None 是 presentation LOD；高低分辨率 Actor 可被 spawn/recycle/pool，不能作为长期业务 identity 唯一宿主",
+      "稳定 AgentId/DefinitionId/长期状态保存在 Mass canonical fragment或更长期 authority store；Actor 只做当前高保真表示并在 promotion/demotion 明确同步所需状态",
+      "promotion/demotion 是可验证事务：resolve identity -> create/bind representation -> apply state -> switch routing -> release old representation；处理异步 spawn 与过期 generation",
+      "验证高速跨 LOD、池复用、Actor destroy、JIP/relevancy、客户端不同 LOD 下 identity 与可见状态一致"
+    ]
+  },
+  {
+    "id": "CPP-65",
+    "slug": "mass-replication-is-server-to-client-projection",
+    "prompt": "计划用 MassReplication 同步 2 万 NPC，并允许客户端 Mass Entity 自己跑伤害、掉落和仇恨后“最终一致”。请审查。",
+    "expectations": [
+      "MassReplication 当前语义是 Authority/server 到 client 的 entity projection，结合 per-client replication LOD/relevancy；不能把客户端模拟结果当 authoritative gameplay truth",
+      "只复制客户端表现需要的字段/LOD，不复制完整 server AI brain；伤害、奖励、掉落、ownership 等由 Authority canonical system 决定",
+      "MassGameplay/MassReplication 当前目标版本成熟度单独核对并 feature-gate；自定义 replication processor/replicator 需要 DS、multi-client、JIP、packet loss/relevancy 验证",
+      "高交互近战实体若需要 GAS/Mover/复杂 RPC，评估 Actor/Pawn promotion 或明确 Mass-to-gameplay bridge，不让 client Mass bypass Authority"
+    ]
+  },
+  {
+    "id": "CPP-66",
+    "slug": "mass-zonegraph-smartobject-statetree-separation",
+    "prompt": "为城市 NPC 设计“沿道路走路→找椅子→坐下→遇袭逃跑”。有人打算全部写进一个 Mass Processor，并让 SmartObject 自己执行动画。请拆职责。",
+    "expectations": [
+      "ZoneGraph负责设计驱动的 lane/corridor/spatial routing；SmartObject负责可发现活动与 reservation，不拥有交互执行逻辑；StateTree负责分层行为选择/状态；Mass Processor执行数据批处理",
+      "行为状态和 reservation handle 有明确 authority/lifetime；StateTree Task 只发出意图/写 fragment，不在每实体里复制大对象或隐藏业务真值",
+      "高成本路径规划/感知按 LOD/信号/批处理调度，不让每实体每帧查询 SmartObject/ZoneGraph",
+      "当前 ZoneGraph/MassAI/MassCrowd 属 Experimental 时，生产接入要 adapter/feature gate，并准备替代路径"
+    ]
+  },
+  {
+    "id": "CPP-67",
+    "slug": "mass-debugger-measure-before-ecs-migration",
+    "prompt": "有人说“Mass 一定比 Actor 快”，提议把现有 300 个复杂战斗 NPC 全迁 Mass。请给决策与验证方法。",
+    "expectations": [
+      "先按规模、同质数据、更新频率、交互复杂度、Actor/GAS/animation需求判断是否适合 Mass；300 个复杂高交互 Pawn 不因数量就自动获益",
+      "建立 Actor baseline 与 Mass prototype，对比 GameThread/worker time、processor/chunk、archetype fragmentation、representation/LOD、replication bandwidth、promotion cost、memory",
+      "使用 Mass Debugger/Unreal Insights/Network Insights 和目标硬件/DS，不用“ECS/SoA/多线程”术语证明性能",
+      "允许 hybrid：远景/环境/群体模拟用 Mass，近战/玩家可交互/Boss 用 Actor/Pawn/GAS；迁移阈值由测量决定"
+    ]
+  },
+  {
+    "id": "CPP-68",
+    "slug": "statetree-utility-selector-vs-separate-utility-loop",
+    "prompt": "UE5.8 AI 需要在追击、掩护、治疗、逃跑之间按动态分数选择。团队准备再加一个每 25ms 扫描全部 Action 的 UtilityAIComponent，然后把结果塞进 StateTree。请审查。",
+    "expectations": [
+      "先核对 UE5.8 StateTree 当前原生 Utility Selector/Consideration；若只是树内兄弟状态竞争，优先直接用 StateTree 的 Highest Utility/Weighted Utility，而不是平行维护第二个决策 owner",
+      "独立 Utility scorer 只在跨树/跨域、批量 Mass 评分、共享战略预算等确有收益时存在，并通过稳定 intent/result 接口喂给 StateTree，而不是直接控制执行对象",
+      "不要固定 25ms 全量重算所有候选；按事件、脏标记、LOD/AI budget、最低重评周期与迟滞控制成本",
+      "决策层与执行层分离：utility/state selection 选择 intent，实际移动/GAS/SmartObject/动画由对应 Authority/task owner 执行"
+    ]
+  },
+  {
+    "id": "CPP-69",
+    "slug": "utility-consideration-scoring-is-pure-and-normalized",
+    "prompt": "Utility Consideration 在 CalculateScore 里顺便写仇恨、消耗冷却、Claim SmartObject，以确保分数和结果一致。请评审。",
+    "expectations": [
+      "Consideration/score 计算默认是纯查询：不消费资源、不写仇恨、不发伤害、不 Claim reservation；否则多个候选的评估顺序会改变世界状态",
+      "输入先归一化/截断并记录曲线、权重、组合方式；对 Multiply/Min/Max/加权等组合明确 0/NaN/越界语义，便于调试和重放",
+      "选择完成后再由单一 command/task commit side effects，并在 commit 时重新验证 target/cooldown/reservation/generation",
+      "提供 score breakdown/debug trace，能回答某候选为什么赢/输，而不是只记录最终 float"
+    ]
+  },
+  {
+    "id": "CPP-70",
+    "slug": "statetree-active-path-task-completion-contract",
+    "prompt": "StateTree 一个父状态和叶状态各有多个 Task。团队假设 Task 会像 BehaviorTree Sequence 那样逐个执行，最后一个 Task 完成后才允许 Transition。请纠正。",
+    "expectations": [
+      "StateTree 选中叶状态后从 Root 到叶的 active path 都激活；同一 active path 上的 Tasks 是并发活动，不应按 BehaviorTree Sequence 心智模型推断",
+      "当前 StateTree completion/transition 语义按目标 UE5.8 官方实现核对；任务完成可能触发 state completion/transition，不能让某个辅助 Task 意外提前结束整条状态",
+      "需要串行步骤时显式拆成子状态/Next transition 或任务内部受控阶段，不靠 Task 数组顺序制造隐式 sequence",
+      "Task Enter/Exit/StateCompleted 生命周期与外部 async handle/timer/GAS/MoveTo 句柄成对清理，并拒绝旧 state generation 的晚回调"
+    ]
+  },
+  {
+    "id": "CPP-71",
+    "slug": "statetree-event-driven-reevaluation-and-hysteresis",
+    "prompt": "AI 每帧 OnTick Transition 检查 20 个感知条件和 12 个 utility score，看到目标就在多个状态间快速抖动。怎么重构？",
+    "expectations": [
+      "优先事件/StateTree Event/感知变化/Signal/dirty generation 驱动重选；持续 OnTick transition 只用于真正连续条件，并按成本预算",
+      "对数值决策加入 hysteresis、minimum dwell time、cooldown 或 switch penalty，避免 0.49/0.51 反复切换",
+      "把昂贵感知、EQS、路径、LOS 结果缓存为有 freshness/generation 的 context/evaluator 数据；state selection 不每次重新扫世界",
+      "记录 transition reason、old/new state、score snapshot 和 freshness，便于区分错误条件与 stale data"
+    ]
+  },
+  {
+    "id": "CPP-72",
+    "slug": "state-selection-does-not-own-authoritative-gameplay-effect",
+    "prompt": "StateTree 的 Attack 状态被选中时直接在 EnterCondition/Utility Consideration 里扣目标血量，理由是服务器 StateTree 本来就是 Authority。请审查。",
+    "expectations": [
+      "EnterCondition/Consideration/selector 只决定可选性/优先级，不直接提交伤害、成本、掉落或 inventory mutation",
+      "Attack Task/command 可以发起 Authority gameplay request，但最终伤害仍由 GAS/Combat authority、HitWindow/TargetData/transaction 合同处理",
+      "状态切换/重选/abort 不应导致重复 damage；使用 activation/attack generation + DamageId/HitId 做幂等和晚回调拒绝",
+      "AI 决策日志与 gameplay result 日志分离：selected intent 不等于 ability activated/hit accepted"
+    ]
+  },
+  {
+    "id": "CPP-73",
+    "slug": "utility-action-interruption-is-contract-not-busy-boolean",
+    "prompt": "Utility AI 用一个 bBusy 或冻结当前 score 防止技能被打断。遇到眩晕、死亡、强制闪避、换目标时经常卡住。请设计中断合同。",
+    "expectations": [
+      "把不可中断区、可被哪些原因打断、hard cancel/death override、minimum dwell 分开；单个 bBusy/FreezeScore 不能表达完整中断政策",
+      "中断按 reason/tag/priority/capability 判断，且 execution owner 返回 accepted/rejected/pending；决策器不能假设 Abort() 已立即完成",
+      "等待异步 abort 时保持 action/state generation，完成回调必须重新确认仍是当前 action/state；超时/owner destroy 有兜底清理",
+      "StateTree transition 与 GAS cancellation/MoveTo/SmartObject claim cleanup 对齐，避免决策层切走而执行层仍在运行"
+    ]
+  },
+  {
+    "id": "CPP-74",
+    "slug": "ai-decision-debugger-replays-score-and-transition-reason",
+    "prompt": "AI 偶发选错行为，当前只打印“CurrentAction=Chase”。如何设计可调试证据？",
+    "expectations": [
+      "记录候选列表、过滤原因、原始/归一化 consideration、权重/曲线、最终分数、hysteresis/switch penalty 和 winner",
+      "StateTree 记录进入条件、transition trigger/event、active path、task completion/abort reason，并关联同一 decision generation",
+      "调试采样不能改变真实 score/选择结果；debug-only evaluation 与 canonical decision 分离",
+      "高规模 AI 采用 ring buffer/采样/按 AgentId 开关，不为所有 NPC 永久保存完整逐帧 trace"
+    ]
+  },
+  {
+    "id": "CPP-75",
+    "slug": "mass-statetree-utility-budget-and-data-oriented-scoring",
+    "prompt": "准备给 2 万个 Mass NPC 各创建 UObject UtilityAction 数组和独立 StateTree ActorComponent，每 0.025 秒评分。请评审。",
+    "expectations": [
+      "Mass 低保真实体保持 compact fragment/state，不为每实体默认创建 AIController/ActorComponent/UObject action graph",
+      "高层 utility/StateTree 更新按 Simulation LOD、signal/event、variable tick/budget 分层；能批处理的 score 用 POD/fragment 数据批处理",
+      "需要完整 StateTree/GAS/复杂 interaction 的实体 promotion 到高保真 Actor/LGF Avatar，或使用当前 MassStateTree 集成且重新核对 5.8 API/成熟度",
+      "测量 decision CPU、archetype/chunk、memory、event storm、promotion spikes；不因 Utility/StateTree 名义上高效就忽略 2 万实例成本"
+    ]
+  },
+  {
+    "id": "CPP-76",
+    "slug": "flow-graph-template-vs-runtime-instance",
+    "prompt": "准备让 Quest Flow Asset 本身保存当前激活节点和玩家任务进度，多个玩家直接共用同一个 Flow Asset 对象。请评审。",
+    "expectations": [
+      "明确区分 graph/template asset 与每个 owner/quest 的 runtime instance；模板只保存定义、稳定节点身份和编辑数据，不承载玩家运行时真值",
+      "运行时实例有独立 owner/instance identity、active/recorded node state、subflow 生命周期；多人或多实例不能互相污染",
+      "持久化引用稳定 Graph/Definition identity + QuestInstanceId/OwnerStableId/NodeStableId，不把 UObject 地址或 transient instance name 当长期业务身份",
+      "加载/复制/调试输出能同时标出 template version 与 runtime instance/generation，便于区分定义问题和实例状态问题"
+    ]
+  },
+  {
+    "id": "CPP-77",
+    "slug": "flow-latent-node-lifecycle-and-finish-policy",
+    "prompt": "自定义剧情节点订阅委托、启动 Timer/Sequence/异步加载，然后在任务取消、地图切换、SubGraph 被移除时直接销毁 Flow 实例。需要哪些生命周期合同？",
+    "expectations": [
+      "节点建立对称 Activate/Execute -> Finish/Abort/Cleanup 合同；自己注册的 delegate/timer/async handle/world object 必须由同一节点或明确 owner 精确撤销",
+      "Complete 与 Abort/Cancel 是不同终态；副作用清理策略必须显式，例如完成保留生成物、Abort 回滚/销毁临时表现，且 teardown 幂等",
+      "异步回调携带 graph instance/node generation 或弱引用，回调回来时重新校验 instance、owner、node active state，拒绝 stale callback",
+      "父图/子图销毁、world teardown、save-load restore、owner EndPlay 都要进入统一 cleanup，而不是依赖 UObject GC 自动处理业务生命周期"
+    ]
+  },
+  {
+    "id": "CPP-78",
+    "slug": "flow-deferred-transition-reentrancy-boundary",
+    "prompt": "Flow Node 在执行输出时同步触发下游节点，下游又立即改回当前节点/结束父图，出现重入和容器修改崩溃。怎么设计？",
+    "expectations": [
+      "把 graph signal dispatch 当成事务/执行边界；结构或生命周期敏感的 transition 使用 deferred queue/scope，而不是任意递归直接进入",
+      "定义 scope 内 FIFO/ordering 语义与 execution gate/halt 行为，并明确不同 graph instance 之间不要假设严格全局 FIFO",
+      "队列元素使用稳定 node/pin/instance identity；flush 前重新验证目标节点仍存在且实例未终止，异常 teardown 可 clear 不再触发",
+      "限制单帧 transition budget/depth 并检测循环/事件风暴；调试记录 correlation/sequence，不能靠调用栈猜执行顺序"
+    ]
+  },
+  {
+    "id": "CPP-79",
+    "slug": "persistent-flow-node-save-abi-and-migration",
+    "prompt": "游戏上线一年后要删除/替换 Quest Graph 中一个节点，但老存档里这个 NodeGuid 仍是 Active。应该直接删吗？",
+    "expectations": [
+      "已进入持久化存档的 GraphId/NodeId/语义输出属于 save ABI；发布后不能把节点删除或 GUID 重用当普通编辑操作",
+      "优先 tombstone/deprecated/pass-through/redirect + versioned migration，让老 NodeId 能映射到新语义或安全完成/失败",
+      "存档带 SchemaVersion/GraphDefinitionVersion/QuestInstanceId，迁移先在 staging 数据上执行和校验，再原子替换 live runtime",
+      "为 skipped versions、分支重连、active latent node、subgraph、重复加载和 rollback/recovery 建自动化 fixture；资产升级可能需要 staged version + resave"
+    ]
+  },
+  {
+    "id": "CPP-80",
+    "slug": "flow-subgraph-ownership-recursion-and-asset-loading",
+    "prompt": "Quest Graph 的 SubGraph 可以递归创建自己，并在触发时用 SoftObjectPtr.LoadSynchronous() 载入子图。生产项目怎么约束？",
+    "expectations": [
+      "父 SubGraph node 是 child graph instance 的生命周期 owner；创建、完成、Abort、load restore 和 cleanup 都要成对维护 parent-child registry",
+      "递归必须显式允许并带 depth/budget/cycle policy，默认拒绝无界 self-instancing；错误时父图得到明确失败/abort 结果",
+      "Soft pointer 只说明引用方式，不等于 runtime async；热路径禁止意外 LoadSynchronous，子图依赖应预加载或进入 async Pending 后重验 owner/generation",
+      "区分 target-compatible API 与更新分支：UE5.7 采用对应 release/tag，UE5.9-only preload/data-pin 改动不能直接假设可用"
+    ]
+  },
+  {
+    "id": "CPP-81",
+    "slug": "flow-save-load-active-world-and-owner-identity",
+    "prompt": "任务系统支持主菜单读档和游戏中即时读档。只序列化 Active Node 的 UObject SaveGame 字段够吗？",
+    "expectations": [
+      "不够；保存 graph/quest schema、definition version、stable owner/quest instance identity、node identity/state、subgraph关系和必要 domain checkpoint",
+      "区分 cold load(BeginPlay 前)与 active-world load：运行中的旧 graph 先 quiesce/abort，staging 恢复并校验后再切换，不能叠一份新实例",
+      "OwnerStableId/QuestInstanceId 解析先于 node restore；WorldName/ActorName/transient instance name 不能作为跨重命名/重生的唯一长期身份",
+      "恢复后重绑 delegate/timer/domain subscriptions，重新同步 JIP/客户端 projection；失败时保留旧 live 状态或进入可恢复 safe state"
+    ]
+  },
+  {
+    "id": "CPP-82",
+    "slug": "flow-network-canonical-state-vs-transient-notify",
+    "prompt": "服务器用 replicated GameplayTag notify 触发客户端剧情 UI，于是团队准备把 Quest.Step.Completed 通知当任务完成真值，不再复制/保存任务状态。评审。",
+    "expectations": [
+      "拒绝：replicated notify/event 是 delivery/projection channel，不是 durable canonical quest state、事件历史或 JIP snapshot",
+      "任务完成、奖励领取、分支选择等由 Authority stable quest state/ledger 决定并持久化；客户端事件只驱动表现和增量刷新",
+      "客户端加入/重连/丢包/重复事件后通过 snapshot/revision 重建；事件有 sequence/correlation/idempotency 语义时才安全消费",
+      "ClientOnly flow 只能拥有 cosmetic/presentation truth；任何 Inventory/GAS/reward/world canonical mutation 必须回到 server-owned typed command 做权限和当前状态复验"
+    ]
+  },
+  {
+    "id": "CPP-83",
+    "slug": "flowgraph-domain-fit-debugging-and-hot-path",
+    "prompt": "想给两万个 Mass NPC 每个挂一个 UObject Flow Graph 做每帧决策，同时用 GameplayTag 非精确全局搜索找 NPC。是否合适？",
+    "expectations": [
+      "FlowGraph 适合低频、作者驱动、可持久化的 quest/world/narrative orchestration，不是大量实体 per-frame decision runtime；Mass/StateTree/批处理仍负责 AI",
+      "频繁实体查找使用 stable id/exact indexed lookup/spatial data，不把层级 GameplayTag 全注册表扫描放热路径",
+      "Graph 调试至少输出 owner/QuestInstanceId、GraphVersion、NodeId、activation sequence、external event source/correlation、finish/abort reason、restore version",
+      "用 Insights/Graph debugger/自定义计数测 active graph/node 数、transition rate、event storm、sync load、save size/restore time，再决定是否拆分/批处理"
+    ]
+  },
+  {
+    "id": "CPP-84",
+    "slug": "quest-authoring-graph-compiled-runtime-dto",
+    "prompt": "任务设计器使用可视化 Quest Graph。运行时是应该继续遍历 UEdGraph/EdGraphNode，还是编译成运行时数据？",
+    "expectations": [
+      "作者图只负责 authoring/editor；cook/compile 产出 runtime DTO/compiled node registry、entry routes、outcome routes、conditions/rewards 等，运行时不依赖 UEdGraph 遍历",
+      "编译产物保留 stable semantic identity（QuestlineId/ContentGuid/ObjectiveGuid/PathIdentity），显示名、节点坐标、GraphNode 指针只属于作者层",
+      "编译阶段验证重复 ID、缺失目标、非法 route/outcome/objective reference、linked graph cycle，并产生 source hash/version 以发现 stale compiled data",
+      "运行时 async load/registration 只消费已编译数据；Editor 与 UncookedOnly 模块不能泄漏进 Shipping runtime"
+    ]
+  },
+  {
+    "id": "CPP-85",
+    "slug": "quest-objective-stable-id-vs-editable-name",
+    "prompt": "设计师把“击杀狼”Objective和Quest Event改名，团队准备用显示名/Pin名作为存档与引用ID，是否安全？",
+    "expectations": [
+      "不安全；Objective/Step/Content 使用持久 GUID 或稳定语义 ID，DisplayName/Event label/Pin label 是可编辑 presentation/authoring 名称",
+      "重命名触发 editor pin/references reconstruction，但不得改变已发布的 ObjectiveGuid/ContentGuid 或让旧存档失配",
+      "若语义真的拆分/合并/替换，需要显式 redirect/migration/tombstone，不通过偷偷复用旧 GUID 改语义",
+      "CI/asset validation 覆盖 rename、duplicate/copy、linked placement、旧 save restore 和 cook 后 compiled reference 完整性"
+    ]
+  },
+  {
+    "id": "CPP-86",
+    "slug": "quest-manager-state-cqrs-boundary",
+    "prompt": "QuestManager既能改任务又能查询，UI也直接拿Manager指针读写方便吗？",
+    "expectations": [
+      "采用 command/query 分离：Manager/Authority orchestrator 是 sole writer，State/Journal subsystem 提供 public read-side snapshot/query/delegates",
+      "UI、地图、对话、telemetry 只读 State/Journal，不依赖 manager 内部 LoadedNodeInstances、cascade maps 或 mutable UObject",
+      "Manager mutation 后先提交 canonical quest/domain state，再更新 read model/registry并发布事件；事件不是 query source 的替代品",
+      "读侧在 manager 尚未创建、dedicated/client mirror 尚未到达时返回明确 safe default/unknown，而不是触发隐式 mutation"
+    ]
+  },
+  {
+    "id": "CPP-87",
+    "slug": "quest-event-driven-objective-catchup-and-dedupe",
+    "prompt": "一个计数Objective只在激活后订阅Kill信号；玩家之前已经杀了3只，晚注册的UI/Objective会从0开始。怎么设计？",
+    "expectations": [
+      "区分 transient progress event 与 durable/current fact；late registration 对可恢复状态执行 snapshot/catch-up，而不是要求重放无界历史事件",
+      "Objective subscription 注册/注销对称并绑定 QuestInstance/ObjectiveGuid/generation；旧实例或旧Avatar回调必须被拒绝",
+      "若同一信号通过QuestEvent和Objective binding两条路径可到达同一Objective，定义 dispatch identity/dedupe policy，默认不得双加进度",
+      "高频信号按需要订阅且事件驱动，不给每个Objective常驻Tick；catch-up只对有可恢复语义的 Activated/Enabled/Started/Completed等状态，瞬时Progress/Refusal可明确不catch-up"
+    ]
+  },
+  {
+    "id": "CPP-88",
+    "slug": "quest-snapshot-domain-state-not-runtime-object",
+    "prompt": "Quest Save里直接序列化Objective UObject和当前Graph Node指针最省事吗？",
+    "expectations": [
+      "拒绝 transient UObject/Node pointer 作为长期保存身份；保存 schema version、quest/world facts、QuestId/ContentGuid/ObjectiveGuid、progress snapshot、runtime/deferred intent和需要恢复的soft graph definition",
+      "可重建并行索引/cache/subscription/LoadedNodeInstances，不重复保存派生真值；restore后再二次绑定信号和runtime object",
+      "snapshot先校验/version migrate，再重建图和Objective状态；Objective状态按 stable placement/content GUID 解析，不按数组index或显示名猜",
+      "与R13 GraphDefinitionVersion合同组合：domain snapshot schema版本与quest definition/content migration分开管理"
+    ]
+  },
+  {
+    "id": "CPP-89",
+    "slug": "quest-named-outcome-path-identity",
+    "prompt": "Quest分支只有Success/Fail两个bool，后来要增加Spared、Bribed、TimedOut。应该继续加bool还是改成命名Outcome？",
+    "expectations": [
+      "使用稳定命名 OutcomeTag/PathIdentity 作为控制流语义，允许一个Quest/Step有多个明确结局；不要扩散互斥bool",
+      "Outcome与PathIdentity区分：相同Outcome可由不同作者路径产生，需要时历史/前置条件可查询具体PathIdentity",
+      "Outcome/Path stable ID一旦发布进入save/analytics/route contract，显示Pin标签可改但语义ID改动需要migration",
+      "Authority在advance时校验当前step、允许outcome、objective/condition/hold状态，不接受客户端任意OutcomeTag直接跳转"
+    ]
+  },
+  {
+    "id": "CPP-90",
+    "slug": "quest-advancement-hold-token-lifecycle",
+    "prompt": "过场和语音都要阻止任务完成后自动跳下一步，团队想用bool bPauseQuestAdvance。评审。",
+    "expectations": [
+      "使用可组合 scoped hold handle/token，而不是单bool；每个holder有identity/reason并精确release，只有最后一个hold释放才继续",
+      "hold必须在Authority cascade之前取得；客户端看到Completed后再hold已经太晚，客户端需求应提前请求Authority建立hold",
+      "hold区分forward/deactivation等语义，teardown/save/load策略明确；重复release幂等，卡住时能列出active reasons",
+      "被hold的cascade保存必要generation/origin/outcome并在release时重新验证，不直接重放陈旧UObject指针"
+    ]
+  },
+  {
+    "id": "CPP-91",
+    "slug": "quest-condition-pure-authority-gate",
+    "prompt": "QuestCondition既判断等级/世界事实又顺手扣钥匙、发GameplayEffect，可以吗？",
+    "expectations": [
+      "Condition/Prerequisite是纯读predicate：输入authority snapshot/facts/context，输出satisfied/blocker/reason；评估阶段禁止扣物品、应用Effect或改变任务状态",
+      "真正的consume/grant在通过条件后的typed Authority command/transaction执行，并重新验证条件与revision防TOCTOU",
+      "客户端可用镜像条件做UI提示，但接受任务/推进分支仍由服务器对canonical facts重新评估",
+      "条件存储用稳定type/parameter数据并考虑版本迁移；不把Blueprint UObject side effect藏进热路径或catch-up评估"
+    ]
+  },
+  {
+    "id": "CPP-92",
+    "slug": "quest-dedicated-server-mirror-jip-read-model",
+    "prompt": "Dedicated Server运行Quest Manager，客户端HUD需要任务进度。让每个客户端也执行完整Quest Graph是否最好？",
+    "expectations": [
+      "Authority manager执行canonical quest lifecycle；客户端消费replicated/mirrored read model、snapshot/revision与presentation events，不需要复制一套可写graph brain",
+      "JIP/重连先得到当前quest/objective/tracking/paused snapshot，再接增量；late events按revision/generation防stale/duplicate",
+      "Player/shared/world scope分别有稳定owner key和visibility；PlayerState/Pawn重建不改变quest identity",
+      "专用服务器不依赖Widget/Anim/visual callback完成任务；client request只是意图，server重验quest availability/current step/conditions/outcome/permission"
+    ]
+  },
+  {
+    "id": "CPP-93",
+    "slug": "dialogue-participant-semantic-identity",
+    "prompt": "多人对话把Participant直接保存成当前NPC/Player Pawn指针。玩家死亡换Pawn、变身或骑乘后应该怎么办？",
+    "expectations": [
+      "区分ParticipantRoleId、StableAgentId/PlayerId/NpcId与当前Actor/Pawn adapter；持久身份不能只靠当前Pawn指针",
+      "ConversationInstance保存semantic participant binding，AvatarGeneration变化时重新resolve presentation adapter而非丢失对话",
+      "旧Avatar的camera/voice/gesture/interaction callback带generation并在换Avatar后失效，避免stale callback推进新状态",
+      "显示名/portrait/current form是presentation；真实身份、伪装身份、当前形态需要显式语义，不从Mesh/显示文本猜business identity"
+    ]
+  },
+  {
+    "id": "CPP-94",
+    "slug": "conversation-instance-stable-save-resume",
+    "prompt": "对话存档只保存ActiveNodeIndex和几个Widget字段，补丁后图节点重排导致读档跳错。设计生产级Save/Resume。",
+    "expectations": [
+      "保存ConversationInstanceId/scope、DialogueDefinitionId/DialogueGuid、CurrentNodeGuid、必要substate、participant stable bindings、semantic memory与schema/content version，不保存Widget/Pawn指针",
+      "NodeIndex仅是当前compiled definition的lookup cache；恢复时NodeGuid经content migration/redirect解析成当前index",
+      "node enter side effect有明确replay policy：business command不盲重放，presentation可重建，幂等事件携带相同semantic idempotency key",
+      "Definition CustomVersion、Conversation Save SchemaVersion、semantic content redirects分开管理并用历史fixture验证"
+    ]
+  },
+  {
+    "id": "CPP-95",
+    "slug": "dialogue-choice-stable-identity",
+    "prompt": "客户端对话UI向服务器发送ChooseOption(2)。条件变化或补丁重新排序后是否安全？",
+    "expectations": [
+      "visible option index只是presentation position，网络/save/analytics使用StableChoiceId/EdgeId并可关联TargetNodeGuid",
+      "请求至少携带ConversationInstanceId、ExpectedRevision、ChoiceId；Authority在当前NodeGuid下重新解析并校验choice",
+      "条件/排序变化使旧index含义变化时不能猜测映射；stale revision返回reject/resync",
+      "若旧内容没有EdgeGuid，应在compile阶段建立稳定semantic route ID并定义migration，而不是hash本地化文本"
+    ]
+  },
+  {
+    "id": "CPP-96",
+    "slug": "dialogue-authority-revision-jip",
+    "prompt": "UDlgContext这种UObject能复制Dialogue和Participant引用，是否就足够做多人对话？",
+    "expectations": [
+      "明确replication plumbing不等于Authority architecture；Authority拥有canonical ConversationInstance和semantic transition",
+      "客户端仅发送choice intent，服务器验证caller/instance/revision/current node/choice/conditions/permission/range/domain transaction后commit并Revision++",
+      "JIP/重连snapshot-first，包含instance/revision/definition/current node/participant bindings/current view，再接delta；revision gap触发resync",
+      "Dedicated Server进度不依赖Widget、voice finished、montage notify或camera callback，Listen Host与Remote走同一业务validation"
+    ]
+  },
+  {
+    "id": "CPP-97",
+    "slug": "dialogue-memory-explicit-scope",
+    "prompt": "项目用一个static全局DialogueMemory记录Visited Nodes，单机正常。多人/组队任务如何改？",
+    "expectations": [
+      "拒绝process-global mutable narrative memory作为多人真值；明确ConversationLocal/Player/Party/World等scope与稳定owner key",
+      "长期visited/history使用DialogueDefinitionId+NodeGuid等semantic identity；新schema不继续写index-only历史",
+      "‘Only Once’必须表达once per conversation/player/party/world而不是模糊global",
+      "旧index历史可以作为显式legacy migration bridge，迁移安全条件不足时不能伪称GUID迁移成功"
+    ]
+  },
+  {
+    "id": "CPP-98",
+    "slug": "dialogue-condition-event-domain-command-boundary",
+    "prompt": "Dialogue Condition会检查金币并顺手扣100；EnterEvent还能通过反射直接改Quest/ASC/Inventory变量。评审。",
+    "expectations": [
+      "Condition是side-effect-free pure read predicate；客户端条件仅供UI advisory，Authority选择时重新读canonical state",
+      "Dialogue event对外域表达typed semantic command，Quest/Inventory/GAS/WorldState等各自Authority owner验证并mutation，不用任意字符串反射直接写核心真值",
+      "跨域side effect与对话advance有明确事务顺序/rollback策略，失败保持canonical conversation不半推进",
+      "不可逆command携带ConversationInstanceId+NodeGuid+Event/Choice semantic ID+revision等idempotency/correlation防重试/JIP重复"
+    ]
+  },
+  {
+    "id": "CPP-99",
+    "slug": "dialogue-localization-semantic-identity",
+    "prompt": "团队把当前英文/中文台词字符串当LineId和ChoiceId，翻译改文案后存档/统计失配。怎么拆？",
+    "expectations": [
+      "分离SemanticLine/Node/Choice ID、FText Namespace+Key、当前rendered localized text；三者用途不同",
+      "本地化source text修改应尽量保留stable namespace/key；翻译文本永不作为network/save/analytics business identity",
+      "动态TextArgument通过projection-time纯读生成FText::Format参数，不把formatting变成mutation hook；hot path避免反射每帧读取",
+      "asset/package移动、key collision、external localization/import要有migration/validation；Blueprint/serialized enum ordinal同样视为内容ABI"
+    ]
+  },
+  {
+    "id": "CPP-100",
+    "slug": "dialogue-content-version-import-roundtrip",
+    "prompt": "剧情团队用Twine/JSON批量导入，每次导入都删除重建节点并生成新GUID。上线后怎样避免破坏存档和本地化？",
+    "expectations": [
+      "外部authoring格式版本化，round-trip必须保留DialogueId/NodeGuid/ChoiceId/participant role及localization identity或有显式deterministic migration",
+      "采用parse→validate→diff/plan→transactional apply→compile→roundtrip/oracle，不用无条件delete/recreate已发布内容",
+      "CI检查duplicate/missing GUID、dangling route、unknown participant、localization key、invalid condition/command与stale compiled data",
+      "ContentRedirect覆盖rename/move/split/merge/remove/missing DLC；无法映射active node时执行明确checkpoint/restart/abort policy而非新index碰巧相等"
+    ]
+  },
+  {
+    "id": "CPP-101",
+    "slug": "dialogue-replication-plumbing-not-authority",
+    "prompt": "代码有IsSupportedForNetworking、DOREPLIFETIME(Dialogue/Participants)，SpeechSequence子索引另外用一个复制hack。可以宣称多人对话完成吗？",
+    "expectations": [
+      "不能；复制UObject引用只解决transport/subobject plumbing，必须另有canonical active node/substate/revision/choice/permission Authority contract",
+      "内部sequence/selector等substate需要可序列化/可复制的semantic state，不靠局部临时index hack让客户端猜",
+      "participant引用复制后仍需stable role/agent binding与OnRep/rebind策略，Actor销毁/替换/JIP都能恢复presentation",
+      "网络验收覆盖Host/Remote/Dedicated/JIP/reconnect/stale/duplicate/race/lag；没有这些证据就只能标记partial replication capability"
+    ]
+  },
+  {
+    "id": "CPP-102",
+    "slug": "generic-graph-freshness-modern-editor-api-gate",
+    "prompt": "要把一个最后实质维护在2023年、只明确迁到UE5.1的GenericGraph插件直接当UE5.7/5.8自定义Graph模板。怎么审？",
+    "expectations": [
+      "固定默认分支commit/date/engine evidence并将其标为Historical architecture sample；不能因仓库仍有stars或旧代码能编译就声称5.7/5.8-current",
+      "把长期机制与具体Editor API分开：Graph/Node/Edge/Schema思想可吸收，FAssetTypeActions/ClassViewer/旧GraphEditor细节必须按目标引擎重验",
+      "知道UE5.8 UAssetDefinition是官方用于替代FAssetTypeActions体系的现代入口之一，并结合ToolMenus/目标版本证据选择而不是机械迁移",
+      "Runtime模块必须能在Game/Server/Cook目标不依赖UnrealEd/GraphEditor/Slate编辑器链；Editor/Uncooked适配独立验证"
+    ]
+  },
+  {
+    "id": "CPP-103",
+    "slug": "graph-authoring-compile-artifact-stable-identity",
+    "prompt": "自定义UE Graph保存时只是把UEdGraphNode里的Runtime UObject Rename到Graph并重建Children/Parent数组。想用于长期运营内容，缺什么？",
+    "expectations": [
+      "明确Authoring UEdGraph和Shipping Runtime Definition是两个产品；runtime不依赖pin/widget/NodePos/Editor对象",
+      "NodeStableId与EdgeStableId作为显式semantic identity；RuntimeIndex/指针/数组位置只做编译产物local lookup，不能作为Save/Network/Analytics identity",
+      "编译产物携带GraphDefinitionVersion/CompilerVersion或等价fingerprint/source hash，可判断stale compiled data",
+      "compile走parse/validate/plan/build/stage/commit；失败保留last-known-good或阻止保存/cook，不能先清live artifact再留下半图"
+    ]
+  },
+  {
+    "id": "CPP-104",
+    "slug": "graph-schema-topology-validation-contract",
+    "prompt": "Graph Schema现在只在拖线时检查自连、cycle和父子数量，Node还能覆写CanCreateConnection。生产级authoring validation怎么收敛？",
+    "expectations": [
+      "集中GraphSchema/DomainPolicy定义node type compatibility、direction、cardinality、cycle/self-loop/parallel-edge/root等拓扑约束，Node hook只做领域附加规则",
+      "Editor交互CanCreateConnection只是早期反馈；compiler/cook必须对整个图重新验证，不能信任UI曾经阻止过非法连接",
+      "诊断包含stable node/edge identity、error code/severity/message/fix hint，支持CI与编辑器定位，不只弹字符串",
+      "修改图类型/节点类型/策略后必须重新验证全部已有连接和compiled artifact，避免历史合法边在新规则下静默存活"
+    ]
+  },
+  {
+    "id": "CPP-105",
+    "slug": "graph-cycle-safe-traversal-rootless-scc",
+    "prompt": "Graph有bCanBeCyclical=true，但Print/GetLevelNum/AutoLayout都从RootNodes向Children遍历。循环图要怎样才算真的支持？",
+    "expectations": [
+      "任何允许cycle的DFS/BFS/level/layout/query都必须有visited/gray-black/generation/budget等终止合同；不能只在连接Schema允许cycle",
+      "区分DAG-only算法与general-graph算法；level/topological order对cycle要显式reject、condense SCC或定义语义，不返回伪层级",
+      "考虑没有入度0节点的rootless strongly-connected component；不能用RootNodes为空就当成空图",
+      "自动布局/调试遍历同样纳入cycle-safe测试，覆盖多节点环、共享子图、孤立SCC和超大图预算"
+    ]
+  },
+  {
+    "id": "CPP-106",
+    "slug": "graph-edge-stable-id-parallel-edge-semantics",
+    "prompt": "Runtime用TMap<ChildNode, Edge>保存边，因此A到B只能映射一条Edge。Dialogue/Quest可能需要两条不同条件的A→B，怎么设计？",
+    "expectations": [
+      "Edge有独立EdgeStableId，StartNodeId/EndNodeId只是端点；不能用ChildNode pointer或端点pair冒充edge identity",
+      "是否允许parallel edge是显式domain topology policy；允许时adjacency是edge-id/list/multimap而不是child→single edge map",
+      "Choice/Condition/Transition等业务数据绑定EdgeStableId或semantic transition id，Save/Network/Analytics不使用可变数组下标",
+      "编译器验证duplicate semantic edge、ambiguous choice、dangling endpoint，并构建按node/edge id的derived lookup cache"
+    ]
+  },
+  {
+    "id": "CPP-107",
+    "slug": "graph-canonical-edge-list-derived-adjacency",
+    "prompt": "Graph同时序列化AllNodes、RootNodes、ParentNodes、ChildrenNodes和Edges Map，任何一份漂移都会不一致。怎样确定真值？",
+    "expectations": [
+      "选择单一canonical authored/compiled node+edge records作为结构真值，incoming/outgoing/root/level等索引是可重建derived caches",
+      "compile/load后验证duplicate NodeId/EdgeId、missing endpoint、self-loop/parallel-edge policy、orphan、root和reachability语义",
+      "derived adjacency使用稳定ID或受控runtime handle，GC成员采用当前引擎安全指针/UPROPERTY策略；裸pointer不是跨session identity",
+      "deterministic ordering只用于编译输出/显示/哈希，不能把排序位置升级成业务身份"
+    ]
+  },
+  {
+    "id": "CPP-108",
+    "slug": "graph-copy-duplicate-diff-migration-id-policy",
+    "prompt": "UEdGraphNode有NodeGuid用于diff；自定义Runtime Node却没stable id。设计师复制节点、复制Graph、拆分节点时ID应该怎么处理？",
+    "expectations": [
+      "Authoring NodeGuid可作为生成semantic stable id的来源/证据，但Runtime必须显式保存自己的稳定Node/Edge identity并定义映射",
+      "普通duplicate/copy-paste创建新semantic entity默认生成新ID；只有显式migration/alias/redirect操作才保留或映射旧ID",
+      "Graph schema/content version配合Node/Edge redirect、tombstone、split/merge migration和历史fixture，保护shipped Save/Quest/Dialogue引用",
+      "diff/merge基于stable IDs与semantic fields，不基于NodePos、数组index或UObject path偶然相等"
+    ]
+  },
+  {
+    "id": "CPP-109",
+    "slug": "graph-editor-scalability-layout-and-discovery",
+    "prompt": "Graph右键菜单每次TObjectIterator扫描所有UClass，自动布局O(N²)且依赖Slate cached geometry。大型项目怎样现代化？",
+    "expectations": [
+      "节点类型发现使用可失效缓存/registry/asset-class metadata，Hot Reload/module/class change时刷新；不在每次context menu全局扫描全部UClass",
+      "自动布局是Editor convenience，不参与Runtime truth；有规模阈值、iteration/time budget、cancel/progress，并profile O(N²)或递归算法",
+      "headless commandlet/cook/CI验证不依赖SWidget cached geometry或Slate已创建；布局与semantic compile分开",
+      "Editor工具对大图支持增量validation/search/diff，不因打开菜单、保存或自动排版同步加载无关资产图"
+    ]
+  },
+  {
+    "id": "CPP-110",
+    "slug": "graph-transient-editor-projection-single-truth-contract",
+    "prompt": "一个Dialogue资产已经有canonical semantic node/edge数据；Editor每次打开都从它重建transient UEdGraph。是不是生产级Graph一律还要再保存一份AuthoringGraph和CompiledGraph？",
+    "expectations": [
+      "不是；Authoring/Runtime职责分离不等于必须持久化两份Graph。若authoring语义与runtime definition高度一致，可让canonical semantic definition成为单一持久化真值，UEdGraph只做可重建transient editor projection",
+      "Editor mutation必须回写authoritative semantic model/service并走Modify/transaction/undo；UEdGraph node/pin/widget identity不能成为第二份truth或Save/Network identity",
+      "projection-first仍要求stable Graph/Node/Edge/Choice identity、whole-definition validation、schema/content version+migration、deterministic derived caches；需要重优化/裁剪/安全边界时再使用独立compiled artifact",
+      "NodePos/breakpoint/soft lock/editor decoration等非运行数据放WITH_EDITORONLY_DATA、Editor sidecar或UncookedOnly资产并验证cook stripping，Shipping/Dedicated不能依赖这些字段"
+    ]
+  },
+  {
+    "id": "CPP-111",
+    "slug": "dialogue-save-continuation-stack-await-state",
+    "prompt": "Dialogue允许SubDialogue嵌套和async Event等待，但Save只存CurrentTreeGuid/CurrentNodeGuid/LineIndex/RunnerState。Load后还能安全续跑吗？",
+    "expectations": [
+      "不能默认安全；Save必须覆盖所有会决定下一次transition的hidden continuation state，包括nested continuation/call frames、return definition/node/semantic slot与pending wait/await substate",
+      "持久化使用stable semantic IDs和schema/content fingerprint，不保存TObjectPtr、数组index或瞬态runtime handle；Load先resolve/migrate所有definition/frame，再rebuild lookup/cache并rebind依赖",
+      "每个latent/nested状态定义resume/cancel/reissue/restart policy；缺失或无法迁移的frame/await必须显式abort/checkpoint/restart，而不是碰巧落到当前node",
+      "恢复presentation与恢复business side effect分离；不可逆enter command不能因Load重新进入节点而重复执行"
+    ]
+  },
+  {
+    "id": "CPP-112",
+    "slug": "dialogue-async-completion-correlation-generation",
+    "prompt": "一个async Dialogue Event只记录WaitingEventTag，并用NotifyEventComplete(Tag)恢复。两个节点/会话重复使用同一Tag时，旧callback晚到怎么办？",
+    "expectations": [
+      "GameplayTag只描述event type，不能单独充当一次异步operation identity；等待必须有AwaitId/ExecutionToken并关联ConversationInstanceId、Node/Transition stable ID和revision/generation",
+      "完成回调在Authority/owner验证active token+generation+expected state后才能推进；stale/duplicate/cancelled completion必须no-op并可诊断",
+      "Save/Load/JIP需要明确pending await是持久化、重发、取消还是从checkpoint重启；不能仅凭相同Tag接受旧进程/旧Avatar/旧conversation callback",
+      "跨Quest/Inventory/GAS/AI等外域异步命令复用同一correlation/idempotency identity，避免retry/reconnect导致双推进或双奖励"
+    ]
+  },
+  {
+    "id": "CPP-113",
+    "slug": "condition-result-cache-dependency-revision",
+    "prompt": "Condition表达式第一次解析后缓存AST，同时还把最终bool按expression字符串缓存；条件能读取external delegate变量，但只有Runner::SetVariable才清result cache。评审。",
+    "expectations": [
+      "区分immutable compiled-expression/AST cache与mutable evaluation-result cache：前者按表达式源码缓存通常安全，后者只有依赖可观察时才安全",
+      "result cache key必须包含dependency revision/generation或由依赖订阅精确invalidated；external getter/world/Quest/Inventory/GAS事实可能绕过Runner setter变化，不能无限复用旧bool",
+      "无法建立可靠dependency revision时应在明确interaction/selection边界重新evaluate，而不是用不正确缓存换性能；先profile再决定缓存粒度",
+      "高频求值避免重复tokenize/parse、GameplayTag解析和world scan；测试覆盖外部依赖改变后cache invalidation与同revision稳定复用"
+    ]
+  },
+  {
+    "id": "CPP-114",
+    "slug": "durable-semantic-id-no-runtime-random-repair",
+    "prompt": "一个Narrative/Quest资产在PostLoad里发现TreeGuid/NodeGuid无效就直接FGuid::NewGuid()补上，作者说这样旧资产会自动修好。对已经上线、会被Save/Network/Analytics引用的stable ID，这种做法安全吗？",
+    "expectations": [
+      "不安全；durable semantic ID一旦参与Save/Network/Analytics/迁移引用，就不能在Runtime/PostLoad/Cook加载时按机器或加载时机随机生成来静默自愈",
+      "缺失/重复ID应由Editor migration、commandlet或确定性upgrade在受控阶段修复并resave；迁移必须有schema/content version、redirect/tombstone/diagnostic证据",
+      "Shipping/Dedicated遇到无法迁移的durable ID应fail validation、隔离内容或走显式recovery，而不是生成新ID后继续导致旧存档/远端引用悄然失联",
+      "新建/duplicate新semantic entity可以生成新ID，但rename/move/load同一已发布entity保持ID；测试覆盖同资产跨两次加载、历史Save解析和Cook/CI稳定性"
+    ]
+  },
+  {
+    "id": "CPP-115",
+    "slug": "dialogue-nested-local-scope-call-frame",
+    "prompt": "Dialogue支持SubDialogue调用；当前只有一份LocalVariables Map，切到子Dialogue时可能Reset/覆盖，return stack又只存ReturnTree/ReturnNode。父Dialogue的locals和子Dialogue的locals应该怎样设计与保存？",
+    "expectations": [
+      "把nested dialogue视为有调用帧的semantic scope：每个active frame拥有自己的local variable/scope frame；进入child时push caller locals/continuation，child不能覆盖父级local truth",
+      "continuation/call frame至少关联DefinitionId、ReturnNode/Transition stable ID和LocalScopeFrame或可恢复scope snapshot/reference；递归/多层SubDialogue按栈顺序恢复",
+      "Save/Load/JIP序列化active scope stack所需的semantic values/IDs/version，而不是一份扁平LocalVariables、TObjectPtr或数组index；load先migrate/resolve每层frame再resume",
+      "变量查找规则显式定义local shadowing→parent/global/external；退出/取消child时按policy pop/commit/discard，测试覆盖同名变量shadowing、nested save/resume、abort与旧版本migration"
+    ]
   }
 ]

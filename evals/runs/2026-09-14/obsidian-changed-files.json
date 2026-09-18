@@ -1,0 +1,18 @@
+{
+  "modified": [
+    "docs/implementation-progress.md",
+    "docs/project-distillations/README.md",
+    "docs/research.md",
+    "skills/skillforge-lgf/evals/behavior-cases.json",
+    "skills/skillforge-lgf/references/external-project-patterns.md",
+    "skills/skillforge-ue-cpp/SKILL.md",
+    "skills/skillforge-ue-cpp/evals/behavior-cases.json"
+  ],
+  "added": [
+    "docs/project-distillations/obsidian.md",
+    "evals/runs/2026-09-14/obsidian-changed-files.json",
+    "evals/runs/2026-09-14/obsidian-distillation-validation.md",
+    "skills/skillforge-ue-cpp/references/arpg-item-inventory-patterns.md"
+  ],
+  "deleted": []
+}

@@ -26,6 +26,7 @@ description: "设计、调整或检查游戏 HUD、工具窗口、配置面板�
 
 - HUD 分区、工作台、窄窗口和实时数据：读 [布局模式](references/layout-patterns.md)。
 - 加载、错误定位、键盘、拖动和输入层级：读 [交互与状态](references/interaction-states.md)。
+- UE Gameplay UI 使用 CommonUI/GAS/FastArray、需要 ViewModel/WidgetController、Pawn 重绑定或快捷栏输入统一时：读 [Gameplay UI 投影与 Domain Command](references/gameplay-ui-projection.md)。
 - 核对旧 UMG 笔记或提炼项目经验：读 [案例与核验](references/cases.md)。具体 API 仍核对项目版本。
 
 蓝图节点或 C++ 实现可组合相应技能；遇到异常时加入证据排查。MFC 等非 UE 任务不会因“控件”“HUD”“UI”字样引入 UE 生命周期或 API。
@@ -37,3 +38,7 @@ description: "设计、调整或检查游戏 HUD、工具窗口、配置面板�
 按影响范围检查最小客户区、常用和极端内容、目标 DPI/分辨率、键盘路径、错误恢复与高频更新；记录使用的实际尺寸和状态。验证拖动或滚动时，还需检查取消、关闭重开和布局恢复。性能结论依据测量，不凭“事件驱动”或“减少 Tick”直接宣称流畅。
 
 能操作实际界面时，检查布局并执行关键输入路径；截图只能证明可见外观，不能证明点击、焦点或性能。仅给出方案、未运行应用或未取得截图时，明确标记相应验证待执行。
+
+## CommonUI / Enhanced Input 专项
+
+当任务涉及 CommonUI root layout、Activatable Widget input config、GameplayTag layer、Enhanced Input Mapping Context 生命周期、UI Action binding、GameplayMessageRouter 或 LocalPlayer/Controller/Pawn UI ownership 时，读取 [CommonUI / Enhanced Input：LocalPlayer、Layer 与输入所有权](references/commonui-input-routing-patterns.md)。不要把单机样例中的 ClearAllMappings、GetFirstPlayerController 或 blank blocker 直接外推到多人/复杂项目。

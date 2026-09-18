@@ -240,12 +240,12 @@ class SkillTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d)/ROOT.name;shutil.copytree(ROOT,root,ignore=shutil.ignore_patterns('__pycache__'))
             with (root/'SKILL.md').open('a') as f:f.write('\n[broken](references/no-such-file.md)\n')
-            cases=json.loads((root/'evals/behavior-cases.json').read_text());cases.append(cases[0]);(root/'evals/behavior-cases.json').write_text(json.dumps(cases))
+            cases=json.loads((root/'evals/behavior-cases.json').read_text(encoding='utf-8'));cases.append(cases[0]);(root/'evals/behavior-cases.json').write_text(json.dumps(cases),encoding='utf-8')
             errors=self.m.validate(root);self.assertTrue(any('link' in e for e in errors));self.assertTrue(any('duplicate' in e for e in errors))
     def test_wrong_metadata_name_fails(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d)/ROOT.name;shutil.copytree(ROOT,root,ignore=shutil.ignore_patterns('__pycache__'))
-            p=root/'SKILL.md';p.write_text(p.read_text().replace('name: skillforge-archerage-addon','name: Wrong_Name'))
+            p=root/'SKILL.md';p.write_text(p.read_text(encoding='utf-8').replace('name: skillforge-archerage-addon','name: Wrong_Name'),encoding='utf-8')
             self.assertTrue(self.m.validate(root))
     def test_duplicate_json_keys_are_not_silently_accepted(self):
         with tempfile.TemporaryDirectory() as d:
@@ -260,12 +260,12 @@ class SkillTests(unittest.TestCase):
     def test_scenario_marked_passed_requires_real_execution_record(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d)/ROOT.name;shutil.copytree(ROOT,root,ignore=shutil.ignore_patterns('__pycache__'))
-            p=root/'evals/behavior-cases.json';rows=json.loads(p.read_text());rows[-1]['execution_status']='passed';p.write_text(json.dumps(rows))
+            p=root/'evals/behavior-cases.json';rows=json.loads(p.read_text(encoding='utf-8'));rows[-1]['execution_status']='passed';p.write_text(json.dumps(rows),encoding='utf-8')
             self.assertTrue(any('not an execution record' in e for e in self.m.validate(root)))
     def test_new_routes_and_behavior_specs_present_not_claimed_executed(self):
         for ref in ['pvp-hud-and-freshness.md','boss-alert-clock-and-layout.md','hud-template-and-defaults.md','verification-tools.md']:
             self.assertTrue((ROOT/'references'/ref).is_file(),ref)
-        cases=json.loads((ROOT/'evals/behavior-cases.json').read_text())
+        cases=json.loads((ROOT/'evals/behavior-cases.json').read_text(encoding='utf-8'))
         new=[x for x in cases if int(x['id'].split('-')[-1])>=27]
         self.assertGreaterEqual(len(new),20)
         for x in new:self.assertEqual(x['execution_status'],'not_run');self.assertTrue(x['rubric']['critical_failures'])
@@ -279,7 +279,8 @@ class R3RegressionLessonsTests(unittest.TestCase):
         callbacks=(ROOT/'references/callback-and-request-contracts.md').read_text(encoding='utf-8')
         ledger=(ROOT/'references/server-day-ledger.md').read_text(encoding='utf-8')
         ui=(ROOT/'references/ui-and-lifecycle.md').read_text(encoding='utf-8')
-        self.assertIn('2026.09.13-r3', skill)
+        # The package validator checks revision metadata. New revisions must
+        # retain these lessons, not retain an obsolete revision string.
         for lesson in range(31,39):
             self.assertIn(f'RS-L{lesson}', lessons)
         for text, token in [

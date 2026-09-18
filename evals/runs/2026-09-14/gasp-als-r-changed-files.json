@@ -1,0 +1,20 @@
+{
+  "changed": [
+    "docs/project-distillations/README.md",
+    "skills/skillforge-lgf/evals/behavior-cases.json",
+    "skills/skillforge-lgf/references/avatar-and-assets.md",
+    "skills/skillforge-lgf/references/external-project-patterns.md",
+    "skills/skillforge-lgf/references/gasp-mover-integration.md",
+    "skills/skillforge-ue-blueprint/SKILL.md",
+    "skills/skillforge-ue-blueprint/evals/behavior-cases.json",
+    "skills/skillforge-ue-cpp/SKILL.md",
+    "skills/skillforge-ue-cpp/evals/behavior-cases.json"
+  ],
+  "added": [
+    "docs/project-distillations/gasp-als-r.md",
+    "evals/runs/2026-09-14/gasp-als-r-distillation-validation.md",
+    "skills/skillforge-ue-blueprint/references/linked-animation-layer-boundaries.md",
+    "skills/skillforge-ue-cpp/references/mover-animation-network-patterns.md"
+  ],
+  "deleted": []
+}

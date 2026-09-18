@@ -1,0 +1,30 @@
+{
+  "existing_behavior_cases_preserved": 12,
+  "new_behavior_cases": 3,
+  "files": [
+    {
+      "path": "skills/skillforge-lgf/SKILL.md",
+      "sha256": "e08c76845b1114b6dcfb8ccda8e455840a815dba9e351c317289fe82c2311241"
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "sha256": "bf9efbd698d1b831503441a35185daa40aba92bd11a0ca7d05e1ace9518cf00b"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/animation-delivery-workflow.md",
+      "sha256": "d87dd36b2f937ea737b3815cd92468e99707cb0a783e69891028ed4260333f05"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/equipment-ability-lifecycle.md",
+      "sha256": "bb44976b5b0fdd8ebc66d17ff57a2d65e29aaa2bf63b18dd19039ae9e2a8878b"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/migration-evidence.md",
+      "sha256": "eb077667f24c09ae46db12352c58130c5f13b5d7b05897957ce09808d6929e7a"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/weapon-animation-diagnostics.md",
+      "sha256": "6f3fac9287d632cbfebda449cd0ddf232bb3d7a27e32d859e45669f467ed0507"
+    }
+  ]
+}

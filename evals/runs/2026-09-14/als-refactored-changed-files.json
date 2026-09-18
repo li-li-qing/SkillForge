@@ -1,0 +1,83 @@
+{
+  "round": "R6",
+  "project": "Sixze/ALS-Refactored",
+  "source_commit": "b754d6f0f2bb03741d301f8fb88077ebfe561e17",
+  "deleted_files": 0,
+  "files": [
+    {
+      "path": "docs/implementation-progress.md",
+      "change": "modified",
+      "sha256": "8eb629664c54c38cd9c03cfd693e132ab048cf34ce9afc41593ae4c5bbc38a9d"
+    },
+    {
+      "path": "docs/project-distillations/README.md",
+      "change": "modified",
+      "sha256": "6a8546ccd5583051dfc6389e0a191d8d850b66c7a50121fc5a82c8b3c0b3aae7"
+    },
+    {
+      "path": "docs/project-distillations/als-refactored.md",
+      "change": "added",
+      "sha256": "80fdf45a5048b4c1534cb7be7264160f82af2078dfcf091422eb1061cc73877c"
+    },
+    {
+      "path": "docs/research.md",
+      "change": "modified",
+      "sha256": "1b802a4476dbcf9b4736399552acec936364f0676be3437b8a4a823274e8fbb6"
+    },
+    {
+      "path": "evals/runs/2026-09-14/als-refactored-distillation-validation.md",
+      "change": "added",
+      "sha256": "5e1aef08dd5b3a0433a1726dec157f391c77d70104a2da338e784a844a682f1b"
+    },
+    {
+      "path": "skills/skillforge-lgf/SKILL.md",
+      "change": "modified",
+      "sha256": "d655c213f34297d67008cf5951132b3874dd554aa2ba62e2a7987c02a66e4d10"
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "change": "modified",
+      "sha256": "2fc89a7b5d8cef889b326a877c007f78d514df423fc023b50010df90c78f2fa2"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/external-project-patterns.md",
+      "change": "modified",
+      "sha256": "b8f741cdb404256d065b172ba90686cb49ddfb500a03297b313c6e8e78b7955f"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/gasp-mover-integration.md",
+      "change": "modified",
+      "sha256": "8f1459842cda14eddc98a04cf34b990b49b27031cb88d1c13dc3cf7fea0b330c"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/SKILL.md",
+      "change": "modified",
+      "sha256": "7b37b03db3fdef8ee076471a517925bc979035b6d9d77087d065f89404f163d3"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/evals/behavior-cases.json",
+      "change": "modified",
+      "sha256": "3edcf3e3348541d6b3bda13639b1fa1e2a71999e089a8bfd66cf6fa9ccc0a729"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/references/linked-animation-layer-boundaries.md",
+      "change": "modified",
+      "sha256": "84bb23aa71e4f9e007f9792344120a5b4e0f11040e99de3e8b71236782648354"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/SKILL.md",
+      "change": "modified",
+      "sha256": "9a2a892032c4a7f626101c9b3ff4f5f987e0b2f70eec037944688aa7db4bf467"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "change": "modified",
+      "sha256": "917091c17af7811d42a7075207b53ef738024a781423576f3f0c2411d7f61485"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/mover-animation-network-patterns.md",
+      "change": "modified",
+      "sha256": "5bfa5f3eeba292156f13db6d9a4243c4417177171305720b24e4f18cef584009"
+    }
+  ]
+}

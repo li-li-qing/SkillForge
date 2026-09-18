@@ -1,0 +1,24 @@
+{
+  "round": "R11",
+  "base": "SkillForge_Combee_R10",
+  "project": "Megafunk/MassSample + Epic UE5.8 Mass",
+  "added": [
+    "docs/project-distillations/masssample-modern-mass.md",
+    "evals/runs/2026-09-14/masssample-modern-mass-changed-files.json",
+    "evals/runs/2026-09-14/masssample-modern-mass-validation.md",
+    "skills/skillforge-lgf/references/mass-ai-scaling.md",
+    "skills/skillforge-ue-cpp/references/mass-data-oriented-ai-patterns.md"
+  ],
+  "modified": [
+    "docs/implementation-progress.md",
+    "docs/project-distillations/README.md",
+    "docs/research.md",
+    "skills/skillforge-lgf/SKILL.md",
+    "skills/skillforge-lgf/evals/behavior-cases.json",
+    "skills/skillforge-lgf/references/external-project-patterns.md",
+    "skills/skillforge-ue-cpp/SKILL.md",
+    "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+    "skills/skillforge-ue-cpp/references/external-project-freshness-and-lyra.md"
+  ],
+  "deleted": []
+}

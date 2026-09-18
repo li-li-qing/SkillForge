@@ -1,0 +1,78 @@
+{
+  "round": "R13",
+  "topic": "MothCocoon/FlowGraph Quest / World Event / Graph Runtime",
+  "baseline": "SkillForge StateTree + Utility AI R12",
+  "manifest_excludes_itself": true,
+  "added": [
+    {
+      "path": "docs/project-distillations/flowgraph.md",
+      "sha256": "daafcaa2a07b4140267340ad8434ebb3177b7dfa48a8382447d9468509f12697"
+    },
+    {
+      "path": "evals/runs/2026-09-14/flowgraph-distillation-validation.md",
+      "sha256": "699129223cd427abb0fd47fdb0a3ec09a8f647c0b8d921d322e95ce096d1a946"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/quest-world-flow-orchestration.md",
+      "sha256": "f48be6da6c835961d0a73c9b7bc72221edc5279c58d24be6c987a0dac7ccb1f7"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/flow-graph-runtime-patterns.md",
+      "sha256": "2fec9461a7fb35008b70b8a48b4263aa180ac1a756d975ea2e8a2240d408c938"
+    }
+  ],
+  "changed": [
+    {
+      "path": "docs/implementation-progress.md",
+      "sha256": "d5b5eae69b1bef21dd17d080ad7537314bd59adf2641ba5f17b815dd0c8c4475",
+      "baseline_sha256": "49c8d67d880635c2c67def29dfdd5ef037cf7705280b5dd52009734c2a9ad3da"
+    },
+    {
+      "path": "docs/project-distillations/README.md",
+      "sha256": "85c5422eb6e301694ae352c7ce58db4e2d6902ce14107ae0e234e5f8bb82315c",
+      "baseline_sha256": "e5f700d74531e0005c5f87a61900a801e3ca88d33a5a1d161cf95c509d920f35"
+    },
+    {
+      "path": "docs/research.md",
+      "sha256": "9a53093d1829e8cd4b3f09fc493cdb39bb2937b6ed8c34156923037b48403254",
+      "baseline_sha256": "4fed234ce9912eaa5f07c3a38d6a342a344366ee8af3468730fd87a9b5b87f8b"
+    },
+    {
+      "path": "skills/skillforge-lgf/SKILL.md",
+      "sha256": "32e831bba79a5f7ce68328220c0e9869ca23670cda7fe4edb1e842244d18111d",
+      "baseline_sha256": "914b27165a4eb4d493e27b077c62cf2561128763ab6af79948facead713b46a2"
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "sha256": "b75e47eac9b7a8ffb164484fd41314b2c8694f023e6fd6f0c0a7ae277373b198",
+      "baseline_sha256": "2613283a3da8fe7939146d4ad77fdcee098bae69ab98c1b68af5526d625508ed"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/external-project-patterns.md",
+      "sha256": "61de38b14460ef6e2994acc2e8a43c3979a9e63ef83523fe96dd7217633350c8",
+      "baseline_sha256": "5944838c3fb3d833954dcf5b4df065407ad8f869922d7152a0edb68ef6efc335"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/SKILL.md",
+      "sha256": "99548d1d16a88ffda5dbc038ac6abce495d090225a6ddff39f244f0767a7b5b6",
+      "baseline_sha256": "4ab3992676a85e8b62804bff509712afd3c78ae8061464c6d7b06a6bfbbed66e"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "sha256": "13ab4f6fbf65f994c9992702ace01ae34c2e2fc9454c3466ce784495c61fec77",
+      "baseline_sha256": "4a8008529dae84f56be0e2afebb32fe807ad63fe3d77bebf71c59771e6c0177c"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/external-project-freshness-and-lyra.md",
+      "sha256": "7f76c07cc5b7928243674e785f111fe2530f18e10a0b8a52c58b3e9e8e850b57",
+      "baseline_sha256": "17da927479e4fcc08bdf1fce07dca7ee40d9263197574ad085970209f3a56074"
+    }
+  ],
+  "removed": [],
+  "counts": {
+    "added": 4,
+    "changed": 9,
+    "removed": 0,
+    "content_total": 13
+  }
+}

@@ -28,6 +28,19 @@ description: "编写、修改和审查 Unreal Engine 5 C++，涵盖 UObject 反�
 - UObject、回调、委托或切关：读 [所有权与生命周期](references/ownership-lifecycle.md)。
 - 反射、跨模块接口、蓝图暴露、构建：读 [反射与构建](references/reflection-build.md)。
 - 迁移历史经验或需要回归场景：读 [案例与核验](references/cases.md)。
+- 联网 Gameplay、复制 UObject、FastArray、数据驱动 Spawn、存档、对象池或高频系统：读 [Gameplay 运行时架构审查](references/runtime-gameplay-patterns.md)。
+- 完整 Gameplay Framework 组合、PlayerState/Pawn 长短生命周期、AbilitySet 可逆授予、客户端 mutation RPC、InputTag 热路径或 AI Director：读 [Gameplay Framework 组合与生命周期模式](references/framework-composition-patterns.md)。
+- Pawn+Mover、CMC SavedMove 迁移、预测重演、GASP/PoseSearch、Traversal、Layered Root Motion、Linked Anim Layer、Push Model/Iris、URO/SimulatedProxy、PhysicsControl/Ragdoll 或 GameplayCamera：读 [Mover、动画与网络模式](references/mover-animation-network-patterns.md)。
+- GAS LocalPredicted、PredictionKey/Scoped Prediction Window、TargetData、AbilityTask、SourceObject/SpecHandle、Ability RPC batching、动态 AttributeSet、EffectContext 或预测 Montage 回滚：读 [GAS 预测、TargetData 与能力生命周期](references/gas-prediction-targetdata-patterns.md)。
+- 从 GitHub/Epic Sample 吸收外部架构、判断旧项目是否过时、研究 Lyra/ModularGameplay/InitState/Experience/GameFeatures/Input/Inventory-Equipment 生命周期：读 [外部项目时效性门与现代 Lyra 模式](references/external-project-freshness-and-lyra.md)。
+- ARPG 物品 Definition/Instance、Struct-first/ItemState、stable handle、Grid Inventory、Equipment/Stash、随机词缀、GAS 装备授予或物品存档：先读 [ARPG 物品与容器架构](references/arpg-item-inventory-patterns.md)；大规模 value semantics、generation handle、MutationKey、嵌套容器和事务再读 [物品值语义、稳定句柄与容器事务](references/item-value-semantics-and-transactions.md)。
+- 跨 Inventory/Equipment/Stash 的 Authority transaction、container capability、server operation allowlist、replicated Item subobject transfer、frame-coalesced FastArray projection、线程所有权或版本化 snapshot rebuild：读 [Container Transaction、FastArray 与 Replicated Subobject 生产合同](references/container-transactions-and-subobjects.md)。
+- 大规模 NPC/群体模拟、MassEntity/MassGameplay、Processor/Query、Signal、Simulation/Representation/Replication LOD、MassReplication、ZoneGraph、SmartObject 或 Mass StateTree：读 [MassEntity / MassGameplay 数据导向 AI 与大规模实体合同](references/mass-data-oriented-ai-patterns.md)。
+- StateTree、Utility Selector/Consideration、Utility AI 评分、AI 决策切换迟滞、Task Completion、StateTree+GAS、StateTree+Mass 或决策调试：读 [StateTree / Utility AI 决策与执行合同](references/statetree-utility-ai-patterns.md)。
+- 任务/剧情/世界事件 Graph、Flow Node 异步生命周期、SubGraph、Deferred Transition、Graph Save ABI、JIP/多人通知或 FlowGraph 版本迁移：读 [Flow Graph / Quest / World Event 运行时合同](references/flow-graph-runtime-patterns.md)。
+- Quest Objective、Quest Step/Outcome、编译后运行时定义、Quest Manager/State CQRS、late-registration catch-up、advancement hold、Quest snapshot 或 Dedicated/JIP quest mirror：读 [Quest / Objective 运行时合同](references/quest-objective-runtime-patterns.md)。
+- Dialogue/Conversation、Participant role、Node/Choice stable identity、对话条件/事件、Localization、Save/Resume、多人 Authority/JIP 或 Dialogue 与 Quest/StateTree/GAS/Inventory 边界：读 [Dialogue / Conversation 运行时合同](references/dialogue-runtime-patterns.md)。
+- 自定义 UEdGraph/UEdGraphSchema、Graph/Node/Edge stable identity、authoring→compiled runtime artifact、cycle/SCC、parallel edge、Graph compiler、现代 AssetDefinition/ToolMenus、auto-layout 或大型 Graph 编辑器性能：读 [自定义 Graph Authoring / Compiler / Runtime 合同](references/generic-graph-authoring-patterns.md)。
 
 ## 验证与交付
 
@@ -36,3 +49,5 @@ description: "编写、修改和审查 Unreal Engine 5 C++，涵盖 UObject 反�
 从上述证据和真实引擎位置生成命令。反射声明变化需要正常 UHT/构建及受影响蓝图的编译、节点与调用检查，不能只用 Live Coding 结果代替。
 
 按变更选择运行验证：异步生命周期覆盖关闭、重开、切关和过期请求；模块边界覆盖实际需要的目标；联网行为才验证相关网络角色。报告实际改动、证据、已运行的命令及结果，分别标记未做的编译、编辑器或运行检查。
+
+复制注册/FastArray、异步生命周期、接口与构建审查见 [复制审查补充](references/replication-review.md)。

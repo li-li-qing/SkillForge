@@ -1,0 +1,82 @@
+{
+  "round": "R17",
+  "project": "TodayYueC/ChronicleEngine",
+  "baseline": "User-uploaded R16 / SkillForge(3).zip",
+  "baseline_zip_sha256": "519de24eb226d4b555b643e63f9135d36585a94cad38924496f2d49c2cc936e9",
+  "source_commit": "b2fb37b14b7537c30d6ebf16cf612671bd0286e9",
+  "generated_date": "2026-09-15",
+  "content_file_count_excluding_manifest": 11,
+  "files": [
+    {
+      "path": "docs/implementation-progress.md",
+      "status": "changed",
+      "sha256": "ca51b3f980cf9461cc64f7d9e1ef9438d24e2a91b4e18f158888e895b24ed0a1",
+      "bytes": 15905
+    },
+    {
+      "path": "docs/project-distillations/README.md",
+      "status": "changed",
+      "sha256": "1c143c71cd0b80ce2982136ebdeee4736e64267c10d71da074c7114dd713edb5",
+      "bytes": 3101
+    },
+    {
+      "path": "docs/project-distillations/chronicleengine.md",
+      "status": "added",
+      "sha256": "7b361743a0fa521c78ffedf0fccfa4895bec53e83c2f16908015dfb9f5d0d4fa",
+      "bytes": 26353
+    },
+    {
+      "path": "docs/research.md",
+      "status": "changed",
+      "sha256": "1cb4511b356dee339f892ed9e798de94cf06f32b0ccd2110a8b8b1192dc29973",
+      "bytes": 33075
+    },
+    {
+      "path": "evals/runs/2026-09-15/chronicleengine-distillation-validation.md",
+      "status": "added",
+      "sha256": "c58edfda5fefa32df29534a4cc64f1163a2f4fce5a273786dfba0879218883b9",
+      "bytes": 7841
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "status": "changed",
+      "sha256": "3820daa39edced84405d59e6799dfd894adf7e925c92837da5257b3dbc2f269b",
+      "bytes": 71374
+    },
+    {
+      "path": "skills/skillforge-lgf/references/dialogue-conversation-contracts.md",
+      "status": "changed",
+      "sha256": "6389ab350053f2211246198571d3e50bfda03901b5550385b169155858bef161",
+      "bytes": 22422
+    },
+    {
+      "path": "skills/skillforge-lgf/references/graph-authoring-foundation.md",
+      "status": "changed",
+      "sha256": "90801b4a6b4fadfc9f175d959c89f1cf086e7de94ca43f3deca2b5dadbffb533",
+      "bytes": 17111
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "status": "changed",
+      "sha256": "644c4dc289690475d10e66b4a0941e99ca954e782d60d909364902ec60c657cb",
+      "bytes": 115228
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/dialogue-runtime-patterns.md",
+      "status": "changed",
+      "sha256": "967d115dcfd63baa927e1b49999322c5821ad7764e3d780248130cf5608951b5",
+      "bytes": 34817
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/generic-graph-authoring-patterns.md",
+      "status": "changed",
+      "sha256": "6cec95d880a45c88044f4696afdd0e716e81e4ff09edd1e55d2efda184700314",
+      "bytes": 25905
+    }
+  ],
+  "packaging_exclusions": [
+    ".git/",
+    "**/__pycache__/",
+    "**/*.pyc"
+  ]
+}

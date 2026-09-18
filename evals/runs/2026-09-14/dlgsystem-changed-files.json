@@ -1,0 +1,64 @@
+{
+  "round": "R15",
+  "project": "NotYetGames/DlgSystem",
+  "pinned_commit": "d705231216bd64558d437b87a57928689b1e7fef",
+  "baseline": "SkillForge SimpleQuest R14 working tree snapshot",
+  "summary": {
+    "added": 4,
+    "changed": 5,
+    "deleted": 0
+  },
+  "files": [
+    {
+      "path": "docs/project-distillations/dlgsystem.md",
+      "status": "added",
+      "sha256": "0943148f484de0f66b71d98d7da6a111c29e75db0689c481f59dc027d28525a4"
+    },
+    {
+      "path": "evals/runs/2026-09-14/dlgsystem-distillation-validation.md",
+      "status": "added",
+      "sha256": "e8b6deafb3b314dfb242302c35c6b17d0e31a304132dad99086ebabed1daf8ba"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/dialogue-conversation-contracts.md",
+      "status": "added",
+      "sha256": "5d83d2a12a59fd55a54ec1297b8faafb037d504739f04d4aea53c2bb17d9c8e7"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/dialogue-runtime-patterns.md",
+      "status": "added",
+      "sha256": "ee7372690d0308186b74ea4187e8e58929b79cfa5ee3e0620d7e7b416f6de027"
+    },
+    {
+      "path": "docs/project-distillations/README.md",
+      "status": "changed",
+      "sha256": "70c89b54b6b9c1432e4d40579abfa31bc6976f6bd588f91b386c51763ab320ef",
+      "baseline_sha256": "4f5b2e3dca4582c9fbf0cd80c316604b2a09e3e2ff74d44ad8fd55c72a740b3d"
+    },
+    {
+      "path": "skills/skillforge-lgf/SKILL.md",
+      "status": "changed",
+      "sha256": "4e0df6f0d6ac3bbaa1763d6f3861f018d11a4ecc35071346482c4dfd2d5f97d6",
+      "baseline_sha256": "d308b6b3b8bd1ce9016590670aede6362b0605fcc77f6c97f722059a763dd7ea"
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "status": "changed",
+      "sha256": "922e45302094890d52e7f6733297a81ebc589982bc6af8244aaadf0d5d533975",
+      "baseline_sha256": "99ea06ece8d2f3fff42863ea960991110558f967794a004e649477c5f2564757"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/SKILL.md",
+      "status": "changed",
+      "sha256": "e169e8cfa54e5eb03d449831e248809f00bf4c4516f2a731c5641228c944ca74",
+      "baseline_sha256": "ed74b580b9a08bb4834b817c646e154aaa389dac981b5cf016d61bbd600f8ebe"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "status": "changed",
+      "sha256": "278a281c8ce1e3c1c95459bb79d940fb5bea88e19290d7a6401d8fe806ec4218",
+      "baseline_sha256": "e6ff6bd09ec0c52278ea47bbb6c4a0a98f2d7796f7261ed54c6e55eae22c4bb4"
+    }
+  ],
+  "note": "Manifest does not hash itself; changes ZIP includes this manifest in addition to all entries."
+}

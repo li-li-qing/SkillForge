@@ -1,8 +1,809 @@
 [
-  {"id":"LGF-01","prompt":"使用 LGF 做蓝图门。ALInteractableActorBase 默认执行返回失败，有人说因此只能重写 C++ 交互系统；并建议客户端在门 Actor 上直接 Server RPC，返回 true 就播放永久开门状态。请说明如何找真实扩展点、安排创建/接线顺序以及验证。只提供这些材料，没有编辑器或完整源码，本轮是方案。","expectations":["先核对现有 K2 BlueprintNativeEvent 与 Authority 扩展，不把默认失败等同不能蓝图扩展，也不虚构现成门资产", "先创建目标蓝图/交互选项/输入等被引用内容，再从玩家拥有的 Agent 发 Request；不假设客户端拥有世界门Actor", "区分提交与最终业务结果，Authority 验证后修改复制状态，Host与Remote共享业务校验而不强制Host自发RPC", "检查门状态的Host表现、Remote及JIP恢复与拒绝路径，明确节点名/资产未检查和编辑器未执行范围"]},
-  {"id":"LGF-02","prompt":"LGF 要同时支持 UMG 和 CommonUI。已有 UINavigation、UIContracts、UIExtension、WorldUIRuntime 和 WorldUI。有人准备给两个 Presenter 各写一套 Route Stack/Back History，在 Runtime 玩法模块 Public 依赖客户端 Widget 类，并在 Dedicated Server 上为 WorldUI 创建摄像机。如何判断正确职责和定位 UI 不更新？本轮没有源码访问或运行环境。","expectations":["每LocalPlayer的UINavigation拥有唯一页面/返回/输入仲裁，UMG/CommonUI是Presenter，不建立双真值", "区分中立UIContracts、非页面UIExtension、服务器安全WorldUIRuntime与客户端WorldUI；不把WorldUI当WorldMap", "核对uplugin类型和真实Build.cs边界，Runtime不得用客户端UI补依赖；Authority与本地表现分维度，ListenHost可有本地UI", "沿路由请求/Receipt或Result、Provider、当前LocalPlayer与实例刷新定位，验证多本地玩家/Travel/返回输入与Server构建，均标记未执行"]},
-  {"id":"LGF-03","prompt":"LGF ActionLock 的 RequestStartActionLock 返回 bool，远端 true 后仍可能失败。连续 Start 后 Cancel 偶尔没作用，Host 与远端表现不同，Proxy 的 Ended 也不等于 Authority 的完成事件。用户只让解释和给接入方案，有人准备统一改返回类型并用 Ended 发奖励。请分析需要核对的具体边界与验证。没有运行工具。","expectations":["bool在远端提交与Authority执行结果含义不同；核对真实签名，不为统一文字改生产API", "将Start/Cancel共享预算、Pawn owner RPC与Host/PlayerState路径差异作为有版本范围的源码核对点，不宣称已修或所有组件同样行为", "区分自然完成/取消/替换与各端事件，Proxy Ended不做奖励或交易真值，锁状态也不是完整业务授权", "动作锁不自动控制CMC/Mover/GAS，接入需显式消费并验证限频取消、分端事件、JIP和清理；解释任务不扩大为源码重构"]},
-  {"id":"LGF-04","prompt":"LGF 的 Pawn 路线接 Mover，死亡禁用移动钩子默认返回 false。AbilitySet 使用软类 Get()，换 Pawn 后旧异步加载完成仍授予旧 Avatar；有人把这叫同步加载卡顿，准备在 Tick 中 LoadSynchronous，并把长期背包和 ASC 搬到 Pawn。请给接入与排查方案，本轮不能修改或运行工程。","expectations":["区分Character/CMC已有实现与Pawn的C++ virtual扩展钩子，不能假设蓝图可重写或Mover死亡恢复已完成", "区分读取已加载软类与同步加载，检查资产扫描/Cook/预加载与ASC就绪，不在Tick加同步加载", "PlayerState长期状态与Pawn Avatar分离，异步完成校验对象/ASC/Avatar和操作代次，解绑旧输入及授予/撤销保持成对", "Mesh表现与AuthorityTrace用途分离，动画接口/Water适配不等于完整GASP或通用Mover；列死亡复活/Possess/Travel/旧回调的未执行验证"]},
-  {"id":"LGF-05","prompt":"只要求学习并整理 LGF 技能。WorldMap 文档写 P0 冻结、O3 是 P1 前置；结构文件名带 CONFIRMED，但正文写仅记录。现有模块没有 WorldMap。旧资料要求跑 Scripts/Validation/Validate_LGameplayFramework_UI_Physical_Topology.py，现场 Scripts 不存在，但 UIEditor Commandlet 存在。宿主实际为 Game.uproject、GameEditor.Target.cs；另有 Saved/BuildPlugin 的 HostProject。请说明怎样整理和报告验证。","expectations":["区分当前源码、已批准设计和实施前置；学习整理不实施重构，不把WorldUI或CONFIRMED当WorldMap实现", "以当前Docs导航/主题唯一入口读详细说明，不复制整套API教程或改冻结历史，不把全部模块展开成新技能", "发现并使用实际GameEditor宿主目标，排除Saved临时HostProject，不猜LGameEditor；脚本不存在不等于Commandlet不存在", "结构/符号/测试声明与UHT/构建/PIE/Cook/资产验证分别记录，迁移报告不替代全部网络测试，未运行不能写通过"]},
-  {"id":"LGF-06","prompt":"LGF 公会共享仓库 UI 要保存并恢复物品。有人建议保存 UIData 和 FastArray ReplicationID，把所有InventoryList改OwnerOnly，客户端直接修改复制数组，提交成功立即显示已领取。Quest重试时复用RequestId但换奖励选项，对话迟到点击只传OptionId。请给正确的检查路线和边界，无源码或客户端，只能分析。","expectations":["通过玩家拥有的请求入口，由Authority解析稳定业务身份和仓库权限；UIData只呈现且提交不等于完成", "FastArray内部ReplicationID不是存档业务ID；检查条目/容器序列化、Dirty、回调与恢复，不给每Item机械加OnRep", "Inventory复制范围按当前动态配置/容器消费者核对，不把所有共享仓库OwnerOnly，补JIP与相关性验证", "Quest幂等关联需包含业务参数，不能换选项冒用旧请求；Dialogue核对SessionId/ExpectedNodeId/OptionId，拒绝陈旧会话；具体签名与实现待核对"]}
+  {
+    "id": "LGF-LEGACY-HANDOFF-20260915",
+    "prompt": "用户已授权删除危险AddItem蓝图直写节点并更新新手教程。维护者怕断线要留deprecated wrapper，把全数组UIData快照设Pure，SubmittedToServer立即显示成功；教程先让HUD选WBP_Inventory，末尾才创建它。请给精确迁移交接与验证清单，没有生产源码或编辑器。",
+    "expectations": [
+      "尊重已授权删除，先查引用和序列化影响，不为隐藏断线保留危险wrapper，不宣称实际修改",
+      "交接旧所属类型/完整节点名/原Category、真实替代Target来源、参数和执行线、提交与最终结果接线；无源码不虚构替代签名",
+      "全快照不默认Pure；提交不等于完成，并发最终反馈关联身份；正常失败不用ensure替代业务反馈",
+      "按依赖先创建再引用，区分API/Tutorial/README职责和UHT/蓝图/网络待验证范围"
+    ]
+  },
+  {
+    "id": "LGF-COMBAT-THRESHOLD-WARP-20260915",
+    "prompt": "近战AI日志已在范围内却反复Chase，Profile、Ability、Controller Strike及寻路AcceptanceRadius各有阈值，有人要限制目标静止才攻击。另一个圆形Root动作窗口终点近起点，SkewWarp爆冲；使用跟随目标组件Offset后，旋转目标又改变吸附方向。只给排查方案，无运行环境。",
+    "expectations": [
+      "采集同目标同帧的距离口径/进入退出阈值/到达半径/LOS/朝向/Ability拒绝，区分距离冲突与冷却或路径故障",
+      "同攻击规则统一权威进入距离及必要退出迟滞，AcceptanceRadius不成为隐藏攻击门槛，不把不同能力射程强行统一或默认要求静止",
+      "比较完整Root和窗口净位移/累计路程及Warp前后增量，确认载体与单consumer；不以改Capsule或缩距离掩盖问题",
+      "明确目标组件局部与世界Offset，检查移动旋转目标，区分候选解释和已证实根因"
+    ]
+  },
+  {
+    "id": "LGF-MOVER-VERSION-FAILURES-20260915",
+    "prompt": "Mover在Editor正常但Cook后组件数据缺失，Fixed下短按偶尔漏掉，过滤输入后又被另一个producer写回，rollback后Sim Blackboard结果不同。有人准备永久关闭所有优化并按当前GAS状态重算历史帧。请给当前版本核查入口和验证范围，没有引擎源码。",
+    "expectations": [
+      "先确认Build.version/Backend/README和实现，旧5.7事故只作线索，不声称所有版本仍有缺陷",
+      "检查多InputProducers执行顺序和重建，区分渲染帧与模拟帧、按住与边沿的输入聚合",
+      "Blackboard失效时从历史记录状态重算，不用当前Gameplay状态污染重模拟",
+      "Cook数据与bOptimizeBPComponentData只在确认关联后隔离A/B，不全局关闭优化；Cooked/输入时序/回滚验证分别待执行"
+    ]
+  },
+  {
+    "id": "LGF-01",
+    "prompt": "使用 LGF 做蓝图门。ALInteractableActorBase 默认执行返回失败，有人说因此只能重写 C++ 交互系统；并建议客户端在门 Actor 上直接 Server RPC，返回 true 就播放永久开门状态。请说明如何找真实扩展点、安排创建/接线顺序以及验证。只提供这些材料，没有编辑器或完整源码，本轮是方案。",
+    "expectations": [
+      "先核对现有 K2 BlueprintNativeEvent 与 Authority 扩展，不把默认失败等同不能蓝图扩展，也不虚构现成门资产",
+      "先创建目标蓝图/交互选项/输入等被引用内容，再从玩家拥有的 Agent 发 Request；不假设客户端拥有世界门Actor",
+      "区分提交与最终业务结果，Authority 验证后修改复制状态，Host与Remote共享业务校验而不强制Host自发RPC",
+      "检查门状态的Host表现、Remote及JIP恢复与拒绝路径，明确节点名/资产未检查和编辑器未执行范围"
+    ]
+  },
+  {
+    "id": "LGF-02",
+    "prompt": "LGF 要同时支持 UMG 和 CommonUI。已有 UINavigation、UIContracts、UIExtension、WorldUIRuntime 和 WorldUI。有人准备给两个 Presenter 各写一套 Route Stack/Back History，在 Runtime 玩法模块 Public 依赖客户端 Widget 类，并在 Dedicated Server 上为 WorldUI 创建摄像机。如何判断正确职责和定位 UI 不更新？本轮没有源码访问或运行环境。",
+    "expectations": [
+      "每LocalPlayer的UINavigation拥有唯一页面/返回/输入仲裁，UMG/CommonUI是Presenter，不建立双真值",
+      "区分中立UIContracts、非页面UIExtension、服务器安全WorldUIRuntime与客户端WorldUI；不把WorldUI当WorldMap",
+      "核对uplugin类型和真实Build.cs边界，Runtime不得用客户端UI补依赖；Authority与本地表现分维度，ListenHost可有本地UI",
+      "沿路由请求/Receipt或Result、Provider、当前LocalPlayer与实例刷新定位，验证多本地玩家/Travel/返回输入与Server构建，均标记未执行"
+    ]
+  },
+  {
+    "id": "LGF-03",
+    "prompt": "LGF ActionLock 的 RequestStartActionLock 返回 bool，远端 true 后仍可能失败。连续 Start 后 Cancel 偶尔没作用，Host 与远端表现不同，Proxy 的 Ended 也不等于 Authority 的完成事件。用户只让解释和给接入方案，有人准备统一改返回类型并用 Ended 发奖励。请分析需要核对的具体边界与验证。没有运行工具。",
+    "expectations": [
+      "bool在远端提交与Authority执行结果含义不同；核对真实签名，不为统一文字改生产API",
+      "将Start/Cancel共享预算、Pawn owner RPC与Host/PlayerState路径差异作为有版本范围的源码核对点，不宣称已修或所有组件同样行为",
+      "区分自然完成/取消/替换与各端事件，Proxy Ended不做奖励或交易真值，锁状态也不是完整业务授权",
+      "动作锁不自动控制CMC/Mover/GAS，接入需显式消费并验证限频取消、分端事件、JIP和清理；解释任务不扩大为源码重构"
+    ]
+  },
+  {
+    "id": "LGF-04",
+    "prompt": "LGF 的 Pawn 路线接 Mover，死亡禁用移动钩子默认返回 false。AbilitySet 使用软类 Get()，换 Pawn 后旧异步加载完成仍授予旧 Avatar；有人把这叫同步加载卡顿，准备在 Tick 中 LoadSynchronous，并把长期背包和 ASC 搬到 Pawn。请给接入与排查方案，本轮不能修改或运行工程。",
+    "expectations": [
+      "区分Character/CMC已有实现与Pawn的C++ virtual扩展钩子，不能假设蓝图可重写或Mover死亡恢复已完成",
+      "区分读取已加载软类与同步加载，检查资产扫描/Cook/预加载与ASC就绪，不在Tick加同步加载",
+      "PlayerState长期状态与Pawn Avatar分离，异步完成校验对象/ASC/Avatar和操作代次，解绑旧输入及授予/撤销保持成对",
+      "Mesh表现与AuthorityTrace用途分离，动画接口/Water适配不等于完整GASP或通用Mover；列死亡复活/Possess/Travel/旧回调的未执行验证"
+    ]
+  },
+  {
+    "id": "LGF-05",
+    "prompt": "只要求学习并整理 LGF 技能。WorldMap 文档写 P0 冻结、O3 是 P1 前置；结构文件名带 CONFIRMED，但正文写仅记录。现有模块没有 WorldMap。旧资料要求跑 Scripts/Validation/Validate_LGameplayFramework_UI_Physical_Topology.py，现场 Scripts 不存在，但 UIEditor Commandlet 存在。宿主实际为 Game.uproject、GameEditor.Target.cs；另有 Saved/BuildPlugin 的 HostProject。请说明怎样整理和报告验证。",
+    "expectations": [
+      "区分当前源码、已批准设计和实施前置；学习整理不实施重构，不把WorldUI或CONFIRMED当WorldMap实现",
+      "以当前Docs导航/主题唯一入口读详细说明，不复制整套API教程或改冻结历史，不把全部模块展开成新技能",
+      "发现并使用实际GameEditor宿主目标，排除Saved临时HostProject，不猜LGameEditor；脚本不存在不等于Commandlet不存在",
+      "结构/符号/测试声明与UHT/构建/PIE/Cook/资产验证分别记录，迁移报告不替代全部网络测试，未运行不能写通过"
+    ]
+  },
+  {
+    "id": "LGF-06",
+    "prompt": "LGF 公会共享仓库 UI 要保存并恢复物品。有人建议保存 UIData 和 FastArray ReplicationID，把所有InventoryList改OwnerOnly，客户端直接修改复制数组，提交成功立即显示已领取。Quest重试时复用RequestId但换奖励选项，对话迟到点击只传OptionId。请给正确的检查路线和边界，无源码或客户端，只能分析。",
+    "expectations": [
+      "通过玩家拥有的请求入口，由Authority解析稳定业务身份和仓库权限；UIData只呈现且提交不等于完成",
+      "FastArray内部ReplicationID不是存档业务ID；检查条目/容器序列化、Dirty、回调与恢复，不给每Item机械加OnRep",
+      "Inventory复制范围按当前动态配置/容器消费者核对，不把所有共享仓库OwnerOnly，补JIP与相关性验证",
+      "Quest幂等关联需包含业务参数，不能换选项冒用旧请求；Dialogue核对SessionId/ExpectedNodeId/OptionId，拒绝陈旧会话；具体签名与实现待核对"
+    ]
+  },
+  {
+    "id": "LGF-07",
+    "prompt": "武器切换卸下commit同步开始装备，被仍需存活到Montage结束的WeaponTransition阻挡。用户要求直接清Tag。请给诊断与修复边界。",
+    "expectations": [
+      "核对同步重入和RetryPending的唤醒、外部通知及超时，不以局部阻挡直接证明最终必然失败",
+      "阻挡条件与订阅统一，解除后重查当前事务和所有阻挡，清理弱回调/EndPlay",
+      "保留合法Tag生命周期，不提前EndAbility、不丢请求、不取消已进入Equipment的旧事务",
+      "验证持武器换另一把及重叠动作锁，不能只测单相Equip/Unequip"
+    ]
+  },
+  {
+    "id": "LGF-08",
+    "prompt": "双剑Chooser输出含style，跑3秒才换姿势；Root源0.8s、身体Inplace2.4s，已有25/25根轨迹脚本通过。下一步？",
+    "expectations": [
+      "追踪真实动画源、持续/过渡状态、BlendStack/MM实际动画与播放时间，不用Tag证明姿势",
+      "检查起跑等过渡占用与退出时点，不全局过滤其他武器/空中/Traversal",
+      "时长比只是线索，独立核对身体周期与接触Phase，拒绝按同一生成算法证明语义",
+      "不批量删root或盲目增加PSS，不按粗移动状态关闭既有覆盖曲线合同"
+    ]
+  },
+  {
+    "id": "LGF-09",
+    "prompt": "ServerOnly攻击服务器与旁观者播放，owner不播；取消返回true但动画自然播完才停止。分析两个问题。",
+    "expectations": [
+      "核对GAS owner预测假设、ActorInfo与实际播放源；区分静态Montage和动态/预测路径",
+      "不增加第二套复制播放真值，不无条件接管LocalPredicted",
+      "查EndTask与PlayMontageAndWait OnDestroy参数及实际清理顺序",
+      "只取消当前属于本能力的Montage，正常后摇与后来接管动画保留",
+      "测试即时停止、重复实例、owner/旁观者、JIP，而不把最终自然结束当取消成功"
+    ]
+  },
+  {
+    "id": "LGF-10",
+    "prompt": "8个当前真实网络用例全部Fail，均因两把刀的Trace socket缺失；装备复制子断言绿，13个旧回归绿。如何报告和继续？",
+    "expectations": [
+      "当前8项Fail明确保留；13项另列版本与范围，不合成整体通过",
+      "握持与Trace独立，查真实服务器模型/端点/窗口和伤害链",
+      "不改第三方原件或用户握持Socket，正式端点用项目副本校准",
+      "零伤害预览不开放正式逐击窗口，无头网络不等于视觉"
+    ]
+  },
+  {
+    "id": "LGF-11",
+    "prompt": "Heroine贴手差，方案已定源骨架Socket统一，团队建议每个外观复制全部武器Socket且直接旋转hand骨骼。",
+    "expectations": [
+      "保留已批准单一源Socket，区分重定向姿势与Socket附件变换",
+      "官方子Socket预览，局部外观手部补偿而非改公共骨骼或每外观重做所有武器",
+      "核对实际附件组件/配置Offset/运行实例，不承诺DA编辑在PIE热生效"
+    ]
+  },
+  {
+    "id": "LGF-12",
+    "prompt": "官方duplicate动画后BranchInId变化、数据库SamplingRange是[0,0]，索引重建后PSD SHA没变。准备全部判失败。",
+    "expectations": [
+      "区分Notify全名身份和副本重绑，保持正式对象身份",
+      "按版本用有效采样区间和循环语义检查，不把哨兵值判空",
+      "索引检查实际IndexValid及搜索，不以uasset未变判未构建",
+      "隔离负测保存后新进程验证，官方恢复和删除核残留"
+    ]
+  },
+  {
+    "id": "LGF-13",
+    "prompt": "已采用LGame单一源Socket方案。源/可见手骨有重定向偏差，团队把源Socket世界Transform直接给可见剑。说明需要核对的实现和两个表示。",
+    "expectations": [
+      "区分父手骨局部Socket校准和源组件/世界变换，不将源Mesh组件空间当作手骨局部",
+      "根据当前实现组合物品Offset、源Socket局部、可见目标手骨世界变换，并核对父骨映射",
+      "Authority Trace仍在服务器源Mesh，不能以客户端可见剑位置判伤",
+      "检查更新顺序、隐藏继承、缓存及缺失骨骼失败，不复制每个外观所有武器Socket"
+    ]
+  },
+  {
+    "id": "LGF-14",
+    "prompt": "同帧覆盖曲线为1但上层仍奇怪。自定义节点有PreUpdate实现，准备双遍Evaluate，或用style加moving压0。如何排查？",
+    "expectations": [
+      "确认实际实例与BasePose本次Curve，单遍求值，不从Chooser/粗状态判覆盖",
+      "核对HasPreUpdate和当前生成类的预更新登记及运行钩子，不能仅断言C++函数存在",
+      "GameThread同步写风格与PreUpdate快照，AnyThread不读可变Gameplay对象",
+      "区分普通浮点/Metadata曲线；缺失非有限=0、有限限幅、部分权重及切风格恢复",
+      "遮罩不等于逐骨精确贡献，混合设置与局部/网格旋转问题各自验证"
+    ]
+  },
+  {
+    "id": "LGF-15",
+    "prompt": "一把新武器有Walk/Run但缺部分过渡，现在要求全部动画接入，并按5次挥击平均切5段开伤害。给实施与验收顺序。",
+    "expectations": [
+      "先素材状态矩阵、实际引用/骨架/周期与回退，复用相容PSS，不按数据库数量判断质量",
+      "原输入验证实际候选和时间、状态刷新/退出，再验分层、模拟、附件与单剑回归",
+      "先完整零伤害预览，人工逐击后定Section与窗口，不能平均切段开伤害",
+      "生成器和资产一起修，共享严格契约与隔离持久化负测、幂等回读",
+      "人工交接有真实入口/按键/文件/字段/刷新步骤，静态无头视觉网络战斗分开"
+    ]
+  },
+  {
+    "id": "LGF-16",
+    "slug": "external-sample-pattern-migration",
+    "prompt": "看到一个UE5.6样例自制Action UObject复制系统和轻量Projectile FastArray，团队想直接搬进LGF：用它替换GAS，客户端在GameState上Server RPC创建Projectile，并对ProjectileData.Items Add后MarkItemDirty做本地预测。样例能运行，所以认为网络没问题。请说明如何蒸馏并迁移到LGF。",
+    "expectations": [
+      "先固定外部项目commit/UE版本/实验开关/许可，把设计意图映射到LGF现有GAS、Request/Authority、FastArray和Feature生命周期，不因类名相似复制第二套真值",
+      "保留replicated UObject生命周期与Host/Proxy刷新等通用审查，但不以自制Action替换ASC/GAS；如新增subobject先证明现有struct/FastArray/GAS状态不能表达",
+      "Remote请求从玩家拥有的Agent/Pawn/Controller等进入而不是GameState/世界Actor；Authority重新校验创建参数和命中，客户端预测放独立transient cache并与服务器FastArrayreconcile",
+      "FastArray回调只重建派生表现，客户端不Dirty权威容器；检查Host/Remote/SimulatedProxy/JIP以及5.6到目标5.7的API差异，不把实验TODO写成已验证生产能力"
+    ]
+  },
+  {
+    "id": "LGF-17",
+    "slug": "obsidian-arpg-pattern-migration",
+    "prompt": "团队看到一个GPL-3.0的UE5 ARPG项目：Definition+ItemInstance+Fragment、Inventory/Equipment/Stash FastArray、装备Affix给GAS AbilitySet、Master/Hero/SharedStash分存档。准备把类直接搬进LGF，并保留每个ItemInstance复制图标/FText/Mesh、Affix循环LoadSynchronous、客户端自己roll掉落。请给蒸馏和LGF迁移方案。",
+    "expectations": [
+      "先固定commit/许可证并说明GPL-3.0边界；只迁移设计意图到LGF已有Inventory/GAS/Request/Save职责，不直接复制实现或新建第二套真值",
+      "采用Definition/Instance/Fragment思想但把静态展示数据留在Definition；大集合使用FastArray业务条目+本地派生索引，必要replicated UObject走完整subobject/ReadyForReplication生命周期",
+      "Equipment grant使用来源级GrantedHandles精确撤销；AbilitySet/Definition异步预加载，禁止equip/affix/drop循环LoadSynchronous，异步结果带owner/avatar/item/request generation校验",
+      "掉落最终roll和共享仓库/在线存档由Authority负责；P2P/Listen Host仍区分Authority与Remote，跨Inventory/Equipment/Stash移动按事务预检/回滚，UI GameplayMessage仅是投影"
+    ]
+  },
+  {
+    "id": "LGF-18",
+    "slug": "rockinventory-value-semantics-migration",
+    "prompt": "LGF团队看到MIT的RockInventory最新版本：Struct-first ItemStack/FastArray、index+generation Handle、FInstancedStruct ItemState、可选replicated ItemInstance、ItemData/SlotData分离、MutationKey和Transaction/slot claim。准备整套照搬，并开启预测拖拽/背包套背包。请给迁移决策和生产化收紧项。",
+    "expectations": [
+      "固定commit/许可证/依赖并把机制映射到LGF现有Inventory/Equipment/Request，不整套复制第二个Inventory；MIT允许参考实现但仍按UE5.7/Iris与项目约束重写验证",
+      "采用Definition->compact Stack->typed State->optional UObject成本梯度；普通大批量物品不用UObject，复杂nested/lifecycle对象才升级，静态展示保持Definition本地解析",
+      "采用stable index+generation运行handle/free-list和ItemData/SlotData分离；持久化仍用稳定ItemId/GUID，FastArray callback重建派生状态，Host本地mutation主动走同一表现contract",
+      "Transaction/slot reservation只吸收设计：Authority重新授权Inventory/Actor参数、校验generation/access、clamp drop offset/impulse、幂等TransactionID；样例prediction/resync/undo TODO与NestedInventory ownership TODO不能当已完成能力",
+      "MutationKey只解决C++写权限，真正写仍经过Authority+dirty+event；NestedInventory补cycle/depth/reparent/JIP/save规则，所有hot path同步Load和每次复杂Tag query都需profile/预热/缓存"
+    ]
+  },
+  {
+    "id": "LGF-19",
+    "slug": "ayadog-gameplayframework-pattern-migration",
+    "prompt": "团队看到AyaDogGames/GameplayFramework：PlayerState持ASC+Inventory+Loadout，Pawn持Applied Equipment；AbilitySet带GrantedHandles；InputAction通过InputTag驱动GAS；CommonUI用UI.Layer栈和WidgetController。准备整套复制进LGF，并保留通用Server_AddItem/Server_SetItemStat、同步TryLoad/LoadSynchronous。请给蒸馏与LGF落点。",
+    "expectations": [
+      "固定commit/许可/UE版本证据并映射到LGF现有GAS/Inventory/Equipment/UI/Input，不复制第二套GameplayFramework；README与agent文档版本冲突时保留不确定性而非臆断",
+      "吸收persistent owner vs replaceable avatar：PlayerState/稳定owner保存ASC、Inventory、loadout/progression，Pawn侧只应用当前装备/表现；UnPossessed撤销grant/binding，新Pawn ActorInfo ready后重建",
+      "AbilitySet来源保存真实GrantedHandles并精确撤销，避免copy-empty-handle bug；复杂entry先构建完整再publish，delegate/re-entry后用ItemID/handle重新解析",
+      "客户端grant/stat RPC改成operation-specific default-deny授权，结果以Authority state/result为准；移除equip/drop/definition热路径TryLoad/LoadSynchronous，改预热或带generation的async transaction",
+      "UI采用Layer stack负责导航/焦点、Controller/ViewModel做只读投影，鼠标和Input Ability调用同一domain command；InputTag spec lookup按规模缓存，AI Director把预算/选择/EQS/async spawn分层"
+    ]
+  },
+  {
+    "id": "LGF-20",
+    "slug": "persistent-avatar-contract-for-transform-and-riding",
+    "prompt": "LGF以后要支持吸收任意NPC变身、道具变场景物、骑乘不同宠物/载具。当前担心每次换Pawn/形态都会丢Inventory/GAS/loadout，或者旧武器Ability/动画绑定残留。结合外部项目经验，给一个不删现有功能的所有权与切换合同。",
+    "expectations": [
+      "玩家长期身份状态留在稳定Authority owner（通常PlayerState/Player Agent）：ASC、Inventory、loadout、progression、stable ItemId；形态Pawn只承载Mover/碰撞/AnimInstance/当前Mesh和可重建applied equipment/presentation",
+      "形态切换分Prepare/Detach/Attach/Reapply：旧Pawn在解绑PlayerState前撤销Pawn来源GrantedHandles、输入/事件/装备Actor/动画层绑定；新Pawn InitAbilityActorInfo/移动与动画组件ready后按兼容规则重建",
+      "loadout assignment与applied equipment分离：同一ItemID可以在不兼容形态下保持assignment但不强行装备；回到兼容形态再reapply，禁止为每种形态复制一份长期背包真值",
+      "delegate使用compare-and-rebind并验证同Pawn换Controller/不同PlayerState；网络验Host/Remote/SimulatedProxy/JIP/变身中断，稳定identity/generation防迟到异步回调把旧形态状态写到新Pawn"
+    ]
+  },
+  {
+    "id": "LGF-21",
+    "slug": "gasp-als-r-mover-animation-pattern-migration",
+    "prompt": "准备把SAM-tak/GASP-ALS-R最新Mover分支经验吸收到LGF的UE5.7 ARPG。它是APawn+Mover、GAS动作、Linked Anim Layers、PhysicsControl Ragdoll、GameplayCamera。是否应该整套迁入并替换LGF/GASP现有链？给迁移规则。",
+    "expectations": [
+      "固定commit并区分UE-only内容、MIT原始/ALS-R C++和UE源码派生文件的许可；当前仓库含UE5.8.2证据而LGF目标5.7，所有Mover/GameplayCamera/PhysicsControl API必须用目标5.7源码重新确认，不能宣称直接兼容",
+      "只吸收职责边界到LGF现有体系：LGF/GAS拥有玩法合法性与动作生命周期，Mover拥有预测模拟位移，AnimInstance/Linked Layers拥有pose表现，PhysicsControl拥有body physics，Camera context属于本地possession；不复制第二套框架真值",
+      "Mover需要的GAS/physics/stance决定先录入Input/Sync/Persistent State用于resim；custom state定义NetSerialize/Reconcile/Interpolate/Merge，Proxy finalization消费同步状态；不在simulation重读live mesh/ASC做决定",
+      "动作RootMotion走单一Mover LayeredMove消费并具备取消handle；Traversal客户端选择必须Authority envelope重校验；MotionMatch PoseHistory同步只用于离散动作，禁止每帧阻塞并行动画评估",
+      "Overlay/Linked Layer按GameplayTag+task/config注册，在状态边界link/unlink并随Avatar重绑；Ragdoll单一task owner；明确项目TODO/文档漂移/未完成网络验证，不把示例代码包装成LGF已完成能力"
+    ]
+  },
+  {
+    "id": "LGF-22",
+    "slug": "transform-avatar-mover-animation-rebind-contract",
+    "prompt": "LGF吸收NPC/变Prop/骑宠物时会换Pawn、Mesh、AnimInstance，甚至每个形态Mover/PhysicsAsset/Camera profile不同。怎样保证旧GASP Linked Layer、PoseHistory、MotionWarp、Ragdoll和Camera不会残留，同时长期Inventory/GAS仍保留？",
+    "expectations": [
+      "长期PlayerState/Agent ASC、Inventory、loadout/stable identity继续存在；Avatar generation负责当前Pawn的Mover、Mesh/AnimInstance、PhysicsControl、camera context和applied presentation，切换不复制长期真值",
+      "Detach阶段先取消old-avatar action abilities/Mover LayeredMoves/warp targets、结束overlay/ragdoll tasks、解绑linked anim layers/delegates/input/camera context，再失去撤销这些副作用所需的owner引用；late callback检查avatar generation",
+      "Attach阶段先建立ASC ActorInfo与Mover/Physics/mesh，加载并验证当前形态Skeleton/AnimClass/Linked Layer/PhysicsAsset/Camera config，再重置或重新播种Trajectory/PoseHistory并按兼容规则reapply equipment/overlay/loadout",
+      "不兼容形态保留loadout assignment但不强制applied state；返回兼容形态后重建。测试NPC<->玩家、Prop、骑乘、死亡、换Controller、动作/Traversal/Ragdoll中途变形、Host/Remote/SimProxy/JIP以及无旧Layer/rig/rootmove残留"
+    ]
+  },
+  {
+    "id": "LGF-23",
+    "slug": "als-refactored-to-lgf-mover-gasp-selective-migration",
+    "prompt": "要把Sixze/ALS-Refactored的成熟网络/动画经验吸收到LGF，但LGF已经是Pawn+Mover+GASP/GAS/GameplayCamera。哪些保留，哪些拒绝？",
+    "expectations": [
+      "固定源码commit与实际.uplugin版本；把ALS-R的CMC/SavedMove/PhysWalking当语义参考，不把ACharacter/UCharacterMovementComponent路线并入LGF现有Pawn+Mover，也不引入第二套locomotion truth",
+      "保留其生产经验：预测状态必须进入运动重演、SimProxy/view独立平滑、Push Model dirty合同、Iris自定义struct审查、GT snapshot到worker anim、Linked Layer线程边界、moving-base局部空间movement transaction、角色/网络条件化URO",
+      "Mantle RootMotionSource语义翻译为Mover LayeredMove/Movement Effect并保存真实handle；GameplayTag movement authoring转成LGF DataAsset/config并在state transition缓存，禁止hot simulation反复多层map/query",
+      "Camera只吸收算法/ownership经验，LGF继续GameplayCamera单owner；ControlRig/linked layers作为presentation，不把ALS GameplayTag/AnimGraph变成Authority gameplay truth",
+      "明确ALS-R服务器mantle/roll参数复核不足、复制Engine movement源码升级成本等反例；所有吸收项以LGF UE5.7/实际目标版本API重新编译和网络验证"
+    ]
+  },
+  {
+    "id": "LGF-24",
+    "slug": "network-animation-optimization-matrix-for-transform-riding",
+    "prompt": "LGF未来支持任意NPC变身、Prop、骑宠物后，Skeleton/AnimBP/运动基座差异很大。想开启URO、Linked Layer、脚锁和网络平滑来省性能，怎么定验收矩阵？",
+    "expectations": [
+      "优化按avatar profile和network role配置，不全局一刀切：记录是否需要pose on server、URO倍率、foot lock、absolute/relative visual rotation、movement base能力、linked layer兼容与camera/retarget要求",
+      "区分Actor/Mover transform correction、visual mesh smoothing和view/aim smoothing；变身或骑乘切换时清旧平滑历史/PoseHistory/foot lock并重新播种，避免把旧形态误差带到新形态",
+      "对rotating/moving mount或platform使用base-relative数据和专门验证；不能为了修普通SimProxy jitter启用会在旋转base上抖动的全局absolute mesh策略",
+      "测试Standalone、Listen local/remote、Dedicated、client SimProxy、JIP、loss/latency、URO on/off、可见/不可见、不同Skeleton比例、mount turn、teleport/correction；收集CPU、动画帧率、foot error、view rotation error和残留layer/physics/camera状态"
+    ]
+  },
+  {
+    "id": "LGF-25",
+    "prompt": "双持同一库存。左挥时右刀贴着身后敌人也扣血；有人准备只共享一次去重，让两刀一起开。怎样定位和验证？",
+    "expectations": [
+      "区分PartId、Provider与精确HitWindow；按用户逐刀伤害合同隔离，不用共享去重掩盖误开",
+      "窗口重新采样和同步取消代次有效；用真实服务器Trace/GAS夹具验证未挥刀不伤、双刀独立与同刀去重",
+      "夹具不冒充自然动画视觉或联网验收"
+    ]
+  },
+  {
+    "id": "LGF-26",
+    "prompt": "完整多Section攻击本地通过，高延迟客户端Submit成功但只打一段。只加日志后无延迟又通过，能删网络五段断言结案吗？",
+    "expectations": [
+      "不删严格断言、不将Submitted当Accepted；记录server/client Sequence、发送到达与拒绝原因",
+      "检查合法窗口、段边界、blendout与测试oracle，禁止擅自放宽窗口或接受旧Sequence",
+      "诊断后复测成功不等于修复；保持各版本矩阵与退出/正文结果分离"
+    ]
+  },
+  {
+    "id": "LGF-27",
+    "prompt": "手持已采用源Skeleton单一Socket。背部位置错，当前收纳代码直接挂VisibleMesh的Avatar Anchor。告诉用户在哪里改，顺便判断锁定穿过敌人、低速起步播跑是否都是PSD太少。",
+    "expectations": [
+      "区分手持收纳，不让改UEFN手部Socket修背部；说明Avatar公共与Item/OffHand专属调整、实际Socket及实例重建",
+      "穿过目标先查Warp窗口/Target/Root/Mover；起步查速度轨迹Start/Loop与候选证据，不确认猜测",
+      "不修改用户校准或创建平行移动真值，保留未验证状态"
+    ]
+  },
+  {
+    "id": "LGF-28",
+    "slug": "combo-prediction-window-server-end-authority",
+    "prompt": "LGF双刀五段连招是LocalPredicted。首段PredictionKey有效，但后面Montage Section/HitWindow经过latent回调；高延迟时客户端先结束Ability，服务器后续段也被结束。怎么收敛？",
+    "expectations": [
+      "把每个latent Section/HitWindow当prediction boundary审计，记录ActivationKey/当前ScopedKey/Sequence/Window generation；首段Key不能自动覆盖后续五段",
+      "后续需要预测时用目标UE版本正式同步/Scoped Prediction机制，否则Authority继续业务、客户端只预测表现；不要复用stale PredictionKey",
+      "服务器伤害窗/连招生命周期不由客户端自然Montage结束强制终止；检查remote cancellation/security policy并为reject/cancel做本地Montage、Trace、Movement、Cue回滚",
+      "高延迟矩阵验证Submitted/Accepted/Rejected、各段Authority窗口、双刀PartId与damage count，不以无延迟完整五段作为网络正确证据"
+    ]
+  },
+  {
+    "id": "LGF-29",
+    "slug": "dual-weapon-sourceobject-spec-handle-isolation",
+    "prompt": "左右两把武器都授予同一个GA_MeleeCombo类。卸下右手后，当前代码按AbilityClass清除，结果左手也没能力了。应怎么修？",
+    "expectations": [
+      "每个装备grant source以ItemId/EquipmentEntry加FGameplayAbilitySpec::SourceObject或当前LGF等价source context绑定，Authority保存该来源最终SpecHandle/GrantedHandles",
+      "卸装只按该来源保存的handle撤销；同AbilityClass、同Tag、同Input不代表同一grant source，禁止ClearAbilityByClass式猜测删除",
+      "SourceObject是运行时上下文/弱引用而非永久存档ID；Inventory持久ItemId与runtime spec handle分层，load/respawn后重建映射",
+      "真实夹具覆盖左右手同类GA、只卸一把、交换手位、死亡重生、变身Avatar、JIP，确认另一武器grant和输入映射不受影响"
+    ]
+  },
+  {
+    "id": "LGF-30",
+    "slug": "client-targetdata-authority-retrace-and-ordering",
+    "prompt": "锁定/Traversal/近战都想先在客户端算目标，然后把HitResult或Warp参数发服务器。另一个方案是先Set一个replicated CurrentTarget再立即激活Ability。哪种更可靠？",
+    "expectations": [
+      "原子请求数据优先随GameplayEvent/TargetData或当前版本等价请求载荷绑定到同一Ability activation identity，避免依赖“先复制CurrentTarget再激活”的跨消息到达顺序",
+      "TargetData只承载候选/采样；Authority按不同动作重验距离、LOS、目标状态、trace geometry/warp envelope、装备来源和HitWindow，不把NetSerialize当授权",
+      "消费按Spec/Activation/Sequence/generation一次性归属并处理数据早到、迟到、重放和cancel；服务器可选择retrace并用自己的结果替换客户端FHitResult",
+      "对lock-on、Traversal和多刀Hit分别建立带宽/精度策略，禁止为了统一接口发送完整世界状态；记录client sample与server accepted result便于诊断"
+    ]
+  },
+  {
+    "id": "LGF-31",
+    "slug": "predicted-montage-multilayer-rejection-rollback",
+    "prompt": "LGF角色存在主Mesh、武器/Linked Layer，未来还可能有第一人称手臂或变身Mesh。预测Ability在多个表现层播放Montage后被服务器拒绝，只停主Mesh够吗？",
+    "expectations": [
+      "把预测表现identity定义为Ability activation/prediction + Avatar generation + mesh/layer + montage instance，而不是只按Montage asset；拒绝/取消时逐层撤销属于该激活的preview",
+      "主Mesh、Linked Anim Layer、武器/第一人称表现可以有不同Montage/Layer，但都不是额外Gameplay truth；Authority只确认Ability/动作状态，表现层从同一accepted state投影",
+      "Avatar切换/死亡/变身先清旧generation的Montage delegate、AbilityTask、TargetData、Overlay/Linked Layer，再绑定新Avatar，迟到reject不能停新Avatar同名Montage",
+      "测试listen host/remote、prediction reject、section jump、weapon swap、dual blade、NPC transform和多Mesh visibility，确认无ghost montage/旧delegate/重复cue"
+    ]
+  },
+  {
+    "id": "LGF-32",
+    "slug": "lyra-modernity-gate-for-lgf",
+    "prompt": "要把一个旧Lyra教程/旧GitHub分支的代码整合到当前LGF UE5.7项目。教程来自UE5.0或5.1，应该怎么处理？",
+    "expectations": [
+      "先把来源按Current、Stable-but-old、Historical、Reject分级并记录commit、UE版本、维护时间；用当前UE5.7源码、Epic当前文档和LGF实际实现核对关键API与初始化顺序",
+      "5.0 Lyra无InitState的Pawn初始化属于Historical，不允许覆盖LGF当前更严格的Avatar/ready/generation合同；5.1+InitState思想可映射但不强制复制Lyra类体系",
+      "旧教程中的CommonUI、GameFeature、Input、GAS类名与配置只做线索，真正修改前必须在目标工程或引擎确认存在、签名、插件成熟度和替代方案",
+      "外部项目只补LGF缺失模式；若LGF已有Inventory、Equipment、GASP、Mover、GameplayCamera，不再创建Lyra平行实现"
+    ]
+  },
+  {
+    "id": "LGF-33",
+    "slug": "lyra-initstate-maps-to-lgf-avatar-readiness",
+    "prompt": "LGF未来支持玩家吸收NPC、变Prop、骑宠物。网络上PlayerState、Pawn、Mover、ASC、动画、输入与装备可能乱序到达。如何利用Lyra经验？",
+    "expectations": [
+      "借鉴Lyra 5.1+ Init State思想，为LGF定义可观测的Avatar readiness阶段或依赖，而不是照搬ULyraHeroComponent；至少能表达DataAvailable、DataInitialized、GameplayReady等语义",
+      "稳定PlayerState/ASC与可替换Avatar分离；新Avatar的Mover、ASC ActorInfo、Input、Animation/Retarget、Equipment presentation、Camera都只在各自依赖ready后绑定",
+      "旧Avatar teardown和新Avatar init都使用generation，任何迟到async callback、prediction reject、input registration、camera或linked layer不得作用到新一代Avatar",
+      "Listen Host、Remote、JIP、连续变身、骑乘下马、死亡重生做乱序或重复初始化测试，并输出哪个依赖阻塞GameplayReady"
+    ]
+  },
+  {
+    "id": "LGF-34",
+    "slug": "lyra-experience-do-not-replace-lgf-foundation",
+    "prompt": "想把Lyra Experience/GameFeature整套接入LGF，用Experience替代现有Foundation和模块生命周期。合适吗？",
+    "expectations": [
+      "默认不合适：LGF已有Foundation、模块与Request/Authority生命周期，Lyra Experience只能作为可选内容编排参考，不能无收益替换核心Authority和持久化真值",
+      "可吸收的是异步readiness barrier、可逆feature activation、data-driven Pawn/Ability/Input composition；若需要动态玩法包，先设计LGF适配层而不是让业务直接依赖Lyra类",
+      "GameFeatures当前官方5.8仍标Beta，发行项目采用前要做平台、打包、hotfix、版本升级风险评估；若收益不足，使用静态模块加DataAsset配置同样可以实现组合",
+      "任何采用方案都必须证明feature启停不会重复grant、重复input、残留HUD、破坏save/schema或使Remote/JIP状态不同步"
+    ]
+  },
+  {
+    "id": "LGF-35",
+    "slug": "lyra-inventory-equipment-comparison-for-lgf",
+    "prompt": "Lyra文档说Inventory Item长期存在、Equipment Instance只在装备时存在。LGF已经有复杂Inventory/Equipment/多刀刃。应该怎样吸收？",
+    "expectations": [
+      "吸收生命周期边界而不是降级数据模型：LGF Inventory继续持久Item identity/runtime state，Equipment只维护当前applied presentation、Ability grants、socket/trace/animation绑定",
+      "ItemId到Equipment source、SpecHandle、Trace Part、LinkedLayer保持可追踪；Unequip只撤当前equipment generation的副作用，不销毁Inventory长期状态",
+      "Lyra快速栏或装备样例只作为简单装备流程证据，不能覆盖LGF已有Grid、容器事务、双刀PartId、GAS SourceObject和保存规则",
+      "测试同Item反复装备、左右手交换、收纳与手持、掉落、变身、死亡重生、JIP，确保Inventory identity稳定而Equipment实例不泄漏"
+    ]
+  },
+  {
+    "id": "LGF-36",
+    "slug": "xist-commonui-lessons-map-to-lgf-ui-platform",
+    "prompt": "LGF已有每LocalPlayer UINavigation、UMG/CommonUI Presenter、FoundationUIInput。研究UE5.7 XistCommonGameSample后，有人建议复制PrimaryGameLayout并让CommonUI拥有第二套Route Stack，同时在Pawn PossessedBy ClearAllMappings。请审查。",
+    "expectations": [
+      "LGF现有UINavigation继续作为每LocalPlayer唯一逻辑route/back/input arbiter；CommonUI PrimaryGameLayout只可作为Presenter/Layer实现参考，不创建第二套导航真值",
+      "吸收per-LocalPlayer root layout、UI action binding、GameplayTag layer、source-owned input registration和GameplayMessage projection；不复制ClearAllMappings或单机FirstPlayerController假设",
+      "Controller/Pawn/Travel时按LGF Receipt/InstanceId/Provider generation精确rebind与teardown，Avatar-scoped内容与LocalPlayer UI root分开",
+      "验证UMG/CommonUI双Presenter、菜单modal、repossess、split-screen、Dedicated Server build、旧provider callback和输入恢复"
+    ]
+  },
+  {
+    "id": "LGF-37",
+    "slug": "inventory-link-slot-resolves-stable-itemid",
+    "prompt": "LGF要做Hotbar/收藏/装备快捷引用。有人建议像某插件一样复制SourceItem UObject+SourceContainer+SourceIndex作为link item真值。请设计。",
+    "expectations": [
+      "Hotbar/link保存stable ItemId（必要时ContainerId/desired slot intent）而不是复制完整item truth；运行时pointer/index只是可丢弃resolution cache",
+      "canonical Item仍只属于Inventory/Equipment domain；source move/eject/load/reconnect后link通过ItemId重新解析并更新Accessible状态",
+      "link不能延长已销毁Item的业务生命周期；missing/inaccessible/permission changed有明确UI状态和activation失败原因",
+      "验证跨容器move、split/merge、save/load、JIP、disconnect/reconnect、Item删除与同类新Item不会误绑定"
+    ]
+  },
+  {
+    "id": "LGF-38",
+    "slug": "inventory-container-capability-authority",
+    "prompt": "客户端通过owner-only Bridge请求Move，payload里直接带FromContainer/TargetContainer UObject和slot。怎样接入LGF而不允许移动别人的仓库/掉落？",
+    "expectations": [
+      "LGF Authority根据Player/Controller、interaction/session和container policy签发或解析container capability/access；owner RPC本身不是container授权",
+      "请求携带stable ContainerId/ItemId/expected generation或revision，服务器re-resolve；raw pointers/indices不作为最终Authority证据",
+      "world chest/trade/shared stash等访问条件在commit前和必要的async re-entry后重校验，失效立即拒绝",
+      "验证伪造其他玩家container、关闭箱子后迟到请求、trade取消、远离交互点、重放TransactionId和并发双取"
+    ]
+  },
+  {
+    "id": "LGF-39",
+    "slug": "inventory-cross-container-write-set-atomic-commit",
+    "prompt": "LGF的Inventory↔Equipment↔Stash move需要支持复杂Item、GAS grant和UI。有人想用嵌套child transaction逐步Eject/Assign，失败只把parent标Failed。请设计生产事务。",
+    "expectations": [
+      "先preflight并构建before-image/write-set/reservation，验证source identity、target capacity/compatibility、access和所有依赖；commit阶段尽量不可失败",
+      "若commit仍可能失败，必须有已测试rollback/compensation，parent Failed本身不算rollback；每个child result显式gate后续mutation",
+      "canonical container mutations完成后再发布subobject reparent、Equipment/GAS grant/revoke、GameplayMessage/UI side effects，并用TransactionId做idempotency",
+      "故障注入覆盖每个边界、listen host、DS、JIP、disconnect mid-request，保证无dup/loss/half-equipped/双grant"
+    ]
+  },
+  {
+    "id": "LGF-40",
+    "slug": "replicated-item-subobject-transfer-reconnect",
+    "prompt": "LGF复杂唯一物品用replicated UObject，物品从背包移到装备再回仓库。如何管理registered subobject和Outer？",
+    "expectations": [
+      "定义唯一network host与business owner；old host RemoveReplicatedSubObject（含descendants）与new host Add注册必须对称且可诊断",
+      "Outer/reparent只服务lifetime/RPC/world routing，不替代stable ItemId/ContainerId；transfer保持同一业务Item identity",
+      "FastArray/container entry与subobject复制允许到达顺序不同，presentation等待引用ready或按ItemId二次解析；Listen Host走共享local-commit helper",
+      "验证JIP、relevancy变化、disconnect/reconnect、Avatar替换、container销毁、nested item graph和重复注册/残留注册计数"
+    ]
+  },
+  {
+    "id": "LGF-41",
+    "slug": "mass-npc-tiering-and-promotion",
+    "prompt": "LGF 大地图计划同时存在数千环境 NPC，靠近玩家的几十个需要 GASP/Mover/GAS 战斗、装备、交互。请设计 Mass 与现有 LGF 的边界。",
+    "expectations": [
+      "保留 LGF Actor/Pawn+Mover+GAS 作为高交互 Avatar；Mass 用于远景/群体/低交互 simulation，不用 Mass 重写现有 Foundation",
+      "每个 NPC 有 stable AgentId/DefinitionId 与 authority canonical state；MassEntityHandle、Actor pointer、representation LOD 都只是 runtime handle/cache",
+      "定义 promotion/demotion transaction 和 generation：Mass -> spawn/bind LGF Avatar -> InitState/ASC/Mover/animation/equipment ready -> route interactions -> suspend/strip Mass high-cost behavior；反向时提交状态再释放 Avatar",
+      "验证多玩家同时接近、promotion race、JIP、disconnect、Actor pool reuse、死亡/掉落过程中 LOD change，无双实体/双伤害/状态丢失"
+    ]
+  },
+  {
+    "id": "LGF-42",
+    "slug": "mass-pet-mount-hybrid",
+    "prompt": "以后玩家可以骑很多种 NPC/宠物。团队想让所有宠物一直是 Mass，骑上后直接把玩家挂到 ISM 表示上。请设计。",
+    "expectations": [
+      "远处/未激活宠物可用 Mass；被骑乘、战斗、复杂碰撞/动画/相机/输入中的宠物应 promotion 为当前 LGF Avatar/Actor representation，不能把 ISM 当 authoritative mount",
+      "PetId/OwnerId/成长/装备/持久化身份独立于 MassEntityHandle 与当前 Pawn；骑乘只切换 runtime representation/control owner",
+      "promotion 完成后再接管 Mover、GameplayCamera、Linked Anim Layer、socket/retarget、GAS compatible loadout；demotion 前撤销临时 grant/输入/camera并写回 canonical state",
+      "客户端只能请求 ride intent；Authority revalidate pet ownership、距离、状态与当前 representation generation，避免骑到已 demote/reused 的实体"
+    ]
+  },
+  {
+    "id": "LGF-43",
+    "slug": "mass-combat-authority-bridge",
+    "prompt": "Mass 环境怪被玩家 AoE 打到，目标可能仍是 Mass，也可能刚 promotion 成 LGF Pawn。如何避免双算伤害？",
+    "expectations": [
+      "伤害目标用 stable AgentId + representation generation 解析当前 Authority owner；一次 DamageId/HitId 只由一个 canonical combat path消费",
+      "若当前是高保真 LGF Pawn，由 GAS/战斗 Authority 处理并把结果回写 canonical agent state；若允许纯 Mass 受击，则使用 server-only Mass damage command/processor且不重复触发 Pawn GAS",
+      "promotion/demotion 设置明确 routing fence/epoch，in-flight hit 在 commit 时重新 resolve，旧 representation callback 被 generation 拒绝",
+      "客户端 cue/ISM hit flash/Actor montage都是表现；验证 AoE跨 LOD、同帧 promotion、死亡、掉落、JIP与高延迟不双扣/漏扣"
+    ]
+  },
+  {
+    "id": "LGF-44",
+    "slug": "mass-ai-feature-gate-current-ue",
+    "prompt": "LGF 想引入 MassAI/ZoneGraph/SmartObject/StateTree 做城镇人群。当前目标 UE5.7，未来升级 5.8。如何控制依赖风险？",
+    "expectations": [
+      "把 MassEntity core 与 MassGameplay/MassAI/MassCrowd/ZoneGraph 等插件成熟度分开；Experimental 模块通过 adapter/module boundary/feature flag 接入，不成为 Foundation 必需依赖",
+      "5.7 与 5.8 API/行为分别建立 compile matrix，尤其 processor/query、signals、sparse fragments、replication、StateTree/ZoneGraph integration；不从 UE5.1 sample 直接推断",
+      "设计 fallback：不启用 Mass 时现有 Actor AI/StateTree/导航仍可工作；保存格式和 stable NPC identity 不依赖 Mass runtime handles",
+      "升级前跑 UBT、Cook/Package、DS、multi-client/JIP、Mass Debugger/Insights perf 回归，并记录 Experimental dependency 接受理由"
+    ]
+  },
+  {
+    "id": "LGF-45",
+    "slug": "lgf-statetree-utility-decision-stack",
+    "prompt": "LGF 的战斗 NPC 要加入 StateTree 和 Utility AI。应该让 UtilityAIComponent、StateTree、GAS 三套系统谁做主？",
+    "expectations": [
+      "LGF 默认只有一个高层 decision owner：UE5.8 StateTree 负责 hierarchical state/transition，并可直接用 Utility Selector/Consideration 做同层候选评分；不要再并行维护第二套每帧 action FSM",
+      "Utility 负责‘选什么 intent’，StateTree Task 负责 orchestration，请求移动/SmartObject/GAS；GAS/Combat/Inventory 等 Authority domain 仍拥有业务真值和提交",
+      "确需独立 scorer 时输出稳定 DecisionIntent/score snapshot 给 StateTree，由 StateTree 接受/拒绝/延迟执行，不让 scorer 直接 ActivateAbility/扣血",
+      "AIController/Pawn/Avatar rebind 时清理 StateTree external handles、utility generation、GAS task/MoveTo/claim，旧 Avatar callback 不能影响新 generation"
+    ]
+  },
+  {
+    "id": "LGF-46",
+    "slug": "lgf-ai-interruption-and-gas-cancel-bridge",
+    "prompt": "NPC 正在五段连招，StateTree utility 发现逃跑分数更高就立刻切到 Flee；结果 Montage、HitWindow 和 MoveTo 混在一起。请设计。",
+    "expectations": [
+      "决策切换先走明确 interruption policy：连招当前 section 是否可取消、眩晕/死亡是否 hard override、普通 utility winner 是否需等待 cancel window",
+      "StateTree transition 只在 execution owner 接受 cancel/abort 或明确进入 PendingCancel 后推进相应 cleanup；不能先切 state 再希望 GAS 自己停",
+      "复用 LGF Ability/Combo generation、HitWindow/PartId/DamageId，取消后旧 notify/TargetData/montage callback 全部被 generation fence",
+      "Flee intent 最终通过 Mover/AI movement request 执行；新的 movement 不与未结束 root motion/ability movement transaction 双 owner"
+    ]
+  },
+  {
+    "id": "LGF-47",
+    "slug": "lgf-mass-ai-decision-continuity-on-promotion",
+    "prompt": "远处 Mass NPC 用低频 utility 选‘巡逻/休息/逃跑’，靠近玩家 promotion 成 LGF Pawn 后启动 StateTree。如何避免人格/目标/冷却重置？",
+    "expectations": [
+      "StableAgent state 保存可跨 representation 的 high-level intent、target StableAgentId、cooldown/last-action timestamps、必要的 decision seed/context；不保存 StateTree runtime node pointer 或 UObject action instance",
+      "promotion 时把 canonical decision context 映射到 StateTree parameters/context，选择合适 starting state/恢复策略；StateTree 成为高保真 owner 后停止 Mass decision writer",
+      "demotion 前把可持久的高层意图/冷却/目标写回 canonical Agent state，再销毁 StateTree/AIController runtime；RepresentationGeneration 防旧回调",
+      "不要求低保真 Mass 和高保真 StateTree bit-for-bit 同步内部状态，只要求业务可见决策连续、CombatOwner 唯一、时间基准一致"
+    ]
+  },
+  {
+    "id": "LGF-48",
+    "slug": "lgf-pet-mount-utility-and-player-command-priority",
+    "prompt": "宠物平时用 Utility/StateTree 自动跟随、攻击、躲避；玩家发‘停留/攻击这个目标/上马’命令时怎么和自动决策协调？",
+    "expectations": [
+      "玩家命令进入 server-owned command/intent layer，带 owner/capability/AgentId/generation 校验；不是直接修改 Utility score 或 StateTree active state",
+      "决策策略明确 command priority/expiry：强制命令可作为 StateTree 上层状态或高优先 consideration，完成/超时后回到 autonomous utility",
+      "骑乘请求触发 mount promotion/ownership 流程并暂停或切换宠物 autonomous combat brain；玩家控制、AI movement、Mover 不能同时写 movement truth",
+      "命令/自动切换记录 reason，断线、死亡、demotion、ownership transfer 时清理命令并恢复安全默认状态"
+    ]
+  },
+  {
+    "id": "LGF-49",
+    "slug": "lgf-quest-authority-stable-owner-vs-avatar",
+    "prompt": "玩家任务 Graph 现在挂在当前 Pawn 上。玩家变身成 NPC、骑坐骑或死亡换 Pawn 时，希望任务继续。应该怎么放？",
+    "expectations": [
+      "长期 QuestInstance/branch/progress/claimed rewards 属于稳定 PlayerState/Account/Quest subsystem 或 world authority owner，不属于可替换 Pawn/shape avatar",
+      "Avatar 只提供当前交互上下文/表现；切换 AvatarGeneration 时重新绑定可见交互、marker、context，不重建或复制第二份任务真值",
+      "跨关卡/断线保存使用 StableOwnerId + QuestInstanceId + GraphDefinitionVersion；重连后从 Authority snapshot 恢复 projection",
+      "NPC/world quest 同样使用 StableAgentId/WorldEventId 作为 owner identity，不能依赖 Actor pointer/name"
+    ]
+  },
+  {
+    "id": "LGF-50",
+    "slug": "lgf-flowgraph-typed-domain-command-authority",
+    "prompt": "剧情 Flow Node 直接调用 Inventory.AddItem、ASC.ApplyEffect、Boss.Destroy 和 SaveGame 写奖励，这样设计可以吗？",
+    "expectations": [
+      "FlowGraph/Quest Graph 只编排 intent；通过 typed domain command/semantic operation 进入 Inventory/GAS/World/Reward Authority service，不旁路既有事务和权限边界",
+      "命令携带 QuestInstanceId/NodeId/activation generation/correlation/request id，Authority 重验 quest state、player capability、target/world state 并保证 idempotency",
+      "Graph Node 等待明确 Success/Reject/Cancel 结果再触发后续输出；客户端 Flow 永远不能凭本地节点激活直接提交 canonical reward/damage/inventory truth",
+      "副作用的 exact revoke/compensation owner 明确；重试、save-load、重复 signal 不得重复发奖励或重复生成 world actor"
+    ]
+  },
+  {
+    "id": "LGF-51",
+    "slug": "lgf-quest-durable-state-event-projection-jip",
+    "prompt": "任务 UI 只监听 GameplayMessage/Flow Notify；玩家进队晚了、重连后看不到之前的任务阶段。如何改？",
+    "expectations": [
+      "建立 Authority quest snapshot/revision 作为 durable truth，消息/Flow Notify 只是增量 projection；UI/客户端首次进入先取 snapshot 再订阅事件",
+      "事件包含 QuestInstanceId、revision/sequence、event id 或 correlation；客户端检测 gap/stale/duplicate 后丢弃或请求 resync",
+      "团队/共享任务明确 individual vs party/world ownership、可见性和奖励 ledger；JIP 不靠重放无界历史事件恢复",
+      "UI、地图 marker、对话 availability 都由同一 quest projection 派生，不能各维护一份隐藏进度"
+    ]
+  },
+  {
+    "id": "LGF-52",
+    "slug": "lgf-shipped-quest-graph-save-abi-migration",
+    "prompt": "免费更新 ARPG 后重做主线任务图，想直接删旧节点、换 GUID 并让老玩家继续读档。需要什么发布合同？",
+    "expectations": [
+      "发布后的 GraphId/NodeId/QuestInstance state 视作 save ABI；删除或复用旧 ID 必须有 tombstone/redirect/pass-through 和显式 migration",
+      "Quest save 带 SchemaVersion + GraphDefinitionVersion，维护逐版本/跳版本 migration，并对 active node/subgraph/奖励已领取状态做 staging 校验",
+      "迁移后的 reward/kill/item grants 使用 stable ledger/idempotency key，避免旧节点映射后重复执行 irreversible side effect",
+      "CI 保留历史 save fixtures，至少覆盖 N-2/N-1 -> current、改名/拆图/合图、DLC 缺失、坏数据恢复和 downgrade 拒绝策略"
+    ]
+  },
+  {
+    "id": "LGF-53",
+    "slug": "lgf-flowgraph-statetree-mass-avatar-separation",
+    "prompt": "现在已有 Mass + StateTree + GAS/Mover，又加入 FlowGraph。NPC 的任务、AI、剧情演出、变身骑乘应该怎么分层，避免四套系统抢控制权？",
+    "expectations": [
+      "FlowGraph 负责 quest/world/narrative orchestration；StateTree/Utility 负责单个 Agent high-level decision；Mass 负责低成本批量模拟；GAS/Mover/Avatar 负责高保真动作执行",
+      "FlowGraph 通过 typed command 或 scripted override intent 临时影响 Agent，不直接成为 movement/combat owner；override 有 priority/generation/expiry/cleanup",
+      "Agent promotion/demotion 或玩家吸收/骑乘时保留 StableAgentId 与 durable quest/world-flow state，重建 runtime StateTree/Avatar bindings，不迁移瞬时 UObject execution frame 当长期真值",
+      "世界事件与任务图不为每个 Mass entity 建独立 UObject graph；大规模条件由聚合/信号触发，高价值实体再实例化局部 narrative flow"
+    ]
+  },
+  {
+    "id": "LGF-54",
+    "slug": "lgf-quest-scope-stable-owner-and-avatar-independence",
+    "prompt": "LGF以后支持吸收NPC、变身、骑宠物。Quest运行状态应该挂在当前Pawn/AIController上吗？",
+    "expectations": [
+      "不把durable quest state绑当前Avatar；用StablePlayer/Agent/Party/World owner key + QuestInstanceId/QuestTag表示Player/Shared/World scope",
+      "Pawn/Mount/Prop切换只重绑presentation/interaction source，Quest objective/progress/history继续存在；旧Avatar generation事件被拒绝",
+      "需要Actor来源时保存StableAgentId/semantic role并运行时resolve，不把临时AActor指针作为长期save identity",
+      "Quest visibility/reward ownership按scope定义，party/shared quest与个人quest不能共用隐式player pointer"
+    ]
+  },
+  {
+    "id": "LGF-55",
+    "slug": "lgf-event-driven-objectives-late-registration",
+    "prompt": "LGF任务目标有击杀、收集、到达、装备、世界事件。如何避免每个目标Tick并保证切关/晚加载不漏进度？",
+    "expectations": [
+      "目标采用typed signal/fact subscription，持久/current事实由Inventory/WorldState/Combat ledger等domain snapshot提供；Objective不全量Tick扫描世界",
+      "激活时先建立QuestInstance/ObjectiveGuid binding，再做authoritative/current-state catch-up；订阅和注销成对并generation-aware",
+      "Kill/loot等瞬时业务通过stable event identity/idempotency去重；同一事件多路路由到目标默认只消费一次",
+      "切关/恢复后从snapshot恢复progress和deferred intent，再重新绑定signals；UI晚打开从read model snapshot恢复而非等待下一次事件"
+    ]
+  },
+  {
+    "id": "LGF-56",
+    "slug": "lgf-quest-authority-command-validation-and-reward-ledger",
+    "prompt": "客户端按钮直接发“AdvanceQuest(QuestTag, Outcome.Victory)”给服务器，并在成功后由QuestNode直接AddItem奖励，安全吗？",
+    "expectations": [
+      "客户端只提交typed intent/correlation；Authority解析stable quest instance，检查scope/owner/current step/revision/objectives/conditions/holds和允许outcome",
+      "Quest orchestration不直接成为Inventory/GAS真值owner；奖励调用domain transaction并使用QuestInstanceId+SemanticRewardId等idempotency ledger",
+      "重试/断线/JIP/save restore不会重复Grant；失败返回结构化reason并保持quest canonical state不半推进",
+      "任何客户端自报Objective progress/Outcome都只是candidate，必要时由Combat/Inventory/World facts重新证明"
+    ]
+  },
+  {
+    "id": "LGF-57",
+    "slug": "lgf-compiled-quest-definition-and-content-migration",
+    "prompt": "任务编辑器图很复杂，还支持Linked Questline。LGF运行时是否应该直接遍历编辑器Graph并按节点名字找下一步？",
+    "expectations": [
+      "Authoring graph在cook/compile阶段扁平化为runtime definition：stable IDs、entry/routes/outcomes/objective refs/conditions/rewards；Shipping不依赖Editor graph traversal",
+      "Linked/inlined quest保留canonical identity与placement/content GUID，display name/asset rename不改变save identity；source hash/version用于发现stale compile",
+      "Quest save schema migration与QuestDefinition/Content migration分别管理，历史fixture覆盖rename、reparent、split/merge、linked placement和missing DLC",
+      "运行时definition可soft/async加载但activation前revalidate owner/instance generation；不把sync load藏在interaction hot path"
+    ]
+  },
+  {
+    "id": "LGF-58",
+    "slug": "lgf-quest-journal-read-model-ui-boundary",
+    "prompt": "Quest Journal、地图Marker、NPC头顶感叹号各自监听不同事件并维护自己的任务状态缓存，已经出现不一致。如何收敛？",
+    "expectations": [
+      "建立QuestState/Journal read model作为统一query surface，Manager是sole writer；Journal/Map/Dialog/UI从同一snapshot + delta projection派生",
+      "read model含quest phase、objective progress、tracking、display data、blockers/outcome history等稳定DTO，不暴露manager内部runtime UObject",
+      "首次打开/JIP先snapshot再订阅delta；事件gap/重复/旧revision触发discard/resync，不由Widget猜状态",
+      "UI命令通过request surface回Authority，Widget/QuestObserver/GameplayMessage都不能直接写quest canonical state"
+    ]
+  },
+  {
+    "id": "LGF-59",
+    "slug": "lgf-dialogue-stable-participant-avatar-rebind",
+    "prompt": "LGF玩家正在和NPC对话时吸收NPC变身、死亡换Pawn或骑乘宠物。Conversation该绑PlayerState/Agent还是当前Pawn？",
+    "expectations": [
+      "Conversation participant长期绑定StablePlayer/Agent identity和ParticipantRole，当前Pawn只是AvatarGeneration-bound presentation adapter",
+      "换Avatar按generation解除旧camera/face/gesture/socket/voice绑定并resolve新adapter；ConversationInstance/NodeGuid/Revision不因身体替换自动变化",
+      "旧Pawn delayed callback不能推进当前conversation；新形态无对话presentation能力时由Authority显式pause/end policy处理",
+      "真正身份、当前视觉形态、世界伪装/认知状态分开查询，不能用当前Mesh或DisplayName冒充stable identity"
+    ]
+  },
+  {
+    "id": "LGF-60",
+    "slug": "lgf-conversation-authority-read-model-jip",
+    "prompt": "LGF多人对话让客户端各自跑Dialogue Graph并直接ChooseOption(index)，HUD自行推进。怎样收敛？",
+    "expectations": [
+      "Server/Authority持有canonical ConversationInstance；客户端只消费ConversationView snapshot/delta，不维护可写graph truth",
+      "choice request使用ConversationInstanceId+ExpectedRevision+StableChoiceId；Host/Remote/AI最终进入同一Authority validator",
+      "read model投影speaker/line/choices/local presentation，首次打开/JIP/reconnect snapshot-first；gap/stale revision discard/resync",
+      "Dedicated不依赖CommonUI/voice/montage/camera完成semantic progression；Widget销毁或Avatar切换不自动销毁canonical conversation"
+    ]
+  },
+  {
+    "id": "LGF-61",
+    "slug": "lgf-quest-dialogue-domain-boundary",
+    "prompt": "NPC对话节点既检查Quest状态又直接写QuestManager、发任务奖励。LGF Quest和Dialogue应该怎样分工？",
+    "expectations": [
+      "Quest Manager保持quest sole writer，Dialogue条件只读QuestState/Journal read model；Conversation current node/choice是Dialogue自己的truth",
+      "Dialogue向Quest发送typed Accept/Advance/ResolveDialogueObjective request，Quest Authority重验Objective/current phase/conditions/holds并拥有reward ledger",
+      "ConversationResolved以stable Definition/Instance/Outcome/Revision事件供Quest Objective幂等消费，不通过本地int变量复制quest progress",
+      "Quest奖励继续走Inventory/GAS等owning domain transaction，conversation重试/save restore不会重复grant"
+    ]
+  },
+  {
+    "id": "LGF-62",
+    "slug": "lgf-dialogue-statetree-scoped-ai-intent",
+    "prompt": "对话开始时直接Suspend NPC StateTree、改AI变量、播放动作；对话取消/变身后经常恢复不了。怎样设计？",
+    "expectations": [
+      "Dialogue不成为AI brain；向StateTree/AI owner请求FacePartner/HoldPosition/DisableCombat/SocialMode/Gesture等scoped intent/token",
+      "token关联ConversationInstanceId+Avatar/AI generation，AI owner决定是否授予并管理task lifecycle；对话结束/cancel/avatar switch统一release",
+      "late StateTree task/gesture completion在token释放或generation变化后不能重新推进conversation",
+      "NPC/宠物作为mount或被promotion/rebuild时semantic agent identity继续，新的AI/avatar runtime重新绑定presentation/intent，不复制旧task UObject状态"
+    ]
+  },
+  {
+    "id": "LGF-63",
+    "slug": "lgf-dialogue-save-resume-content-migration",
+    "prompt": "LGF要保存进行中的对话，并允许后续补丁重排节点、改台词、拆分节点。存什么、怎样迁移？",
+    "expectations": [
+      "save存Conversation scope/instance、DialogueDefinitionId、CurrentNodeGuid、stable substate、participant stable bindings、semantic memory和schema/content fingerprint，不存NodeIndex/Pawn/Widget/rendered text作为identity",
+      "DialogueDefinition CustomVersion、ConversationSave SchemaVersion、ContentRedirect分别管理；Node/Choice/Role rename/split/merge有历史fixture",
+      "resume重新resolve当前definition和participant adapter，business enter-event不盲重放；presentation可以从read model重建，idempotent命令保持同一semantic key",
+      "active NodeGuid/ChoiceId丢失时按redirect/checkpoint/restart/abort结构化策略处理，禁止把新compiled graph相同数字index当成旧语义"
+    ]
+  },
+  {
+    "id": "LGF-64",
+    "slug": "lgf-shared-graph-authoring-not-shared-runtime-truth",
+    "prompt": "LGF已经有Quest/Dialogue/AI等Graph需求，要不要做一个UniversalGraphRuntime让所有系统共用同一Node/Edge基类和执行器？",
+    "expectations": [
+      "可以共享Editor authoring foundation、stable ID、schema diagnostics、compile pipeline、search/diff/layout等工具，但不强制共享业务runtime truth/executor",
+      "Quest、Dialogue、StateTree/AI、Ability各自保持domain owner、runtime state、Authority与Save语义；Common Graph只提供无业务副作用的基础设施",
+      "跨域连接通过typed references/commands/adapters，不让UniversalNode直接改Inventory/GAS/Quest/AI真值",
+      "Foundation public ABI避免直接暴露第三方GenericGraph/FlowGraph/DlgSystem类型；目标引擎adapter可以替换"
+    ]
+  },
+  {
+    "id": "LGF-65",
+    "slug": "lgf-graph-compile-stable-id-content-migration",
+    "prompt": "LGF要让Quest/Dialogue等图支持上线后重排、复制、拆分节点，并兼容旧Save。共用编译层要提供什么？",
+    "expectations": [
+      "所有domain graph产出显式GraphDefinitionId/NodeStableId/EdgeStableId与compiled revision/fingerprint；RuntimeIndex仅为本版局部优化",
+      "copy/duplicate默认新ID，rename/move不变ID，split/merge/remove通过ContentRedirect/tombstone/migration描述",
+      "编译先全图validate再原子发布runtime artifact；CI检测stale artifact、duplicate/missing IDs、dangling edge、非法cycle/parallel edge",
+      "历史Save/Quest/Dialogue fixtures在目标UE版本运行migration oracle，无法映射active id时走结构化restart/checkpoint/abort而非index碰巧相等"
+    ]
+  },
+  {
+    "id": "LGF-66",
+    "slug": "lgf-domain-graph-topology-policy",
+    "prompt": "Quest Graph想允许汇合但不允许环，Dialogue允许回话题环，Ability combo允许有限回环。能否只放一个bCanBeCyclical？",
+    "expectations": [
+      "不能用单一bool表达所有domain topology；每个GraphDefinition拥有DomainSchema/Policy，定义cycle/self-loop/parallel edge/cardinality/root/reachability规则",
+      "DAG-only编译可产topological order/level；允许cycle的domain要使用cycle-safe traversal或SCC语义，不复用root-only DAG算法",
+      "Editor拖线、compiler、cook/CI与runtime assertions共享同一policy source，避免四套规则漂移",
+      "domain policy变化带GraphDefinitionVersion/migration impact review，已发布内容重新validation"
+    ]
+  },
+  {
+    "id": "LGF-67",
+    "slug": "lgf-graph-editor-runtime-module-boundary",
+    "prompt": "LGF准备把GraphEditor、Slate、AssetTools都塞进Foundation Runtime，方便Quest和Dialogue随时打开编辑器。评审。",
+    "expectations": [
+      "拒绝；Foundation/Runtime不依赖UnrealEd/GraphEditor/Slate编辑器链，Editor或UncookedOnly模块承载UEdGraph/Schema/AssetDefinition/布局/Details",
+      "Shipping/Cook/Dedicated只加载compiled runtime definition和必要domain runtime，不需要authoring graph/widget/class picker",
+      "UE5.7/5.8 editor资产入口按目标版本评估UAssetDefinition/ToolMenus等现代API，legacy FAssetTypeActions仅兼容层而非新Foundation ABI",
+      "Build.cs用最小Public依赖，Editor符号不通过公共头泄漏到Runtime消费模块"
+    ]
+  },
+  {
+    "id": "LGF-68",
+    "slug": "lgf-live-graph-edit-revision-session-safety",
+    "prompt": "PIE/联机测试时设计师保存Dialogue/Quest Graph，新编译产物立刻覆盖正在跑的Authoritative session。怎么避免半旧半新？",
+    "expectations": [
+      "运行中的Graph/Conversation/Quest实例绑定CompiledRevision/ContentFingerprint，不能无条件热替换definition后继续用旧node handles",
+      "开发期hot reload使用显式policy：freeze old revision直到session结束，或quiesce→migrate→atomic switch→generation bump；失败回滚",
+      "网络客户端看到revision变化时snapshot/resync，stale choice/event/request携带old revision被Authority拒绝",
+      "Shipping内容更新通过版本化资产与save migration，不依赖Editor SaveAsset side effect作为runtime一致性协议"
+    ]
+  },
+  {
+    "id": "LGF-69",
+    "slug": "lgf-graph-transient-editor-projection-option",
+    "prompt": "LGF Graph Foundation已经有authoring→compiled模板；某个Dialogue域的canonical definition本身就能直接运行，Editor只需UEdGraph可视化。还必须强制两份持久化Graph吗？",
+    "expectations": [
+      "不强制；Foundation共享的是职责和合同，不是“两份持久化资产”这一形态。Domain可选择compiled-authoring pipeline或canonical semantic definition + transient editor projection",
+      "projection-first模式所有修改回到Domain semantic truth并走transaction/undo；UEdGraph/Slate对象可丢弃重建，不能成为runtime/save/network truth",
+      "两种模式都必须保留stable Node/Edge/Choice ID、DomainSchema validation、version/migration、deterministic caches和live revision fence",
+      "editor-only位置/断点/协作锁放Editor sidecar/WITH_EDITORONLY_DATA/UncookedOnly并做cook gate；当Domain需要重优化、裁剪、压缩或安全隔离时选独立compiled artifact"
+    ]
+  },
+  {
+    "id": "LGF-70",
+    "slug": "lgf-dialogue-continuation-save-await-token",
+    "prompt": "LGF Conversation在SubDialogue中等待一个Quest/GAS异步命令，随后玩家存档、变身或断线。Save/JIP怎样保证不会丢return stack或吃到旧callback？",
+    "expectations": [
+      "Authority ConversationInstance保存semantic continuation frames和PendingAwait；frame用Definition/Node/semantic transition IDs，PendingAwait含AwaitId/correlation、source node/command与revision/generation，不保存Pawn/UObject指针",
+      "Load/JIP先resolve definition+participant StableAgent、迁移IDs并rebuild derived caches；pending await按显式policy恢复/重发/取消/checkpoint restart",
+      "完成事件必须匹配当前ConversationInstanceId+AwaitId+generation/revision且由Authority验证；Avatar generation变化、旧会话、duplicate/stale callback不能推进canonical conversation",
+      "Quest/Inventory/GAS等owning domain保持sole writer并用同一semantic idempotency/correlation key；Load不盲重放已经commit的business command"
+    ]
+  },
+  {
+    "id": "LGF-71",
+    "slug": "lgf-dialogue-condition-dependency-revision-cache",
+    "prompt": "LGF Dialogue Choice条件同时读Quest、Inventory、ASC和WorldState。为了性能想把每个表达式bool缓存到conversation结束。怎么设计？",
+    "expectations": [
+      "编译后的condition AST/bytecode可按definition/expression稳定缓存；最终bool结果必须依赖revisioned read model，不能跨未知外部变化永久缓存",
+      "Quest/Inventory/GAS/WorldState各自暴露可观察revision/generation或变更订阅；result cache key/invalidator覆盖真实dependency set，Conversation不直接扫描各域内部结构",
+      "没有revision contract的external getter在interaction/selection等明确边界重新求值；客户端结果只供UI，Authority选择时仍按canonical current revisions重验",
+      "避免Tick中GameplayTag解析、反射、world scan、同步加载和全量条件重算；使用dependency-driven incremental invalidation并用profile验证收益"
+    ]
+  },
+  {
+    "id": "LGF-72",
+    "slug": "lgf-conversation-nested-local-scope-save-jip",
+    "prompt": "LGF Conversation A调用SubDialogue B，A/B都定义Local变量，B中玩家断线或变身后JIP恢复。现在Save只有一份local memory和ReturnNode stack。怎样避免B覆盖A并确保恢复正确？",
+    "expectations": [
+      "Authority把每层Dialogue调用当作独立semantic scope/call frame；frame绑定DefinitionId、return stable IDs、local scope frame和conversation revision/generation，不能让child复用并覆盖parent local map",
+      "Save/JIP snapshot包含active call/scope stack的stable IDs与所需local values/version；先resolve/migrate全部definition/frame并rebind StableAgent，再原子恢复top frame和derived caches",
+      "Avatar replacement只重绑presentation/avatar generation，不销毁conversation scope stack；stale old-avatar callback仍受AwaitId+generation fence约束",
+      "Quest/Inventory/GAS事实仍由各Domain拥有，Conversation local scope只保存Dialogue自身semantic locals；测试覆盖nested shadowing、reconnect/JIP、child cancel/return和schema migration"
+    ]
+  }
 ]

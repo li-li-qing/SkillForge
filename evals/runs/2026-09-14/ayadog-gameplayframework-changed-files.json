@@ -1,0 +1,19 @@
+{
+  "changed": [
+    "docs/project-distillations/README.md",
+    "skills/skillforge-lgf/evals/behavior-cases.json",
+    "skills/skillforge-lgf/references/avatar-and-assets.md",
+    "skills/skillforge-lgf/references/external-project-patterns.md",
+    "skills/skillforge-ue-cpp/SKILL.md",
+    "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+    "skills/skillforge-ui-design/SKILL.md",
+    "skills/skillforge-ui-design/evals/behavior-cases.json"
+  ],
+  "added": [
+    "docs/project-distillations/ayadog-gameplayframework.md",
+    "evals/runs/2026-09-14/ayadog-gameplayframework-distillation-validation.md",
+    "skills/skillforge-ue-cpp/references/framework-composition-patterns.md",
+    "skills/skillforge-ui-design/references/gameplay-ui-projection.md"
+  ],
+  "deleted": []
+}

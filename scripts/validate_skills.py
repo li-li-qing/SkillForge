@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """Validate portable SkillForge v1 packages using Python 3.10+ standard library.
 
-This intentionally validates a small YAML profile, not arbitrary YAML: exactly
-two single-line fields between `---` delimiters, a `name` and a JSON-quoted
+This intentionally validates a small YAML profile, not arbitrary YAML:
+single-line fields between `---` delimiters, a `name` and a JSON-quoted
 `description`. Names may be JSON-quoted or use a conservative plain subset:
 plain names must begin with a letter and cannot be null, true, false, yes, no,
 on, off, y, or n (including YAML 1.1 boolean spellings). Quote those names and
 all digit-leading names, even ordinary strings such as 123-foo, to avoid YAML
 scalar type ambiguity. Decoded names still obey the normal skill-name rules.
-Optional metadata, comments, block scalars, aliases, and other YAML features
-are unsupported in v1.
+Optional compatibility/license/allowed-tools are JSON-quoted strings; metadata
+is a map of JSON-quoted strings. Comments, block scalars, aliases and arbitrary
+YAML remain unsupported.
 
 Markdown checks cover ordinary inline links and reference-link definitions,
 not HTML or a complete CommonMark grammar. Relative links and recognizable
@@ -42,7 +43,7 @@ REFERENCE_LINK = re.compile(r"^ {0,3}\[[^\]\n]+\]:\s*(<[^>\n]*>|\S+)", re.MULTIL
 WINDOWS_PATH = re.compile(r"(?<![\w])[A-Za-z]:[\\/]|\\\\[^\s\\]+\\[^\s\\]+")
 UNIX_PATH = re.compile(r"(?<![\w:/.~-])/(?!/)[A-Za-z0-9_.~-]+(?:/[^\s`<>\"'()\[\]{},;]+)*/?")
 HOST_API = re.compile(
-    r"\b(?:functions\.[A-Za-z_]\w*|tools\.[A-Za-z_]\w*|mcp__[A-Za-z0-9_]+|"
+    r"(?<![\w/.-])(?:functions\.[A-Za-z_]\w*|tools\.[A-Za-z_]\w*|mcp__[A-Za-z0-9_]+|"
     r"cua\.[A-Za-z_]\w*|nodeRepl\.[A-Za-z_]\w*)\b|codex://|\$(?:CODEX_HOME|CLAUDE_PROJECT_DIR)\b"
 )
 SCRIPT_PATH = re.compile(
@@ -75,17 +76,42 @@ def read_text(path: Path, report: Report) -> str | None:
 
 def validate_header(path: Path, text: str, report: Report) -> str | None:
     lines = text.splitlines()
-    if len(lines) < 4 or lines[0] != "---" or lines[3] != "---":
-        report.error(path, "v1 header must have exactly name and description on two single lines between --- delimiters")
+    if len(lines) < 4 or lines[0] != "---" or "---" not in lines[1:]:
+        report.error(path, "header requires name and description between --- delimiters")
         return None
     fields = {}
-    for line in lines[1:3]:
-        match = re.fullmatch(r"(name|description): (.*)", line)
+    metadata_keys = set()
+    in_metadata = False
+    for line in lines[1:lines.index("---", 1)]:
+        if line == "metadata:" and "metadata" not in fields:
+            fields["metadata"] = ""
+            in_metadata = True
+            continue
+        if line.startswith("  ") and in_metadata:
+            match = re.fullmatch(r"  ([a-z][a-z0-9_-]*): (.*)", line)
+            try:
+                if not match or match[1] in metadata_keys or not isinstance(json.loads(match[2]), str):
+                    raise ValueError()
+            except (ValueError, TypeError):
+                report.error(path, "metadata requires unique keys and JSON-quoted string values")
+                return None
+            metadata_keys.add(match[1])
+            continue
+        in_metadata = False
+        match = re.fullmatch(r"(name|description|compatibility|license|allowed-tools): (.*)", line)
         if not match or match[1] in fields:
-            report.error(path, "v1 header requires one name and one JSON-quoted description; other YAML is unsupported")
+            report.error(path, "header has duplicate/unsupported fields or unsupported YAML")
             return None
         fields[match[1]] = match[2]
-    if set(fields) != {"name", "description"}:
+        if match[1] not in {"name", "description"}:
+            try:
+                value = json.loads(match[2])
+                if not isinstance(value, str) or (match[1] == "compatibility" and not 1 <= len(value) <= 500):
+                    raise ValueError()
+            except (ValueError, TypeError):
+                report.error(path, "optional fields require JSON-quoted strings (compatibility 1-500 characters)")
+                return None
+    if not {"name", "description"}.issubset(fields):
         report.error(path, "v1 header requires name and description")
         return None
     name = fields["name"]

@@ -1,0 +1,730 @@
+[
+  {
+    "source": "_skill_backup/lgame-ue5-development/references/build-debug.md",
+    "sha256": "7446b1a248da46df9e0b1a5bb022831823eaa1b6398ad82875f803cd041b9bf5",
+    "bytes": 1931,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-ue-cpp/references/replication-review.md"
+  },
+  {
+    "source": "_skill_backup/lgame-ue5-development/references/gasp-character.md",
+    "sha256": "1bd79e26fd2ed5f9f3e91acbc37e3583209eff78a6b98165dcb5a6ea2a182c81",
+    "bytes": 2810,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgame-ue5-development/references/preview-system.md",
+    "sha256": "ff62a034381ad2e21b27490f0c8e213aa4251eb274933c9322ee7e1be689ed71",
+    "bytes": 2756,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-ue-blueprint/references/official-asset-workflows.md"
+  },
+  {
+    "source": "_skill_backup/lgame-ue5-development/references/umg-pitfalls.md",
+    "sha256": "4a427789c0ae9fa203970d8f38562d66cf6dc4e2a5d726ef0ad2979fe8e13002",
+    "bytes": 3852,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-ue-blueprint/references/official-asset-workflows.md"
+  },
+  {
+    "source": "_skill_backup/lgame-ue5-development/SKILL.md",
+    "sha256": "101a097dda58d315154c0fb65f15d338d04a1f6ddd7e5cc2b4beac8d8c4ed54e",
+    "bytes": 4173,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/agents/openai.yaml",
+    "sha256": "db40a9610f2b760bec2f0ba3e1922e5a297f0763c4d4d1692605c44675a2b826",
+    "bytes": 319,
+    "same_as": null,
+    "disposition": "旧名称的宿主元数据退役；不迁到通用SkillForge，不更改已安装宿主配置",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/evals/review-cases.md",
+    "sha256": "4422a5e9fbe3bdfb3acbf803068b1e54edb8fe05c259b9adf6aa9ee299117dc2",
+    "bytes": 3224,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/evals/trigger-cases.yaml",
+    "sha256": "fff4f1c7f13971f911029a5b9b8c70e1dc36f51185d0cdc2a32867fd5eebcc8c",
+    "bytes": 2180,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/references/blueprint-api.md",
+    "sha256": "7c138ff8578e2731cb1e505aa34361636820ae9f3ab533a8c3e79dd79dcda342",
+    "bytes": 6128,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-ue-cpp/references/replication-review.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/references/code-review.md",
+    "sha256": "c0685ebb37de5658114ccf24d4b3624eedf2aa9992b4c7abd89362cf1c10a660",
+    "bytes": 10776,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-ue-cpp/references/replication-review.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/references/documentation.md",
+    "sha256": "951a089c51d5ce5175f2b1e8d2d459380624b94ab9214c91db09a41395bd7eda",
+    "bytes": 6380,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/validation-and-evolution.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/references/unreal-performance.md",
+    "sha256": "ae1356d7173fdd5341d78c4034238b4bf3f0cdfd929d1aab727def3743c067da",
+    "bytes": 6445,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-ue-cpp/references/replication-review.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/scripts/validate_markdown.py",
+    "sha256": "16c8e97aef26dbf674748b093ac67d45ea70a6446d8dd7fdfc3402f1007074a1",
+    "bytes": 14539,
+    "same_as": null,
+    "disposition": "旧包校验/旧名称断言退役；现库校验及行为用例替代",
+    "target": "scripts/validate_skills.py"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/scripts/validate_skill.py",
+    "sha256": "6c2bbf6bcad7a132834f5ba9fd66738baceba12e992827ec3ee950c0557d080f",
+    "bytes": 8253,
+    "same_as": null,
+    "disposition": "旧包校验/旧名称断言退役；现库校验及行为用例替代",
+    "target": "scripts/validate_skills.py"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/SKILL.md",
+    "sha256": "bf8298c3f3b234ba458b4b21a83e5f478addaa9b1c0a0be86bf60be37bce166b",
+    "bytes": 11526,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-development-auditor/tests/test_validate_markdown.py",
+    "sha256": "041d80293be8ac11a6f9497aac49079fd32bfd59fb30a828539a2a93b9965d96",
+    "bytes": 2744,
+    "same_as": null,
+    "disposition": "旧包校验/旧名称断言退役；现库校验及行为用例替代",
+    "target": "scripts/validate_skills.py"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/agents/openai.yaml",
+    "sha256": "73f9b9bd5da3c76b540ec7b0c88d67ad7f0734542846e4036386c2fe800df88c",
+    "bytes": 295,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/asset-inspection.md",
+    "sha256": "754a8bf1c55b6f60e70fbc4f5020c906e5f935bd3c8c8d7f19c3acbf09504591",
+    "bytes": 6277,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-ue-blueprint/references/official-asset-workflows.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/combat-animation-failure-modes.md",
+    "sha256": "9953b47c3d7b547d44b62a0c9b1c118f0cd958e1311689804e58a98fec420e2b",
+    "bytes": 6439,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/equipment-ability-lifecycle.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/gasp-animation.md",
+    "sha256": "dc6e2297fecb4bfcbd1a507a0651021270c6c59696449564aac754149ff7afb0",
+    "bytes": 16267,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/gasp-version-gate.md",
+    "sha256": "11529835575c6e915993e7dbe296237170fa06f76abe48823d06c382760ad86d",
+    "bytes": 7080,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/lgame-workspace-routing.md",
+    "sha256": "9fe936673a7609f4ebbd719878eccfc91e87bf7697624e30f818335df37c2a2a",
+    "bytes": 2648,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/validation-and-evolution.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/lgf-gasp-contract.md",
+    "sha256": "b479c9f79ee0fbbb27ece202244d3a2f7c76d25391737dccb5e7ba609ad41a2a",
+    "bytes": 10630,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/mover-gameplay-recipes.md",
+    "sha256": "11414ffe8a7ed9e6cc9a610a733dd1a87b3066f2bda58c354bc7e9083a11e3b5",
+    "bytes": 10932,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/mover-ue57.md",
+    "sha256": "9f990bbd805c9d5dbc202e5abf6d5c343484b0eada726f832d8519aa97dc6273",
+    "bytes": 8468,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/mover-version-gate.md",
+    "sha256": "f48829c1b42a6bcc7fb0b1af886f900b050659f1dc1aacc436355a792acc8d0f",
+    "bytes": 2260,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/root-motion-coordinate-spaces.md",
+    "sha256": "c029a73398f57c07d4efc470de4d5f7c4f7388e1ae2f3185426d6971ff386fd1",
+    "bytes": 8808,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/third-party-animation-packs.md",
+    "sha256": "ad3bbd6b9e030eafc73914d887329bcdc5d05b5c0bdb473822112cd2e2b57408",
+    "bytes": 7479,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/references/validation-and-troubleshooting.md",
+    "sha256": "26218531745ed220675edb9eba91151438bb26bd2294cb63f5a03b61b2c2c2ff",
+    "bytes": 8808,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/scripts/inspect_workspace.py",
+    "sha256": "415c53add5b7ba181091a04a18278240c0acb3061a6db5253ebbbbfe86224c09",
+    "bytes": 9875,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/SKILL.md",
+    "sha256": "83eb6653221a2c56ff590b70472f684f224573d4644185ac644123526112e533",
+    "bytes": 8157,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/tests/test_inspect_workspace.py",
+    "sha256": "4a6b500eea4032ae685d74a9f3e63dcd3f6feb6870ff7d8d20634d2a6208e6d1",
+    "bytes": 8659,
+    "same_as": null,
+    "disposition": "重复/旧版本入口，使用合并后的主题参考",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "_skill_backup/lgf-gasp-integration/tests/test_skill_contracts.py",
+    "sha256": "5ec6eef484b3e74e9a27c7f397828f9ffe7bcf3bbb72c20a724b4f4822757573",
+    "bytes": 2568,
+    "same_as": null,
+    "disposition": "旧包校验/旧名称断言退役；现库校验及行为用例替代",
+    "target": "scripts/validate_skills.py"
+  },
+  {
+    "source": "Advanced_UI_Layout_Skill_v4/advanced-ui-layout/CASE_LIBRARY.md",
+    "sha256": "8b2cc44a29da4a167b1de6602e6e1848438b35ce2f2ae4bffb9459c2b7894181",
+    "bytes": 6555,
+    "same_as": null,
+    "disposition": "已有UI布局/交互主题覆盖；仓库推荐清单不作机制证据",
+    "target": "skills/skillforge-ui-design/references/layout-patterns.md"
+  },
+  {
+    "source": "Advanced_UI_Layout_Skill_v4/advanced-ui-layout/GITHUB_PATTERN_MATRIX.md",
+    "sha256": "339625b96c88408d5f0db17d29bffd647ba823584afd7f6971a36e3c58d1466c",
+    "bytes": 1372,
+    "same_as": null,
+    "disposition": "已有UI布局/交互主题覆盖；仓库推荐清单不作机制证据",
+    "target": "skills/skillforge-ui-design/references/layout-patterns.md"
+  },
+  {
+    "source": "Advanced_UI_Layout_Skill_v4/advanced-ui-layout/GITHUB_RESEARCH_V4.md",
+    "sha256": "a8da223bccd99b30318036d8ebb94ff5a0dc20d492df06da2351b7a52afd8f24",
+    "bytes": 4588,
+    "same_as": null,
+    "disposition": "已有UI布局/交互主题覆盖；仓库推荐清单不作机制证据",
+    "target": "skills/skillforge-ui-design/references/layout-patterns.md"
+  },
+  {
+    "source": "Advanced_UI_Layout_Skill_v4/advanced-ui-layout/PRO_TOOL_PATTERNS.md",
+    "sha256": "0d4b66f18cbbe97e758e20b00e419b4467c3a661456f3b93adeaca0be30df234",
+    "bytes": 10051,
+    "same_as": null,
+    "disposition": "已有UI布局/交互主题覆盖；仓库推荐清单不作机制证据",
+    "target": "skills/skillforge-ui-design/references/layout-patterns.md"
+  },
+  {
+    "source": "Advanced_UI_Layout_Skill_v4/advanced-ui-layout/REVIEW_CHECKLIST.md",
+    "sha256": "6ec525ab9a32b65296250487c9d9761e85d604425bda635dba7df82307529fbe",
+    "bytes": 1340,
+    "same_as": null,
+    "disposition": "已有UI布局/交互主题覆盖；仓库推荐清单不作机制证据",
+    "target": "skills/skillforge-ui-design/references/layout-patterns.md"
+  },
+  {
+    "source": "Advanced_UI_Layout_Skill_v4/advanced-ui-layout/SKILL.md",
+    "sha256": "d160daa41dab75f70db42622cee7f70ac107b34b57d0940ca9b55cd272eaec05",
+    "bytes": 20280,
+    "same_as": null,
+    "disposition": "已有UI布局/交互主题覆盖；仓库推荐清单不作机制证据",
+    "target": "skills/skillforge-ui-design/references/layout-patterns.md"
+  },
+  {
+    "source": "Advanced_UI_Layout_Skill_v4/README.md",
+    "sha256": "8f8c5c9e65cd8b4a68080e9c24236e4dd6b4b7e40b48ec7818db8037ed7275d9",
+    "bytes": 987,
+    "same_as": null,
+    "disposition": "已有UI布局/交互主题覆盖；仓库推荐清单不作机制证据",
+    "target": "skills/skillforge-ui-design/references/layout-patterns.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/agents/openai.yaml",
+    "sha256": "4940669462c25ce65b804e4465f14e8fe95e7d3461d2c69c1e25249450fd02f2",
+    "bytes": 324,
+    "same_as": null,
+    "disposition": "旧名称的宿主元数据退役；不迁到通用SkillForge，不更改已安装宿主配置",
+    "target": "skills/skillforge-lgf/references/migration-evidence.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/evals/review-cases.md",
+    "sha256": "a02c0c34899861cc1fa79d8205dd6028399d66c49b8f8eceb3be2e994ba63ea0",
+    "bytes": 3340,
+    "same_as": null,
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/migration-evidence.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/evals/trigger-cases.yaml",
+    "sha256": "81d28b81aa708cf8b8a8bdc160958441c29ab7c4a885142769e80c40d71adfa6",
+    "bytes": 3078,
+    "same_as": null,
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/migration-evidence.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/auditor/blueprint-api.md",
+    "sha256": "7c138ff8578e2731cb1e505aa34361636820ae9f3ab533a8c3e79dd79dcda342",
+    "bytes": 6128,
+    "same_as": "_skill_backup/lgf-development-auditor/references/blueprint-api.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-ue-cpp/references/replication-review.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/auditor/code-review.md",
+    "sha256": "c0685ebb37de5658114ccf24d4b3624eedf2aa9992b4c7abd89362cf1c10a660",
+    "bytes": 10776,
+    "same_as": "_skill_backup/lgf-development-auditor/references/code-review.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-ue-cpp/references/replication-review.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/auditor/documentation.md",
+    "sha256": "951a089c51d5ce5175f2b1e8d2d459380624b94ab9214c91db09a41395bd7eda",
+    "bytes": 6380,
+    "same_as": "_skill_backup/lgf-development-auditor/references/documentation.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/validation-and-evolution.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/auditor/unreal-performance.md",
+    "sha256": "ae1356d7173fdd5341d78c4034238b4bf3f0cdfd929d1aab727def3743c067da",
+    "bytes": 6445,
+    "same_as": "_skill_backup/lgf-development-auditor/references/unreal-performance.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-ue-cpp/references/replication-review.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/asset-inspection.md",
+    "sha256": "754a8bf1c55b6f60e70fbc4f5020c906e5f935bd3c8c8d7f19c3acbf09504591",
+    "bytes": 6277,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/asset-inspection.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-ue-blueprint/references/official-asset-workflows.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/combat-animation-failure-modes.md",
+    "sha256": "9953b47c3d7b547d44b62a0c9b1c118f0cd958e1311689804e58a98fec420e2b",
+    "bytes": 6439,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/combat-animation-failure-modes.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/equipment-ability-lifecycle.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/gasp-animation.md",
+    "sha256": "dc6e2297fecb4bfcbd1a507a0651021270c6c59696449564aac754149ff7afb0",
+    "bytes": 16267,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/gasp-animation.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/gasp-version-gate.md",
+    "sha256": "11529835575c6e915993e7dbe296237170fa06f76abe48823d06c382760ad86d",
+    "bytes": 7080,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/gasp-version-gate.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/lgf-gasp-contract.md",
+    "sha256": "b479c9f79ee0fbbb27ece202244d3a2f7c76d25391737dccb5e7ba609ad41a2a",
+    "bytes": 10630,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/lgf-gasp-contract.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/mover-gameplay-recipes.md",
+    "sha256": "11414ffe8a7ed9e6cc9a610a733dd1a87b3066f2bda58c354bc7e9083a11e3b5",
+    "bytes": 10932,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/mover-gameplay-recipes.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/mover-ue57.md",
+    "sha256": "9f990bbd805c9d5dbc202e5abf6d5c343484b0eada726f832d8519aa97dc6273",
+    "bytes": 8468,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/mover-ue57.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/mover-version-gate.md",
+    "sha256": "f48829c1b42a6bcc7fb0b1af886f900b050659f1dc1aacc436355a792acc8d0f",
+    "bytes": 2260,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/mover-version-gate.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/root-motion-coordinate-spaces.md",
+    "sha256": "c029a73398f57c07d4efc470de4d5f7c4f7388e1ae2f3185426d6971ff386fd1",
+    "bytes": 8808,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/root-motion-coordinate-spaces.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/third-party-animation-packs.md",
+    "sha256": "ad3bbd6b9e030eafc73914d887329bcdc5d05b5c0bdb473822112cd2e2b57408",
+    "bytes": 7479,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/third-party-animation-packs.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/integration/validation-and-troubleshooting.md",
+    "sha256": "26218531745ed220675edb9eba91151438bb26bd2294cb63f5a03b61b2c2c2ff",
+    "bytes": 8808,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/validation-and-troubleshooting.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-debugging/references/review-and-validation.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/project/build-debug.md",
+    "sha256": "7446b1a248da46df9e0b1a5bb022831823eaa1b6398ad82875f803cd041b9bf5",
+    "bytes": 1931,
+    "same_as": "_skill_backup/lgame-ue5-development/references/build-debug.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-ue-cpp/references/replication-review.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/project/gasp-character.md",
+    "sha256": "1bd79e26fd2ed5f9f3e91acbc37e3583209eff78a6b98165dcb5a6ea2a182c81",
+    "bytes": 2810,
+    "same_as": "_skill_backup/lgame-ue5-development/references/gasp-character.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/gasp-mover-integration.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/project/lgame-workspace-routing.md",
+    "sha256": "9fe936673a7609f4ebbd719878eccfc91e87bf7697624e30f818335df37c2a2a",
+    "bytes": 2648,
+    "same_as": "_skill_backup/lgf-gasp-integration/references/lgame-workspace-routing.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/validation-and-evolution.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/project/preview-system.md",
+    "sha256": "ff62a034381ad2e21b27490f0c8e213aa4251eb274933c9322ee7e1be689ed71",
+    "bytes": 2756,
+    "same_as": "_skill_backup/lgame-ue5-development/references/preview-system.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-ue-blueprint/references/official-asset-workflows.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/references/project/umg-pitfalls.md",
+    "sha256": "4a427789c0ae9fa203970d8f38562d66cf6dc4e2a5d726ef0ad2979fe8e13002",
+    "bytes": 3852,
+    "same_as": "_skill_backup/lgame-ue5-development/references/umg-pitfalls.md",
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-ue-blueprint/references/official-asset-workflows.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/scripts/inspect_workspace.py",
+    "sha256": "415c53add5b7ba181091a04a18278240c0acb3061a6db5253ebbbbfe86224c09",
+    "bytes": 9875,
+    "same_as": "_skill_backup/lgf-gasp-integration/scripts/inspect_workspace.py",
+    "disposition": "原文件迁移，带回归",
+    "target": "skills/skillforge-lgf/scripts/inspect_workspace.py"
+  },
+  {
+    "source": "lgf-ue5-devkit/scripts/validate_markdown.py",
+    "sha256": "16c8e97aef26dbf674748b093ac67d45ea70a6446d8dd7fdfc3402f1007074a1",
+    "bytes": 14539,
+    "same_as": "_skill_backup/lgf-development-auditor/scripts/validate_markdown.py",
+    "disposition": "旧包校验/旧名称断言退役；现库校验及行为用例替代",
+    "target": "scripts/validate_skills.py"
+  },
+  {
+    "source": "lgf-ue5-devkit/scripts/validate_skill.py",
+    "sha256": "6c2bbf6bcad7a132834f5ba9fd66738baceba12e992827ec3ee950c0557d080f",
+    "bytes": 8253,
+    "same_as": "_skill_backup/lgf-development-auditor/scripts/validate_skill.py",
+    "disposition": "旧包校验/旧名称断言退役；现库校验及行为用例替代",
+    "target": "scripts/validate_skills.py"
+  },
+  {
+    "source": "lgf-ue5-devkit/SKILL.md",
+    "sha256": "c54e5e1cb9941cf4c6c2ca2370979aaa0118176ccc810790e7bfd1f9a80e5188",
+    "bytes": 23091,
+    "same_as": null,
+    "disposition": "按主题提炼；不复制固定路径、工具禁令与已推翻结论",
+    "target": "skills/skillforge-lgf/references/migration-evidence.md"
+  },
+  {
+    "source": "lgf-ue5-devkit/tests/test_inspect_workspace.py",
+    "sha256": "4a6b500eea4032ae685d74a9f3e63dcd3f6feb6870ff7d8d20634d2a6208e6d1",
+    "bytes": 8659,
+    "same_as": "_skill_backup/lgf-gasp-integration/tests/test_inspect_workspace.py",
+    "disposition": "原文件迁移，带回归",
+    "target": "skills/skillforge-lgf/tests/test_inspect_workspace.py"
+  },
+  {
+    "source": "lgf-ue5-devkit/tests/test_skill_contracts.py",
+    "sha256": "4f8ebbc9588ff51ef61672c86187d42b52eb8ea76ab43b03463b944845678b6f",
+    "bytes": 2897,
+    "same_as": null,
+    "disposition": "旧包校验/旧名称断言退役；现库校验及行为用例替代",
+    "target": "scripts/validate_skills.py"
+  },
+  {
+    "source": "lgf-ue5-devkit/tests/test_validate_markdown.py",
+    "sha256": "041d80293be8ac11a6f9497aac49079fd32bfd59fb30a828539a2a93b9965d96",
+    "bytes": 2744,
+    "same_as": "_skill_backup/lgf-development-auditor/tests/test_validate_markdown.py",
+    "disposition": "旧包校验/旧名称断言退役；现库校验及行为用例替代",
+    "target": "scripts/validate_skills.py"
+  },
+  {
+    "source": "replicated-suite-maintenance/CHANGELOG.md",
+    "sha256": "841e88486a8afc7ccd40f8d983ab5ee35fc89e19509ea6963e5857f6ea2de522",
+    "bytes": 4892,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/README.md",
+    "sha256": "296629fc76ba90e6b0b7d08b4ac1ba77666e78b4580dd9f9b367491000985001",
+    "bytes": 5933,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/archeage-ru-runtime.md",
+    "sha256": "4878f77c4293c4668d5d57a9efa45050547e2ea15b90b5b01ad3edfafb73d961",
+    "bytes": 5827,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/architecture-runtime.md",
+    "sha256": "9e4edc720d86f1b8041de3bd6ddc5322f2928aaf81083ad5c5ff1eb24d393564",
+    "bytes": 3276,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/ci-quality-gates.md",
+    "sha256": "43a7e29a1bd46be49c2489ec38daed15694a31f3170041f433569426ee389055",
+    "bytes": 2248,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/compatibility-and-degradation.md",
+    "sha256": "344be35431d953b4fd3148b23c7ac57905ca973735ac598ae0d3c644ec265164",
+    "bytes": 3410,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/diagnostics-testing-packaging.md",
+    "sha256": "65e0e72a83d75d75ab8773cb5f5de66eb08459baed9aa57f9a3ba265724f8dd7",
+    "bytes": 3581,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/failure-catalog.md",
+    "sha256": "431cb57a643225ffd62cb6645c362070716809e5b5ed49a0e5b5e13d9d04df19",
+    "bytes": 8608,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/feature-playbooks.md",
+    "sha256": "a58aee1ca057c11ed37106ac1559c0a44e87e1d6af17b91a8210083c5be68be6",
+    "bytes": 2987,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/localization-accessibility.md",
+    "sha256": "4f9190fdc74d4a608424926fdf8bd46dad5d9ae4ee3e6a79453cb786365bdfbc",
+    "bytes": 2535,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/lua51-runtime-contract.md",
+    "sha256": "2d7d43dadf7dca0bdbbccad5910568c703e363f6e5f818d9dabad2f267947881",
+    "bytes": 6108,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/native-api-verification.md",
+    "sha256": "7accc8590ca728aa8fccfc24cfbf5ca70de18880ea360b53f967592740bf0334",
+    "bytes": 6338,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/performance-budgets.md",
+    "sha256": "bc5c4bb6c8695382265d5f7c93917515576ec3c59f96fd3c8630d1f3132a8049",
+    "bytes": 2616,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/persistence-and-migrations.md",
+    "sha256": "83a0bfc4f81ff793e7e7671f4629dbed50ba120fd8053448cedea8f90a2f5678",
+    "bytes": 3547,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/player-data-safety.md",
+    "sha256": "311e864ba1b5aae7c77d27b2c774a3e78c9a9c1a797217324f30785e0fd456fa",
+    "bytes": 2911,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/public-release-contract.md",
+    "sha256": "80b6ec779a0af0f576dca8d75cbb992bce62e767e56c32ecd38bd4d210db749c",
+    "bytes": 3938,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/release-update-rollback.md",
+    "sha256": "56700fc1d023dd12774d608fafc531ff13c3dffe5b41c7cfe8272f2602c12962",
+    "bytes": 2763,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/security-privacy-policy.md",
+    "sha256": "b7723f01013aa015ba0476da9d258a1a2e7a721e3b104adb5417413ad4eb5aa2",
+    "bytes": 2598,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/support-and-diagnostics.md",
+    "sha256": "6802fc3a628a15dba1561f6e0662c8ac5d7be799f626fe37eab0385375135948",
+    "bytes": 2432,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/references/ui-input-layout.md",
+    "sha256": "98089fd2a45ebb031e648c44f3d7b0e0ddddd6b76f0bbb58317869e6bd50d617",
+    "bytes": 4607,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  },
+  {
+    "source": "replicated-suite-maintenance/SKILL.md",
+    "sha256": "0a3fc1787142514fe0fcb2e76bd725aa73a5112348b7d72f5b9dbdef74e7e53d",
+    "bytes": 26527,
+    "same_as": null,
+    "disposition": "已有主题覆盖，补数据回退/容量/发布边界",
+    "target": "skills/skillforge-archerage-addon/references/migration-release-boundaries.md"
+  }
+]

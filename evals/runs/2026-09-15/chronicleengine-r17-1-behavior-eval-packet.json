@@ -1,0 +1,176 @@
+{
+  "round": "R17.1",
+  "date": "2026-09-15",
+  "purpose": "Fresh-context Behavior Eval packet for ChronicleEngine-derived Skill contracts",
+  "status": "pending_fresh_context_execution",
+  "reason": "This ChatGPT artifact-editing harness exposes no isolated subagent/model-runner primitive. Static semantic probes were executed separately and are not counted as Behavior Eval.",
+  "protocol": [
+    "Run each case in a fresh context under the same model/settings/tools.",
+    "Baseline condition must use the frozen R16 formal references for CPP-110..113/LGF-69..71 and frozen R17 formal references before R17.1 Reference edits for CPP-114/115/LGF-72; do not reveal expectations before raw answer is saved.",
+    "Forward condition uses R17.1 formal references; again save raw answer before revealing expectations.",
+    "Judge every expectation from concrete answer evidence; record pass/partial/fail and preserve raw text.",
+    "Do not count semantic grep/anchor coverage as behavior evidence."
+  ],
+  "cases": [
+    {
+      "id": "CPP-110",
+      "slug": "graph-transient-editor-projection-single-truth-contract",
+      "prompt": "一个Dialogue资产已经有canonical semantic node/edge数据；Editor每次打开都从它重建transient UEdGraph。是不是生产级Graph一律还要再保存一份AuthoringGraph和CompiledGraph？",
+      "expectations": [
+        "不是；Authoring/Runtime职责分离不等于必须持久化两份Graph。若authoring语义与runtime definition高度一致，可让canonical semantic definition成为单一持久化真值，UEdGraph只做可重建transient editor projection",
+        "Editor mutation必须回写authoritative semantic model/service并走Modify/transaction/undo；UEdGraph node/pin/widget identity不能成为第二份truth或Save/Network identity",
+        "projection-first仍要求stable Graph/Node/Edge/Choice identity、whole-definition validation、schema/content version+migration、deterministic derived caches；需要重优化/裁剪/安全边界时再使用独立compiled artifact",
+        "NodePos/breakpoint/soft lock/editor decoration等非运行数据放WITH_EDITORONLY_DATA、Editor sidecar或UncookedOnly资产并验证cook stripping，Shipping/Dedicated不能依赖这些字段"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "CPP-111",
+      "slug": "dialogue-save-continuation-stack-await-state",
+      "prompt": "Dialogue允许SubDialogue嵌套和async Event等待，但Save只存CurrentTreeGuid/CurrentNodeGuid/LineIndex/RunnerState。Load后还能安全续跑吗？",
+      "expectations": [
+        "不能默认安全；Save必须覆盖所有会决定下一次transition的hidden continuation state，包括nested continuation/call frames、return definition/node/semantic slot与pending wait/await substate",
+        "持久化使用stable semantic IDs和schema/content fingerprint，不保存TObjectPtr、数组index或瞬态runtime handle；Load先resolve/migrate所有definition/frame，再rebuild lookup/cache并rebind依赖",
+        "每个latent/nested状态定义resume/cancel/reissue/restart policy；缺失或无法迁移的frame/await必须显式abort/checkpoint/restart，而不是碰巧落到当前node",
+        "恢复presentation与恢复business side effect分离；不可逆enter command不能因Load重新进入节点而重复执行"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "CPP-112",
+      "slug": "dialogue-async-completion-correlation-generation",
+      "prompt": "一个async Dialogue Event只记录WaitingEventTag，并用NotifyEventComplete(Tag)恢复。两个节点/会话重复使用同一Tag时，旧callback晚到怎么办？",
+      "expectations": [
+        "GameplayTag只描述event type，不能单独充当一次异步operation identity；等待必须有AwaitId/ExecutionToken并关联ConversationInstanceId、Node/Transition stable ID和revision/generation",
+        "完成回调在Authority/owner验证active token+generation+expected state后才能推进；stale/duplicate/cancelled completion必须no-op并可诊断",
+        "Save/Load/JIP需要明确pending await是持久化、重发、取消还是从checkpoint重启；不能仅凭相同Tag接受旧进程/旧Avatar/旧conversation callback",
+        "跨Quest/Inventory/GAS/AI等外域异步命令复用同一correlation/idempotency identity，避免retry/reconnect导致双推进或双奖励"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "CPP-113",
+      "slug": "condition-result-cache-dependency-revision",
+      "prompt": "Condition表达式第一次解析后缓存AST，同时还把最终bool按expression字符串缓存；条件能读取external delegate变量，但只有Runner::SetVariable才清result cache。评审。",
+      "expectations": [
+        "区分immutable compiled-expression/AST cache与mutable evaluation-result cache：前者按表达式源码缓存通常安全，后者只有依赖可观察时才安全",
+        "result cache key必须包含dependency revision/generation或由依赖订阅精确invalidated；external getter/world/Quest/Inventory/GAS事实可能绕过Runner setter变化，不能无限复用旧bool",
+        "无法建立可靠dependency revision时应在明确interaction/selection边界重新evaluate，而不是用不正确缓存换性能；先profile再决定缓存粒度",
+        "高频求值避免重复tokenize/parse、GameplayTag解析和world scan；测试覆盖外部依赖改变后cache invalidation与同revision稳定复用"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "LGF-69",
+      "slug": "lgf-graph-transient-editor-projection-option",
+      "prompt": "LGF Graph Foundation已经有authoring→compiled模板；某个Dialogue域的canonical definition本身就能直接运行，Editor只需UEdGraph可视化。还必须强制两份持久化Graph吗？",
+      "expectations": [
+        "不强制；Foundation共享的是职责和合同，不是“两份持久化资产”这一形态。Domain可选择compiled-authoring pipeline或canonical semantic definition + transient editor projection",
+        "projection-first模式所有修改回到Domain semantic truth并走transaction/undo；UEdGraph/Slate对象可丢弃重建，不能成为runtime/save/network truth",
+        "两种模式都必须保留stable Node/Edge/Choice ID、DomainSchema validation、version/migration、deterministic caches和live revision fence",
+        "editor-only位置/断点/协作锁放Editor sidecar/WITH_EDITORONLY_DATA/UncookedOnly并做cook gate；当Domain需要重优化、裁剪、压缩或安全隔离时选独立compiled artifact"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "LGF-70",
+      "slug": "lgf-dialogue-continuation-save-await-token",
+      "prompt": "LGF Conversation在SubDialogue中等待一个Quest/GAS异步命令，随后玩家存档、变身或断线。Save/JIP怎样保证不会丢return stack或吃到旧callback？",
+      "expectations": [
+        "Authority ConversationInstance保存semantic continuation frames和PendingAwait；frame用Definition/Node/semantic transition IDs，PendingAwait含AwaitId/correlation、source node/command与revision/generation，不保存Pawn/UObject指针",
+        "Load/JIP先resolve definition+participant StableAgent、迁移IDs并rebuild derived caches；pending await按显式policy恢复/重发/取消/checkpoint restart",
+        "完成事件必须匹配当前ConversationInstanceId+AwaitId+generation/revision且由Authority验证；Avatar generation变化、旧会话、duplicate/stale callback不能推进canonical conversation",
+        "Quest/Inventory/GAS等owning domain保持sole writer并用同一semantic idempotency/correlation key；Load不盲重放已经commit的business command"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "LGF-71",
+      "slug": "lgf-dialogue-condition-dependency-revision-cache",
+      "prompt": "LGF Dialogue Choice条件同时读Quest、Inventory、ASC和WorldState。为了性能想把每个表达式bool缓存到conversation结束。怎么设计？",
+      "expectations": [
+        "编译后的condition AST/bytecode可按definition/expression稳定缓存；最终bool结果必须依赖revisioned read model，不能跨未知外部变化永久缓存",
+        "Quest/Inventory/GAS/WorldState各自暴露可观察revision/generation或变更订阅；result cache key/invalidator覆盖真实dependency set，Conversation不直接扫描各域内部结构",
+        "没有revision contract的external getter在interaction/selection等明确边界重新求值；客户端结果只供UI，Authority选择时仍按canonical current revisions重验",
+        "避免Tick中GameplayTag解析、反射、world scan、同步加载和全量条件重算；使用dependency-driven incremental invalidation并用profile验证收益"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "CPP-114",
+      "slug": "durable-semantic-id-no-runtime-random-repair",
+      "prompt": "一个Narrative/Quest资产在PostLoad里发现TreeGuid/NodeGuid无效就直接FGuid::NewGuid()补上，作者说这样旧资产会自动修好。对已经上线、会被Save/Network/Analytics引用的stable ID，这种做法安全吗？",
+      "expectations": [
+        "不安全；durable semantic ID一旦参与Save/Network/Analytics/迁移引用，就不能在Runtime/PostLoad/Cook加载时按机器或加载时机随机生成来静默自愈",
+        "缺失/重复ID应由Editor migration、commandlet或确定性upgrade在受控阶段修复并resave；迁移必须有schema/content version、redirect/tombstone/diagnostic证据",
+        "Shipping/Dedicated遇到无法迁移的durable ID应fail validation、隔离内容或走显式recovery，而不是生成新ID后继续导致旧存档/远端引用悄然失联",
+        "新建/duplicate新semantic entity可以生成新ID，但rename/move/load同一已发布entity保持ID；测试覆盖同资产跨两次加载、历史Save解析和Cook/CI稳定性"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "CPP-115",
+      "slug": "dialogue-nested-local-scope-call-frame",
+      "prompt": "Dialogue支持SubDialogue调用；当前只有一份LocalVariables Map，切到子Dialogue时可能Reset/覆盖，return stack又只存ReturnTree/ReturnNode。父Dialogue的locals和子Dialogue的locals应该怎样设计与保存？",
+      "expectations": [
+        "把nested dialogue视为有调用帧的semantic scope：每个active frame拥有自己的local variable/scope frame；进入child时push caller locals/continuation，child不能覆盖父级local truth",
+        "continuation/call frame至少关联DefinitionId、ReturnNode/Transition stable ID和LocalScopeFrame或可恢复scope snapshot/reference；递归/多层SubDialogue按栈顺序恢复",
+        "Save/Load/JIP序列化active scope stack所需的semantic values/IDs/version，而不是一份扁平LocalVariables、TObjectPtr或数组index；load先migrate/resolve每层frame再resume",
+        "变量查找规则显式定义local shadowing→parent/global/external；退出/取消child时按policy pop/commit/discard，测试覆盖同名变量shadowing、nested save/resume、abort与旧版本migration"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    },
+    {
+      "id": "LGF-72",
+      "slug": "lgf-conversation-nested-local-scope-save-jip",
+      "prompt": "LGF Conversation A调用SubDialogue B，A/B都定义Local变量，B中玩家断线或变身后JIP恢复。现在Save只有一份local memory和ReturnNode stack。怎样避免B覆盖A并确保恢复正确？",
+      "expectations": [
+        "Authority把每层Dialogue调用当作独立semantic scope/call frame；frame绑定DefinitionId、return stable IDs、local scope frame和conversation revision/generation，不能让child复用并覆盖parent local map",
+        "Save/JIP snapshot包含active call/scope stack的stable IDs与所需local values/version；先resolve/migrate全部definition/frame并rebind StableAgent，再原子恢复top frame和derived caches",
+        "Avatar replacement只重绑presentation/avatar generation，不销毁conversation scope stack；stale old-avatar callback仍受AwaitId+generation fence约束",
+        "Quest/Inventory/GAS事实仍由各Domain拥有，Conversation local scope只保存Dialogue自身semantic locals；测试覆盖nested shadowing、reconnect/JIP、child cancel/return和schema migration"
+      ],
+      "execution": {
+        "baseline_raw_answer": "pending",
+        "forward_raw_answer": "pending",
+        "independent_judgment": "pending"
+      }
+    }
+  ]
+}

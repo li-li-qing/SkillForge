@@ -36,6 +36,8 @@ UnrealEditor-Cmd.exe <实际Project.uproject> -run=LGameplayUIMigration -unatten
 
 ## 文档维护
 
+删除节点、改签名或编写新手教程时，读 [蓝图接口与教程交接](blueprint-api-handoff.md)，逐项交代旧节点定位、替代 Target/引脚、提交与最终反馈，以及先创建后引用的依赖顺序。
+
 - 类型/签名/元数据变化更新 API；资产创建和接线变化更新 Tutorial；模块定位/依赖更新 README。
 - 当前代码差异和本轮验证状态放当前维护入口，历史成功报告不替代本轮结果。
 - 阅读真实声明判断 BlueprintCallable/BlueprintNativeEvent/C++ virtual/RPC，不能仅凭函数名提供蓝图节点教程。
@@ -48,3 +50,9 @@ UnrealEditor-Cmd.exe <实际Project.uproject> -run=LGameplayUIMigration -unatten
 能跨 LGF 消费工程复用的结论进入对应主题参考；项目自己的门资产、动画配置、当轮任务进度留在消费工程。通用 UE 规则确认后可提炼到通用技能，但不带入 LGF 的特定返回类型或模块名。
 
 资料量由解决问题所需决定。增加细节时同时给出读取条件、来源和能暴露错误的用例；失效结论原位修正，保持单一现行入口。不能把“有测试”“有接口”或“文本评测通过”写成真实游戏已验证。
+
+## 外部 GitHub 项目技术时效性门
+
+从外部 UE 项目写回 LGF 前，必须标记 `Current`、`Stable-but-old`、`Historical` 或 `Reject`。记录固定 commit、license、声明/实际 UE 版本、最后维护时间，并与 LGF 当前 UE、当前 Epic 文档和实际源码对照。
+
+旧项目仍可以提供设计证据，但旧 API、初始化顺序、网络默认值、CommonUI/GameFeature/Input 配置不能直接升级成当前规则。若后续 UE/Lyra 明确重写了旧实现，旧实现默认降级为 Historical，除非目标工程仍被旧版本锁定。

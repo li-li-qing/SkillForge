@@ -1,0 +1,88 @@
+{
+  "round": "R16",
+  "project": "jinyuliao/GenericGraph",
+  "baseline": "SkillForge DlgSystem R15",
+  "generated_date": "2026-09-14",
+  "content_file_count_excluding_manifest": 13,
+  "files": [
+    {
+      "path": "docs/implementation-progress.md",
+      "status": "changed",
+      "sha256": "0f2f612d707e220b5d9f404e13916e60e99b2ddd00ee1c66b2d2b072537d5c4a",
+      "bytes": 14459
+    },
+    {
+      "path": "docs/project-distillations/README.md",
+      "status": "changed",
+      "sha256": "765ddcee940fa7493f3e988eae768ba7cbab4a31c2bf11b9fac4cf6c19dad316",
+      "bytes": 2911
+    },
+    {
+      "path": "docs/project-distillations/genericgraph.md",
+      "status": "added",
+      "sha256": "943c980c61588dbe56f416d319aa0b440bdc4c3825564f9c55dbb71c0815fc85",
+      "bytes": 34669
+    },
+    {
+      "path": "docs/research.md",
+      "status": "changed",
+      "sha256": "af4d9a13ea39007a86183506cffd390c5780ad581c7e5d87f39b3a0153062a9f",
+      "bytes": 31063
+    },
+    {
+      "path": "evals/runs/2026-09-14/genericgraph-distillation-validation.md",
+      "status": "added",
+      "sha256": "678e98c0f8b50b795c93553a962b6d1627a59b9febaed48cabcbf22d9839c04b",
+      "bytes": 8584
+    },
+    {
+      "path": "skills/skillforge-lgf/SKILL.md",
+      "status": "changed",
+      "sha256": "1c07f415137b37a013e88687d07b86bf6e4d10a434d95c351660ce01b360b2d3",
+      "bytes": 7021
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "status": "changed",
+      "sha256": "8ab159f16a469ff6a9cb416e2cbd69669c68646071d7df13864192685a0ec09b",
+      "bytes": 65292
+    },
+    {
+      "path": "skills/skillforge-lgf/references/external-project-patterns.md",
+      "status": "changed",
+      "sha256": "767fe12bb527df9ba15c62da12bb1b0afda98929360bde57bf388af8df12652e",
+      "bytes": 55265
+    },
+    {
+      "path": "skills/skillforge-lgf/references/graph-authoring-foundation.md",
+      "status": "added",
+      "sha256": "a7c0c661395ee3158c76be88ed4b9ca1fba6fca2849bbdfe84f91d5d2cddc562",
+      "bytes": 15854
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/SKILL.md",
+      "status": "changed",
+      "sha256": "5cc7d9e7a082d4d060a3ecece43e2ecb58616d4da502abd65b6209b5877b4023",
+      "bytes": 7637
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "status": "changed",
+      "sha256": "45516819e5de41f0d05e37325f7968de73081924eb2bc788b5a3abf0f8ec48f5",
+      "bytes": 110880
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/external-project-freshness-and-lyra.md",
+      "status": "changed",
+      "sha256": "c042a8bbc0ba966c98c3cc80952a2742adaf29bff1bfcd1a6658866955cde40a",
+      "bytes": 17697
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/generic-graph-authoring-patterns.md",
+      "status": "added",
+      "sha256": "99bd3b53afb49296cb75ec615756115a969057821bc937aba57d0c2cbb2393ae",
+      "bytes": 24302
+    }
+  ],
+  "note": "This manifest intentionally does not list itself. The changes-only ZIP includes this manifest in addition to the files listed here."
+}

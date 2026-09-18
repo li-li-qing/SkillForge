@@ -1,0 +1,81 @@
+[
+  {
+    "source_project": "LGame",
+    "path": "Docs/Design/ANIMATION_DEV_GUIDE.md",
+    "sha256": "b6b13cf28e2dde8667e38f1e5e8322db619b610a11750d7e79718aa57304e4b3",
+    "bytes": 49421,
+    "evidence": "current_source_read"
+  },
+  {
+    "source_project": "LGame",
+    "path": "Source/LGame/Private/Quickbar/LGameQuickbarWeaponAdapterComponent.cpp",
+    "sha256": "599a536661e9e68fcdc101b895bc43efcff03c9d07c32e6ec582c7f09b50b8c1",
+    "bytes": 12979,
+    "evidence": "current_source_read"
+  },
+  {
+    "source_project": "LGame",
+    "path": "Plugins/LGameplayFramework/Source/LGameplayFrameworkAbility/Private/Ability/LGameplayAbilityComponent.cpp",
+    "sha256": "d12ce263288cc99cbb3722e3551aace6b3c20bac6af7c16278df843135c17e92",
+    "bytes": 120776,
+    "evidence": "current_source_read"
+  },
+  {
+    "source_project": "LGame",
+    "path": "Plugins/LGameplayFramework/Source/LGameplayFrameworkCombat/Private/Abilities/LGameplayAttackAbilityBase.cpp",
+    "sha256": "be469b5820562c385c5a1c0cd8bbf283d49deda47278c276673da51d3cb12e14",
+    "bytes": 10639,
+    "evidence": "current_source_read"
+  },
+  {
+    "source_project": "LGame",
+    "path": "Saved/Analysis/最终审查_2026-09-11/复核_20260911_200535/NetworkReview.md",
+    "sha256": "db92b685928ed792222b947272298abee4eab85fde993b362a237580c3957019",
+    "bytes": 7103,
+    "evidence": "historical_report_read_not_rerun"
+  },
+  {
+    "source_project": "LGame",
+    "path": "Saved/Analysis/最终审查_2026-09-11/复核_20260911_200535/PosePairingReview.md",
+    "sha256": "b5670ff42db2db997c6eb796adc75b1d55e70cb80f7af03d8c642ae97ed7abf8",
+    "bytes": 6396,
+    "evidence": "historical_report_read_not_rerun"
+  },
+  {
+    "source_project": "LGame",
+    "path": "Saved/Analysis/最终审查_2026-09-11/复核_20260911_200535/UIRootReview.md",
+    "sha256": "4f98e80820ca3f8598bee6b00c3760cbd0af8bf87cf5bbc62fac24069182e699",
+    "bytes": 4791,
+    "evidence": "historical_report_read_not_rerun"
+  },
+  {
+    "source_project": "UE 5.7 local engine",
+    "path": "Engine/Source/Runtime/UMG/Private/Components/ScaleBox.cpp",
+    "sha256": "f7b74e25d8e1aef2a8daa1839d8452f1c3e3d14c6cb84625c38f122413010c2c",
+    "evidence": "selected_functions_read_not_runtime"
+  },
+  {
+    "source_project": "UE 5.7 local engine",
+    "path": "Engine/Plugins/Animation/PoseSearch/Source/Runtime/Private/PoseSearchAnimNotifies.cpp",
+    "sha256": "42617b27285e1e8429da6512d1facd74469f2063548246f3f779eb903076621e",
+    "evidence": "selected_functions_read_not_runtime"
+  },
+  {
+    "source_project": "UE 5.7 local engine",
+    "path": "Engine/Plugins/Animation/PoseSearch/Source/Runtime/Private/PoseSearchDatabase.cpp",
+    "sha256": "3918112c43b642c130ef729b9d9e95ba94d19dd07e36f775fad5f93c78880aa6",
+    "evidence": "selected_functions_read_not_runtime"
+  },
+  {
+    "source_project": "UE 5.7 local engine",
+    "path": "Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/AbilitySystemComponent_Abilities.cpp",
+    "sha256": "9394eec5a66702df98433e64be3b9196c6353a638d47e421fdd55ab319ac568a",
+    "evidence": "selected_functions_read_not_runtime"
+  },
+  {
+    "source_project": "UE 5.7 local engine",
+    "path": "Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/Abilities/Tasks/AbilityTask_PlayMontageAndWait.cpp",
+    "sha256": "24ac2b7fcd09c3f29bc9892a519b191a9e0a8a64a37c6494f4ea0029d9c18ba2",
+    "evidence": "selected_functions_read_not_runtime"
+  }
+]

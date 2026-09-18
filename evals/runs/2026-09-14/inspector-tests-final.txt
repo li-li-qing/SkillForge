@@ -1,0 +1,16 @@
+
+test_cli_returns_two_for_ambiguous_lgf_copies (test_inspect_workspace.InspectWorkspaceTests.test_cli_returns_two_for_ambiguous_lgf_copies) ... ok
+test_descriptor_without_source_is_reported_not_inspectable (test_inspect_workspace.InspectWorkspaceTests.test_descriptor_without_source_is_reported_not_inspectable) ... ok
+test_engine_root_reads_build_version_and_mover_evidence (test_inspect_workspace.InspectWorkspaceTests.test_engine_root_reads_build_version_and_mover_evidence) ... ok
+test_external_path_format_does_not_raise (test_inspect_workspace.InspectWorkspaceTests.test_external_path_format_does_not_raise) ... ok
+test_malformed_project_json_fails_closed (test_inspect_workspace.InspectWorkspaceTests.test_malformed_project_json_fails_closed) ... ok
+test_manifest_distinguishes_association_from_verified_version (test_inspect_workspace.InspectWorkspaceTests.test_manifest_distinguishes_association_from_verified_version) ... ok
+test_mover_plugin_is_discovered_outside_experimental_folder (test_inspect_workspace.InspectWorkspaceTests.test_mover_plugin_is_discovered_outside_experimental_folder) ... ok
+test_multiple_lgf_copies_fail_closed (test_inspect_workspace.InspectWorkspaceTests.test_multiple_lgf_copies_fail_closed) ... ok
+test_multiple_mover_descriptors_fail_closed (test_inspect_workspace.InspectWorkspaceTests.test_multiple_mover_descriptors_fail_closed) ... ok
+test_multiple_projects_fail_closed (test_inspect_workspace.InspectWorkspaceTests.test_multiple_projects_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.056s
+
+OK

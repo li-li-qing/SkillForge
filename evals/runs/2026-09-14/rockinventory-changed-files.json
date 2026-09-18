@@ -1,0 +1,16 @@
+{
+  "changed": [
+    "docs/project-distillations/README.md",
+    "skills/skillforge-lgf/evals/behavior-cases.json",
+    "skills/skillforge-lgf/references/external-project-patterns.md",
+    "skills/skillforge-ue-cpp/SKILL.md",
+    "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+    "skills/skillforge-ue-cpp/references/arpg-item-inventory-patterns.md"
+  ],
+  "added": [
+    "docs/project-distillations/rockinventory.md",
+    "evals/runs/2026-09-14/rockinventory-distillation-validation.md",
+    "skills/skillforge-ue-cpp/references/item-value-semantics-and-transactions.md"
+  ],
+  "deleted": []
+}

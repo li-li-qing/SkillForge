@@ -58,6 +58,9 @@ UE 技能面向 UE5，执行时从当前工程确定小版本、目标、插件�
 
 在一次项目修复得到验证后，按 [经验收录流程](docs/experience-workflow.md) 提炼。技术规则应能说明条件、证据和验证结果；未验证的解释留在候选记录。项目专属路径、资产、服务名与当前进度仍留在项目自身资料中。
 
+外部 UE/UE4 GitHub 项目按固定提交逐个做源码蒸馏，完整项目级分析收在 [项目蒸馏索引](docs/project-distillations/README.md)，可复用结论再写回对应技能；不会为了项目数量把所有源码笔记塞进 `SKILL.md`。
+从第八轮起，所有外部项目还必须先经过技术时效性分级（Current / Stable-but-old / Historical / Reject），并用目标 UE 版本源码、当前官方文档和实际工程交叉核对；旧项目只迁移仍成立的机制。
+
 ArcheRage 插件可直接提供故障反馈文档，按 [插件反馈与蒸馏](skills/skillforge-archerage-addon/references/feedback.md) 逐次完善。[首批来源](skills/skillforge-archerage-addon/references/sources.md) 区分了社区候选、RU 官方变更和当前项目代码，未把本地模拟说成游戏实测。
 
 Replicated Suite 连续开发经验已补入同一个 ArcheRage 技能：[维护案例索引](skills/skillforge-archerage-addon/references/maintenance-lessons-2026-09.md)涵盖分页报告、旧档与长ID保存、输入草稿、事件签名、持续留存、询价和日账本。它区分用户现场、源码核对和既有模拟记录；新增评测题不冒充已运行的行为实验。[本轮技能检查](evals/runs/2026-09-12/replicated-suite-lessons.md)记录实际结构检查与未执行部分。
@@ -75,7 +78,7 @@ python -m unittest discover -s tests -v
 python scripts/validate_skills.py --self-contained
 ```
 
-脚本检查本库 v1 的最小头部格式、链接、路径、用例结构以及复制后的包完整性。它不是通用 YAML 解析器，也不能证明技术结论正确或模型行为改善。
+脚本检查本库的受限头部格式（name/description，可选字符串 compatibility/license/allowed-tools 与字符串映射 metadata）、链接、路径、用例结构以及复制后的包完整性。它不是通用 YAML 解析器，也不能证明技术结论正确或模型行为改善。
 
 行为评测方法见 [评测约定](evals/README.md)，真实结果见 [第一版验证报告](evals/runs/2026-09-12/summary.md)。来源、采纳理由和技术核验见 [研究记录](docs/research.md)。
 
@@ -84,3 +87,17 @@ ArcheRage RU 领域技能的首轮触发检查与行为结果见 [插件技能�
 LGF 的触发与六个接入/排障方案案例见 [LGF 技能评测](evals/runs/2026-09-12/lgf.md)。文字方案评测与真实插件构建、资产和联机验证分开记录。
 
 后续在实际使用中扩展 MFC、其他 Lua 宿主、Maya、Photoshop 专属技能；每个新技能仍先明确触发边界和真实验收案例。
+
+## 2026-09-14 旧库迁移与实战经验
+
+维持六个技能入口，通过按需参考增加内容，不创建第二个 LGF 大总管：
+
+- LGF：[GASP/Mover 接入](skills/skillforge-lgf/references/gasp-mover-integration.md)、[武器动画诊断](skills/skillforge-lgf/references/weapon-animation-diagnostics.md)、[装备/能力生命周期](skills/skillforge-lgf/references/equipment-ability-lifecycle.md)。
+- 蓝图：[官方资产流程、Socket 预览与 UMG 几何](skills/skillforge-ue-blueprint/references/official-asset-workflows.md)。
+- 排障：[多轮审查、版本证据与防假绿](skills/skillforge-debugging/references/review-and-validation.md)。
+- UE C++：[复制与生命周期审查](skills/skillforge-ue-cpp/references/replication-review.md)。
+- ArcheRage：[迁移、回滚、容量和发布补充](skills/skillforge-archerage-addon/references/migration-release-boundaries.md)；保留其原有工具和测试。
+
+迁移覆盖、备份/恢复位置、实际测试和限制见 [本轮报告](evals/runs/2026-09-14/migration-report.md)。这些技能没有自动安装到任何 Agent 宿主，本次也没有修改 LGame 工程。历史运行记录用于提炼方法，不当作本轮 UE/游戏运行通过。
+
+动画经验已进一步补充：[新武器动画实施与交付顺序](skills/skillforge-lgf/references/animation-delivery-workflow.md)，包括素材覆盖表、真实播放验证、生成器门禁与人工交接。单一源 Socket 变换和覆盖曲线钩子也已细化；[补充记录](evals/runs/2026-09-14/animation-supplement/report.md)注明证据与未完成的旧目录删除。

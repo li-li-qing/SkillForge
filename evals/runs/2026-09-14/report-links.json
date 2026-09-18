@@ -1,0 +1,9 @@
+{
+  "checked": [
+    "README.md",
+    "docs/research.md",
+    "evals/runs/2026-09-14/migration-report.md",
+    "evals/runs/2026-09-14/behavior-review.md"
+  ],
+  "errors": []
+}

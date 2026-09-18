@@ -26,6 +26,7 @@ description: "定位和修复代码、蓝图、插件或界面的错误、崩溃
 ## 按需参考
 
 - 订阅、异步回调、UI 不更新或跨层问题：读 [诊断边界](references/diagnostic-boundaries.md)。
+- 多轮审查、无 Git/共享锁、测试假绿、长任务恢复：读 [审查与验证](references/review-and-validation.md)。
 - 从历史问题提炼规则、核对旧建议：读 [案例与证据](references/verified-cases.md)。
 
 已有领域技能可补充技术检查，但本技能无需安装其他技能。跨技能工作共享同一份证据与验证结论。

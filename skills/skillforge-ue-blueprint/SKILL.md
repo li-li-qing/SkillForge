@@ -27,7 +27,9 @@ Construction Script 可以因编辑器重建和运行期 Actor 生成而执行�
 
 - Accessed None、Cast 失败、初始化、重复绑定：读 [初始化与通信](references/initialization-communication.md)。
 - 工具能否实际改图、如何给节点说明和验收保存：读 [资产操作与交付](references/asset-delivery.md)。
+- 资产持久化、官方预览、UMG 根层/NullRHI 几何：读 [官方资产流程](references/official-asset-workflows.md)。
 - 核对旧笔记中的 UMG 或生命周期说法：读 [案例与核验](references/cases.md)。
+- GASP 与 ALS、Linked Anim Layer、Property Access 写相位、动态 Overlay、AnimBP 与 C++、URO/SimulatedProxy、Mover、GAS 职责：读 [Linked Animation Layer 与 AnimBP 边界](references/linked-animation-layer-boundaries.md)。
 
 涉及布局时可组合 UI 技能，涉及 C++ 接口时可组合 C++ 技能；缺少其他技能不阻断本技能自身工作。
 

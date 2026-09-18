@@ -1,0 +1,84 @@
+{
+  "round": "R14",
+  "topic": "TheGeebus/SimpleQuest Quest Objective / Runtime State / Save / Dedicated",
+  "baseline": "SkillForge FlowGraph R13",
+  "source": {
+    "repo": "TheGeebus/SimpleQuest",
+    "commit": "46978ad2c81ba90f21836e7c468141523dedb95d",
+    "tree": "daf658bd6c86f54ca024d76e58a9a81908635617",
+    "version": "0.8.1"
+  },
+  "manifest_excludes_itself": true,
+  "added": [
+    {
+      "path": "docs/project-distillations/simplequest.md",
+      "sha256": "afd0fa7579de1c8c0d54adb153019c0a4765d4bd16b203c9811c8ce6f379925c"
+    },
+    {
+      "path": "evals/runs/2026-09-14/simplequest-distillation-validation.md",
+      "sha256": "5315c4fb1a198e7c304260a3bf9502002fce736784a735d6c3744b2a87a0e470"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/quest-objective-contracts.md",
+      "sha256": "d26cf80f3fd27801836c27cac1afaed63981ac014021076c2383a29c4eecab87"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/quest-objective-runtime-patterns.md",
+      "sha256": "f371916a296b0dfe0418ffbab099dd3c2e46e2b36463b99284b7dd73f99f1ba0"
+    }
+  ],
+  "changed": [
+    {
+      "path": "docs/implementation-progress.md",
+      "sha256": "3dabe0040e2b3b8a596637451ec672c2dbbccc2268e07b4c545696ff62573261",
+      "baseline_sha256": "d5b5eae69b1bef21dd17d080ad7537314bd59adf2641ba5f17b815dd0c8c4475"
+    },
+    {
+      "path": "docs/project-distillations/README.md",
+      "sha256": "4f5b2e3dca4582c9fbf0cd80c316604b2a09e3e2ff74d44ad8fd55c72a740b3d",
+      "baseline_sha256": "85c5422eb6e301694ae352c7ce58db4e2d6902ce14107ae0e234e5f8bb82315c"
+    },
+    {
+      "path": "docs/research.md",
+      "sha256": "1f0735aac25c54a724c4e8b42cb35d398a7a69d44f300225af04b12713e1560c",
+      "baseline_sha256": "9a53093d1829e8cd4b3f09fc493cdb39bb2937b6ed8c34156923037b48403254"
+    },
+    {
+      "path": "skills/skillforge-lgf/SKILL.md",
+      "sha256": "d308b6b3b8bd1ce9016590670aede6362b0605fcc77f6c97f722059a763dd7ea",
+      "baseline_sha256": "32e831bba79a5f7ce68328220c0e9869ca23670cda7fe4edb1e842244d18111d"
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "sha256": "99ea06ece8d2f3fff42863ea960991110558f967794a004e649477c5f2564757",
+      "baseline_sha256": "b75e47eac9b7a8ffb164484fd41314b2c8694f023e6fd6f0c0a7ae277373b198"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/external-project-patterns.md",
+      "sha256": "3e66f6bec28ade3cb4e3e24dff508c8974d5d861e6c3ae88ef3600de89efc1d9",
+      "baseline_sha256": "61de38b14460ef6e2994acc2e8a43c3979a9e63ef83523fe96dd7217633350c8"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/SKILL.md",
+      "sha256": "ed74b580b9a08bb4834b817c646e154aaa389dac981b5cf016d61bbd600f8ebe",
+      "baseline_sha256": "99548d1d16a88ffda5dbc038ac6abce495d090225a6ddff39f244f0767a7b5b6"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "sha256": "e6ff6bd09ec0c52278ea47bbb6c4a0a98f2d7796f7261ed54c6e55eae22c4bb4",
+      "baseline_sha256": "13ab4f6fbf65f994c9992702ace01ae34c2e2fc9454c3466ce784495c61fec77"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/external-project-freshness-and-lyra.md",
+      "sha256": "66f2929984c9ef919ec705862c6b34d2740511fd4cd4e464de58a734030e45c5",
+      "baseline_sha256": "7f76c07cc5b7928243674e785f111fe2530f18e10a0b8a52c58b3e9e8e850b57"
+    }
+  ],
+  "removed": [],
+  "counts": {
+    "added": 4,
+    "changed": 9,
+    "removed": 0,
+    "content_total": 13
+  }
+}
