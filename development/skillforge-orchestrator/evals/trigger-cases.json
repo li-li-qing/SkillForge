@@ -1,0 +1,86 @@
+[
+  {
+    "id": "SFO-T01",
+    "prompt": "显式调用 skillforge-orchestrator，检查 LCot 日志列表。",
+    "context": "有可读 MFC 工程",
+    "expected": "trigger",
+    "reason": "明确调用入口"
+  },
+  {
+    "id": "SFO-T02",
+    "prompt": "我不知道该用哪个 Skill，先帮我整理任务，等我确认。",
+    "context": "有多个已安装技能",
+    "expected": "trigger",
+    "reason": "明确请求入口编排"
+  },
+  {
+    "id": "SFO-T03",
+    "prompt": "开始，就按你刚才的简报做。",
+    "context": "本入口已有唯一待确认 SFO-001/r1，工程未变化",
+    "expected": "trigger",
+    "reason": "继续已编排任务，不重启确认"
+  },
+  {
+    "id": "SFO-T04",
+    "prompt": "继续做。",
+    "context": "当前有两个不同项目的待确认简报，无法确定目标",
+    "expected": "conditional",
+    "reason": "先消歧，不猜授权对象"
+  },
+  {
+    "id": "SFO-T05",
+    "prompt": "给我解释这个普通 C++ 排序函数。",
+    "context": "没有显式入口调用或本入口当前任务",
+    "expected": "no_trigger",
+    "reason": "普通代码请求不劫持为入口流程"
+  },
+  {
+    "id": "SFO-T06",
+    "prompt": "你好。",
+    "context": "普通闲聊，未显式调用",
+    "expected": "no_trigger",
+    "reason": "不扩张到非任务对话"
+  },
+  {
+    "id": "SFO-T07",
+    "prompt": "教程里的 skillforge-orchestrator 名字是什么意思？",
+    "context": "只问名字/引用文本，未请求编排",
+    "expected": "no_trigger",
+    "reason": "提及名字不等于发起任务"
+  },
+  {
+    "id": "SFO-T08",
+    "prompt": "skillforge-orchestrator：只优化下面的提示词，不执行。",
+    "context": "用户提供原始提示词",
+    "expected": "trigger",
+    "reason": "prompt-only 停在文本交付"
+  },
+  {
+    "id": "SFO-T09",
+    "prompt": "skillforge-orchestrator：直接修复这个崩溃，不用再确认。",
+    "context": "明确任务与直接执行授权",
+    "expected": "trigger",
+    "reason": "直接模式仍需只读核对与边界"
+  },
+  {
+    "id": "SFO-T10",
+    "prompt": "把所有流程都自动化。",
+    "context": "不清楚是在设计入口还是修改其他业务",
+    "expected": "conditional",
+    "reason": "目的未确定，先读可用项目事实"
+  },
+  {
+    "id": "SFO-T11",
+    "prompt": "调用 skillforge-mfc 给我解释 CDialog。",
+    "context": "用户直接调用叶子技能而非入口",
+    "expected": "no_trigger",
+    "reason": "叶子技能保持可独立使用"
+  },
+  {
+    "id": "SFO-T12",
+    "prompt": "skillforge-orchestrator：这是最新附件，继续之前的修改。",
+    "context": "新附件可能改变已确认基线",
+    "expected": "trigger",
+    "reason": "入口负责比对变化并限定沿用授权范围"
+  }
+]

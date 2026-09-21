@@ -301,6 +301,12 @@ class ValidateSkillsTests(unittest.TestCase):
         (self.skill / "scripts" / "check.py").unlink()
         self.assert_invalid()
 
+    def test_evals_are_optional_for_portable_runtime(self):
+        shutil.rmtree(self.skill / "evals")
+        result = self.run_validator(self.skill, flags=("--self-contained",))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertRegex(result.stdout, r"1 skill.*0 error")
+
     def test_eval_files_must_exist_and_be_json_arrays(self):
         for name in ("trigger-cases.json", "behavior-cases.json"):
             path = self.skill / "evals" / name

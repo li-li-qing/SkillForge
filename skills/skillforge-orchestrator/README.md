@@ -1,58 +1,65 @@
-# skillforge-orchestrator v0.1.0 试用说明
+# skillforge-orchestrator v0.2.0 portable
 
-固定使用一个入口：先读项目并整理任务，给出拟用技能、上下文处理和可复制执行提示词；默认等一次确认后再执行。
+这是 SkillForge 的通用入口层。目标是让同一套编排逻辑在不同 Agent、IDE、模型和未来未知宿主中复用，而不是针对某几个产品写死。
 
-## 安装：只新增，不替换旧技能
+## 使用原则
 
-把完整 `skillforge-orchestrator` 文件夹与现有专业技能放在宿主支持的技能目录，保留内部结构。宿主各自的技能发现与重载规则以其当前文档为准。本包不会自动安装、启用或改写其他技能。
+1. 用当前宿主**实际支持的方式**显式选择/读取 `skillforge-orchestrator`。
+2. 把原始需求直接跟在入口之后；不要为了适配入口先人工改写需求。
+3. 入口先返回项目识别、能力快照、Skill 路由、上下文建议和执行简报。
+4. 默认等待一次确认；回复“开始”即可继续当前唯一简报。若本次明确写“直接执行，无需确认”，可跳过普通确认。
+5. 只要宿主可以读取 `SKILL.md`，即使没有原生 Skill 调用机制，也可以按文件规则使用；此时必须诚实标记为“read-file/inline-text”，不能宣称原生调用。
 
-当前出货索引来自七个专业技能，入口加入后全库是八个；独立入口包并不包含那七个技能正文。实际宿主有其他技能时可以发现使用，不以出货索引作为硬白名单。
+## 不依赖的东西
 
-## 日常使用
+portable core 不包含：
 
-支持 Codex 显式技能的环境：
+- 特定 Agent 的 metadata；
+- 专用 `/`、`$` 等调用命令；
+- 固定技能安装路径；
+- 当前七个/八个 Skill 的静态索引；
+- Python 或其他脚本运行时；
+- eval/test 开发资料。
 
-```text
-$skillforge-orchestrator
-LCot 的实时日志列表滚动时总跳回顶部。先核对当前工程，整理执行提示词，等我确认。
-```
+因此未来出现新的 Agent 时，优先做 capability mapping，而不是修改 Orchestrator 核心。
 
-支持 Claude Code 显式技能的环境：
-
-```text
-/skillforge-orchestrator
-LCot 的实时日志列表滚动时总跳回顶部。先核对当前工程，整理执行提示词，等我确认。
-```
-
-不能识别上述命令，但可以读文件的环境：
-
-```text
-先读取我提供的 skillforge-orchestrator/SKILL.md，再按入口处理以下需求：
-【我的原始需求】
-先返回执行简报，等我确认，不要提前改项目。
-```
-
-必须提供实际可读取的位置；只写不存在的路径不能加载技能。Codex 与 Claude Code 的调用格式分别依据官方文档，未代表本次已在它们的客户端实测。
-
-收到简报后回复“开始”，或“开始，但别改其他模块”。同一已批准任务不需要反复召回入口。
-
-明确不要等待时写“本次直接执行，无需确认”；只想润色时写“只优化提示词，不执行”；要换 Agent 时写“按当前任务生成交接包，不扩大授权范围”。这些是自然语言约定，不是新安装的系统命令。
-
-## 可选索引维护
-
-普通试用不用先跑脚本；优先使用宿主的技能清单。已授权维护时，在本技能目录执行：
+## 三种常用模式
 
 ```text
-python -B scripts/build_skill_index.py --check generated/skill-index.json
-python -B scripts/build_skill_index.py --output generated/skill-index.json
+【默认】
+使用 skillforge-orchestrator 处理下面的原始需求：
+<原始需求>
 ```
 
-第一行只检查；第二行会写文件，不要在未确认任务里自动执行。默认读取兄弟技能目录。多根目录可以重复传 `--root`，详见 `python -B scripts/build_skill_index.py --help`。无 Python 时入口仍可通过宿主元数据工作。
+```text
+【本次直接执行】
+使用 skillforge-orchestrator。本次直接执行，无需普通确认：
+<原始需求>
+```
 
-## 试用时重点观察
+```text
+【只优化提示词】
+使用 skillforge-orchestrator。只优化提示词，不执行：
+<原始需求>
+```
 
-默认首次应先停在简报，不改工程；回复“开始”应继续而不是再问一次；MFC 不应加载 UE；普通 C++ 不应硬套 MFC；不应报告猜测的上下文百分比；没有实际压缩机制不应说已压缩。
+这些是自然语言工作约定，不要求宿主支持固定命令语法。
 
-这是一层工作流规则，不是强制权限沙箱。需要硬只读保护时使用宿主现有权限/计划模式。模型可能仍然不遵守，必须以实际工具轨迹判断。
+## Portable Runtime 内容
 
-[反馈模板](assets/feedback-template.md)供以后回传；[评测说明](evals/README.md)区分脚本测试和真实 Agent 行为。
+```text
+skillforge-orchestrator/
+├─ SKILL.md
+├─ README.md
+├─ references/
+│  ├─ capability-contract.md
+│  ├─ routing-policy.md
+│  ├─ context-policy.md
+│  ├─ approval-policy.md
+│  ├─ user-workstyle.md
+│  └─ maintenance.md
+└─ assets/
+   ├─ execution-brief.md
+   ├─ checkpoint.md
+   └─ feedback-template.md
+```

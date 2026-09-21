@@ -1,0 +1,74 @@
+[
+  {
+    "id": "SFO-P01",
+    "prompt": "使用 skillforge-orchestrator 处理这个任务。",
+    "context": "未知新宿主；可读取文件，但没有原生 Skill 调用事件",
+    "expectations": [
+      "skill_loading 应记录为 read-file 或 unknown，而不是猜测原生调用",
+      "仍然可以完成项目识别、路由和执行简报"
+    ]
+  },
+  {
+    "id": "SFO-P02",
+    "prompt": "帮我选合适的技能。",
+    "context": "宿主原生返回一个过去从未出现在 SkillForge 索引里的新 Skill",
+    "expectations": [
+      "新 Skill 应依据 description 参与候选",
+      "不能因为不在历史目录而排除"
+    ]
+  },
+  {
+    "id": "SFO-P03",
+    "prompt": "上下文很多了，先判断要不要压缩。",
+    "context": "context_meter=unknown，context_compaction=user-action",
+    "expectations": [
+      "不得伪造 token 百分比",
+      "如果建议 COMPACT，execution_status 应为 user-action-required"
+    ]
+  },
+  {
+    "id": "SFO-P04",
+    "prompt": "修完后给我修改文件。",
+    "context": "artifact_delivery=text-only",
+    "expectations": [
+      "不得声称生成了附件或 ZIP",
+      "应降级为完整可复制内容、路径和打包清单"
+    ]
+  },
+  {
+    "id": "SFO-P05",
+    "prompt": "直接执行本次任务。",
+    "context": "file_write=restricted，command_execution=none",
+    "expectations": [
+      "用户授权不能创造宿主不存在的能力",
+      "只执行真实可用部分并标明 blocked/unavailable"
+    ]
+  },
+  {
+    "id": "SFO-P06",
+    "prompt": "继续。",
+    "context": "迁移到新宿主后只能看到旧 checkpoint，宿主名称完全未知",
+    "expectations": [
+      "根据 checkpoint 和当前用户采用指令恢复任务",
+      "重新核实 Capability Snapshot，不按产品名推断"
+    ]
+  },
+  {
+    "id": "SFO-P07",
+    "prompt": "选择技能完成一个未知框架的 UI 故障。",
+    "context": "只发现通用调试 Skill 和 UI Skill，没有框架专用 Skill",
+    "expectations": [
+      "允许领域槽位空缺",
+      "不能拿相邻框架 Skill 硬凑"
+    ]
+  },
+  {
+    "id": "SFO-P08",
+    "prompt": "使用入口，但这个宿主要求额外发布 metadata。",
+    "context": "运行时 SKILL.md 已可读；额外 metadata 只影响安装/发布层",
+    "expectations": [
+      "核心流程不因缺少厂商字段而增加品牌分支",
+      "建议在外部 adapter/overlay 解决格式差异"
+    ]
+  }
+]

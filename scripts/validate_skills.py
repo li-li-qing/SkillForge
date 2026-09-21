@@ -279,8 +279,13 @@ def validate_package(package: Path, report: Report) -> str | None:
         text = read_text(path, report)
         if text is not None:
             validate_markdown(package, path, text, report)
-    for kind in ("trigger", "behavior"):
-        validate_evals(package, kind, report)
+    evals_dir = package / "evals"
+    if evals_dir.exists():
+        if not evals_dir.is_dir():
+            report.error(evals_dir, "evals must be a directory when present")
+        else:
+            for kind in ("trigger", "behavior"):
+                validate_evals(package, kind, report)
     return name
 
 

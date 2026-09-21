@@ -17,7 +17,7 @@
 
 日常只需调用 `skillforge-orchestrator` 并附原始需求。它先做只读识别，返回拟用技能、上下文动作与可复制执行提示词，等一次确认后再执行；已确认任务不会因为切换叶子技能重复确认。
 
-[安装与试用](skills/skillforge-orchestrator/README.md)说明宿主调用方式、直接执行/只优化/交接模式。出货索引来自当前七技能库，但只是候选快照，不证明用户宿主安装状态；没有实际能力时不伪报读项目、压缩或验证成功。
+[安装与试用](skills/skillforge-orchestrator/README.md)采用 portable core：不绑定具体 Agent 命令、安装路径或固定叶子 Skill 清单。入口先建立 capability snapshot，再动态发现最小充分 Skill 集；没有实际能力时不伪报读取、调用、压缩或验证成功。开发评测和索引工具位于 `development/skillforge-orchestrator/`，不进入运行时核心。
 
 入口是语言层工作流而非权限沙箱，默认不写宿主配置、不加 hook、不自动安装。实测报告、局限与完整检查命令见 [本轮验证](evals/runs/2026-09-21/orchestrator-v1-validation.md)。
 
@@ -37,7 +37,7 @@
 
 本仓库保存源码；仅把文件放在这个目录，不代表任意 Agent 都会自动发现它们。
 
-1. 原生支持 [Agent Skills](https://agentskills.io/specification) 的工具：将选中的完整技能目录放入该工具文档指定的技能位置。保留 `SKILL.md`、`references/` 和 `evals/` 的相对结构。
+1. 原生支持 Skill 目录的工具：将选中的完整运行时技能目录放入该工具文档指定的位置。保留 `SKILL.md`、`references/` 与该 Skill 自带的运行时资源；不要假定开发 `evals/tests` 也是安装必需。
 2. 能读取文件但没有技能发现机制的工具：在任务里明确提供该技能的实际路径，请它先读 `SKILL.md`，再按其中条件读取参考资料。例如：`先读取 <技能实际位置>/skillforge-ue-blueprint/SKILL.md，再分析背包 Widget 的初始化。`
 3. 只能粘贴文本的工具：提供技能正文，以及当前任务需要的参考资料。没有读取工具时，提到文件名不会自动加载文件。
 
