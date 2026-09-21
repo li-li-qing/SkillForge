@@ -1,0 +1,9 @@
+[
+  {"id":"MFC-T01","prompt":"给现有 CDialog 工具加一个后台扫描线程，结果回到列表。","context":"Visual Studio MFC C++17 工程","expected":"trigger","reason":"MFC 窗口、worker 与消息回 UI。"},
+  {"id":"MFC-T02","prompt":"审查 CWinApp、CFrameWnd、CView 的命令路由和窗口生命周期。","context":"SDI MFC 工具","expected":"trigger","reason":"典型 MFC 架构与 command routing。"},
+  {"id":"MFC-T03","prompt":"大漠 COM 对象应该放 UI 线程还是单独 STA，BSTR/VARIANT 要不要漏到 Model？","context":"MFC + COM 自动化插件","expected":"trigger","reason":"MFC 工具中的 COM/STA 与 adapter 边界。"},
+  {"id":"MFC-T04","prompt":"把一个 std::vector 排序改成更快。","context":"普通 C++17 库，无窗口、MFC、Win32 UI","expected":"no_trigger","reason":"纯算法不需要 MFC 技能。"},
+  {"id":"MFC-T05","prompt":"Qt 的 QTableView 滚动卡顿。","context":"Qt Widgets，不使用 MFC","expected":"no_trigger","reason":"其他桌面 UI 框架不触发。"},
+  {"id":"MFC-T06","prompt":"按钮点一下有时没反应。","context":"尚不知道是 MFC、网页还是游戏 UI","expected":"conditional","reason":"必须先确认宿主/框架；仅按钮词不足以触发。"},
+  {"id":"MFC-T07","prompt":"这个 Windows C++ 工具 DPI 有问题。","context":"若工程包含 CWnd/CDialog/afxwin 则触发；若是纯 Win32/Qt 则不触发","expected":"conditional","reason":"Windows+C++ 不能直接推断为 MFC。"}
+]

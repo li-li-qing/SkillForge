@@ -1,0 +1,16 @@
+test_unicode_output_path_with_legacy_stream_encoding (test_build_skill_index.IndexTests.test_unicode_output_path_with_legacy_stream_encoding) ... FAIL
+
+======================================================================
+FAIL: test_unicode_output_path_with_legacy_stream_encoding (test_build_skill_index.IndexTests.test_unicode_output_path_with_legacy_stream_encoding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 57, in test_unicode_output_path_with_legacy_stream_encoding
+    self.assertEqual(q.returncode, 0, q.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : ERROR: 'ascii' codec can't encode characters in position 49-52: ordinal not in range(128)
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.734s
+
+FAILED (failures=1)

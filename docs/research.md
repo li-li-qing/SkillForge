@@ -237,3 +237,15 @@ R17.1 不新增外部项目，只复查 R17 与 `TodayYueC/ChronicleEngine@b2fb3
 同时修复 R17 之后仍残留的文本冲突：`dialogue-runtime-patterns.md` 与 LGF Dialogue 不再把 `Authoring UEdGraph -> compiled runtime artifact` 写成所有 Domain 唯一路径。统一合同为：Runtime 永不依赖 `UEdGraph`；语义同构时可使用 canonical semantic definition + transient editor projection，需要 lowering/压缩/cook stripping/ABI 隔离时使用独立 compiled artifact。
 
 评测方法也收紧：R17 的 0/7→7/7 被明确保留为 semantic Reference coverage，不冒充模型 Behavior Eval。R17.1 新增 CPP-114、CPP-115、LGF-72，并完成 0/3→3/3 的 semantic RED/GREEN；但当前 ChatGPT artifact harness 没有 fresh-context subagent/model runner，因此 CPP-110..115 / LGF-69..72 的真实 raw-answer Behavior RED/GREEN 仍标记 `pending / 未证明`，已生成可复现 packet 留待 Codex/Agent 环境执行。
+
+## 2026-09-21 MFC 第一轮 GitHub 蒸馏
+
+新增 `skillforge-mfc`，目标是给 MFC C++ 桌面程序提供独立平台技能，不把 MFC 规则塞入普通 C++、UE C++ 或通用 UI 技能。首轮固定五类来源：
+
+- `microsoft/mfcmapi@c8379e0f2673227cf0b429ba8ab31d7f7ba093bb`（2026-09-16，Current）：采纳 UI/core 边界、COM ownership 显式化、UnitTest、多配置 build/test、静态分析与 fuzz 工程化；不复制 MAPI 专属宏与协议。
+- `WinMerge/winmerge@63deba2519c0ce81b1cf459c1659ad443b9e18ea`（2026-09-21，Current）：采纳成熟 MFC 中渐进使用现代 C++、worker + async notification、复杂窗口/列表和多架构构建；历史 heap payload 只视为一种实现。
+- `TortoiseGit/TortoiseGit@acc10fc20afe36aabc4afbc5f1af33f31acae32e`（2026-06-27，Current）：采纳 Shell/GUI/cache/工具进程职责分离、命令域组织、大列表复用、background work 不阻塞 dialog；不把所有历史 worker→UI 访问方式推广为新模板。
+- `microsoft/comic-chat@48a162249484ab8d116c243e8203b0956d350c09`（2026-07-22，Historical + modernized worked example）：采纳 build→behavior→DPI/UX 的迁移分层、集中 DPI scaling、posted resize/reflow 防重入；不把 `SetProcessDPIAware` 当现代新工程默认。
+- `Microsoft/VCSamples@9e1d4475555b76a17a3568369867f1d7b6cc6126`（2019-11-24，Historical/archived）：只用于 Doc/View、message map、command/update UI、docking/ribbon 等稳定 MFC 机制，不作为当前线程、DPI、安全、Unicode 或工具链权威。
+
+首版正式参考拆为：架构/命令路由、线程/COM STA、窗口/资源生命周期、DPI/复杂控件、构建/测试/现代化、来源蒸馏。新增 7 个触发样本、8 个行为案例，并更新组合案例，让 MFC 布局任务使用 MFC+UI，MFC 故障使用 MFC+debugging。行为用例目前是结构化验收题，没有在隔离 Agent 上执行 RED→GREEN，因此不得写成“技能效果已证明”。

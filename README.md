@@ -1,15 +1,25 @@
 # SkillForge
 
-面向游戏开发与创作工具的个人 Agent Skills 技能源。现有四个基础技能，以及 ArcheRage RU、LGameplayFramework 两个专用技能，按任务独立使用或组合使用；正文以中文为主，API、节点名和技术关键词保留英文。
+面向游戏开发与创作工具的个人 Agent Skills 技能源。当前包含 7 个专业/方法技能，以及统一入口 `skillforge-orchestrator`，共 8 个；专业技能仍可独立或组合使用。正文以中文为主，API、节点名和技术关键词保留英文。
 
 | 技能 | 使用时机 | 入口 |
 |---|---|---|
+| `skillforge-orchestrator` | 明确调用统一入口：核对项目、选择技能、整理提示词，默认确认后执行 | [统一入口](skills/skillforge-orchestrator/SKILL.md) |
 | `skillforge-debugging` | 已出现错误、崩溃、偶发失效或结果异常，需要排查与修复 | [排障](skills/skillforge-debugging/SKILL.md) |
 | `skillforge-ue-cpp` | 当前任务确实涉及 UE C++、反射、生命周期、模块或蓝图暴露接口 | [UE C++](skills/skillforge-ue-cpp/SKILL.md) |
 | `skillforge-ue-blueprint` | 创建、修改、解释或排查 UE 蓝图、Widget Blueprint 与节点图 | [蓝图](skills/skillforge-ue-blueprint/SKILL.md) |
 | `skillforge-ui-design` | 设计或调整 HUD、工具窗口、配置面板的布局与交互 | [UI](skills/skillforge-ui-design/SKILL.md) |
+| `skillforge-mfc` | 开发、审查或现代化 Windows MFC C++ 桌面程序、线程/COM、消息路由与窗口生命周期 | [MFC](skills/skillforge-mfc/SKILL.md) |
 | `skillforge-archerage-addon` | 开发或排查 ArcheRage RU Lua 插件、Replicated Suite、API、HUD 与存档 | [ArcheRage RU 插件](skills/skillforge-archerage-addon/SKILL.md) |
 | `skillforge-lgf` | 学习、接入、扩展或维护实际使用 LGameplayFramework 的工程与插件 | [LGF 接入与开发](skills/skillforge-lgf/SKILL.md) |
+
+## 从统一入口开始（v0.1.0 试用）
+
+日常只需调用 `skillforge-orchestrator` 并附原始需求。它先做只读识别，返回拟用技能、上下文动作与可复制执行提示词，等一次确认后再执行；已确认任务不会因为切换叶子技能重复确认。
+
+[安装与试用](skills/skillforge-orchestrator/README.md)说明宿主调用方式、直接执行/只优化/交接模式。出货索引来自当前七技能库，但只是候选快照，不证明用户宿主安装状态；没有实际能力时不伪报读项目、压缩或验证成功。
+
+入口是语言层工作流而非权限沙箱，默认不写宿主配置、不加 hook、不自动安装。实测报告、局限与完整检查命令见 [本轮验证](evals/runs/2026-09-21/orchestrator-v1-validation.md)。
 
 ## 目录说明
 
@@ -39,14 +49,14 @@
 |---|---|---|
 | 用蓝图做背包界面 | 蓝图 + UI | 数据与节点流；布局、输入和状态 |
 | C++ 控件点不到 | C++ + 排障；涉及层级时加 UI | 接口与生命周期；定位证据；输入层级 |
-| MFC 工具增加日志面板 | UI | 现有 MFC 布局和组件职责，不触发 UE 技能 |
-| MFC 日志面板偶发失效 | UI + 排障 | 界面状态与故障链，不推断是 UE 问题 |
+| MFC 工具增加日志面板 | MFC + UI | MFC 窗口/命令/生命周期；布局、焦点与状态 |
+| MFC 日志面板偶发失效 | MFC + UI + 排障 | MFC 消息/线程/窗口；界面状态；故障链 |
 | ArcheRage RU 插件统计异常 | ArcheRage RU + 排障 | 宿主 API 与数据契约；证据和故障链 |
 | Replicated Suite HUD 布局与点击 | ArcheRage RU + UI；有故障时加排障 | 当前框架、生命周期与输入；布局和状态 |
 | 用 LGF 做蓝图交互门 | LGF + 蓝图 | 现有交互扩展、拥有者与复制；资产和节点接线 |
 | LGF 换 Pawn 后能力或背包界面失效 | LGF + C++/蓝图 + 排障；涉及布局时加 UI | 长期状态与 Avatar、请求和刷新链；具体实现与回归 |
 
-这是选择说明，不是额外的全局路由器。每个技能可以单独使用；组合不会使未安装的技能成为硬依赖。跨技能重叠时用一份任务说明、一份证据清单和一份验证结果，不重复启动流程。
+以上是专业技能的组合说明，可由统一入口使用，也可直接选择；不是要求每次加载全部技能。每个专业技能可以单独使用；组合不会使未安装的技能成为硬依赖。跨技能重叠时用一份任务说明、一份证据清单和一份验证结果，不重复启动流程。
 
 UE 技能面向 UE5，执行时从当前工程确定小版本、目标、插件与工具能力。当前项目的源码和配置描述实际状态，项目文档描述约定；有冲突时核对差异，不把 LGame/LGF 的构建路径或 Listen Server 约束套用到普通项目。
 
@@ -86,7 +96,9 @@ ArcheRage RU 领域技能的首轮触发检查与行为结果见 [插件技能�
 
 LGF 的触发与六个接入/排障方案案例见 [LGF 技能评测](evals/runs/2026-09-12/lgf.md)。文字方案评测与真实插件构建、资产和联机验证分开记录。
 
-后续在实际使用中扩展 MFC、其他 Lua 宿主、Maya、Photoshop 专属技能；每个新技能仍先明确触发边界和真实验收案例。
+MFC 首轮 GitHub 蒸馏、结构验证与未验证边界见 [MFC 首轮验证](evals/runs/2026-09-21/mfc-initial-validation.md)。
+
+后续在实际使用中继续蒸馏 MFC，并扩展其他 Lua 宿主、Maya、Photoshop 专属技能；每个新技能仍先明确触发边界和真实验收案例。
 
 ## 2026-09-14 旧库迁移与实战经验
 

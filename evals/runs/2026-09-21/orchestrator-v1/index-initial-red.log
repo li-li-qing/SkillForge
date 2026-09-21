@@ -1,0 +1,494 @@
+test_body_change_changes_hash (test_build_skill_index.IndexTests.test_body_change_changes_hash) ... FAIL
+test_deterministic_and_sorted (test_build_skill_index.IndexTests.test_deterministic_and_sorted) ... FAIL
+test_direct_non_skill_directory_is_ignored (test_build_skill_index.IndexTests.test_direct_non_skill_directory_is_ignored) ... FAIL
+test_does_not_scan_nested_directories (test_build_skill_index.IndexTests.test_does_not_scan_nested_directories) ... FAIL
+test_duplicate_header_is_error (test_build_skill_index.IndexTests.test_duplicate_header_is_error) ... FAIL
+test_duplicate_label_rejected (test_build_skill_index.IndexTests.test_duplicate_label_rejected) ... FAIL
+test_duplicate_metadata_is_error (test_build_skill_index.IndexTests.test_duplicate_metadata_is_error) ... FAIL
+test_duplicate_name_across_roots_rejected (test_build_skill_index.IndexTests.test_duplicate_name_across_roots_rejected) ... FAIL
+test_duplicate_physical_root_rejected (test_build_skill_index.IndexTests.test_duplicate_physical_root_rejected) ... FAIL
+test_empty_description (test_build_skill_index.IndexTests.test_empty_description) ... FAIL
+test_invalid_header_fails_whole_index (test_build_skill_index.IndexTests.test_invalid_header_fails_whole_index) ... FAIL
+test_invalid_label_rejected (test_build_skill_index.IndexTests.test_invalid_label_rejected) ... FAIL
+test_invalid_source_preserves_previous_output (test_build_skill_index.IndexTests.test_invalid_source_preserves_previous_output) ... FAIL
+test_invalid_utf8 (test_build_skill_index.IndexTests.test_invalid_utf8) ... FAIL
+test_json_quoted_name (test_build_skill_index.IndexTests.test_json_quoted_name) ... FAIL
+test_malformed_check_index_returns_two (test_build_skill_index.IndexTests.test_malformed_check_index_returns_two) ... FAIL
+test_malicious_body_is_data_not_execution (test_build_skill_index.IndexTests.test_malicious_body_is_data_not_execution) ... FAIL
+test_missing_check_file_returns_two (test_build_skill_index.IndexTests.test_missing_check_file_returns_two) ... FAIL
+test_multiple_roots (test_build_skill_index.IndexTests.test_multiple_roots) ... FAIL
+test_name_folder_mismatch (test_build_skill_index.IndexTests.test_name_folder_mismatch) ... FAIL
+test_no_body_is_injected (test_build_skill_index.IndexTests.test_no_body_is_injected) ... FAIL
+test_no_files_written_by_default (test_build_skill_index.IndexTests.test_no_files_written_by_default) ... FAIL
+test_nonexistent_root_rejected (test_build_skill_index.IndexTests.test_nonexistent_root_rejected) ... FAIL
+test_output_explicit_then_readonly_check (test_build_skill_index.IndexTests.test_output_explicit_then_readonly_check) ... FAIL
+test_output_must_be_json (test_build_skill_index.IndexTests.test_output_must_be_json) ... FAIL
+test_output_parent_not_created_implicitly (test_build_skill_index.IndexTests.test_output_parent_not_created_implicitly) ... FAIL
+test_oversized_description (test_build_skill_index.IndexTests.test_oversized_description) ... FAIL
+test_oversized_file (test_build_skill_index.IndexTests.test_oversized_file) ... FAIL
+test_quoted_scalar_with_colon (test_build_skill_index.IndexTests.test_quoted_scalar_with_colon) ... FAIL
+test_self_is_excluded_and_empty_inventory_allowed (test_build_skill_index.IndexTests.test_self_is_excluded_and_empty_inventory_allowed) ... FAIL
+test_stale_index_returns_one_without_overwrite (test_build_skill_index.IndexTests.test_stale_index_returns_one_without_overwrite) ... FAIL
+test_stdout_metadata_and_portable_path (test_build_skill_index.IndexTests.test_stdout_metadata_and_portable_path) ... FAIL
+test_symlink_output_is_not_overwritten (test_build_skill_index.IndexTests.test_symlink_output_is_not_overwritten) ... FAIL
+test_symlink_skill_directory_is_rejected (test_build_skill_index.IndexTests.test_symlink_skill_directory_is_rejected) ... FAIL
+test_symlink_skill_file_is_rejected (test_build_skill_index.IndexTests.test_symlink_skill_file_is_rejected) ... FAIL
+test_unknown_skills_not_whitelisted (test_build_skill_index.IndexTests.test_unknown_skills_not_whitelisted) ... FAIL
+test_unsupported_block_scalar_is_error (test_build_skill_index.IndexTests.test_unsupported_block_scalar_is_error) ... FAIL
+test_utf8_bom_and_crlf (test_build_skill_index.IndexTests.test_utf8_bom_and_crlf) ... FAIL
+
+======================================================================
+FAIL: test_body_change_changes_hash (test_build_skill_index.IndexTests.test_body_change_changes_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 64, in test_body_change_changes_hash
+    p=self.add(); a=self.success(self.cli());p.write_text(p.read_text()+"More evidence.\n")
+                                 ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_deterministic_and_sorted (test_build_skill_index.IndexTests.test_deterministic_and_sorted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 60, in test_deterministic_and_sorted
+    a=self.cli();b=self.cli();self.assertEqual(a.stdout,b.stdout)
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_direct_non_skill_directory_is_ignored (test_build_skill_index.IndexTests.test_direct_non_skill_directory_is_ignored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 81, in test_direct_non_skill_directory_is_ignored
+    self.assertEqual(self.success(self.cli())["skill_count"],1)
+                                  ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_does_not_scan_nested_directories (test_build_skill_index.IndexTests.test_does_not_scan_nested_directories)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 77, in test_does_not_scan_nested_directories
+    self.assertEqual(self.success(self.cli())["skill_count"],0)
+                                  ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_duplicate_header_is_error (test_build_skill_index.IndexTests.test_duplicate_header_is_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 104, in test_duplicate_header_is_error
+    self.assertEqual(self.cli().returncode,2)
+                     ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_duplicate_label_rejected (test_build_skill_index.IndexTests.test_duplicate_label_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 137, in test_duplicate_label_rejected
+    self.assertEqual(self.cli("--root",f"skills={other}").returncode,2)
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_duplicate_metadata_is_error (test_build_skill_index.IndexTests.test_duplicate_metadata_is_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 108, in test_duplicate_metadata_is_error
+    self.assertEqual(self.cli().returncode,2)
+                     ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_duplicate_name_across_roots_rejected (test_build_skill_index.IndexTests.test_duplicate_name_across_roots_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 132, in test_duplicate_name_across_roots_rejected
+    q=self.cli("--root",f"project={other}")
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_duplicate_physical_root_rejected (test_build_skill_index.IndexTests.test_duplicate_physical_root_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 140, in test_duplicate_physical_root_rejected
+    self.assertEqual(self.cli("--root",f"same={self.root}").returncode,2)
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_empty_description (test_build_skill_index.IndexTests.test_empty_description)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 115, in test_empty_description
+    self.add(description="  ");self.assertEqual(self.cli().returncode,2)
+                                                ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_invalid_header_fails_whole_index (test_build_skill_index.IndexTests.test_invalid_header_fails_whole_index)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 100, in test_invalid_header_fails_whole_index
+    q=self.cli();self.assertEqual(q.returncode,2);self.assertEqual(q.stdout,"")
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_invalid_label_rejected (test_build_skill_index.IndexTests.test_invalid_label_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 146, in test_invalid_label_rejected
+    self.assertEqual(self.cli("--root",f"../bad={self.root}").returncode,2)
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_invalid_source_preserves_previous_output (test_build_skill_index.IndexTests.test_invalid_source_preserves_previous_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 168, in test_invalid_source_preserves_previous_output
+    p.write_text("invalid");q=self.cli("--output",out)
+                              ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_invalid_utf8 (test_build_skill_index.IndexTests.test_invalid_utf8)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 121, in test_invalid_utf8
+    p=self.add();p.write_bytes(b'\xff');self.assertEqual(self.cli().returncode,2)
+                                                         ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_json_quoted_name (test_build_skill_index.IndexTests.test_json_quoted_name)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 89, in test_json_quoted_name
+    self.success(self.cli())
+                 ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_malformed_check_index_returns_two (test_build_skill_index.IndexTests.test_malformed_check_index_returns_two)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 161, in test_malformed_check_index_returns_two
+    self.assertEqual(self.cli("--check",out).returncode,2)
+                     ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_malicious_body_is_data_not_execution (test_build_skill_index.IndexTests.test_malicious_body_is_data_not_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 199, in test_malicious_body_is_data_not_execution
+    self.success(self.cli());self.assertFalse(sentinel.exists())
+                 ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_missing_check_file_returns_two (test_build_skill_index.IndexTests.test_missing_check_file_returns_two)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 164, in test_missing_check_file_returns_two
+    self.add();self.assertEqual(self.cli("--check",self.base/"missing.json").returncode,2)
+                                ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_multiple_roots (test_build_skill_index.IndexTests.test_multiple_roots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 128, in test_multiple_roots
+    obj=self.success(self.cli("--root",f"project={other}"));self.assertEqual(obj["skill_count"],2)
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_name_folder_mismatch (test_build_skill_index.IndexTests.test_name_folder_mismatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 112, in test_name_folder_mismatch
+    self.assertEqual(self.cli().returncode,2)
+                     ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_no_body_is_injected (test_build_skill_index.IndexTests.test_no_body_is_injected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 52, in test_no_body_is_injected
+    self.assertNotIn("SECRET_NOT_TO_LOAD_BY_INDEX",self.cli().stdout)
+                                                   ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_no_files_written_by_default (test_build_skill_index.IndexTests.test_no_files_written_by_default)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 56, in test_no_files_written_by_default
+    self.success(self.cli()); self.assertEqual(before,{p.relative_to(self.base) for p in self.base.rglob('*')})
+                 ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_nonexistent_root_rejected (test_build_skill_index.IndexTests.test_nonexistent_root_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 143, in test_nonexistent_root_rejected
+    self.assertEqual(self.cli("--root",f"missing={self.base/'missing'}").returncode,2)
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_output_explicit_then_readonly_check (test_build_skill_index.IndexTests.test_output_explicit_then_readonly_check)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 150, in test_output_explicit_then_readonly_check
+    q=self.cli("--output",out);self.assertEqual(q.returncode,0,q.stderr);self.assertTrue(out.exists())
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_output_must_be_json (test_build_skill_index.IndexTests.test_output_must_be_json)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 177, in test_output_must_be_json
+    self.assertEqual(self.cli("--output",out).returncode,2);self.assertFalse(out.exists())
+                     ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_output_parent_not_created_implicitly (test_build_skill_index.IndexTests.test_output_parent_not_created_implicitly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 173, in test_output_parent_not_created_implicitly
+    self.assertEqual(self.cli("--output",out).returncode,2);self.assertFalse(out.parent.exists())
+                     ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_oversized_description (test_build_skill_index.IndexTests.test_oversized_description)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 118, in test_oversized_description
+    self.add(description="x"*1025);self.assertEqual(self.cli().returncode,2)
+                                                    ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_oversized_file (test_build_skill_index.IndexTests.test_oversized_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 124, in test_oversized_file
+    p=self.add();p.write_bytes(b'x'*(1024*1024+1));self.assertEqual(self.cli().returncode,2)
+                                                                    ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_quoted_scalar_with_colon (test_build_skill_index.IndexTests.test_quoted_scalar_with_colon)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 92, in test_quoted_scalar_with_colon
+    self.add(description='Use when: MFC; "中文"');self.success(self.cli())
+                                                               ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_self_is_excluded_and_empty_inventory_allowed (test_build_skill_index.IndexTests.test_self_is_excluded_and_empty_inventory_allowed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 69, in test_self_is_excluded_and_empty_inventory_allowed
+    obj=self.success(self.cli());self.assertEqual(obj["skills"],[])
+                     ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_stale_index_returns_one_without_overwrite (test_build_skill_index.IndexTests.test_stale_index_returns_one_without_overwrite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 155, in test_stale_index_returns_one_without_overwrite
+    p=self.add();out=self.base/"index.json";self.cli("--output",out);old=out.read_bytes()
+                                            ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_stdout_metadata_and_portable_path (test_build_skill_index.IndexTests.test_stdout_metadata_and_portable_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 38, in test_stdout_metadata_and_portable_path
+    obj=self.success(self.cli())
+                     ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_symlink_output_is_not_overwritten (test_build_skill_index.IndexTests.test_symlink_output_is_not_overwritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 195, in test_symlink_output_is_not_overwritten
+    self.assertEqual(self.cli("--output",out).returncode,2);self.assertEqual(target.read_text(),"KEEP")
+                     ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_symlink_skill_directory_is_rejected (test_build_skill_index.IndexTests.test_symlink_skill_directory_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 186, in test_symlink_skill_directory_is_rejected
+    self.assertEqual(self.cli().returncode,2)
+                     ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_symlink_skill_file_is_rejected (test_build_skill_index.IndexTests.test_symlink_skill_file_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 190, in test_symlink_skill_file_is_rejected
+    self.assertEqual(self.cli().returncode,2)
+                     ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_unknown_skills_not_whitelisted (test_build_skill_index.IndexTests.test_unknown_skills_not_whitelisted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 73, in test_unknown_skills_not_whitelisted
+    self.assertEqual(self.success(self.cli())["skills"][0]["name"],"skillbrand-new")
+                                  ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_unsupported_block_scalar_is_error (test_build_skill_index.IndexTests.test_unsupported_block_scalar_is_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 96, in test_unsupported_block_scalar_is_error
+    q=self.cli();self.assertEqual(q.returncode,2);self.assertIn("frontmatter",q.stderr.lower())
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+======================================================================
+FAIL: test_utf8_bom_and_crlf (test_build_skill_index.IndexTests.test_utf8_bom_and_crlf)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 85, in test_utf8_bom_and_crlf
+    self.assertEqual(self.success(self.cli())["skill_count"],1)
+                                  ~~~~~~~~^^
+  File "/mnt/data/orchestrator-work/SkillForge/skills/skillforge-orchestrator/tests/test_build_skill_index.py", line 29, in cli
+    self.assertTrue(SCRIPT.is_file(), "RED: build_skill_index.py does not yet exist")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : RED: build_skill_index.py does not yet exist
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.022s
+
+FAILED (failures=38)

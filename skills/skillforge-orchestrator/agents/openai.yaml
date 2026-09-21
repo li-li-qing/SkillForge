@@ -1,0 +1,6 @@
+interface:
+  display_name: "SkillForge Orchestrator"
+  short_description: "统一入口：先核对项目与范围，确认后执行"
+  default_prompt: "Use $skillforge-orchestrator to prepare a project-aware execution brief for my request."
+policy:
+  allow_implicit_invocation: false

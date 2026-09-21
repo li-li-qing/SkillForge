@@ -1,0 +1,203 @@
+{
+  "version": "0.1.0",
+  "baseline_archive": "SkillForge-MFC-v1.zip",
+  "baseline_sha256": "ca6c0d154813004ed4a0c1ec31264d521f22e3865897aa9bde7f7e56eee469a4",
+  "modified": 1,
+  "added_excluding_manifest": 28,
+  "deleted": [],
+  "self_excluded": "evals/runs/2026-09-21/orchestrator-v1-changed-files.json",
+  "files": [
+    {
+      "path": "README.md",
+      "status": "modified",
+      "sha256": "abc83dbab07fd84429bc1c1a674d44cfd1c582528fbfae2be499f32b67d92bf8",
+      "bytes": 11617
+    },
+    {
+      "path": "docs/orchestrator/v1-design-and-plan.md",
+      "status": "added",
+      "sha256": "e89a18568299785d040ed44120383e3d96dc8234a2d327b33b966ad0a54ced54",
+      "bytes": 4053
+    },
+    {
+      "path": "evals/runs/2026-09-21/orchestrator-v1/index-final-green.log",
+      "status": "added",
+      "sha256": "8981720615f8d4f72c72f2ad88ccfce36afb920ed8eef577182855b2ea984da8",
+      "bytes": 4437
+    },
+    {
+      "path": "evals/runs/2026-09-21/orchestrator-v1/index-initial-red.log",
+      "status": "added",
+      "sha256": "0ff92976787a5944cc56b4d3ec16e5f3c18564746aca64f0c755c281647962b0",
+      "bytes": 40183
+    },
+    {
+      "path": "evals/runs/2026-09-21/orchestrator-v1/legacy-validator-final-green.log",
+      "status": "added",
+      "sha256": "a8d3a176b832dcdc267d7ff15c6be7090e4a5a70f8e835d4d4fa363097e67378",
+      "bytes": 4712
+    },
+    {
+      "path": "evals/runs/2026-09-21/orchestrator-v1/unicode-path-red.log",
+      "status": "added",
+      "sha256": "b3bd0b783bf2aae7df94acd9e2862ee267f44e889f5174ec3d3705b935ab167b",
+      "bytes": 980
+    },
+    {
+      "path": "evals/runs/2026-09-21/orchestrator-v1-validation.md",
+      "status": "added",
+      "sha256": "84719a6818f295f7439f3c2f030ce3da5f0238b3f9fb95c880c90fead38f535a",
+      "bytes": 4852
+    },
+    {
+      "path": "skills/skillforge-orchestrator/README.md",
+      "status": "added",
+      "sha256": "b1739db31b902a4b9c73db960c38291fc12b613af237d57e9c91293dc7f492c1",
+      "bytes": 3155
+    },
+    {
+      "path": "skills/skillforge-orchestrator/SKILL.md",
+      "status": "added",
+      "sha256": "a9bddd5de8bdf9660b52ccca201941e36a66cccc7173b66132321995fc9be851",
+      "bytes": 6261
+    },
+    {
+      "path": "skills/skillforge-orchestrator/agents/openai.yaml",
+      "status": "added",
+      "sha256": "84f79a745795266486856c7a2f72519a2728ef4942450ba184250f8b50a16c31",
+      "bytes": 285
+    },
+    {
+      "path": "skills/skillforge-orchestrator/assets/checkpoint.md",
+      "status": "added",
+      "sha256": "1b2dcf948656d00291b05c43ccfae74e572da00698c70e3b1be9654005098c5b",
+      "bytes": 1240
+    },
+    {
+      "path": "skills/skillforge-orchestrator/assets/execution-brief.md",
+      "status": "added",
+      "sha256": "558b87901902cbfc95f4feb5e5e88035c29516b9141e023e1e95f2e936fb9c21",
+      "bytes": 2291
+    },
+    {
+      "path": "skills/skillforge-orchestrator/assets/feedback-template.md",
+      "status": "added",
+      "sha256": "5d188c1d99964e58168baa2c763a76772c4537ad5e541b903974b8470b1d53b2",
+      "bytes": 894
+    },
+    {
+      "path": "skills/skillforge-orchestrator/evals/README.md",
+      "status": "added",
+      "sha256": "ab002085e695139f920e277ef7256a3179455cb8a82b060dc6a6011d686389cf",
+      "bytes": 2013
+    },
+    {
+      "path": "skills/skillforge-orchestrator/evals/approval-cases.json",
+      "status": "added",
+      "sha256": "c2f9319ea52cdd4084210ab32532267e8ed803ae7537640cf59857e3f7a8ea31",
+      "bytes": 3237
+    },
+    {
+      "path": "skills/skillforge-orchestrator/evals/behavior-cases.json",
+      "status": "added",
+      "sha256": "19cc54eeed935ac06fef6423b4b6873a848adad3fa317707f031d98df580b004",
+      "bytes": 16086
+    },
+    {
+      "path": "skills/skillforge-orchestrator/evals/context-cases.json",
+      "status": "added",
+      "sha256": "be9bc7071c7b7b32bf4ecd1ed1e249ea9dc920687d36879c4555fc1cee65ee28",
+      "bytes": 3183
+    },
+    {
+      "path": "skills/skillforge-orchestrator/evals/routing-cases.json",
+      "status": "added",
+      "sha256": "3418201b3e6d084e418e2dd32ca3d8b9ae5d6006825f3c5242e01775af2269a1",
+      "bytes": 6040
+    },
+    {
+      "path": "skills/skillforge-orchestrator/evals/trigger-cases.json",
+      "status": "added",
+      "sha256": "cc2fc2c1eb47fabfe0c68ed1773f2f0b6a6f246fbfde9066e7f59e97a2aaf206",
+      "bytes": 2830
+    },
+    {
+      "path": "skills/skillforge-orchestrator/generated/skill-index.json",
+      "status": "added",
+      "sha256": "2a21e9ad161282fa0ba28da81e2127a45aea5d5fd44b3044a40d485283e73536",
+      "bytes": 4337
+    },
+    {
+      "path": "skills/skillforge-orchestrator/references/approval-policy.md",
+      "status": "added",
+      "sha256": "b6a458c761ad8d9b16c89d160011061a07690322796b31f92eaf45f0942a88e3",
+      "bytes": 3326
+    },
+    {
+      "path": "skills/skillforge-orchestrator/references/context-policy.md",
+      "status": "added",
+      "sha256": "2d8179233a5846e1065fdbc10e83fe119851f6c0e799987fc02d3360acf31779",
+      "bytes": 3224
+    },
+    {
+      "path": "skills/skillforge-orchestrator/references/host-capabilities.md",
+      "status": "added",
+      "sha256": "fef415b127e886879ad7b6edff40d8567242d2ccfd24de539a052b5e95d119a8",
+      "bytes": 2085
+    },
+    {
+      "path": "skills/skillforge-orchestrator/references/maintenance.md",
+      "status": "added",
+      "sha256": "192b9612f6cd49e07d29791827e30e2abd058b1194d8974347d85ba7bbcc2434",
+      "bytes": 3000
+    },
+    {
+      "path": "skills/skillforge-orchestrator/references/routing-policy.md",
+      "status": "added",
+      "sha256": "5430816ad17741154e7c499ed83175fb2743dbcc49a49d3a82afef6e2bdcb906",
+      "bytes": 3934
+    },
+    {
+      "path": "skills/skillforge-orchestrator/references/sources.md",
+      "status": "added",
+      "sha256": "38bb6fea146c4241c7e200bf5dc68e43d936b72cb2518d096b79e48ec8c1becf",
+      "bytes": 2749
+    },
+    {
+      "path": "skills/skillforge-orchestrator/references/user-workstyle.md",
+      "status": "added",
+      "sha256": "2f11dc2da5809d2f090bd5ab8d72c7b746050a0a1d37ef10c3b26582ad3030e1",
+      "bytes": 1839
+    },
+    {
+      "path": "skills/skillforge-orchestrator/scripts/build_skill_index.py",
+      "status": "added",
+      "sha256": "7927bd235de7ba6c48b422775a99fd1bf23db27b59c3ac67072eea3404bfb7f0",
+      "bytes": 11247
+    },
+    {
+      "path": "skills/skillforge-orchestrator/tests/test_build_skill_index.py",
+      "status": "added",
+      "sha256": "e1557e0f533ac71cb10ea0b8fe2057fe304e13a017c60b968b44a5382b21efe9",
+      "bytes": 10446
+    }
+  ],
+  "package_checks": {
+    "status": "verified",
+    "full_zip_files": 270,
+    "changed_zip_files": 30,
+    "standalone_zip_files": 22,
+    "fresh_full_self_contained": "8 skills / 0 errors / 8 copies",
+    "fresh_standalone_self_contained": "1 skill / 0 errors / 1 copy",
+    "fresh_standalone_index_unit_tests": "39/39 PASS",
+    "standalone_without_leaf_skills": "0 indexed peers; no fabricated installation",
+    "full_index_matches": "7/7 entry SHA-256",
+    "all_json_parsed": 60,
+    "crc": "PASS",
+    "full_source_byte_parity": "PASS",
+    "baseline_plus_delta_equals_full": "PASS",
+    "standalone_equals_full_skill_subtree": "PASS",
+    "behavior_eval": "not_run",
+    "windows_runtime": "not_run"
+  }
+}

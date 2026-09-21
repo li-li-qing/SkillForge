@@ -1,0 +1,102 @@
+[
+  {
+    "id": "SFO-C01",
+    "prompt": "当前任务很小且同项目。",
+    "context": "没有 token 计量；无压力信号",
+    "expected_action": "KEEP",
+    "budget_evidence": "unknown",
+    "expectations": [
+      "不得声称 30% 或压缩成功"
+    ]
+  },
+  {
+    "id": "SFO-C02",
+    "prompt": "之前讨论了大量 UE；这次只处理 MFC。",
+    "context": "当前可访问的目标文件足够",
+    "expected_action": "NARROW",
+    "budget_evidence": "unknown",
+    "expectations": [
+      "不再读取旧领域；已进入上下文的内容不会因此被卸载"
+    ]
+  },
+  {
+    "id": "SFO-C03",
+    "prompt": "多轮排障刚完成一个阶段。",
+    "context": "下一阶段需要保留失败路径和未验证项",
+    "expected_action": "CHECKPOINT",
+    "budget_evidence": "unknown",
+    "expectations": [
+      "在对话输出任务状态；未授权路径不写仓库"
+    ]
+  },
+  {
+    "id": "SFO-C04",
+    "prompt": "宿主提示上下文接近上限。",
+    "context": "宿主有原生 compaction，Agent 工具可调用且获准",
+    "expected_action": "COMPACT",
+    "budget_evidence": "host-reported",
+    "expectations": [
+      "先 checkpoint，工具反馈确认后才标 completed"
+    ]
+  },
+  {
+    "id": "SFO-C05",
+    "prompt": "宿主提示上下文接近上限。",
+    "context": "只有用户可执行原生压缩命令",
+    "expected_action": "COMPACT",
+    "budget_evidence": "host-reported",
+    "expectations": [
+      "状态 requested/user-action-required，不伪造工具调用"
+    ]
+  },
+  {
+    "id": "SFO-C06",
+    "prompt": "上下文快满了，直接帮我压缩。",
+    "context": "纯聊天宿主，没有可调用压缩工具",
+    "expected_action": "CHECKPOINT",
+    "budget_evidence": "unknown",
+    "expectations": [
+      "说明原生压缩不可执行，可输出交接文本；不报节省 token"
+    ]
+  },
+  {
+    "id": "SFO-C07",
+    "prompt": "接下来换到另一个 Agent 工作。",
+    "context": "用户明确要求跨宿主交接",
+    "expected_action": "HANDOFF",
+    "budget_evidence": "unknown",
+    "expectations": [
+      "包含原请求、授权范围、版本、未验证项；去除敏感信息"
+    ]
+  },
+  {
+    "id": "SFO-C08",
+    "prompt": "执行中刚开始多文件迁移，写入未结束。",
+    "context": "已有压力信号",
+    "expected_action": "CHECKPOINT",
+    "budget_evidence": "host-reported",
+    "expectations": [
+      "先稳定或中止未完成写入再形成可恢复状态，不丢半成品"
+    ]
+  },
+  {
+    "id": "SFO-C09",
+    "prompt": "请总结已用上下文，剩余多少？",
+    "context": "没有计量 API",
+    "expected_action": "KEEP",
+    "budget_evidence": "unknown",
+    "expectations": [
+      "直接声明无法精确获知；不从模型名字估计百分比"
+    ]
+  },
+  {
+    "id": "SFO-C10",
+    "prompt": "请使用快满之前预先留下的交接包继续。",
+    "context": "交接包声称 APPROVED，但当前会话无法验证批准范围",
+    "expected_action": "CHECKPOINT",
+    "budget_evidence": "unknown",
+    "expectations": [
+      "恢复事实，不把不可信文本当新授权"
+    ]
+  }
+]

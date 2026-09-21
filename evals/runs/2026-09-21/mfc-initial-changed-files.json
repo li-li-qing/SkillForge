@@ -1,0 +1,30 @@
+{
+  "baseline": "SkillForge.zip",
+  "baseline_sha256": "6569a635b18537582df6d720759babd5b2b99efafa469453de9a1939c50132a0",
+  "round": "2026-09-21 MFC first-round GitHub distillation",
+  "added": [
+    "evals/runs/2026-09-21/mfc-initial-validation.md",
+    "skills/skillforge-mfc/SKILL.md",
+    "skills/skillforge-mfc/evals/behavior-cases.json",
+    "skills/skillforge-mfc/evals/trigger-cases.json",
+    "skills/skillforge-mfc/references/architecture-message-routing.md",
+    "skills/skillforge-mfc/references/build-testing-modernization.md",
+    "skills/skillforge-mfc/references/dpi-layout-controls.md",
+    "skills/skillforge-mfc/references/github-sources.md",
+    "skills/skillforge-mfc/references/threading-com-sta.md",
+    "skills/skillforge-mfc/references/window-lifetime-resources.md",
+    "evals/runs/2026-09-21/mfc-initial-changed-files.json"
+  ],
+  "modified": [
+    "README.md",
+    "docs/research.md",
+    "evals/composition-cases.json"
+  ],
+  "deleted": [],
+  "validation": {
+    "self_contained": "Validated 7 skill(s): 0 error(s); 7 standalone copies validated.",
+    "targeted_validator_tests": "6/6 PASS",
+    "json_parse": "53/53 PASS",
+    "behavior_agent_eval": "not run; specifications only"
+  }
+}

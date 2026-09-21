@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "generator": "skillforge-orchestrator/0.1.0",
+  "scope": "metadata-snapshot-not-installation-or-permission-proof",
+  "root_labels": [
+    "skills"
+  ],
+  "skill_count": 7,
+  "skills": [
+    {
+      "name": "skillforge-archerage-addon",
+      "description": "Use when developing or debugging ArcheRage RU Lua addons or Replicated Suite: PVP图标延迟/抖动、首领倒计时、HUD校准/默认模板、存档回读、RS-ERROR-PAGE复制、Buff追踪、询价及生命周期，或更新本技能。泛用Lua、UE5/UE Lua、AAEmu服务端和仅AAClassic不触发；服务器不明时先确认。",
+      "root": "skills",
+      "path": "skillforge-archerage-addon/SKILL.md",
+      "revision": "2026.09.14-r4",
+      "sha256": "f7d2a02363a880b6fda87698327992cb1478c7b885a803b201a3d9bbbd38422b"
+    },
+    {
+      "name": "skillforge-debugging",
+      "description": "定位和修复代码、蓝图、插件或界面的错误、崩溃、偶发失效与异常结果。Use when debugging failures, regressions, inconsistent behavior or unexplained output. 纯功能设计、正常操作说明和没有故障目标的代码阅读不触发。",
+      "root": "skills",
+      "path": "skillforge-debugging/SKILL.md",
+      "revision": null,
+      "sha256": "59e7eab2c107f1efa5f968695eb3cc2f157a7f94cecd063c7bae8a503a0a3485"
+    },
+    {
+      "name": "skillforge-lgf",
+      "description": "使用、接入、扩展、排查或维护 LGameplayFramework（LGF）插件及其消费工程，包括 Foundation、Request/Authority、背包交互、GAS、GASP/Mover、PSD/PSS、武器动画、UI 路由和项目文档。Use for LGameplayFramework integration and development. 普通 UE C++、CommonUI、GAS 或名为 LGame 的目录不自动触发；先确认实际使用 LGF。",
+      "root": "skills",
+      "path": "skillforge-lgf/SKILL.md",
+      "revision": null,
+      "sha256": "4b53f59b0d7309b314af30957bf2039c30a4f576c2b20871fd92cc3fa45ee2eb"
+    },
+    {
+      "name": "skillforge-mfc",
+      "description": "设计、实现、审查和维护 Windows MFC C++ 桌面程序，涵盖 CWinApp/Frame/Dialog/Doc-View、消息与命令路由、窗口生命周期、工作线程与 UI 线程、COM/STA、资源所有权、DPI/布局、复杂控件、构建与测试。Use when work targets MFC, afxwin, CWnd, CDialog, CFrameWnd, CView, message maps, DDX/DDV, AfxBeginThread or MFC/ATL desktop integration. 普通 C++、Win32-only、Qt、.NET、UE 不因 C++ 字样触发。",
+      "root": "skills",
+      "path": "skillforge-mfc/SKILL.md",
+      "revision": null,
+      "sha256": "3623ecad35dee3ac14486da25f0f1ea34b0f9178aa8424b47454ce6ffd5be8e9"
+    },
+    {
+      "name": "skillforge-ue-blueprint",
+      "description": "创建、修改、解释和排查 Unreal Engine 5 蓝图、Widget Blueprint、事件图与节点连接。Use when working with Blueprint graphs, variables, functions, interfaces, dispatchers or Accessed None. 纯 C++ 实现、材质图和其他软件节点图不触发。",
+      "root": "skills",
+      "path": "skillforge-ue-blueprint/SKILL.md",
+      "revision": null,
+      "sha256": "7b37b03db3fdef8ee076471a517925bc979035b6d9d77087d065f89404f163d3"
+    },
+    {
+      "name": "skillforge-ue-cpp",
+      "description": "编写、修改和审查 Unreal Engine 5 C++，涵盖 UObject 反射、所有权、生命周期、模块依赖及蓝图接口。Use when UE C++ work involves UCLASS, UPROPERTY, UFUNCTION, delegates, async callbacks or Build.cs. 普通 C++、MFC 和纯蓝图布局不触发。",
+      "root": "skills",
+      "path": "skillforge-ue-cpp/SKILL.md",
+      "revision": null,
+      "sha256": "5cc7d9e7a082d4d060a3ecece43e2ecb58616d4da502abd65b6209b5877b4023"
+    },
+    {
+      "name": "skillforge-ui-design",
+      "description": "设计、调整或检查游戏 HUD、工具窗口、配置面板的信息结构、布局、交互状态、缩放、焦点与输入层级。Use for UI layout, interaction states, responsive tool panels and HUD design across existing frameworks. 纯业务算法、无界面任务和仅制作图片不触发；已有界面故障可与排障技能组合。",
+      "root": "skills",
+      "path": "skillforge-ui-design/SKILL.md",
+      "revision": null,
+      "sha256": "d3e3f2aa6c6f7ec89983b80f95bc016c2f6b87592e1df6688070250c2319a99c"
+    }
+  ]
+}
