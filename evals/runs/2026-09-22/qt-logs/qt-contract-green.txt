@@ -1,0 +1,11 @@
+test_entry_is_small_and_named (test_qt_package.QtPackageTests.test_entry_is_small_and_named) ... ok
+test_evaluation_cases_are_unique_and_have_rubrics (test_qt_package.QtPackageTests.test_evaluation_cases_are_unique_and_have_rubrics) ... ok
+test_runtime_has_no_parent_relative_links (test_qt_package.QtPackageTests.test_runtime_has_no_parent_relative_links) ... ok
+test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) ... ok
+test_sources_have_immutable_revisions_and_review_ranges (test_qt_package.QtPackageTests.test_sources_have_immutable_revisions_and_review_ranges) ... ok
+test_templates_do_not_fill_unknown_project_facts (test_qt_package.QtPackageTests.test_templates_do_not_fill_unknown_project_facts) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.003s
+
+OK

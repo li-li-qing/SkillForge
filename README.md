@@ -1,6 +1,6 @@
 # SkillForge
 
-面向游戏开发与创作工具的个人 Agent Skills 技能源。当前包含 7 个专业/方法技能，以及统一入口 `skillforge-orchestrator`，共 8 个；专业技能仍可独立或组合使用。正文以中文为主，API、节点名和技术关键词保留英文。
+面向游戏开发与创作工具的个人 Agent Skills 技能源。当前包含 8 个专业/方法技能，以及统一入口 `skillforge-orchestrator`，共 9 个；专业技能仍可独立或组合使用。正文以中文为主，API、节点名和技术关键词保留英文。
 
 | 技能 | 使用时机 | 入口 |
 |---|---|---|
@@ -9,6 +9,7 @@
 | `skillforge-ue-cpp` | 当前任务确实涉及 UE C++、反射、生命周期、模块或蓝图暴露接口 | [UE C++](skills/skillforge-ue-cpp/SKILL.md) |
 | `skillforge-ue-blueprint` | 创建、修改、解释或排查 UE 蓝图、Widget Blueprint 与节点图 | [蓝图](skills/skillforge-ue-blueprint/SKILL.md) |
 | `skillforge-ui-design` | 设计或调整 HUD、工具窗口、配置面板的布局与交互 | [UI](skills/skillforge-ui-design/SKILL.md) |
+| `skillforge-qt` | Qt C++ 桌面工具、Widgets/Quick、Model/View、线程/COM、DPI、部署及 MFC → Qt 迁移 | [Qt](skills/skillforge-qt/SKILL.md) |
 | `skillforge-mfc` | 开发、审查或现代化 Windows MFC C++ 桌面程序、线程/COM、消息路由与窗口生命周期 | [MFC](skills/skillforge-mfc/SKILL.md) |
 | `skillforge-archerage-addon` | 开发或排查 ArcheRage RU Lua 插件、Replicated Suite、API、HUD 与存档 | [ArcheRage RU 插件](skills/skillforge-archerage-addon/SKILL.md) |
 | `skillforge-lgf` | 学习、接入、扩展或维护实际使用 LGameplayFramework 的工程与插件 | [LGF 接入与开发](skills/skillforge-lgf/SKILL.md) |
@@ -49,6 +50,9 @@
 |---|---|---|
 | 用蓝图做背包界面 | 蓝图 + UI | 数据与节点流；布局、输入和状态 |
 | C++ 控件点不到 | C++ + 排障；涉及层级时加 UI | 接口与生命周期；定位证据；输入层级 |
+| Qt 工具增加任务/日志面板 | Qt；涉及交互时加 UI | Qt 模型/线程/拥有关系；布局与输入 |
+| Qt 页面偶发卡死或输入被覆盖 | Qt + 排障；按需加 UI | Qt 契约；故障链；交互验收 |
+| 已决定从 MFC 迁到 Qt | Qt；读取旧代码时按需 MFC | 行为迁移与 Qt 目标架构；旧实现解释 |
 | MFC 工具增加日志面板 | MFC + UI | MFC 窗口/命令/生命周期；布局、焦点与状态 |
 | MFC 日志面板偶发失效 | MFC + UI + 排障 | MFC 消息/线程/窗口；界面状态；故障链 |
 | ArcheRage RU 插件统计异常 | ArcheRage RU + 排障 | 宿主 API 与数据契约；证据和故障链 |
@@ -113,3 +117,12 @@ MFC 首轮 GitHub 蒸馏、结构验证与未验证边界见 [MFC 首轮验证](
 迁移覆盖、备份/恢复位置、实际测试和限制见 [本轮报告](evals/runs/2026-09-14/migration-report.md)。这些技能没有自动安装到任何 Agent 宿主，本次也没有修改 LGame 工程。历史运行记录用于提炼方法，不当作本轮 UE/游戏运行通过。
 
 动画经验已进一步补充：[新武器动画实施与交付顺序](skills/skillforge-lgf/references/animation-delivery-workflow.md)，包括素材覆盖表、真实播放验证、生成器门禁与人工交接。单一源 Socket 变换和覆盖曲线钩子也已细化；[补充记录](evals/runs/2026-09-14/animation-supplement/report.md)注明证据与未完成的旧目录删除。
+
+
+## 2026-09-22 Qt 工程 Skill
+
+新增 [skillforge-qt](skills/skillforge-qt/README.md)：短入口、10 个按需主题、两份事实/交接模板、六个固定提交的源码切片来源，以及待运行的触发/行为题集。Qt 版本、位宽、编译器与 UI 栈从当前工程读取，不继承历史 MFC 配置。
+
+本次保留所有原专业 Skill 与 orchestrator 核心，未改 LCot 产品源码、未安装 SDK。动态入口发现新 Skill 不需要硬编码目录白名单。
+
+[设计与研究范围](docs/qt-skill-design-2026-09-22.md)说明取材和裁剪；[实际验证报告](evals/runs/2026-09-22/qt-initial-validation.md)区分结构通过、原包已有失败及未运行的 Qt/Windows/Agent 验证。特别注意：原上传包的 orchestrator 运行目录含历史开发资料，存在三项便携性基线失败；本轮未把这一独立清理混入 Qt 新增工作。

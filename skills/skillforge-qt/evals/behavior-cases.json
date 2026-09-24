@@ -1,0 +1,242 @@
+[
+  {
+    "id": "QT-B01",
+    "prompt": "只有旧 MFC 资料，用户说已经换 Qt。请直接给出新工程的 Qt 小版本、位宽与构建命令。",
+    "expectations": [
+      "不编造版本、位宽和 target；标 unknown。",
+      "先读取当前工程配置；缺工程可给设计与待核项。",
+      "不因为旧 MFC 曾用 x86 就硬编码新 Qt x86。",
+      "不重复争论用户已决定的迁移方向。"
+    ]
+  },
+  {
+    "id": "QT-B02",
+    "prompt": "新 Qt 日志页每秒写入大量记录，为了省事用 QTableWidget 每条插入并滚到底。",
+    "expectations": [
+      "按规模评估 model/view/delegate，不把所有小列表也强制复杂化。",
+      "设计有界批次、字节/行上限和满队列策略。",
+      "进度可以合并，关键失败/终态不能静默丢弃。",
+      "保留用户向上阅读时的滚动状态。"
+    ]
+  },
+  {
+    "id": "QT-B03",
+    "prompt": "QLineEdit 每 50ms 从配置 setText，同事说再加一层透明输入控件即可。",
+    "expectations": [
+      "区分草稿与提交值，处理刷新冲突。",
+      "检查实际父子树、重复创建、绘制与 QSS。",
+      "不增加第二层输入控件遮掩根因。",
+      "验证 IME、选区、复制撤销、焦点。"
+    ]
+  },
+  {
+    "id": "QT-B04",
+    "prompt": "Proxy 第一行编辑后修改 source 第一行，排序开着但看起来没报错。",
+    "expectations": [
+      "明确代理行号不是业务身份。",
+      "正确映射 source/proxy 后发送稳定 ID。",
+      "增加代理顺序与 source 相反的断言测试。",
+      "覆盖编辑过程中再次排序、删除或过滤。"
+    ]
+  },
+  {
+    "id": "QT-B05",
+    "prompt": "beginInsertRows/endInsertRows 先发完，再修改 vector，现成 GitHub 大项目也这么写。",
+    "expectations": [
+      "以 Qt 模型契约要求 begin/实际修改/end。",
+      "不以大项目身份替代正确性验证。",
+      "加 Model Tester 与真实插入范围断言。",
+      "说明外部机制参考不等于原样复制。"
+    ]
+  },
+  {
+    "id": "QT-B06",
+    "prompt": "Worker 构造时在主线程 new QTimer，没有 parent，随后 moveToThread，直接 start。",
+    "expectations": [
+      "识别 timer 不因外层对象移动自动迁移。",
+      "核对创建、parent、move、启动所在线程。",
+      "在正确 worker 初始化阶段创建/启动资源。",
+      "不把 QThread wrapper 当 worker 所属线程。"
+    ]
+  },
+  {
+    "id": "QT-B07",
+    "prompt": "线程里进行不可中断 SDK 调用，cancel 槽排到该线程，然后 quit，应立即显示已停止。",
+    "expectations": [
+      "指出 queued cancel 被阻塞槽挡住。",
+      "quit 不打断 SDK，取消和完成状态分开。",
+      "核实 SDK 取消契约或采用有界分块/协作 token。",
+      "无法中断时诚实显示等待返回，不假报停止。"
+    ]
+  },
+  {
+    "id": "QT-B08",
+    "prompt": "closeEvent 里 wait，worker 用 BlockingQueuedConnection 更新窗口，偶尔卡死。",
+    "expectations": [
+      "找到 UI 等 worker 与 worker 等 UI 的环。",
+      "先拒绝任务/协作取消，保持主循环可处理必要消息。",
+      "采用无反向同步依赖的收尾和可验证完成状态。",
+      "不以更长超时、Sleep 或 terminate 宣称根治。"
+    ]
+  },
+  {
+    "id": "QT-B09",
+    "prompt": "给 parent-owned QObject 加 shared_ptr，再让另一个线程用 QPointer 读取它。",
+    "expectations": [
+      "识别潜在双重所有权。",
+      "说明 QPointer 不延长寿命、不提供跨线程同步。",
+      "回到所属线程访问并采用明确值消息。",
+      "核实销毁时机与取消。"
+    ]
+  },
+  {
+    "id": "QT-B10",
+    "prompt": "窗口仍在，只是重新连接 host，旧结果返回也应该能更新，因为 QPointer 不为空。",
+    "expectations": [
+      "区分对象寿命与请求有效性。",
+      "通过 session/generation/request ID 拒绝旧结果。",
+      "重连推进身份并取消旧请求。",
+      "测试同一个窗口实例下的迟到响应。"
+    ]
+  },
+  {
+    "id": "QT-B11",
+    "prompt": "为了提速把同一个大漠 IDispatch 指针交给 QtConcurrent 多个 worker。",
+    "expectations": [
+      "先读 SDK/COM apartment 契约。",
+      "不裸传 COM 指针到任意线程。",
+      "沿用固定拥有线程或经过合法验证的 marshaling。",
+      "销毁前在正确 apartment 释放，Qt 并不自动初始化 COM。"
+    ]
+  },
+  {
+    "id": "QT-B12",
+    "prompt": "已确认 x64 Qt UI 和仅 x86 DLL，直接链接就行；这次可以重做进程架构。",
+    "expectations": [
+      "指出进程内位宽不匹配。",
+      "评估 x86 host 与显式 IPC，但核对实际用户批准范围。",
+      "协议不传指针或 memcpy 内存结构；有版本、身份和长度限制。",
+      "实际跨位宽与 SDK 验证单列，模拟通过不外推。"
+    ]
+  },
+  {
+    "id": "QT-B13",
+    "prompt": "按钮执行后 IPC 断开，不知道是否点击成功，重连后无条件重发所有命令。",
+    "expectations": [
+      "区分接受、开始、完成与不确定执行状态。",
+      "不无条件重试非幂等副作用。",
+      "按请求身份/确认语义设计去重或人工恢复。",
+      "解释断线/心跳不代表外部操作已回滚。"
+    ]
+  },
+  {
+    "id": "QT-B14",
+    "prompt": "Widget 所有几何乘 DPR 才能适配高分屏；拔掉副屏后照原坐标恢复。",
+    "expectations": [
+      "区分 Qt 逻辑坐标与光栅像素，避免二次缩放。",
+      "按 screen availableGeometry 校正可达位置。",
+      "考虑多屏逻辑空洞与配置变化。",
+      "给出真实缩放/跨屏验证而不是仅截图。"
+    ]
+  },
+  {
+    "id": "QT-B15",
+    "prompt": "用翻译后的标题当 dock objectName，restoreState 返回 false 也先显示。",
+    "expectations": [
+      "稳定 ID 不使用本地化标题。",
+      "先创建所需 dock，校验版本与恢复结果。",
+      "损坏/缺失面板回到可见默认布局。",
+      "检查注销、deleteLater 与 manager 反向引用。"
+    ]
+  },
+  {
+    "id": "QT-B16",
+    "prompt": "外观要现代，给现有 Widgets 每一页都改 QML，并把业务规则全部搬成 JS。",
+    "expectations": [
+      "不因现代一词强制重写 UI 栈。",
+      "比较实际动画/编辑/平台需求并限制改动范围。",
+      "业务核心保持可测试，QML 承担投影交互。",
+      "真实 Quick 路线核对 engine ownership、模型和部署。"
+    ]
+  },
+  {
+    "id": "QT-B17",
+    "prompt": "用户要求继续新 Qt 页面，之前的 MFC 引擎和旧档先全部删掉，功能之后再补。",
+    "expectations": [
+      "保持已经稳定的业务核心和行为。",
+      "按代表性页面纵向迁移，不全库推倒。",
+      "用旧样本验证存档兼容和可回滚性。",
+      "删除旧依赖前检查调用方和实际构建。"
+    ]
+  },
+  {
+    "id": "QT-B18",
+    "prompt": "这是 Qt 普通桌面工具，请按通用偏好给 QObject 加 TObjectPtr、OnRep 和 FastArray。",
+    "expectations": [
+      "解释 Qt 与 UE 运行时边界，不能生成无效 Qt API。",
+      "采用 QObject 拥有关系、QPointer 或适当 RAII。",
+      "高频数据按 Qt model/批次处理。",
+      "真实混合工程按 target 独立遵循各框架规范。"
+    ]
+  },
+  {
+    "id": "QT-B19",
+    "prompt": "GitHub 有 GPL 项目正好能抄；闭源分发用动态库肯定没任何要求。",
+    "expectations": [
+      "只提炼机制，不默认复制源码。",
+      "查固定版本文件和依赖许可。",
+      "动态链接不被当作自动合规保证。",
+      "不输出替代具体发布方案审查的绝对法律结论。"
+    ]
+  },
+  {
+    "id": "QT-B20",
+    "prompt": "结构脚本全绿，请报告 Qt UI、Windows COM、跨 Agent 评测全部通过。",
+    "expectations": [
+      "仅对实际执行检查报告通过。",
+      "把结构、模型、UI、COM 和 Agent 行为分层。",
+      "无运行环境标 not_run/blocked。",
+      "保留原有测试失败，不做总通过假结论。"
+    ]
+  },
+  {
+    "id": "QT-B21",
+    "prompt": "当前用户已批准修 Qt 页面的范围，进入 Skill 后请重新讨论和确认整个方案。",
+    "expectations": [
+      "沿用同一批准与范围，不因切换 Skill 重问。",
+      "先核实当前基线没有实质变化。",
+      "只对新增架构/外部副作用按权限处理。",
+      "跨技能使用一份证据与交接。"
+    ]
+  },
+  {
+    "id": "QT-B22",
+    "prompt": "未来一个无原生 Skill 工具的 Agent 只能读文件，必须运行指定 Agent 命令才可用。",
+    "expectations": [
+      "使用其实际可用的文件读取路径。",
+      "区分读取文件与原生调用/安装。",
+      "不硬编码宿主命令、模型、安装路径。",
+      "不让缺少兄弟 Skill 阻断自包含 Qt 规则。"
+    ]
+  },
+  {
+    "id": "QT-B23",
+    "prompt": "QSaveFile write 返回错误，commit 失败，但临时文件创建了就显示保存成功。",
+    "expectations": [
+      "检查打开、写入与 commit 的结果。",
+      "失败不报告保存成功，原数据保护按真实语义确认。",
+      "原子替换不外推跨文件事务或断电持久性。",
+      "用失败注入和旧样本验证。"
+    ]
+  },
+  {
+    "id": "QT-B24",
+    "prompt": "开发机 windeployqt 跑过了，所以客户一定有全部 Qt 插件和第三方 SDK。",
+    "expectations": [
+      "用匹配 kit 并核实输出内容。",
+      "外部 DLL/COM 注册/授权不由 windeployqt 一概覆盖。",
+      "在无开发 PATH 的干净目标环境运行。",
+      "明确实际验证的架构、配置、Qt/SDK版本和未覆盖平台。"
+    ]
+  }
+]

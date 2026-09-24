@@ -1,0 +1,128 @@
+[
+  {
+    "id": "QT-T01",
+    "prompt": "用 Qt Widgets 给任务工具增加日志面板。",
+    "context": "CMake 依赖 Qt6::Widgets，当前任务改 UI。",
+    "expected": "trigger",
+    "reason": "实际涉及 Qt Widgets。"
+  },
+  {
+    "id": "QT-T02",
+    "prompt": "这个 QLineEdit 聚焦后有两层边框，帮我查。",
+    "context": "当前页面 .ui 和自定义样式可读。",
+    "expected": "trigger",
+    "reason": "Qt 输入与绘制故障。"
+  },
+  {
+    "id": "QT-T03",
+    "prompt": "我已决定将 MFC 工程迁往 Qt，设计一个保留引擎的方案。",
+    "context": "用户明确迁移方向。",
+    "expected": "trigger",
+    "reason": "迁移目标是 Qt，旧 MFC 仅作行为证据。"
+  },
+  {
+    "id": "QT-T04",
+    "prompt": "点击关闭后一直卡住，QThread 的 quit 也没用。",
+    "context": "存在 UI 等待和 worker 调用。",
+    "expected": "trigger",
+    "reason": "Qt 线程与退出契约。"
+  },
+  {
+    "id": "QT-T05",
+    "prompt": "QSortFilterProxyModel 排序后编辑改到别行了。",
+    "context": "实际 Qt model/view。",
+    "expected": "trigger",
+    "reason": "代理映射和稳定身份。"
+  },
+  {
+    "id": "QT-T06",
+    "prompt": "增加 QML ListView，后台持续更新状态。",
+    "context": "真实 Qt Quick 项目。",
+    "expected": "trigger",
+    "reason": "进入 Quick 分支，不强制 Widgets。"
+  },
+  {
+    "id": "QT-T07",
+    "prompt": "Qt 程序要调用已存在的大漠宿主，检查集成。",
+    "context": "有 Qt UI、独立 host 和协议。",
+    "expected": "trigger",
+    "reason": "Qt 与平台适配边界相关。"
+  },
+  {
+    "id": "QT-T08",
+    "prompt": "Qt Release 打包后找不到 qwindows 插件。",
+    "context": "Windows 目标环境。",
+    "expected": "trigger",
+    "reason": "Qt 部署故障。"
+  },
+  {
+    "id": "QT-T09",
+    "prompt": "用 QAbstractItemModelTester 检查树模型。",
+    "context": "已有 Qt Test 工程。",
+    "expected": "trigger",
+    "reason": "Qt 模型验证任务。"
+  },
+  {
+    "id": "QT-T10",
+    "prompt": "优化 C++ 的二分查找函数。",
+    "context": "仅独立标准库算法，不涉及 Qt。",
+    "expected": "no_trigger",
+    "reason": "语言相同不是领域触发条件。"
+  },
+  {
+    "id": "QT-T11",
+    "prompt": "给 UE 背包加 OnRep 和 FastArray。",
+    "context": "Unreal C++ 工程。",
+    "expected": "no_trigger",
+    "reason": "QObject/Qt 规则不适用于 UE 复制。"
+  },
+  {
+    "id": "QT-T12",
+    "prompt": "修复原 MFC 的 CWnd 焦点，不要迁移。",
+    "context": "没有 Qt 改动。",
+    "expected": "no_trigger",
+    "reason": "纯 MFC 任务保留 MFC Skill。"
+  },
+  {
+    "id": "QT-T13",
+    "prompt": "QuickTime 的 QT 视频打不开。",
+    "context": "媒体格式/播放器问题，没有 Qt 框架。",
+    "expected": "no_trigger",
+    "reason": "QT 缩写不是 Qt 技术证据。"
+  },
+  {
+    "id": "QT-T14",
+    "prompt": "设计一个好看的桌面 UI。",
+    "context": "当前没有框架信息。",
+    "expected": "conditional",
+    "reason": "先确定框架，不能凭桌面一词默认 Qt。"
+  },
+  {
+    "id": "QT-T15",
+    "prompt": "封装一个 COM SDK 的 STA 服务。",
+    "context": "不清楚是否有 Qt 目标。",
+    "expected": "conditional",
+    "reason": "只有 Qt 事件循环/对象/集成受影响时选本 Skill。"
+  },
+  {
+    "id": "QT-T16",
+    "prompt": "仓库有 Qt，但这次只改文档里的拼写。",
+    "context": "不涉及 Qt 机制。",
+    "expected": "no_trigger",
+    "reason": "依赖存在不代表当前任务需要领域 Skill。"
+  },
+  {
+    "id": "QT-T17",
+    "prompt": "给 Python 的 PySide6 页面修焦点。",
+    "context": "不是 C++ Qt，框架机制相同但绑定寿命不同。",
+    "expected": "conditional",
+    "reason": "可参考 Qt 原理，需额外核实 Python 绑定契约，不输出 C++ 伪修复。"
+  },
+  {
+    "id": "QT-T18",
+    "prompt": "请直接使用 skillforge-qt 审查当前主窗口。",
+    "context": "显式选择且是 Qt 主窗口。",
+    "expected": "trigger",
+    "reason": "本 Skill 的显式领域请求。"
+  }
+]

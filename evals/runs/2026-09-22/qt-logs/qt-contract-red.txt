@@ -1,0 +1,214 @@
+test_entry_is_small_and_named (test_qt_package.QtPackageTests.test_entry_is_small_and_named) ... FAIL
+test_evaluation_cases_are_unique_and_have_rubrics (test_qt_package.QtPackageTests.test_evaluation_cases_are_unique_and_have_rubrics) ... FAIL
+test_runtime_has_no_parent_relative_links (test_qt_package.QtPackageTests.test_runtime_has_no_parent_relative_links) ... FAIL
+test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) ... 
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='project-profile') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='architecture-commands') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='widgets-layout-input-dpi') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='model-view-performance') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='qobject-threading-shutdown') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='windows-com-dmsoft') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='mfc-migration') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='testing-build-deployment') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='qml-quick-boundary') ... FAIL
+  test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='github-sources') ... FAIL
+test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) ... FAIL
+test_sources_have_immutable_revisions_and_review_ranges (test_qt_package.QtPackageTests.test_sources_have_immutable_revisions_and_review_ranges) ... FAIL
+test_templates_do_not_fill_unknown_project_facts (test_qt_package.QtPackageTests.test_templates_do_not_fill_unknown_project_facts) ... FAIL
+
+======================================================================
+FAIL: test_entry_is_small_and_named (test_qt_package.QtPackageTests.test_entry_is_small_and_named)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 17, in test_entry_is_small_and_named
+    text = self.require_file('SKILL.md').read_text(encoding='utf-8')
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: SKILL.md
+
+======================================================================
+FAIL: test_evaluation_cases_are_unique_and_have_rubrics (test_qt_package.QtPackageTests.test_evaluation_cases_are_unique_and_have_rubrics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 52, in test_evaluation_cases_are_unique_and_have_rubrics
+    triggers = json.loads(self.require_file('evals/trigger-cases.json').read_text(encoding='utf-8'))
+                          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: evals/trigger-cases.json
+
+======================================================================
+FAIL: test_runtime_has_no_parent_relative_links (test_qt_package.QtPackageTests.test_runtime_has_no_parent_relative_links)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 70, in test_runtime_has_no_parent_relative_links
+    self.require_file('SKILL.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: SKILL.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='project-profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/project-profile.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='architecture-commands')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/architecture-commands.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='widgets-layout-input-dpi')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/widgets-layout-input-dpi.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='model-view-performance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/model-view-performance.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='qobject-threading-shutdown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/qobject-threading-shutdown.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='windows-com-dmsoft')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/windows-com-dmsoft.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='mfc-migration')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/mfc-migration.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='testing-build-deployment')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/testing-build-deployment.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='qml-quick-boundary')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/qml-quick-boundary.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present) (topic='github-sources')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 27, in test_runtime_topics_are_present
+    self.require_file(f'references/{name}.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/github-sources.md
+
+======================================================================
+FAIL: test_runtime_topics_are_present (test_qt_package.QtPackageTests.test_runtime_topics_are_present)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 28, in test_runtime_topics_are_present
+    self.require_file('assets/project-profile.md')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: assets/project-profile.md
+
+======================================================================
+FAIL: test_sources_have_immutable_revisions_and_review_ranges (test_qt_package.QtPackageTests.test_sources_have_immutable_revisions_and_review_ranges)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 32, in test_sources_have_immutable_revisions_and_review_ranges
+    data = json.loads(self.require_file('references/source-manifest.json').read_text(encoding='utf-8'))
+                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: references/source-manifest.json
+
+======================================================================
+FAIL: test_templates_do_not_fill_unknown_project_facts (test_qt_package.QtPackageTests.test_templates_do_not_fill_unknown_project_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 64, in test_templates_do_not_fill_unknown_project_facts
+    text = self.require_file('assets/project-profile.md').read_text(encoding='utf-8')
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/qt_skill_work/SkillForge/tests/test_qt_package.py", line 13, in require_file
+    self.assertTrue(path.is_file(), f'Missing Qt runtime resource: {name}')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Missing Qt runtime resource: assets/project-profile.md
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.006s
+
+FAILED (failures=16)

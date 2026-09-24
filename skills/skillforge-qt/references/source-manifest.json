@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "research_date": "2026-09-22",
+  "snapshot_cutoff_utc": "2026-09-22T06:53:00Z",
+  "snapshot_method": "GitHub commits API queried with until and per_page=1; files then read through GitHub connector at the returned commit.",
+  "whole_repository_review": false,
+  "source_code_copied": false,
+  "external_projects_built": false,
+  "agent_behavior_evaluated": false,
+  "classification_note": "Current 表示本轮所选近日期切片；不是发布版、兼容性认证或完整质量评级。Stable-but-old 表示所选快照较旧，机制使用时再验证。",
+  "projects": [
+    {
+      "repository": "qt-creator/qt-creator",
+      "commit": "bfb91a9719a0d690471e16435a447ca509662e71",
+      "commit_date": "2026-09-18T07:19:16Z",
+      "classification": "Current",
+      "topic": "命令、上下文与 QAction 生命周期",
+      "license_evidence": "所读 actionmanager.cpp 文件头：LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0；未据此完成全仓库许可审计。",
+      "files": [
+        {
+          "path": "src/plugins/coreplugin/actionmanager/actionmanager.cpp",
+          "blob_sha": "34f646b23ff7ff8a396857826c80c9110bcdeab6",
+          "read_ranges": [
+            [
+              1,
+              215
+            ]
+          ],
+          "url": "https://github.com/qt-creator/qt-creator/blob/bfb91a9719a0d690471e16435a447ca509662e71/src/plugins/coreplugin/actionmanager/actionmanager.cpp"
+        }
+      ],
+      "adopted": [
+        "稳定 command ID 与 action 上下文",
+        "界面入口共享命令语义",
+        "QObject parent 和带 context 的回调连接"
+      ],
+      "not_adopted": [
+        "完整 IDE 插件系统与 private Core API",
+        "照抄 QTC 宏和全部 builder 层级",
+        "根据 IDE 当前版本强行升级 LCot 工具链"
+      ],
+      "review_scope": "固定提交的已列文件切片；没有构建该外部项目，也没有审计整个仓库。"
+    },
+    {
+      "repository": "obsproject/obs-studio",
+      "commit": "ea7536c49cb84420296d3831cda526c232fed3bc",
+      "commit_date": "2026-09-21T23:13:24Z",
+      "classification": "Current",
+      "topic": "UI/核心的 target 分离",
+      "license_evidence": "本轮 frontend/CMakeLists.txt 切片没有完整许可说明；复制源码或引入依赖前另核对根许可与目标文件。",
+      "files": [
+        {
+          "path": "frontend/CMakeLists.txt",
+          "blob_sha": "98daf7bb0bde81835298b55b175005b2703ddcc8",
+          "read_ranges": [
+            [
+              1,
+              100
+            ]
+          ],
+          "url": "https://github.com/obsproject/obs-studio/blob/ea7536c49cb84420296d3831cda526c232fed3bc/frontend/CMakeLists.txt"
+        }
+      ],
+      "adopted": [
+        "frontend 与 libobs/frontend-api 的构建依赖边界",
+        "按 UI 组件与平台组织构建职责"
+      ],
+      "not_adopted": [
+        "FFmpeg/流媒体依赖集",
+        "把大项目的所有分层移入小工具",
+        "推断未读的全部 UI 线程实现已正确"
+      ],
+      "review_scope": "固定提交的已列文件切片；没有构建该外部项目，也没有审计整个仓库。"
+    },
+    {
+      "repository": "wireshark/wireshark",
+      "commit": "996389fe368e79f0c5aa6513c310ea9f37479078",
+      "commit_date": "2026-09-21T23:56:13Z",
+      "classification": "Current",
+      "topic": "物理记录、可见投影与稳定身份",
+      "license_evidence": "packet_list_model.cpp 文件头：GPL-2.0-or-later；仅蒸馏机制，无源码复制。",
+      "files": [
+        {
+          "path": "ui/qt/models/packet_list_model.cpp",
+          "blob_sha": "7ac054e049b7599f20820182fef3998bceab0c25",
+          "read_ranges": [
+            [
+              1,
+              210
+            ]
+          ],
+          "url": "https://github.com/wireshark/wireshark/blob/996389fe368e79f0c5aa6513c310ea9f37479078/ui/qt/models/packet_list_model.cpp"
+        }
+      ],
+      "adopted": [
+        "physical_rows 与 visible_rows 分离",
+        "稳定帧号到投影行的映射",
+        "边界验证与容量规划意识"
+      ],
+      "not_adopted": [
+        "全局唯一 model",
+        "无条件 reserve 100000",
+        "照抄所有 begin/end 通知顺序或历史 Qt 写法；新实现以官方模型契约和测试为准"
+      ],
+      "review_scope": "固定提交的已列文件切片；没有构建该外部项目，也没有审计整个仓库。"
+    },
+    {
+      "repository": "hluk/CopyQ",
+      "commit": "76fe2d8f23996e4bae61c970a6ee924ce71a528e",
+      "commit_date": "2026-09-20T14:20:51Z",
+      "classification": "Current",
+      "topic": "平台接口、进程隔离与集成测试",
+      "license_evidence": "src/tests/tests.cpp 文件头：GPL-3.0-or-later；文档和其他文件许可另核对。",
+      "files": [
+        {
+          "path": "docs/source-code-overview.rst",
+          "blob_sha": "4d2dc79846be7231c41363bc4f2053061426f0f0",
+          "read_ranges": [
+            [
+              1,
+              180
+            ]
+          ],
+          "url": "https://github.com/hluk/CopyQ/blob/76fe2d8f23996e4bae61c970a6ee924ce71a528e/docs/source-code-overview.rst"
+        },
+        {
+          "path": "src/tests/tests.cpp",
+          "blob_sha": "9c7c0ce6969bc3a7e9ae19650cdad721fd3d0afe",
+          "read_ranges": [
+            [
+              1,
+              180
+            ]
+          ],
+          "url": "https://github.com/hluk/CopyQ/blob/76fe2d8f23996e4bae61c970a6ee924ce71a528e/src/tests/tests.cpp"
+        }
+      ],
+      "adopted": [
+        "平台相关逻辑隔离",
+        "特定故障域的独立进程与存活检查",
+        "进程启动/关闭、环境与错误日志的真实测试入口"
+      ],
+      "not_adopted": [
+        "将文档中的阻塞 ScriptableProxy 当通用 UI 桥",
+        "把测试 waitForFinished/terminate/kill 直接放入生产 closeEvent",
+        "断言架构文档与所有当前实现完全一致"
+      ],
+      "review_scope": "固定提交的已列文件切片；没有构建该外部项目，也没有审计整个仓库。"
+    },
+    {
+      "repository": "githubuser0xFFFF/Qt-Advanced-Docking-System",
+      "commit": "4f4f602c3f7b02ee041793e9bc5833bab1bdb4ab",
+      "commit_date": "2026-09-10T10:33:11Z",
+      "classification": "Current",
+      "topic": "停靠状态恢复与延迟销毁",
+      "license_evidence": "DockManager.cpp 文件头：LGPL-2.1-or-later；实际引入版本/修改/分发义务另评审。",
+      "files": [
+        {
+          "path": "src/DockManager.cpp",
+          "blob_sha": "55e3d4cc6b05b65bc142babdaf6f7d915a2ab740",
+          "read_ranges": [
+            [
+              1,
+              150
+            ],
+            [
+              260,
+              440
+            ]
+          ],
+          "url": "https://github.com/githubuser0xFFFF/Qt-Advanced-Docking-System/blob/4f4f602c3f7b02ee041793e9bc5833bab1bdb4ab/src/DockManager.cpp"
+        }
+      ],
+      "adopted": [
+        "版本化状态与测试式解析",
+        "稳定 objectName 校验",
+        "浮动窗口弱观察与恢复状态控制",
+        "移除 manager 关系再延迟销毁的生命周期意识"
+      ],
+      "not_adopted": [
+        "默认安装 ADS",
+        "所有项目都需要高级停靠",
+        "只调用 deleteLater 就一定不会双重移除"
+      ],
+      "review_scope": "固定提交的已列文件切片；没有构建该外部项目，也没有审计整个仓库。"
+    },
+    {
+      "repository": "Skycoder42/QHotkey",
+      "commit": "4e3a244d87f1f7e741e1395f2ffe825f3a8ada45",
+      "commit_date": "2025-09-30T22:28:08Z",
+      "classification": "Stable-but-old",
+      "topic": "原生全局热键与退出互等风险",
+      "license_evidence": "本轮重点文件切片未完成许可核对；引入时核对该提交 LICENSE 及依赖，不把可参考等同可任意复制。",
+      "files": [
+        {
+          "path": "README.md",
+          "blob_sha": "c61a6f4d6dccea00a034078df8152b631e0948fe",
+          "read_ranges": [
+            [
+              78,
+              119
+            ]
+          ],
+          "url": "https://github.com/Skycoder42/QHotkey/blob/4e3a244d87f1f7e741e1395f2ffe825f3a8ada45/README.md"
+        },
+        {
+          "path": "QHotkey/qhotkey_win.cpp",
+          "blob_sha": "949d87a6f82cb836aa407e0fbab0ceee38a8e250",
+          "read_ranges": [
+            [
+              1,
+              215
+            ]
+          ],
+          "url": "https://github.com/Skycoder42/QHotkey/blob/4e3a244d87f1f7e741e1395f2ffe825f3a8ada45/QHotkey/qhotkey_win.cpp"
+        }
+      ],
+      "adopted": [
+        "全局热键需要原生事件适配",
+        "Qt 对象线程亲和性与原生处理职责分开",
+        "退出前注销与主线程事件循环依赖必须明确"
+      ],
+      "not_adopted": [
+        "跨线程 BlockingQueuedConnection 作为通用默认",
+        "旧 qpm 安装路径或历史平台能力直接当当前能力",
+        "将库较久未更新推断为必然失效或安全"
+      ],
+      "review_scope": "固定提交的已列文件切片；没有构建该外部项目，也没有审计整个仓库。"
+    }
+  ]
+}

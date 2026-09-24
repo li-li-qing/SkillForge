@@ -1,0 +1,53 @@
+{
+  "input_file": "SkillForge(4).zip",
+  "input_sha256": "300e676f5c23a9a9e5f77c9b7dfc5f96edd45b6fd396831a282d30f1c000bd60",
+  "existing_files_modified": [
+    "README.md"
+  ],
+  "existing_files_missing": [],
+  "existing_files_unchanged": 287,
+  "added_files_excluding_this_audit": [
+    "development/skillforge-orchestrator/snapshots/skill-index-2026-09-22-with-qt.json",
+    "docs/qt-agent-handoff.md",
+    "docs/qt-skill-design-2026-09-22.md",
+    "evals/runs/2026-09-22/qt-initial-validation.md",
+    "evals/runs/2026-09-22/qt-logs/baseline-tests.txt",
+    "evals/runs/2026-09-22/qt-logs/dev-index-tests.txt",
+    "evals/runs/2026-09-22/qt-logs/final-tests.txt",
+    "evals/runs/2026-09-22/qt-logs/final-validator.txt",
+    "evals/runs/2026-09-22/qt-logs/qt-contract-green.txt",
+    "evals/runs/2026-09-22/qt-logs/qt-contract-red.txt",
+    "skills/skillforge-qt/README.md",
+    "skills/skillforge-qt/SKILL.md",
+    "skills/skillforge-qt/VERSION",
+    "skills/skillforge-qt/assets/project-profile.md",
+    "skills/skillforge-qt/assets/review-handoff.md",
+    "skills/skillforge-qt/evals/README.md",
+    "skills/skillforge-qt/evals/behavior-cases.json",
+    "skills/skillforge-qt/evals/trigger-cases.json",
+    "skills/skillforge-qt/references/architecture-commands.md",
+    "skills/skillforge-qt/references/github-sources.md",
+    "skills/skillforge-qt/references/mfc-migration.md",
+    "skills/skillforge-qt/references/model-view-performance.md",
+    "skills/skillforge-qt/references/project-profile.md",
+    "skills/skillforge-qt/references/qml-quick-boundary.md",
+    "skills/skillforge-qt/references/qobject-threading-shutdown.md",
+    "skills/skillforge-qt/references/source-manifest.json",
+    "skills/skillforge-qt/references/testing-build-deployment.md",
+    "skills/skillforge-qt/references/widgets-layout-input-dpi.md",
+    "skills/skillforge-qt/references/windows-com-dmsoft.md",
+    "tests/test_qt_package.py"
+  ],
+  "original_skill_directories_content_unchanged": true,
+  "excluded_from_distribution": [
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    "*.pyc",
+    "*.pyo"
+  ],
+  "qt_runtime_files": 19,
+  "qt_trigger_cases": 18,
+  "qt_behavior_cases": 24,
+  "real_agent_evaluation": "not_run"
+}
