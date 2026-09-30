@@ -49,5 +49,16 @@
       "按layer interface拆基础locomotion与overlay/override；tag->pose/layer映射需要默认fallback和未知tag策略，切层发生在状态边界并清理旧linked instance/delegate，不在每Tick重新link",
       "验证parallel animation evaluation、URO、SimProxy、Listen远端、重初始化、变身/换Skeleton、未知tag、默认pose以及Property Access字段在整个worker读取窗口内保持稳定"
     ]
+  },
+  {
+    "id": "BP-05",
+    "slug": "runtime-retarget-face-foot-donor-versus-player",
+    "prompt": "UE5.8 同一个 MetaHuman 全身角色在交付示例 BP 中正常，接到 GASP/Mover 玩家后脸部错位、站立脚底悬空。有人建议照抄示例 BP 的 LiveLink 初始化节点，再把 Capsule 或可见 Mesh 下移。现在能用编辑器反射读取资产和运行时骨骼，如何定位、修复并证明结果？",
+    "expectations": [
+      "先追踪玩家运行实例的真实动画源、可见组件、AnimBP、Tag/映射和 Retargeter，再对照示例 BP 的独立动画、LiveLink 或 Leader/CopyPose 链；示例正常不证明玩家使用同一链",
+      "区分 SkeletalMesh 与 Skeleton、Body 与 Face；测面部根相对 neck/head 的局部变换与目标参考姿势，确认错误阶段后才选择目标侧局部姿势校正，不能默认复制 LiveLink 节点",
+      "同时测 Capsule 底、地面命中、源和可见 root/pelvis/foot/ball 世界坐标及鞋底相对脚骨的参考几何；区分骨骼悬空和网格几何差异，IK Goal 可能因腿长受限",
+      "Retargeter 调整须先核对操作顺序与目标版本 API，保存后独立进程读回；静态加载、数值采样、有渲染 PIE、装备/权威 Trace、坡地与多人分别报告，不以 Capsule/Mesh 全局偏移掩盖骨架问题"
+    ]
   }
 ]

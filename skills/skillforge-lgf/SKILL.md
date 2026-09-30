@@ -24,12 +24,14 @@ description: "使用、接入、扩展、排查或维护 LGameplayFramework（LG
 | UMG/CommonUI、页面返回、输入锁、HUD、世界空间 UI | [UI 平台](references/ui-platform.md) |
 | Character/Pawn、Mover、GAS 就绪、换 Avatar、装备 Mesh 与动画 | [Avatar 与资产](references/avatar-and-assets.md) |
 | 测试、文档、迁移、Backlog/WorldMap 决策或未来经验收录 | [验证与演进](references/validation-and-evolution.md) |
+| LGF 消费工程跨 UE 版本升级、GASP 新版示例对照、工程改名和玩家外观迁移 | [引擎升级检查点](references/engine-upgrade-checkpoints.md) |
 | 删除危险蓝图节点、Request 结果接线、API/新手教程审查 | [蓝图接口与教程交接](references/blueprint-api-handoff.md) |
 | GASP/Mover/ALS-R 接入、Root Motion、PSD/PSS、网络动画优化与动画源 | [跨层集成](references/gasp-mover-integration.md) |
 | 多刀刃命中、连续 Section、续招网络时序与真实伤害验收 | [多刀刃连击](references/multi-blade-combo-validation.md) |
 | GAS LocalPredicted、PredictionKey、TargetData、多来源 Ability grant、预测拒绝与多表现层回滚 | [GAS 战斗预测](references/gas-combat-prediction.md) |
 | 新武器动画完整实施、生成器审查、人工测试交接 | [动画实施与交付顺序](references/animation-delivery-workflow.md) |
 | 双剑延迟、方向错、根与身体周期、持剑重复混合 | [武器动画诊断](references/weapon-animation-diagnostics.md) |
+| 四方向受击、锁敌硬直转身、真实命中部位回退、敌人挡摄像机 | [方向受击与锁敌验证](references/directional-hit-reaction-validation.md) |
 | 切武器卡住、Socket/Trace、owner 漏播、取消不停 | [装备与能力生命周期](references/equipment-ability-lifecycle.md) |
 | 旧库迁移、新案例证据与工作区清点工具 | [迁移依据](references/migration-evidence.md) |
 | 需要确认某条项目事实来自哪个版本或文件 | [取材依据](references/sources.md) |

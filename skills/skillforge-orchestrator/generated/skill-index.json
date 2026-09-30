@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "generator": "skillforge-orchestrator/0.1.0",
+  "generator": "skillforge-orchestrator/0.2.0",
   "scope": "metadata-snapshot-not-installation-or-permission-proof",
   "root_labels": [
     "skills"
   ],
-  "skill_count": 7,
+  "skill_count": 8,
   "skills": [
     {
       "name": "skillforge-archerage-addon",
@@ -29,7 +29,7 @@
       "root": "skills",
       "path": "skillforge-lgf/SKILL.md",
       "revision": null,
-      "sha256": "4b53f59b0d7309b314af30957bf2039c30a4f576c2b20871fd92cc3fa45ee2eb"
+      "sha256": "df8ca9263dc75890b788f15a400d383968bdfaf1e108c0a969232f49f5209ae8"
     },
     {
       "name": "skillforge-mfc",
@@ -40,12 +40,20 @@
       "sha256": "3623ecad35dee3ac14486da25f0f1ea34b0f9178aa8424b47454ce6ffd5be8e9"
     },
     {
+      "name": "skillforge-qt",
+      "description": "Use when designing, implementing, reviewing, migrating or debugging C++ Qt desktop applications: Qt Widgets, QML/Qt Quick, QObject, signals/slots, QThread, Model/View, Qt CMake, DPI, Qt with Windows COM or MFC-to-Qt migration. 用于 Qt 工具软件、编辑框/布局异常、跨线程回调、关闭卡死、模型刷新与部署；纯 MFC、UE、普通 C++ 不因同为 C++ 自动触发，QuickTime 的 QT 缩写也不触发。",
+      "root": "skills",
+      "path": "skillforge-qt/SKILL.md",
+      "revision": null,
+      "sha256": "cf0aaf82a81173560363a0fa4f429a260016deb651dd47c4284212608890a6ba"
+    },
+    {
       "name": "skillforge-ue-blueprint",
-      "description": "创建、修改、解释和排查 Unreal Engine 5 蓝图、Widget Blueprint、事件图与节点连接。Use when working with Blueprint graphs, variables, functions, interfaces, dispatchers or Accessed None. 纯 C++ 实现、材质图和其他软件节点图不触发。",
+      "description": "创建、修改、解释和排查 Unreal Engine 5 蓝图、AnimBP、IK Retargeter、Widget Blueprint、事件图与节点连接。Use when working with Blueprint graphs, runtime retargeting, variables, functions, interfaces, dispatchers or Accessed None. 纯 C++ 实现、材质图和其他软件节点图不触发。",
       "root": "skills",
       "path": "skillforge-ue-blueprint/SKILL.md",
       "revision": null,
-      "sha256": "7b37b03db3fdef8ee076471a517925bc979035b6d9d77087d065f89404f163d3"
+      "sha256": "28fc255f9cbb8eedc38e4c0df13a0a895aeacafb9100adfb835907a9f49b3b89"
     },
     {
       "name": "skillforge-ue-cpp",

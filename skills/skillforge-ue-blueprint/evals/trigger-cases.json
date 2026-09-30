@@ -4,5 +4,6 @@
   {"id":"BP-T03","prompt":"调整 Maya 节点网络。","context":"Maya","expected":"no_trigger","reason":"其他软件节点图不是 Unreal Blueprint。"},
   {"id":"BP-T04","prompt":"修复这个纯 C++ UObject 成员声明。","context":"没有蓝图资产或图表任务","expected":"no_trigger","reason":"交由 UE C++，不重复加载蓝图图表流程。"},
   {"id":"BP-T05","prompt":"这个节点连不上。","context":"需要截图、节点文本或工程确定是否为蓝图而非材质图","expected":"conditional","reason":"以实际图类型确定边界。"},
-  {"id":"BP-T06","prompt":"修改背包初始化。","context":"若改动是蓝图节点则触发；只修改 C++ 实现则不触发","expected":"conditional","reason":"按实际修改层选择。"}
+  {"id":"BP-T06","prompt":"修改背包初始化。","context":"若改动是蓝图节点则触发；只修改 C++ 实现则不触发","expected":"conditional","reason":"按实际修改层选择。"},
+  {"id":"BP-T07","prompt":"MetaHuman 接入 GASP 玩家后脸和脚底错位，需核对 AnimBP 与 IK Retargeter 资产。","context":"UE 运行时重定向和动画资产排障","expected":"trigger","reason":"需要读取并验证蓝图/重定向资产与运行实例。"}
 ]

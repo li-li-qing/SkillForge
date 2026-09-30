@@ -805,5 +805,28 @@
       "Avatar replacement只重绑presentation/avatar generation，不销毁conversation scope stack；stale old-avatar callback仍受AwaitId+generation fence约束",
       "Quest/Inventory/GAS事实仍由各Domain拥有，Conversation local scope只保存Dialogue自身semantic locals；测试覆盖nested shadowing、reconnect/JIP、child cancel/return和schema migration"
     ]
+  },
+  {
+    "id": "LGF-73",
+    "slug": "lgf-ue-upgrade-gasp-donor-and-avatar-checkpoints",
+    "prompt": "把一套使用 LGF 与 GASP/Mover 的现有 UE 工程升级到新版引擎，同时取得新版 GASP 示例和第三方全身动画包，还要更名项目并替换玩家可见角色。团队倾向直接覆盖旧 GASP 和角色资产，然后一起排错。请给出可执行的阶段边界与证据要求。",
+    "expectations": [
+      "冻结原工程、插件、引擎与交付包版本/清单，建立隔离副本及旧版本基线；不修改源工程或盲目覆盖示例资产",
+      "先在新引擎保持旧角色验证 Editor/Game 构建、蓝图加载与核心玩法，再单独做项目类型/模块和资产路径迁移；反射使用精确 Redirect、资产用编辑器移动并清引用，不能文本改写 uasset",
+      "新版 GASP 按实际差异审计并选择性吸收，保留 LGF Authority 和已有玩家 Mover/AnimBP 合同；第三方交付先审依赖闭包及路径冲突，再做角色装配和样本动画",
+      "编译、资产加载/蓝图、自动化结果正文、有渲染 PIE、多人、Cook/成品启动与人工视觉手感分别记录；旧角色升级检查点与新角色问题分开，失败只回滚新工程当前阶段"
+    ]
+  },
+  {
+    "id": "LGF-74",
+    "slug": "lgf-directional-hit-hardlock-camera-validation",
+    "prompt": "UE 5.8 的 LGF + GASP/Mover 项目四方向受击 Entry、ActorYaw 和 Montage 时间检查都绿，NullRHI 单人及监听客户端也通过。但用户锁敌受击仍转身，敌人近镜头时相机缩进，真实攻击几乎只播一种动画。请给下一批最小调查与验收方案；只有这些证据，不能修改源码或操作 UE。",
+    "expectations": [
+      "按方向受击参考定位真实攻击来源、命中部位、强度及 Entry 回退；检查具体部位和 AnyZone 同方向精确回退优先级，不把事件注入成功当真实武器 Trace 通过",
+      "分别观测 Actor、已求值源根骨世界朝向、可见 Mesh 和 ControlRotation，区分 OffsetRoot/Steering/网络平滑及相对偏移与世界朝向；前向轴按实际骨架核验，不统一补 90 度",
+      "检查硬锁朝向写入及受击前已发送输入，约束当前 Mover 最终运动而非只清本地输入；保留重力及获准击退，委托/重模拟状态按当前版本核验",
+      "识别实际相机通道和命中组件，读蓝图 CDO/实例持久化碰撞响应；摄像机探测保持待测 Actor 碰撞开启，并回归环境遮挡，不关闭所有 Pawn 碰撞",
+      "最小用例覆盖真实四方向、锁定目标与攻击者不同、连续命中及恢复、远端拥有玩家与带渲染可见姿态；明确未执行及 NullRHI/ActorYaw/播放时间的证据边界"
+    ]
   }
 ]

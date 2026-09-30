@@ -1,6 +1,6 @@
 ---
 name: skillforge-ue-blueprint
-description: "创建、修改、解释和排查 Unreal Engine 5 蓝图、Widget Blueprint、事件图与节点连接。Use when working with Blueprint graphs, variables, functions, interfaces, dispatchers or Accessed None. 纯 C++ 实现、材质图和其他软件节点图不触发。"
+description: "创建、修改、解释和排查 Unreal Engine 5 蓝图、AnimBP、IK Retargeter、Widget Blueprint、事件图与节点连接。Use when working with Blueprint graphs, runtime retargeting, variables, functions, interfaces, dispatchers or Accessed None. 纯 C++ 实现、材质图和其他软件节点图不触发。"
 ---
 
 # UE 蓝图开发
@@ -30,6 +30,7 @@ Construction Script 可以因编辑器重建和运行期 Actor 生成而执行�
 - 资产持久化、官方预览、UMG 根层/NullRHI 几何：读 [官方资产流程](references/official-asset-workflows.md)。
 - 核对旧笔记中的 UMG 或生命周期说法：读 [案例与核验](references/cases.md)。
 - GASP 与 ALS、Linked Anim Layer、Property Access 写相位、动态 Overlay、AnimBP 与 C++、URO/SimulatedProxy、Mover、GAS 职责：读 [Linked Animation Layer 与 AnimBP 边界](references/linked-animation-layer-boundaries.md)。
+- 同一角色在示例蓝图正常、接入玩家后面颈错位或脚底悬空，或需要修改 IK Retargeter：读 [运行时重定向诊断](references/runtime-retarget-diagnostics.md)。
 
 涉及布局时可组合 UI 技能，涉及 C++ 接口时可组合 C++ 技能；缺少其他技能不阻断本技能自身工作。
 
