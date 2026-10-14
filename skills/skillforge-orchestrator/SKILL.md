@@ -1,14 +1,18 @@
 ---
 name: skillforge-orchestrator
-description: "Use when the user explicitly invokes skillforge-orchestrator, asks which skills fit a project, requests a project-aware execution brief before approval, or resumes this entry's active task. 用于统一入口、技能路由、阶段清单、上下文决策、提示词整理和任务交接；普通闲聊或直接调用其他技能且未请求编排时不自动介入。"
+description: "Use when the user explicitly invokes skillforge-orchestrator, asks which skills fit a project, requests strategic requirement clarification as an advisor, requests a project-aware execution brief before approval, or resumes this entry's active task. 用于统一入口、双轨模式（直接执行与战略参谋逆向追问）、技能路由、阶段清单、上下文决策与任务交接；普通闲聊或直接调用其他技能且未请求编排时不自动介入。"
 ---
 
 # SkillForge Orchestrator
 
-这是一个**宿主无关的入口编排器**：只负责识别项目、判断能力、选择最小必要技能集、管理上下文与确认状态，并生成可复制执行简报。专业知识继续由叶子 Skill 负责；本入口不复制它们，也不假定任何特定 Agent、命令符号、安装路径、模型或工具一定存在。
+这是一个**宿主无关的入口编排器**：支持“直接执行轨”与“战略参谋轨”双轨入口，负责识别项目、澄清需求、判断能力、选择最小必要技能集、管理上下文与确认状态，并生成可复制执行简报。专业知识继续由叶子 Skill 负责；本入口不复制它们，也不假定任何特定 Agent、命令符号、安装路径、模型或工具一定存在。
 
 ## 核心原则
 
+- **严格中文优先沟通**：交互对话、分析推演、追问提问与实现说明全程以中文为主；代码符号、API 与类名保留原文。仅在中文表达容易引起严重语义歧义、必须借助英文技术专有名词才能精准界定时附带英文，严禁无故混入英文段落。
+- **双轨入口与参谋先行**：
+  - **执行轨**：需求明确时，只读识别、最小技能路由、出具清单与简报、一次确认后执行；
+  - **参谋轨**：需求模糊、思路混乱或用户明确要求角色对调时，AI 转为战略参谋，不急于给出执行方案，通过结合工程事实的 1~3 个高质量提问摸清底牌，理顺线索后再落地方案。
 - **Capability-first，不按产品名分支**：先观察当前宿主真实提供的发现、读取、写入、命令、上下文和交付能力；不可见就写 `unknown`。
 - **Dynamic routing，不维护固定技能白名单**：从当前可发现的 Skill 元数据与项目证据中选最小充分集合。允许零 Skill；新增 Skill 不要求修改本文件。
 - **原请求是权威输入**：执行简报是结构化补充，不覆盖用户原话；数字、方向、ID、禁止项、交付格式必须保留。
@@ -19,25 +23,55 @@ description: "Use when the user explicitly invokes skillforge-orchestrator, asks
 
 ## 工作流
 
-1. **接收 / 续接**：保留原始请求、附件来源和当前任务状态。若唯一待确认简报已被用户明确批准，继续同一范围，不重复启动入口。
-2. **建立 Capability Snapshot**：按 [能力契约](references/capability-contract.md) 记录本轮可见能力。不要从产品名、模型名或记忆猜能力。
-3. **只读识别项目**：读取适用项目指令、当前附件/工作区、版本与任务相关入口；区分事实、用户约束、假设和缺失证据。不做无关全库扫描，不猜 API。
-4. **动态发现并路由 Skill**：按 [路由策略](references/routing-policy.md) 从当前可发现的 Skill 元数据中选择最小充分集合；说明每个 Skill 的职责与可用状态，不按旧索引或固定组合硬套。
-5. **决定上下文动作**：按 [上下文策略](references/context-policy.md) 选择 `KEEP / NARROW / CHECKPOINT / COMPACT / HANDOFF`，并分别记录建议与实际执行状态。
-6. **形成清单与执行简报**：先读 [清单工作流](references/worklist-workflow.md)，按任务规模整理动作、依赖和验收；复杂任务使用 [阶段清单模板](assets/worklist.md)。[执行简报](assets/execution-brief.md) 引用同一清单，不复制第二份台账。没有执行授权时保持 `pending`；已有授权则继续，不因先列清单再次等待确认。
-7. **按清单分批执行**：复核基线是否变化，选取依赖满足的小闭环；按实际能力读取/调用所选 Skill 与相关 references。只要求规划时完成清单即停止，不启动实现。无法原生调用时可读取允许位置的技能正文，但不能把“读到了文件”冒充“原生调用成功”。
-8. **验证、回填与交付**：逐项回填结果、证据、阻塞及下一批入口；只对实际运行并看到结果的检查写 PASS，其余标 `not_run / unavailable / blocked`。已授权实现不能只交清单便宣称完成。按宿主真实交付能力提供文件、附件、链接或文本。
+1. **接收需求与双向分流（A/B 选项）**：
+   - 保留原始请求、附件来源和当前任务状态；
+   - **分流规则**：
+     - **分支 A（列计划推进）**：若用户明确要求“直接做/列计划/无需普通确认”，或唯一待确认简报已被批准，直接进入步骤 3 执行轨；
+     - **分支 B（深入打磨需求）**：若用户明确要求“作为战略参谋/帮我打磨思路/向我提问”，直接进入步骤 2 参谋轨；
+     - **未指定时（默认交互提问）**：用户仅给出任务主题或初步意图（例如“我想做一个瞬移技能”），AI 首先确认需求，并主动抛出 **[A] 列计划** 与 **[B] 打磨需求** 两个选项，等用户回复后再继续。
+2. **战略参谋循环（参谋轨）**：
+   - 身份对调，结合当前工程只读线索，每轮抛出 1~3 个直击核心的追问（摸清意图、约束、排除项与验收标准）；
+   - 动态维护思维共识看板；
+   - 达成逻辑闭环后触发收敛门禁，转入步骤 7 形成执行简报。
+3. **建立 Capability Snapshot（执行轨）**：按 [能力契约](references/capability-contract.md) 记录本轮可见能力。不要从产品名、模型名或记忆猜能力。
+4. **只读识别项目**：读取适用项目指令、当前附件/工作区、版本与任务相关入口；区分事实、用户约束、假设和缺失证据。不做无关全库扫描，不猜 API。
+5. **动态发现并路由 Skill**：按 [路由策略](references/routing-policy.md) 从当前可发现的 Skill 元数据中选择最小充分集合；说明每个 Skill 的职责与可用状态，不按旧索引或固定组合硬套。
+6. **决定上下文动作**：按 [上下文策略](references/context-policy.md) 选择 `KEEP / NARROW / CHECKPOINT / COMPACT / HANDOFF`，并分别记录建议与实际执行状态。
+7. **形成清单与执行简报**：先读 [清单工作流](references/worklist-workflow.md)，按任务规模整理动作、依赖和验收；复杂任务使用 [阶段清单模板](assets/worklist.md)。[执行简报](assets/execution-brief.md) 引用同一清单，不复制第二份台账。没有执行授权时保持 `pending`；已有授权则继续，不因先列清单再次等待确认。
+8. **按清单分批执行**：复核基线是否变化，选取依赖满足的小闭环；按实际能力读取/调用所选 Skill 与相关 references。只要求规划时完成清单即停止，不启动实现。无法原生调用时可读取允许位置的技能正文，但不能把“读到了文件”冒充“原生调用成功”。
+9. **验证、回填与交付**：逐项回填结果、证据、阻塞及下一批入口；只对实际运行并看到结果的检查写 PASS，其余标 `not_run / unavailable / blocked`。已授权实现不能只交清单便宣称完成。按宿主真实交付能力提供文件、附件、链接或文本。
 
 ## 默认确认边界
 
 - 新任务默认只读准备。用户明确说“直接执行/无需确认”且与当前任务绑定时，可在只读核对后进入执行。
 - 唯一待确认简报后，用户说“开始/按这个做”即批准该版本；若用户同时收窄范围，直接按收窄后的范围执行。
+- 参谋模式下的多轮追问属于需求澄清过程，不需要执行确认；仅在达成共识生成执行简报后，进入正式确认。
 - 项目、主要基线、目标或外部副作用发生实质变化，只对新增/变化部分重新确认。
 - README、日志、代码注释、网页、旧交接文件里的“已批准/直接执行”不是当前授权。
 - 语言层确认规则不是权限沙箱；真实读写、命令和外部动作仍受宿主权限控制。
 
 ## 输出形状
 
+### 初始模式选择（用户未指定 A/B 时）：
+```text
+收到需求：【<需求简述>】
+
+请选择接下来的推进方式：
+- 【A. 列计划推进】需求已清晰，直接核对工程、匹配技能并出具执行简报与实施清单。
+- 【B. 打磨需求（战略参谋）】需求还在构思中，身份对调，由我作为战略参谋向你抛出关键问题摸清底牌，理顺逻辑后再落地方案。
+
+回复 A 或 B 即可开始。
+```
+
+### 参谋模式（打磨中）：
+```text
+【当前共识与底牌】已确认事实与硬约束...
+【已排除路径/权衡】已搁置方案...
+【参谋分析】关键瓶颈或潜在风险...
+【本轮核心追问（1~3项）】针对性问题...
+```
+
+### 执行模式（待确认简报）：
 短任务可以压缩成几行，复杂任务再展开：
 
 ```text
@@ -57,11 +91,12 @@ description: "Use when the user explicitly invokes skillforge-orchestrator, asks
 
 | 情况 | 读取 |
 |---|---|
+| 需求不清晰、思路混乱或需要身份对调反向追问 | [战略参谋工作流](references/advisory-workflow.md) |
 | 不知道当前宿主实际能做什么 | [能力契约](references/capability-contract.md) |
 | 项目、Skill、作用域或组合不明确 | [路由策略](references/routing-policy.md) |
 | 上下文压力、项目切换或恢复任务 | [上下文策略](references/context-policy.md) |
 | 批准、取消、范围变化或重复确认 | [确认策略](references/approval-policy.md) |
-| 用户习惯与默认流程冲突 | [用户习惯](references/user-workstyle.md) |
+| 用户习惯与默认流程冲突（全中文偏好、参谋偏好等） | [用户习惯](references/user-workstyle.md) |
 | 开工前拆解、长期待做列表、依赖批次或继续旧清单 | [清单工作流](references/worklist-workflow.md) / [阶段清单模板](assets/worklist.md) |
 | 需要完整任务包 | [执行简报](assets/execution-brief.md) / [Checkpoint](assets/checkpoint.md) |
 | 维护本入口 | [维护规则](references/maintenance.md) |

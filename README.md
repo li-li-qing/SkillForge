@@ -16,7 +16,7 @@
 
 ## 从统一入口开始（v0.1.0 试用）
 
-日常只需调用 `skillforge-orchestrator` 并附原始需求。它先做只读识别，返回拟用技能、上下文动作与可复制执行提示词，等一次确认后再执行；已确认任务不会因为切换叶子技能重复确认。
+日常只需调用 `skillforge-orchestrator` 并附原始需求。它支持双轨模式：需求明确时走**直接执行轨**，先做只读识别，返回拟用技能、上下文动作与可复制执行提示词，等一次确认后再执行；需求不清晰或探索期时走**战略参谋轨**，身份对调，由 AI 抛出 1~3 个高质量问题摸清底牌理清逻辑，收敛后再落地执行方案。已确认任务不会因为切换叶子技能重复确认。
 
 [安装与试用](skills/skillforge-orchestrator/README.md)采用 portable core：不绑定具体 Agent 命令、安装路径或固定叶子 Skill 清单。入口先建立 capability snapshot，再动态发现最小充分 Skill 集；没有实际能力时不伪报读取、调用、压缩或验证成功。开发评测和索引工具位于 `development/skillforge-orchestrator/`，不进入运行时核心。
 
