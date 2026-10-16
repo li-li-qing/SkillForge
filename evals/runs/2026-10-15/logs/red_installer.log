@@ -1,0 +1,125 @@
+test_apply_and_backup (test_patch_installer.PatchInstallerTests.test_apply_and_backup) ... FAIL
+test_busy_shared_rule_lock_does_not_overwrite (test_patch_installer.PatchInstallerTests.test_busy_shared_rule_lock_does_not_overwrite) ... FAIL
+test_corrupt_payload_rejected (test_patch_installer.PatchInstallerTests.test_corrupt_payload_rejected) ... FAIL
+test_current_file_conflict_stops_all_writes (test_patch_installer.PatchInstallerTests.test_current_file_conflict_stops_all_writes) ... FAIL
+test_delete_and_retire_only_known_empty_dirs (test_patch_installer.PatchInstallerTests.test_delete_and_retire_only_known_empty_dirs) ... FAIL
+test_dry_run_does_not_change_any_root_files (test_patch_installer.PatchInstallerTests.test_dry_run_does_not_change_any_root_files) ... FAIL
+test_git_is_never_a_manifest_target (test_patch_installer.PatchInstallerTests.test_git_is_never_a_manifest_target) ... FAIL
+test_new_file_conflict_rejected (test_patch_installer.PatchInstallerTests.test_new_file_conflict_rejected) ... FAIL
+test_path_escape_rejected (test_patch_installer.PatchInstallerTests.test_path_escape_rejected) ... FAIL
+test_repeat_apply_is_idempotent (test_patch_installer.PatchInstallerTests.test_repeat_apply_is_idempotent) ... FAIL
+test_target_symlink_rejected (test_patch_installer.PatchInstallerTests.test_target_symlink_rejected) ... FAIL
+test_unknown_file_in_retired_directory_is_preserved (test_patch_installer.PatchInstallerTests.test_unknown_file_in_retired_directory_is_preserved) ... FAIL
+
+======================================================================
+FAIL: test_apply_and_backup (test_patch_installer.PatchInstallerTests.test_apply_and_backup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_busy_shared_rule_lock_does_not_overwrite (test_patch_installer.PatchInstallerTests.test_busy_shared_rule_lock_does_not_overwrite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_corrupt_payload_rejected (test_patch_installer.PatchInstallerTests.test_corrupt_payload_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_current_file_conflict_stops_all_writes (test_patch_installer.PatchInstallerTests.test_current_file_conflict_stops_all_writes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_delete_and_retire_only_known_empty_dirs (test_patch_installer.PatchInstallerTests.test_delete_and_retire_only_known_empty_dirs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_dry_run_does_not_change_any_root_files (test_patch_installer.PatchInstallerTests.test_dry_run_does_not_change_any_root_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_git_is_never_a_manifest_target (test_patch_installer.PatchInstallerTests.test_git_is_never_a_manifest_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_new_file_conflict_rejected (test_patch_installer.PatchInstallerTests.test_new_file_conflict_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_path_escape_rejected (test_patch_installer.PatchInstallerTests.test_path_escape_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_repeat_apply_is_idempotent (test_patch_installer.PatchInstallerTests.test_repeat_apply_is_idempotent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_target_symlink_rejected (test_patch_installer.PatchInstallerTests.test_target_symlink_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+======================================================================
+FAIL: test_unknown_file_in_retired_directory_is_preserved (test_patch_installer.PatchInstallerTests.test_unknown_file_in_retired_directory_is_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 14, in setUp
+    self.assertTrue(TOOL.is_file(),'Guarded patch installer missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Guarded patch installer missing
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.002s
+
+FAILED (failures=12)

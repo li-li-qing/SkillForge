@@ -1,0 +1,40 @@
+{
+  "package_dry_run": {
+    "exit_code": 0,
+    "status": "pass",
+    "summary": "{\n  \"status\": \"checked\",\n  \"changes\": 101,\n  \"retire_dirs\": [\n    \"skills/skillforge-orchestrator/agents\",\n    \"skills/skillforge-orchestrator/generated\",\n    \"skills/skillforge-orchestrator/evals\",\n    \"skills/skillforge-orchestrator/scripts\",\n    \"skills/skillforge-orchestrator/tests\"\n  ]\n}\n"
+  },
+  "dry_run_no_mutation": true,
+  "package_apply": {
+    "exit_code": 0,
+    "status": "pass",
+    "summary": "{\n  \"status\": \"applied\",\n  \"changes\": 101,\n  \"backup\": \"/mnt/data/skillforge_package_test/SkillForge/.skillforge-backups/5c830fc022ad46eeacb4b5fb794ae34d\"\n}\n"
+  },
+  "reconstructed_sources_equal": true,
+  "retired_directories_absent": true,
+  "backup_created": true,
+  "package_repeat": {
+    "exit_code": 0,
+    "status": "pass",
+    "summary": "{\n  \"status\": \"already_current\",\n  \"changes\": 0\n}\n"
+  },
+  "package_root_tests": {
+    "exit_code": 0,
+    "status": "pass",
+    "summary": "required) ... ok\ntest_unreal_virtual_roots_and_paths_remain_portable (test_validate_skills.ValidateSkillsTests.test_unreal_virtual_roots_and_paths_remain_portable) ... ok\ntest_url_encoded_link_escape_is_rejected (test_validate_skills.ValidateSkillsTests.test_url_encoded_link_escape_is_rejected) ... ok\ntest_valid_portable_package_runs_from_unrelated_directory (test_validate_skills.ValidateSkillsTests.test_valid_portable_package_runs_from_unrelated_directory) ... ok\ntest_yaml_ambiguous_names_require_quotes (test_validate_skills.ValidateSkillsTests.test_yaml_ambiguous_names_require_quotes) ... ok\n\n----------------------------------------------------------------------\nRan 66 tests in 5.999s\n\nOK\n"
+  },
+  "package_structure": {
+    "exit_code": 0,
+    "status": "pass",
+    "summary": "Validated 11 skill(s): 0 error(s); 11 standalone copies validated.\n"
+  },
+  "package_conflict_refusal": {
+    "exit_code": 2,
+    "status": "pass",
+    "summary": "REFUSED: CONFLICT: README.md; current content differs from both base and update; nothing forced\n"
+  },
+  "conflict_no_mutation": true,
+  "baseline_archive_unchanged": true,
+  "original_portability_assertions_unchanged": true,
+  "scope": "原基线的完整应用生命周期验证；最终交付包的manifest哈希和最终文件计数记录在包外层FINAL_VERIFICATION.json，以免校验报告自引用。"
+}

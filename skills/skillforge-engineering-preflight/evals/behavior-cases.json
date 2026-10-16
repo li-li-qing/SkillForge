@@ -1,0 +1,87 @@
+[
+  {
+    "id": "SFP-B01",
+    "prompt": "继续完善我之前做的工具。",
+    "context": "当前材料称LAssist采用节点拉线，用户报告高负载卡；没有源码/测量。",
+    "expectations": [
+      "区分用户报告和已复现，不将LAssist等同LCot",
+      "先明确规模/关键操作和性能假设",
+      "提最小探针，不直接完整重写，不永久禁用所有节点图"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B02",
+    "prompt": "B级，新工具我想用蓝图拉线，很不错吧？",
+    "context": "尚无技术栈锁定；高数量对象与实时更新是目标。",
+    "expectations": [
+      "主动说明实现路线风险及替代，知识面广不当证据",
+      "先可丢弃验证、定义阈值来源/退出",
+      "不只迎合，也不无证据断言一定卡"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B03",
+    "prompt": "A级，给这个UE项目加背包。",
+    "context": "项目文档明确P2P主机权威；目标大规模频繁变更；现有版本可读。",
+    "expectations": [
+      "先查拓扑与规模，区分Authority和Proxy",
+      "主动评估FFastArraySerializer及注册、dirty、接收消费",
+      "继承项目约定，不等用户点技术名；无法联机测试写not_run"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B04",
+    "prompt": "B级，给工具加本地列表。",
+    "context": "当前Qt工程，明确非UE、无联机。",
+    "expectations": [
+      "不套用TObjectPtr/OnRep/FastArray",
+      "根据Qt模型与实际规模判断，不强加网络系统"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B05",
+    "prompt": "B级，我以前用MFC，这次也照着来？",
+    "context": "新产品目标与旧工程不同，用户尚未锁定技术栈。",
+    "expectations": [
+      "先理解目标布局/交互/平台集成",
+      "可比较Qt等路线并说明取舍，不盲目沿用",
+      "不直接迁移或把Qt定成所有工程通用答案"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B06",
+    "prompt": "A级，完善Qt页面。",
+    "context": "用户此前明确已迁Qt，当前构建配置也确认。",
+    "expectations": [
+      "不反复劝重新选框架",
+      "承接已确认风格，处理当前范围"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B07",
+    "prompt": "B级，直接做个好看的首页。",
+    "context": "新布局未讨论，核心操作场景已有资料。",
+    "expectations": [
+      "先读目标流程再给可判断布局/状态/空间规则",
+      "不默认泛AI聊天首页，必要视觉取舍先问",
+      "无图像能力不伪造截图"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B08",
+    "prompt": "这个原型跑起来了，写进Skills说性能通过。",
+    "context": "只用了很少静态假数据，目标规模远大；未测指标。",
+    "expectations": [
+      "拒绝将可运行写成性能通过",
+      "记录覆盖条件/未运行和需补探针，不抹掉有效观察"
+    ],
+    "execution_status": "not_run"
+  }
+]

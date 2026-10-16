@@ -1,10 +1,12 @@
 # SkillForge
 
-面向游戏开发与创作工具的个人 Agent Skills 技能源。当前包含 8 个专业/方法技能，以及统一入口 `skillforge-orchestrator`，共 9 个；专业技能仍可独立或组合使用。正文以中文为主，API、节点名和技术关键词保留英文。
+面向游戏开发与创作工具的个人 Agent Skills 技能源。当前包含 10 个专业/方法技能，以及统一入口 `skillforge-orchestrator`，共 11 个；专业技能仍可独立或组合使用。正文以中文为主，API、节点名和技术关键词保留英文。
 
 | 技能 | 使用时机 | 入口 |
 |---|---|---|
-| `skillforge-orchestrator` | 明确调用统一入口：核对项目、选择技能、整理提示词，默认确认后执行 | [统一入口](skills/skillforge-orchestrator/SKILL.md) |
+| `skillforge-orchestrator` | 明确调用统一入口：先选A/B，承接个人习惯与项目依据，按任务性质推进 | [统一入口](skills/skillforge-orchestrator/SKILL.md) |
+| `skillforge-engineering-preflight` | 高返工成本选型、性能敏感交互、大规模同步或重要UI的前置判断与最小验证 | [工程前置验证](skills/skillforge-engineering-preflight/SKILL.md) |
+| `skillforge-experience-maintenance` | 个人习惯、验证经验及多Agent共享规则的记录、晋升、冲突与撤回 | [经验维护](skills/skillforge-experience-maintenance/SKILL.md) |
 | `skillforge-debugging` | 已出现错误、崩溃、偶发失效或结果异常，需要排查与修复 | [排障](skills/skillforge-debugging/SKILL.md) |
 | `skillforge-ue-cpp` | 当前任务确实涉及 UE C++、反射、生命周期、模块或蓝图暴露接口 | [UE C++](skills/skillforge-ue-cpp/SKILL.md) |
 | `skillforge-ue-blueprint` | 创建、修改、解释或排查 UE 蓝图、Widget Blueprint 与节点图 | [蓝图](skills/skillforge-ue-blueprint/SKILL.md) |
@@ -14,13 +16,15 @@
 | `skillforge-archerage-addon` | 开发或排查 ArcheRage RU Lua 插件、Replicated Suite、API、HUD 与存档 | [ArcheRage RU 插件](skills/skillforge-archerage-addon/SKILL.md) |
 | `skillforge-lgf` | 学习、接入、扩展或维护实际使用 LGameplayFramework 的工程与插件 | [LGF 接入与开发](skills/skillforge-lgf/SKILL.md) |
 
-## 从统一入口开始（v0.1.0 试用）
+## 从统一入口开始（0.3.0）
 
-日常只需调用 `skillforge-orchestrator` 并附原始需求。它支持双轨模式：需求明确时走**直接执行轨**，先做只读识别，返回拟用技能、上下文动作与可复制执行提示词，等一次确认后再执行；需求不清晰或探索期时走**战略参谋轨**，身份对调，由 AI 抛出 1~3 个高质量问题摸清底牌理清逻辑，收敛后再落地执行方案。已确认任务不会因为切换叶子技能重复确认。
+新任务未指定等级，先问A还是B；已明确选择或同一任务继续不重复问。A级在既定边界内自主推进并保留问题；B级遇到重要取舍先解释场景、选项利弊及推荐，由用户决定。两级都要读取工程、习惯、必要技能，主动识别风险、验证并更新经验。
 
-[安装与试用](skills/skillforge-orchestrator/README.md)采用 portable core：不绑定具体 Agent 命令、安装路径或固定叶子 Skill 清单。入口先建立 capability snapshot，再动态发现最小充分 Skill 集；没有实际能力时不伪报读取、调用、压缩或验证成功。开发评测和索引工具位于 `development/skillforge-orchestrator/`，不进入运行时核心。
+等级不等于任务性质：只分析/只规划/只提示词不实施；明确实施后不再固定展示长提示词等待一次“开始”。旧版A“列计划”、B“参谋”已被替换，旧检查点必须核实含义，不能混用。
 
-入口是语言层工作流而非权限沙箱，默认不写宿主配置、不加 hook、不自动安装。实测报告、局限与完整检查命令见 [本轮验证](evals/runs/2026-09-21/orchestrator-v1-validation.md)。
+[使用说明](skills/skillforge-orchestrator/README.md)保留纯文本portable core。两个新增方法技能按需使用，专业技能保持独立；不自动安装、运行后台服务或修改宿主权限。
+
+本轮设计、依据及任务清单见 [编写设计](docs/orchestrator/v3-design-and-plan.md)，实际结果见 [0.3.0验证](evals/runs/2026-10-15/skillforge-v0.3.0-validation.md)。此前报告是历史证据，不代表本版本结果。
 
 ## 目录说明
 
@@ -32,6 +36,8 @@
 | `docs/` | 编写维护说明、来源研究与实施记录 |
 | `evals/` | 跨技能组合用例、行为对比与评测报告 |
 | `scripts/` | 技能包校验工具 |
+| `development/` | 入口开发工具、现行评测、历史归档与索引快照 |
+| `adapters/` | 可选宿主metadata，不自动安装 |
 | `tests/` | 校验工具自身的回归测试 |
 
 ## 使用方式
@@ -70,7 +76,7 @@ UE 技能面向 UE5，执行时从当前工程确定小版本、目标、插件�
 
 需要解释清楚的契约、失败路径、诊断步骤和案例可以持续扩充。通过主题索引和按需读取控制单次加载范围；重复或过时内容原位整理，不能为了精简删掉解决问题所需的细节。
 
-在一次项目修复得到验证后，按 [经验收录流程](docs/experience-workflow.md) 提炼。技术规则应能说明条件、证据和验证结果；未验证的解释留在候选记录。项目专属路径、资产、服务名与当前进度仍留在项目自身资料中。
+讨论确认、探针或修复产生可复用内容时，主动按 [经验收录流程](docs/experience-workflow.md) 提炼并及时记录。技术规则应能说明条件、证据和验证结果；未验证的解释留在候选记录。项目专属路径、资产、服务名与当前进度仍留在项目自身资料中。
 
 外部 UE/UE4 GitHub 项目按固定提交逐个做源码蒸馏，完整项目级分析收在 [项目蒸馏索引](docs/project-distillations/README.md)，可复用结论再写回对应技能；不会为了项目数量把所有源码笔记塞进 `SKILL.md`。
 从第八轮起，所有外部项目还必须先经过技术时效性分级（Current / Stable-but-old / Historical / Reject），并用目标 UE 版本源码、当前官方文档和实际工程交叉核对；旧项目只迁移仍成立的机制。
@@ -125,4 +131,4 @@ MFC 首轮 GitHub 蒸馏、结构验证与未验证边界见 [MFC 首轮验证](
 
 本次保留所有原专业 Skill 与 orchestrator 核心，未改 LCot 产品源码、未安装 SDK。动态入口发现新 Skill 不需要硬编码目录白名单。
 
-[设计与研究范围](docs/qt-skill-design-2026-09-22.md)说明取材和裁剪；[实际验证报告](evals/runs/2026-09-22/qt-initial-validation.md)区分结构通过、原包已有失败及未运行的 Qt/Windows/Agent 验证。特别注意：原上传包的 orchestrator 运行目录含历史开发资料，存在三项便携性基线失败；本轮未把这一独立清理混入 Qt 新增工作。
+[设计与研究范围](docs/qt-skill-design-2026-09-22.md)说明取材和裁剪；[实际验证报告](evals/runs/2026-09-22/qt-initial-validation.md)区分结构通过、原包已有失败及未运行的 Qt/Windows/Agent 验证。历史说明：2026-09-22当时未清理的入口便携性问题，已在0.3.0中统一处理，见上方本轮报告。

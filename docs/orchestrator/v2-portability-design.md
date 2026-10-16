@@ -1,3 +1,5 @@
+> 历史设计记录：当前流程以 [0.3.0设计](v3-design-and-plan.md) 和运行Skills为准；此文件保留原决策轨迹，不作为当前A/B或确认策略。
+
 # skillforge-orchestrator v0.2.0 portability redesign
 
 目标：让运行时核心对未来未知 Agent 也成立。核心不识别产品名，只识别能力；不维护当前 SkillForge 的固定叶子 Skill 列表；不携带开发 eval、索引脚本或宿主专用 metadata。

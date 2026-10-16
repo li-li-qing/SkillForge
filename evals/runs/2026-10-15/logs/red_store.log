@@ -1,0 +1,145 @@
+test_busy_lock_does_not_wait_or_steal (test_experience_store.ExperienceStoreTests.test_busy_lock_does_not_wait_or_steal) ... FAIL
+test_empty_evidence_rejected (test_experience_store.ExperienceStoreTests.test_empty_evidence_rejected) ... FAIL
+test_idempotent_promotion_is_not_duplicate_write (test_experience_store.ExperienceStoreTests.test_idempotent_promotion_is_not_duplicate_write) ... FAIL
+test_invalid_record_identifier_rejected (test_experience_store.ExperienceStoreTests.test_invalid_record_identifier_rejected) ... FAIL
+test_new_target_can_be_rolled_back (test_experience_store.ExperienceStoreTests.test_new_target_can_be_rolled_back) ... FAIL
+test_private_store_symlink_rejected (test_experience_store.ExperienceStoreTests.test_private_store_symlink_rejected) ... FAIL
+test_promotion_requires_semantic_review (test_experience_store.ExperienceStoreTests.test_promotion_requires_semantic_review) ... FAIL
+test_proposal_does_not_change_rule (test_experience_store.ExperienceStoreTests.test_proposal_does_not_change_rule) ... FAIL
+test_reviewed_matching_base_can_promote (test_experience_store.ExperienceStoreTests.test_reviewed_matching_base_can_promote) ... FAIL
+test_rollback_checks_current_hash (test_experience_store.ExperienceStoreTests.test_rollback_checks_current_hash) ... FAIL
+test_rollback_restores_only_own_revision (test_experience_store.ExperienceStoreTests.test_rollback_restores_only_own_revision) ... FAIL
+test_stale_proposal_cannot_overwrite_newer_content (test_experience_store.ExperienceStoreTests.test_stale_proposal_cannot_overwrite_newer_content) ... FAIL
+test_symlink_target_rejected (test_experience_store.ExperienceStoreTests.test_symlink_target_rejected) ... FAIL
+test_traversal_and_non_rule_target_rejected (test_experience_store.ExperienceStoreTests.test_traversal_and_non_rule_target_rejected) ... FAIL
+
+======================================================================
+FAIL: test_busy_lock_does_not_wait_or_steal (test_experience_store.ExperienceStoreTests.test_busy_lock_does_not_wait_or_steal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_empty_evidence_rejected (test_experience_store.ExperienceStoreTests.test_empty_evidence_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_idempotent_promotion_is_not_duplicate_write (test_experience_store.ExperienceStoreTests.test_idempotent_promotion_is_not_duplicate_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_invalid_record_identifier_rejected (test_experience_store.ExperienceStoreTests.test_invalid_record_identifier_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_new_target_can_be_rolled_back (test_experience_store.ExperienceStoreTests.test_new_target_can_be_rolled_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_private_store_symlink_rejected (test_experience_store.ExperienceStoreTests.test_private_store_symlink_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_promotion_requires_semantic_review (test_experience_store.ExperienceStoreTests.test_promotion_requires_semantic_review)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_proposal_does_not_change_rule (test_experience_store.ExperienceStoreTests.test_proposal_does_not_change_rule)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_reviewed_matching_base_can_promote (test_experience_store.ExperienceStoreTests.test_reviewed_matching_base_can_promote)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_rollback_checks_current_hash (test_experience_store.ExperienceStoreTests.test_rollback_checks_current_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_rollback_restores_only_own_revision (test_experience_store.ExperienceStoreTests.test_rollback_restores_only_own_revision)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_stale_proposal_cannot_overwrite_newer_content (test_experience_store.ExperienceStoreTests.test_stale_proposal_cannot_overwrite_newer_content)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_symlink_target_rejected (test_experience_store.ExperienceStoreTests.test_symlink_target_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+======================================================================
+FAIL: test_traversal_and_non_rule_target_rejected (test_experience_store.ExperienceStoreTests.test_traversal_and_non_rule_target_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 12, in setUp
+    self.assertTrue(TOOL.is_file(),'Experience store implementation missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Experience store implementation missing
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.002s
+
+FAILED (failures=14)

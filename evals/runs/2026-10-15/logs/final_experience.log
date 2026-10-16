@@ -1,0 +1,25 @@
+test_busy_lock_does_not_wait_or_steal (test_experience_store.ExperienceStoreTests.test_busy_lock_does_not_wait_or_steal) ... ok
+test_empty_evidence_rejected (test_experience_store.ExperienceStoreTests.test_empty_evidence_rejected) ... ok
+test_idempotent_promotion_is_not_duplicate_write (test_experience_store.ExperienceStoreTests.test_idempotent_promotion_is_not_duplicate_write) ... ok
+test_invalid_record_identifier_rejected (test_experience_store.ExperienceStoreTests.test_invalid_record_identifier_rejected) ... ok
+test_new_target_can_be_rolled_back (test_experience_store.ExperienceStoreTests.test_new_target_can_be_rolled_back) ... ok
+test_oversized_base_is_rejected_before_recording (test_experience_store.ExperienceStoreTests.test_oversized_base_is_rejected_before_recording) ... ok
+test_pending_transaction_blocks_new_promotion (test_experience_store.ExperienceStoreTests.test_pending_transaction_blocks_new_promotion) ... ok
+test_private_store_symlink_rejected (test_experience_store.ExperienceStoreTests.test_private_store_symlink_rejected) ... ok
+test_promotion_requires_semantic_review (test_experience_store.ExperienceStoreTests.test_promotion_requires_semantic_review) ... ok
+test_proposal_does_not_change_rule (test_experience_store.ExperienceStoreTests.test_proposal_does_not_change_rule) ... ok
+test_recover_after_write_finalizes_without_modifying_rule (test_experience_store.ExperienceStoreTests.test_recover_after_write_finalizes_without_modifying_rule) ... ok
+test_recover_before_write_marks_aborted (test_experience_store.ExperienceStoreTests.test_recover_before_write_marks_aborted) ... ok
+test_recover_does_not_guess_after_unrelated_edit (test_experience_store.ExperienceStoreTests.test_recover_does_not_guess_after_unrelated_edit) ... ok
+test_reviewed_matching_base_can_promote (test_experience_store.ExperienceStoreTests.test_reviewed_matching_base_can_promote) ... ok
+test_rollback_checks_current_hash (test_experience_store.ExperienceStoreTests.test_rollback_checks_current_hash) ... ok
+test_rollback_restores_only_own_revision (test_experience_store.ExperienceStoreTests.test_rollback_restores_only_own_revision) ... ok
+test_stale_proposal_cannot_overwrite_newer_content (test_experience_store.ExperienceStoreTests.test_stale_proposal_cannot_overwrite_newer_content) ... ok
+test_symlink_target_rejected (test_experience_store.ExperienceStoreTests.test_symlink_target_rejected) ... ok
+test_traversal_and_non_rule_target_rejected (test_experience_store.ExperienceStoreTests.test_traversal_and_non_rule_target_rejected) ... ok
+test_two_processes_cannot_both_commit_the_same_base (test_experience_store.ExperienceStoreTests.test_two_processes_cannot_both_commit_the_same_base) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.138s
+
+OK

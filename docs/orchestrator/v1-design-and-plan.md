@@ -1,3 +1,5 @@
+> 历史设计记录：当前流程以 [0.3.0设计](v3-design-and-plan.md) 和运行Skills为准；此文件保留原决策轨迹，不作为当前A/B或确认策略。
+
 # skillforge-orchestrator v0.1.0：设计与实施记录
 
 ## 已授权范围

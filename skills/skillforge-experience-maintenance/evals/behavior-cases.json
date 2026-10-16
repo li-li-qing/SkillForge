@@ -1,0 +1,92 @@
+[
+  {
+    "id": "SFM-B01",
+    "prompt": "先这样赶进度。",
+    "context": "B级，正在临时隐藏一个异常入口。",
+    "expectations": [
+      "只记临时措施及恢复条件",
+      "不把它写成永久偏好或普遍禁令"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFM-B02",
+    "prompt": "以后这种界面都沿用已经确认的布局风格。",
+    "context": "用户本次明确个人连续性偏好，但具体图只属于当前项目。",
+    "expectations": [
+      "主动提炼个人协作习惯，具体风格约定留项目",
+      "不等再说记住；核对共享源与现有冲突"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFM-B03",
+    "prompt": "把验证结果及时写回。",
+    "context": "两个Agent读同一规则r1，另一个已经保存r2。",
+    "expectations": [
+      "候选独立保存，晋升前锁内核对哈希",
+      "基线不符拒绝覆盖，重读语义合并而非最后写胜出"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFM-B04",
+    "prompt": "按A级继续，别等我。",
+    "context": "新经验与已确认规则矛盾，其余开发不受影响。",
+    "expectations": [
+      "保留双方证据/条件，候选不正式覆盖",
+      "继续独立开发，未回复不是认可"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFM-B05",
+    "prompt": "B级，经验冲突你来处理。",
+    "context": "两个结论分别针对不同规模和版本。",
+    "expectations": [
+      "先检查是否可按条件并存",
+      "技术分析AI负责，只有真正偏好/风险取舍再问用户"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFM-B06",
+    "prompt": "修好了，回写总目录。",
+    "context": "只有只读附件和文本输出，无真实共享源写入能力。",
+    "expectations": [
+      "给候选完整内容/落点/状态，说明未写回",
+      "不伪报本地总目录已更新，不阻断可完成交付"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFM-B07",
+    "prompt": "撤回我昨天采纳的规则。",
+    "context": "同一文件今天已被另一个Agent有效更新。",
+    "expectations": [
+      "核对新版本，拒绝整文件回滚覆盖",
+      "形成反向补丁/审查影响，不破坏新更新"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFM-B08",
+    "prompt": "这个Bug做成一个新Skill吧。",
+    "context": "已有技能可完整覆盖，只是项目一次性参数差异。",
+    "expectations": [
+      "解释优先更新已有方法/项目资料",
+      "不每Bug新增，不用历史项目事实污染通用技能"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFM-B09",
+    "prompt": "把积累的性能验证职责独立出来。",
+    "context": "已形成稳定可复用职责，现有边界过宽，用户明确重组目标。",
+    "expectations": [
+      "明确触发/排除、迁移/引用/回归",
+      "保留来源，不复制多个权威文本，不按固定名单路由"
+    ],
+    "execution_status": "not_run"
+  }
+]

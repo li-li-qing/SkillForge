@@ -2,3 +2,7 @@
 .superpowers/
 __pycache__/
 *.py[cod]
+
+# Local experience evidence and update backups are not distributable rule sources.
+.skillforge-memory/
+.skillforge-backups/

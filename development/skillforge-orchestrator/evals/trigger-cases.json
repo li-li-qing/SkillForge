@@ -16,7 +16,7 @@
   {
     "id": "SFO-T03",
     "prompt": "开始，就按你刚才的简报做。",
-    "context": "本入口已有唯一待确认 SFO-001/r1，工程未变化",
+    "context": "当前新版B级；唯一已讨论设计，用户开始实现",
     "expected": "trigger",
     "reason": "继续已编排任务，不重启确认"
   },
@@ -60,7 +60,7 @@
     "prompt": "skillforge-orchestrator：直接修复这个崩溃，不用再确认。",
     "context": "明确任务与直接执行授权",
     "expected": "trigger",
-    "reason": "直接模式仍需只读核对与边界"
+    "reason": "触发入口；未指定等级仍先问A/B，直接执行不自动等于A级"
   },
   {
     "id": "SFO-T10",

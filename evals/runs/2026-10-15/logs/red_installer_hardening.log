@@ -1,0 +1,35 @@
+test_apply_and_backup (test_patch_installer.PatchInstallerTests.test_apply_and_backup) ... ok
+test_busy_shared_rule_lock_does_not_overwrite (test_patch_installer.PatchInstallerTests.test_busy_shared_rule_lock_does_not_overwrite) ... ok
+test_corrupt_payload_rejected (test_patch_installer.PatchInstallerTests.test_corrupt_payload_rejected) ... ok
+test_current_file_conflict_stops_all_writes (test_patch_installer.PatchInstallerTests.test_current_file_conflict_stops_all_writes) ... ok
+test_delete_and_retire_only_known_empty_dirs (test_patch_installer.PatchInstallerTests.test_delete_and_retire_only_known_empty_dirs) ... ok
+test_dry_run_does_not_change_any_root_files (test_patch_installer.PatchInstallerTests.test_dry_run_does_not_change_any_root_files) ... ok
+test_empty_manifest_path_refused_cleanly (test_patch_installer.PatchInstallerTests.test_empty_manifest_path_refused_cleanly) ... ERROR
+test_git_is_never_a_manifest_target (test_patch_installer.PatchInstallerTests.test_git_is_never_a_manifest_target) ... ok
+test_new_file_conflict_rejected (test_patch_installer.PatchInstallerTests.test_new_file_conflict_rejected) ... ok
+test_path_escape_rejected (test_patch_installer.PatchInstallerTests.test_path_escape_rejected) ... ok
+test_repeat_apply_is_idempotent (test_patch_installer.PatchInstallerTests.test_repeat_apply_is_idempotent) ... ok
+test_target_symlink_rejected (test_patch_installer.PatchInstallerTests.test_target_symlink_rejected) ... ok
+test_unknown_file_in_retired_directory_is_preserved (test_patch_installer.PatchInstallerTests.test_unknown_file_in_retired_directory_is_preserved) ... ok
+
+======================================================================
+ERROR: test_empty_manifest_path_refused_cleanly (test_patch_installer.PatchInstallerTests.test_empty_manifest_path_refused_cleanly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 77, in test_empty_manifest_path_refused_cleanly
+    with self.assertRaises(self.m.PatchError):self.run_update()
+                                              ~~~~~~~~~~~~~~~^^
+  File "/mnt/data/skillforge_work/SkillForge/tests/test_patch_installer.py", line 26, in run_update
+    def run_update(self,apply=False):return self.m.apply_update(self.root,self.package,apply=apply)
+                                            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/skillforge_work/SkillForge/scripts/apply_skillforge_update.py", line 172, in apply_update
+    manifest = read_manifest(package)
+  File "/mnt/data/skillforge_work/SkillForge/scripts/apply_skillforge_update.py", line 90, in read_manifest
+    if name in seen or (name not in {"README.md", ".gitignore"} and path.parts[0] not in ALLOWED):
+                                                                    ~~~~~~~~~~^^^
+IndexError: tuple index out of range
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.055s
+
+FAILED (errors=1)

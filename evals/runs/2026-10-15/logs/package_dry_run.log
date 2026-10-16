@@ -1,0 +1,11 @@
+{
+  "status": "checked",
+  "changes": 101,
+  "retire_dirs": [
+    "skills/skillforge-orchestrator/agents",
+    "skills/skillforge-orchestrator/generated",
+    "skills/skillforge-orchestrator/evals",
+    "skills/skillforge-orchestrator/scripts",
+    "skills/skillforge-orchestrator/tests"
+  ]
+}

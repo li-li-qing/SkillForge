@@ -1,0 +1,3 @@
+ERROR: /mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/references/store-tool.md: line 18: absolute local filesystem path is not portable
+ERROR: /mnt/data/skillforge_work/SkillForge/skills/skillforge-experience-maintenance/references/store-tool.md: resource does not exist as a file: 'scripts/experience_store.py'
+Validated 11 skill(s): 2 error(s); 10 standalone copies validated.

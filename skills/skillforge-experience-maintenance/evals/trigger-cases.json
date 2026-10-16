@@ -1,0 +1,23 @@
+[
+  {
+    "id": "SFM-T01",
+    "prompt": "先这样赶进度。",
+    "context": "B级，正在临时隐藏一个异常入口。",
+    "expected": "trigger",
+    "reason": "命中该技能负责的风险或经验职责"
+  },
+  {
+    "id": "SFM-T02",
+    "prompt": "你好。",
+    "context": "普通闲聊，没有维护或研发任务",
+    "expected": "no_trigger",
+    "reason": "不以方法技能劫持闲聊"
+  },
+  {
+    "id": "SFM-T03",
+    "prompt": "帮我看看这个。",
+    "context": "缺少目标，需先识别内容是否涉及该职责",
+    "expected": "conditional",
+    "reason": "不得猜测未提供的任务"
+  }
+]

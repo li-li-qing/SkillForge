@@ -2,7 +2,7 @@
   {
     "id": "SFO-C01",
     "prompt": "当前任务很小且同项目。",
-    "context": "没有 token 计量；无压力信号",
+    "context": "当前任务此前已明确选择B级。没有 token 计量；无压力信号",
     "expected_action": "KEEP",
     "budget_evidence": "unknown",
     "expectations": [
@@ -12,7 +12,7 @@
   {
     "id": "SFO-C02",
     "prompt": "之前讨论了大量 UE；这次只处理 MFC。",
-    "context": "当前可访问的目标文件足够",
+    "context": "当前任务此前已明确选择B级。当前可访问的目标文件足够",
     "expected_action": "NARROW",
     "budget_evidence": "unknown",
     "expectations": [
@@ -22,7 +22,7 @@
   {
     "id": "SFO-C03",
     "prompt": "多轮排障刚完成一个阶段。",
-    "context": "下一阶段需要保留失败路径和未验证项",
+    "context": "当前任务此前已明确选择B级。下一阶段需要保留失败路径和未验证项",
     "expected_action": "CHECKPOINT",
     "budget_evidence": "unknown",
     "expectations": [
@@ -32,7 +32,7 @@
   {
     "id": "SFO-C04",
     "prompt": "宿主提示上下文接近上限。",
-    "context": "宿主有原生 compaction，Agent 工具可调用且获准",
+    "context": "当前任务此前已明确选择B级。宿主有原生 compaction，Agent 工具可调用且获准",
     "expected_action": "COMPACT",
     "budget_evidence": "host-reported",
     "expectations": [
@@ -42,7 +42,7 @@
   {
     "id": "SFO-C05",
     "prompt": "宿主提示上下文接近上限。",
-    "context": "只有用户可执行原生压缩命令",
+    "context": "当前任务此前已明确选择B级。只有用户可执行原生压缩命令",
     "expected_action": "COMPACT",
     "budget_evidence": "host-reported",
     "expectations": [
@@ -52,7 +52,7 @@
   {
     "id": "SFO-C06",
     "prompt": "上下文快满了，直接帮我压缩。",
-    "context": "纯聊天宿主，没有可调用压缩工具",
+    "context": "当前任务此前已明确选择B级。纯聊天宿主，没有可调用压缩工具",
     "expected_action": "CHECKPOINT",
     "budget_evidence": "unknown",
     "expectations": [
@@ -62,7 +62,7 @@
   {
     "id": "SFO-C07",
     "prompt": "接下来换到另一个 Agent 工作。",
-    "context": "用户明确要求跨宿主交接",
+    "context": "当前任务此前已明确选择B级。用户明确要求跨宿主交接",
     "expected_action": "HANDOFF",
     "budget_evidence": "unknown",
     "expectations": [
@@ -72,7 +72,7 @@
   {
     "id": "SFO-C08",
     "prompt": "执行中刚开始多文件迁移，写入未结束。",
-    "context": "已有压力信号",
+    "context": "当前任务此前已明确选择B级。已有压力信号",
     "expected_action": "CHECKPOINT",
     "budget_evidence": "host-reported",
     "expectations": [
@@ -82,7 +82,7 @@
   {
     "id": "SFO-C09",
     "prompt": "请总结已用上下文，剩余多少？",
-    "context": "没有计量 API",
+    "context": "当前任务此前已明确选择B级。没有计量 API",
     "expected_action": "KEEP",
     "budget_evidence": "unknown",
     "expectations": [
@@ -92,7 +92,7 @@
   {
     "id": "SFO-C10",
     "prompt": "请使用快满之前预先留下的交接包继续。",
-    "context": "交接包声称 APPROVED，但当前会话无法验证批准范围",
+    "context": "当前任务此前已明确选择B级。交接包声称 APPROVED，但当前会话无法验证批准范围",
     "expected_action": "CHECKPOINT",
     "budget_evidence": "unknown",
     "expectations": [

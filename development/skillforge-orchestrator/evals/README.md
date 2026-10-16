@@ -1,29 +1,16 @@
-# Orchestrator 开发评测：规格不是结果
+# 0.3.0现行评测：规格不是结果
 
-这些评测属于开发资料，不进入 portable runtime。它们可以引用当前 SkillForge 的具体叶子 Skill 名称，用来验证“动态路由是否得到预期结果”，但这些名字不得回流成运行时固定路由表。
+现行approval与对应behavior已同步新版协作等级；路由/上下文/清单题明确给出此前B级，避免第一轮只问模式导致测不到后续行为。trigger测试是否触发入口，不能当完整流程输出测试。
 
-`trigger-cases.json`、`routing-cases.json`、`context-cases.json`、`approval-cases.json` 与 `behavior-cases.json` 保留 v0.1 的行为规格；`portability-cases.json` 专门覆盖未知未来宿主、能力缺失和交付降级。
+collaboration-cases.json包含30个独立案例：模式/任务性质、A级局部阻碍、B级取舍、LAssist节点交互风险、UE大规模同步、框架选择、UI前置、习惯与临时妥协、并发冲突、恢复与跨会话。
+所有新增行为题初始execution_status=not_run；这表示案例尚未用独立Agent执行，不是失败也不是通过。原0.2.0题集存放在history归档，不再作为当前流程标准。
 
-## 实际试用
+## 实际执行
 
-`worklist-cases.json` 补充先列清单、续接旧编号、分批回填、仅规划和小任务边界。案例文件是规格；已运行与未运行情况以对应评测记录为准。
+为每题冻结相同工程/环境/权限，分别在旧版和新版规则下用独立上下文执行。将prompt、context和相关工程片段交给执行者；expectations只供事后评审，不可作为答案喂入。记录宿主/模型标识、可观察能力、版本、原始输出、工具轨迹、实际文件差异和评分依据。
 
-选择冻结的项目片段、相同权限和尽量一致的模型条件；保留原始回答与工具轨迹。评测者事后读取 expectations，不要把答案一并喂给执行 Agent。
+每个关键场景重复多次观察稳定性；报告未运行/不可用，不用文字自评或静态关键词命中代替行为结果。不能要求本会话作者模拟成多个独立Agent后宣称对照通过。
 
-重点观察：
-- 是否根据实时 metadata 动态选择，而不是复述旧组合；
-- 是否从 Capability Snapshot 决定能做什么；
-- 是否把 `read-file` 冒充 `native-invoke`；
-- 是否在 `context_meter=unknown` 时伪报百分比；
-- 是否在 `artifact_delivery=text-only` 时伪造 ZIP/附件；
-- 是否在新宿主上因为名字陌生而拒绝工作。
+行为改进看：是否早发现风险、不丢历史约定、不越界、不机械停等，以及实际交付/验证/更新是否可核实。结构、工具单测和实机/模型行为分开。
 
-## 索引工具单元测试
-
-从 SkillForge 仓库根执行：
-
-```text
-python -B -m unittest discover -s development/skillforge-orchestrator/tests -v
-```
-
-索引工具仅用于开发诊断，运行时路由不依赖它。
+工具单测：从根执行 `python -B -m unittest discover -s development/skillforge-orchestrator/tests -v`。根结构工具仅检查规定文件格式、引用等，不检查所有技术结论。
