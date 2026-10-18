@@ -1034,5 +1034,29 @@
       ],
       "critical_failure_score": 0
     }
+  },
+  {
+    "id": "AR-61",
+    "title": "内置库批量导入必须配批量取消追踪",
+    "prompt": "状态追踪内置库一键导入后，用户只想保留几项；有搜索和翻页，很多已保存ID当前没有出现在身上，历史Auto和技能CD也存在，HUD布局不能丢。应补哪些操作，怎样验收？",
+    "expectations": [
+      "把内置库一键导入识别为批量添加，提供对应范围的批量取消/全部取消追踪，检查增删改查；若有全选，提供同范围取消全选",
+      "区分取消全选与删除持久化追踪关系，全部取消依据完整已保存集合，明确自己/目标、Buff/Debuff/Auto与CD范围，不只遍历实时或可见行",
+      "复用Commands和持久化事务，只移除用户追踪关系，保留HUD、颜色、分类、只读库、导入元数据和观察记录，不要求删配置数据库",
+      "验证导入后取消、筛选/翻页外ID、失败回滚与重试、冷加载不自动补回、HUD/CD即时更新，并区分离线模型和RU实机结果"
+    ],
+    "reference": "references/status-tracking-contracts.md",
+    "execution_status": "not_run",
+    "rubric": {
+      "per_expectation_points": 1,
+      "maximum_points": 4,
+      "critical_failures": [
+        "批量导入后只提供逐条取消或瞬时撤销",
+        "把取消全选当作清空已保存数据",
+        "标为全部取消却只操作可见/实时行",
+        "通过删共享配置数据库重置追踪"
+      ],
+      "critical_failure_score": 0
+    }
   }
 ]

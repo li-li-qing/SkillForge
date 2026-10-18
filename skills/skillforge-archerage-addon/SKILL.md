@@ -3,7 +3,7 @@ name: skillforge-archerage-addon
 description: "Use when developing or debugging ArcheRage RU Lua addons or Replicated Suite: PVP图标延迟/抖动、首领倒计时、HUD校准/默认模板、存档回读、RS-ERROR-PAGE复制、Buff追踪、询价及生命周期，或更新本技能。泛用Lua、UE5/UE Lua、AAEmu服务端和仅AAClassic不触发；服务器不明时先确认。"
 compatibility: "阅读无需依赖；随包离线工具需Python 3.10+。Lua语法门禁另需可信的Lua 5.1可执行文件；不安装依赖、不联网、不操作客户端。"
 metadata:
-  revision: "2026.09.14-r4"
+  revision: "2026.10.18-r5"
 ---
 
 # ArcheRage RU 插件开发与排障
@@ -13,7 +13,7 @@ metadata:
 ## 开始与交付：六道门
 
 1. **基线**：读取真实入口、TOC、当前说明与有关文件；确认原包、覆盖顺序、源码摘要、已加载标记和配置版本。已有材料可解决的问题自行读取。缺失的旧包不能靠对话总结重建。技能修改不等于修改游戏运行代码。
-2. **契约**：写清操作后的可见结果、数据所有者、单位/时间/坐标空间、失败与未知、停用条件。Lua组件的Authority不是UE网络Authority；不植入UObject、OnRep或FastArray。
+2. **契约**：写清操作后的可见结果、数据所有者、单位/时间/坐标空间、失败与未知、停用条件。管理数据集合须检查增删改查；全选须配取消全选，批量添加须配批量删除/移除，内置库导入也算批量添加。Lua组件的Authority不是UE网络Authority；不植入UObject、OnRep或FastArray。
 3. **证据**：分别标记用户观察、已读源码、本轮执行、历史测试和假设。API先查本地参考/当前门禁；新能力或可能变更的权限再核对有日期的一手来源。方法存在与pcall成功都不等于业务成功。
 4. **复现**：先保留能暴露原断点的反例；原Native不可运行就用明确故障模型，但保留真实调度、EventBus、Diff、布局或codec中与故障有关的层。不把模型通过称为用户实机复现。
 5. **修正**：使用现有Core/Services/Feature/UI与owner/generation；只扩大到证实同因的调用点。每个修改点写原因、所有权/数据流、兼容边界与维护风险。持续完成一轮，不逐小步索要确认；破坏性写入和无法推断的产品语义仍须确认。
