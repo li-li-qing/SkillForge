@@ -72,7 +72,7 @@
   {
     "id": "SFO-C08",
     "prompt": "执行中刚开始多文件迁移，写入未结束。",
-    "context": "当前任务此前已明确选择B级。已有压力信号",
+    "context": "当前任务此前已明确选择B级。宿主明确报告上下文资源紧张事件，未提供精确用量；写入仍在进行。",
     "expected_action": "CHECKPOINT",
     "budget_evidence": "host-reported",
     "expectations": [

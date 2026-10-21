@@ -60,5 +60,37 @@
       "同时测 Capsule 底、地面命中、源和可见 root/pelvis/foot/ball 世界坐标及鞋底相对脚骨的参考几何；区分骨骼悬空和网格几何差异，IK Goal 可能因腿长受限",
       "Retargeter 调整须先核对操作顺序与目标版本 API，保存后独立进程读回；静态加载、数值采样、有渲染 PIE、装备/权威 Trace、坡地与多人分别报告，不以 Capsule/Mesh 全局偏移掩盖骨架问题"
     ]
+  },
+  {
+    "id": "BP-06",
+    "slug": "ue58-mcp-discovery-world-instance-evidence",
+    "prompt": "用户说UE5.8 MCP已连接，让你修蓝图和检查场景。tools/list只有list_toolsets、describe_toolset、call_tool；Actor Label相同，Editor默认值正常但PIE错误。当前用户PIE正在运行。如何操作并报告？",
+    "expectations": [
+      "继续发现实际toolsets/schema，确认目标工程和进程，不能声称只有3工具所以无法访问场景",
+      "区分准确资产包/生成类、Editor放置实例和PIE运行实例，不能按Actor Label或默认值推断运行对象",
+      "用可靠图/资产工具读回编译和保存指定包；不猜改uasset或保存全部用户资产",
+      "不停止用户已有PIE；报告实际已验证与待验证，新增测试安排在获准时段"
+    ]
+  },
+  {
+    "id": "BP-07",
+    "slug": "mcp-slate-input-is-not-loaded-code-proof",
+    "prompt": "UE5.8 Slate PressKey返回true，没有任何构建日志。C++原生逻辑已改但旧PIE看起来没变化。有人建议反复按快捷键、覆盖DLL，或者立即让用户关闭。应该怎么继续？",
+    "expectations": [
+      "true仅代表输入被接受，读取当前窗口/控件焦点及真实控制台上下文并观察构建起始和终态",
+      "检查Live Coding和重实例化配置、官方控制台或Python入口，不虚构Compile工具",
+      "不覆盖加载DLL或启动竞争构建；重载后用新对象/新PIE验证实际函数行为并区分类默认值和实例覆盖",
+      "确需重启时说明具体机制和证据，不能仅凭MCP无Compile或旧PIE未变化得出普遍关闭要求"
+    ]
+  },
+  {
+    "id": "BP-08",
+    "slug": "mcp-graph-export-and-image-observation",
+    "prompt": "MCP给AnimGraph导出DSL为空，capture成功但PNG是Editor世界或天空；C++的opaque RequestHandle已有operator==。能否判图无节点、死亡动画失败且蓝图能直接比较句柄？",
+    "expectations": [
+      "用支持该图类型的节点枚举/信息入口交叉核对，空导出不等于空图，不猜改uasset",
+      "核对World/相机/原PNG，捕获成功不证明游戏画面，先取正确观察再改产品",
+      "C++比较不自动生成K2节点，安全Pure查询保留内部身份不可写；关键图须真实编译/执行，两空相等不代表有效或授权"
+    ]
   }
 ]

@@ -828,5 +828,16 @@
       "识别实际相机通道和命中组件，读蓝图 CDO/实例持久化碰撞响应；摄像机探测保持待测 Actor 碰撞开启，并回归环境遮挡，不关闭所有 Pawn 碰撞",
       "最小用例覆盖真实四方向、锁定目标与攻击者不同、连续命中及恢复、远端拥有玩家与带渲染可见姿态；明确未执行及 NullRHI/ActorYaw/播放时间的证据边界"
     ]
+  },
+  {
+    "id": "LGF-75",
+    "slug": "death-avatar-and-dodge-authority-validation",
+    "prompt": "LGF+Mover玩家死亡直接布娃娃；隐藏UEFN源+可见Retarget外观。用户说闪避无无敌，但真实事务证明起手扣血、中段Evaded不扣血、后段正常受伤。如何最小修复及验收，能否新加客户端无敌Tag或只看GameMode播放？",
+    "expectations": [
+      "分清配置起手空窗与已有Authority防御解析，不另造客户端免伤真值，不固化案例时长",
+      "沿canonical动画源/Slot及现有死亡复制状态接入，处理绑定次序/重复/复活自己的实例清理；不统一强禁所有物理设计",
+      "按影响观察Authority/owner/proxy和真实伤害的窗口/取消，Health/Shield/结果/受击分别核对",
+      "源Montage时间不代替可见画面，自伤不替代敌人Trace；Dedicated/JIP/弱网未运行就保留"
+    ]
   }
 ]

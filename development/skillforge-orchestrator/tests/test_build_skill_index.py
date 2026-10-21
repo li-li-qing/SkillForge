@@ -99,7 +99,7 @@ class IndexTests(unittest.TestCase):
         self.assertEqual(self.success(self.cli())["skill_count"],1)
 
     def test_utf8_bom_and_crlf(self):
-        p=self.add();p.write_bytes(b'\xef\xbb\xbf'+p.read_bytes().replace(b'\n',b'\r\n'))
+        p=self.add();p.write_bytes(b'\xef\xbb\xbf'+p.read_bytes().replace(b'\r\n',b'\n').replace(b'\n',b'\r\n'))
         self.assertEqual(self.success(self.cli())["skill_count"],1)
 
     def test_json_quoted_name(self):

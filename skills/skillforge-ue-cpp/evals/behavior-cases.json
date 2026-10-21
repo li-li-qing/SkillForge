@@ -1261,5 +1261,68 @@
       "Save/Load/JIP序列化active scope stack所需的semantic values/IDs/version，而不是一份扁平LocalVariables、TObjectPtr或数组index；load先migrate/resolve每层frame再resume",
       "变量查找规则显式定义local shadowing→parent/global/external；退出/取消child时按policy pop/commit/discard，测试覆盖同名变量shadowing、nested save/resume、abort与旧版本migration"
     ]
+  },
+  {
+    "id": "CPP-116",
+    "slug": "mcp-livecoding-native-override-no-forced-restart",
+    "prompt": "UE5.8 MCP已连接，Editor空闲且All Saved，Live Coding与重实例化开启。本次修改已有函数体，并覆盖APawn已有虚函数；用户已授权测试。MCP工具列表只有3个元工具，没有Compile。必须让用户关闭Editor再构建吗？如何证明修正已经加载？",
+    "expectations": [
+      "先发现toolsets并读取schema，检查可用官方编辑器入口，不把三个元工具当完整能力清单或把没有Compile解释为无法操作",
+      "区分已有虚函数覆盖与新增反射声明，优先评估Live Coding；仅在有具体限制时转普通构建或重启",
+      "取得UBT/Live Coding及重载终态，在本轮新PIE实例中验证实际虚调用；输入true不是成功证明",
+      "不覆盖加载中的普通DLL，不中断用户已有PIE；结束本轮PIE并保持Pending/其他窗口归属"
+    ]
+  },
+  {
+    "id": "CPP-117",
+    "slug": "reinstancing-not-click-success-or-universal-restart",
+    "prompt": "新增UPROPERTY，UE5.8 Live Coding重实例化开启。MCP点击Compile返回true，但没有UBT终态和重载日志，蓝图详情也没新字段。现在能否宣称完成，或直接判断所有反射变化都必须关闭UE？",
+    "expectations": [
+      "两种结论都不成立；按当前变化和版本核实UHT、重实例化支持及构建/重载结果",
+      "核验运行反射、新字段和受影响蓝图编译，再验证新实例与真实调用",
+      "维护缓存/裸指针的重载失效和重建；不能假设既有实例默认值自动更新",
+      "仅证据表明当前路径不支持、反射仍旧或加载受限时安排有原因的普通构建/重开"
+    ]
+  },
+  {
+    "id": "CPP-118",
+    "slug": "mcp-new-tool-ufunction-refresh-limit",
+    "prompt": "UE5.8给一个C++ Toolset新增UFUNCTION Tool，模型建议LiveCoding.Compile再RefreshTools就肯定可见，还想在MCP游戏线程同步等待CompileSync。如何选择？",
+    "expectations": [
+      "识别官方UE5.8 MCP对新增Tool UFUNCTION的重启限制；与普通原生函数体热更区别处理",
+      "RefreshTools重新轮询registry/schema，不能生成没有进入运行反射的新声明",
+      "优先异步编译并观察终态，避免从MCP游戏线程同步阻塞服务；不宣称任何同步调用都已证实死锁",
+      "说明需要重启的具体原因并保护用户未保存工作，重启后重新发现工具和验证调用"
+    ]
+  },
+  {
+    "id": "CPP-119",
+    "slug": "live-reflection-versus-python-wrapper",
+    "prompt": "UE5.8 UHT/LiveCoding重实例化成功，MCP用原生DeathMontage字段读Native/BP CDO均正确；旧Python类包装get_editor_property(death_montage)失败。是否必须重启，如何验证？",
+    "expectations": [
+      "区分运行反射和绑定/命名缓存，先按完整路径重取类/CDO并核对原生字段名",
+      "不为旧包装失败重命名产品字段或直接强关；当前反射仍旧时再查UHT/加载",
+      "以新实例实际消费验证，CDO正确不等于旧实例/可见效果已生效"
+    ]
+  },
+  {
+    "id": "CPP-120",
+    "slug": "real-gi-lp-and-automation-pie-lifetime",
+    "prompt": "跨GI且同GI两个LocalPlayer的独立UE5.8测试，仅设置PIE客户端3并先建好PIE，再Automation RunTests。开始后PIE消失。能用NewObject两个LP补过门禁，或默认永久KeepPIEOpen吗？",
+    "expectations": [
+      "核对WorldContext/GI/Viewport/LP/PC/Subsystem真实关系，客户端数不等于同GI多LP，拒绝伪造前提",
+      "按当前Automation RunTests/StopTests/KeepPIEOpen调用核实PIE退出；仅确需的独立宿主临时设置同Controller并恢复",
+      "正常EndPIE/等待World退场/自然终态分别验证，不修改用户Main常驻设置，不把拓扑测试称网络权限验收"
+    ]
+  },
+  {
+    "id": "CPP-121",
+    "slug": "widget-display-lifetime-and-request-completion-reentry",
+    "prompt": "Widget在NativeOnInitialized绑定、NativeDestruct解绑。有人说移出重新加入和真正销毁后新建都会永久失联；又建议异步请求每次Broadcast（包括Accepted）前都清Pending。判断并给出正确边界。",
+    "expectations": [
+      "区分同UUserWidget显示层重建与新UObject初始化，不能称新对象也必然永久失联",
+      "绑定解绑按同层生命周期配对，当前版本初始化条件和显示释放路径另核",
+      "Accepted保留仍在等待的请求；完成/替换时固定旧身份并移走/终止旧记录以支持回调重入，广播后重查当前代次"
+    ]
   }
 ]

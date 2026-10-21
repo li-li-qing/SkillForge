@@ -185,6 +185,30 @@ class InspectWorkspaceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "无法读取 JSON"):
                 MODULE.collect_manifest(root, verbose=False)
 
+    def test_invalid_module_field_uses_cli_diagnostic(self) -> None:
+        for descriptor in ('project','plugin'):
+            for value in (None,'wrong',{},42):
+                with self.subTest(descriptor=descriptor,value=value), tempfile.TemporaryDirectory() as temp:
+                    root=Path(temp).resolve();self.make_project(root);self.add_lgf(root)
+                    path=root/'TestGame.uproject' if descriptor=='project' else root/'Plugins/LGameplayFramework/LGameplayFramework.uplugin'
+                    data=json.loads(path.read_text());data['Modules']=value;write_json(path,data)
+                    stderr=io.StringIO()
+                    with patch.object(sys,'argv',[str(SCRIPT_PATH),str(root)]),redirect_stderr(stderr):
+                        result=MODULE.main()
+                    self.assertEqual(result,2)
+                    self.assertIn(path.name,stderr.getvalue())
+                    self.assertIn('Modules',stderr.getvalue())
+                    self.assertNotIn('Traceback',stderr.getvalue())
+
+    def test_missing_and_empty_module_fields_are_valid(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp).resolve();write_json(root/'TestGame.uproject',{})
+            manifest=MODULE.collect_manifest(root,verbose=True)
+            self.assertEqual(manifest['project']['modules'],[])
+            self.add_lgf(root)
+            write_json(root/'Plugins/LGameplayFramework/LGameplayFramework.uplugin',{'Modules':[]})
+            self.assertEqual(MODULE.collect_manifest(root,verbose=True)['lgf']['modules'],[])
+
     def test_external_path_format_does_not_raise(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp).resolve()

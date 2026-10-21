@@ -3,6 +3,8 @@ from pathlib import Path
 import hashlib
 import importlib.util
 import json
+import os
+import subprocess
 import tempfile
 import unittest
 
@@ -47,7 +49,11 @@ class PatchInstallerTests(unittest.TestCase):
         self.entries[0]['path']='../escape.md';self.manifest()
         with self.assertRaises(self.m.PatchError):self.run_update()
     def test_target_symlink_rejected(self):
-        target=self.root/'README.md';target.unlink();outside=self.base/'outside';outside.write_bytes(b'old');target.symlink_to(outside)
+        target=self.root/'README.md';target.unlink();outside=self.base/'outside';outside.write_bytes(b'old')
+        try: target.symlink_to(outside)
+        except OSError as exc:
+            if getattr(exc,'winerror',None)==1314: self.skipTest('Windows symlink privilege unavailable; junction case runs separately')
+            raise
         with self.assertRaises(self.m.PatchError):self.run_update(True)
         self.assertEqual(outside.read_bytes(),b'old')
     def test_new_file_conflict_rejected(self):
@@ -75,5 +81,72 @@ class PatchInstallerTests(unittest.TestCase):
     def test_empty_manifest_path_refused_cleanly(self):
         self.entries[0]['path']='';self.manifest()
         with self.assertRaises(self.m.PatchError):self.run_update()
+
+    def test_embedded_drive_and_ads_refused_by_safe(self):
+        for name in ('skills/example/references/D:escape.md','README.md:stream'):
+            with self.subTest(name=name):
+                with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+
+    def test_dot_manifest_path_refused_without_traceback(self):
+        import contextlib
+        import io
+        self.entries[0]['path']='.';self.manifest()
+        error=io.StringIO()
+        with contextlib.redirect_stderr(error):
+            result=self.m.main(['--root',str(self.root),'--package',str(self.package),'--apply'])
+        self.assertEqual(result,2)
+        self.assertIn('REFUSED:',error.getvalue())
+        self.assertNotIn('Traceback',error.getvalue())
+        self.assertEqual((self.root/'README.md').read_bytes(),b'old')
+
+    def test_retire_add_conflict_refused_before_any_write(self):
+        name='skills/skillforge-orchestrator/agents/new.md'
+        payload=self.package/'payload'/name;payload.parent.mkdir(parents=True);payload.write_bytes(b'new')
+        self.entries.append(dict(path=name,before=None,after=sha(b'new'),operation='add'))
+        self.manifest(['skills/skillforge-orchestrator/agents'])
+        for apply in (False,True):
+            with self.assertRaises(self.m.PatchError):self.run_update(apply)
+        self.assertFalse((self.root/name).exists())
+        self.assertEqual((self.root/'README.md').read_bytes(),b'old')
+        self.assertFalse((self.root/'.skillforge-backups').exists())
+
+    def test_case_alias_refused_before_any_write(self):
+        upper=self.root/'skills/example/references/A.md';upper.parent.mkdir(parents=True);upper.write_bytes(b'alias')
+        lower=upper.with_name('a.md')
+        if not lower.exists() or not upper.samefile(lower):self.skipTest('case-sensitive filesystem')
+        self.entries.extend(dict(path=p.relative_to(self.root).as_posix(),before=sha(b'alias'),after=None,operation='delete') for p in (upper,lower))
+        self.manifest()
+        for apply in (False,True):
+            with self.assertRaises(self.m.PatchError):self.run_update(apply)
+        self.assertEqual(upper.read_bytes(),b'alias')
+        self.assertEqual((self.root/'README.md').read_bytes(),b'old')
+
+    def test_win32_alias_spelling_refused_before_any_write(self):
+        for name in ('scripts/new.py.','scripts/new.py ',
+                     'skills/skillforge-orchestrator/agents./new.md'):
+            with self.subTest(name=name):
+                payload=self.package/'payload'/name;payload.parent.mkdir(parents=True,exist_ok=True);payload.write_bytes(b'new')
+                self.entries=self.entries[:1]+[dict(path=name,before=None,after=sha(b'new'),operation='add')]
+                self.manifest(['skills/skillforge-orchestrator/agents'] if 'agents.' in name else [])
+                for apply in (False,True):
+                    with self.assertRaises(self.m.PatchError):self.run_update(apply)
+                self.assertEqual((self.root/'README.md').read_bytes(),b'old')
+                self.assertFalse((self.root/'.skillforge-backups').exists())
+
+    def test_junction_in_protected_paths_refused(self):
+        if os.name != 'nt': self.skipTest('Windows junction fixture')
+        for name in ('skills','.skillforge-memory','.skillforge-backups'):
+            with self.subTest(name=name):
+                outside=self.base/('outside-'+name);outside.mkdir()
+                marker=outside/'marker';marker.write_bytes(b'unchanged')
+                link=self.root/name
+                for path in (link,outside):
+                    self.assertTrue(path.resolve().is_relative_to(self.base.resolve()))
+                script="New-Item -ItemType Junction -Path '"+str(link)+"' -Target '"+str(outside)+"' -ErrorAction Stop | Out-Null"
+                subprocess.run(['powershell.exe','-NoProfile','-Command',script],check=True,capture_output=True)
+                try:
+                    with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name+'/marker')
+                    self.assertEqual(marker.read_bytes(),b'unchanged')
+                finally:link.rmdir()
 
 if __name__=='__main__':unittest.main()

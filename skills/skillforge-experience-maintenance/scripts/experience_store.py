@@ -27,6 +27,7 @@ class StoreError(RuntimeError):
 
 
 MAX_CONTENT = 1024 * 1024
+MAX_RECORD_BYTES = 4 * MAX_CONTENT
 IDENTIFIER = re.compile(r"[0-9a-f]{32}\Z")
 
 
@@ -35,7 +36,7 @@ def _sha(data: bytes | None) -> str | None:
 
 
 def _time() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(timezone.utc).isoformat(timespec="microseconds")
 
 
 def _root(root: Path) -> Path:
@@ -45,12 +46,31 @@ def _root(root: Path) -> Path:
     return root
 
 
+def _is_link(path: Path) -> bool:
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return False
+    # st_file_attributes works on supported Windows Python versions before 3.12.
+    return stat.S_ISLNK(info.st_mode) or bool(getattr(info, "st_file_attributes", 0) & 0x400)
+
+
 def _no_links(root: Path, relative: str) -> Path:
+    if not isinstance(relative, str) or not relative or "\\" in relative or ":" in relative or "\0" in relative:
+        raise StoreError("Invalid relative protected path")
+    parsed = PurePosixPath(relative)
+    if not parsed.parts or parsed.is_absolute() or ".." in parsed.parts or str(parsed) != relative:
+        raise StoreError("Non-canonical or escaping protected path")
+    if any(part.endswith((".", " ")) for part in parsed.parts):
+        raise StoreError("Trailing dot/space components are not portable Windows paths")
+    root = root.resolve(strict=True)
     p = root
-    for component in PurePosixPath(relative).parts:
+    for component in parsed.parts:
         p = p / component
-        if p.is_symlink():
-            raise StoreError("Symbolic links are not supported in protected paths")
+        if _is_link(p):
+            raise StoreError("Links/reparse points are not supported in protected paths")
+    if not p.resolve().is_relative_to(root):
+        raise StoreError("Protected path escapes the shared root")
     return p
 
 
@@ -84,7 +104,7 @@ def _store(root: Path) -> Path:
 def _read(path: Path) -> bytes | None:
     if not path.exists():
         return None
-    if path.is_symlink() or not path.is_file() or path.stat().st_size > 4 * MAX_CONTENT:
+    if _is_link(path) or not path.is_file() or path.stat().st_size > MAX_RECORD_BYTES:
         raise StoreError("Unsafe or oversized input file")
     return path.read_bytes()
 
@@ -116,8 +136,23 @@ def _atomic_write(path: Path, data: bytes, *, mode: int | None = None) -> None:
             temporary.unlink(missing_ok=True)
 
 
+def _record_bytes(value: dict) -> bytes:
+    data = (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    if len(data) > MAX_RECORD_BYTES:
+        raise StoreError("Serialized record exceeds the 4 MiB read limit")
+    return data
+
+
+def _check_record_capacity(record: dict) -> None:
+    # Include every timestamp/state field used by promote/rollback/recover so a
+    # readable proposal cannot fail only after replacing the active document.
+    _record_bytes(dict(record, status="rollback_prepared", reviewed=True,
+        **{key: _time() for key in ("prepared_at", "completed_at", "rollback_started_at",
+                                  "rollback_completed_at", "recovered_at")}))
+
+
 def _json_write(path: Path, value: dict) -> None:
-    _atomic_write(path, (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+    _atomic_write(path, _record_bytes(value))
 
 
 def _id(value: str) -> str:
@@ -129,7 +164,7 @@ def _id(value: str) -> str:
 @contextmanager
 def _lock(root: Path):
     store = _store(root)
-    lock = store / "write.lock"
+    lock = _no_links(root, ".skillforge-memory/write.lock")
     token = uuid.uuid4().hex
     try:
         descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
@@ -143,7 +178,7 @@ def _lock(root: Path):
         yield store
     finally:
         # Never unlink a lock replaced by an external actor.
-        if lock.is_file() and not lock.is_symlink() and lock.read_text(encoding="utf-8") == token:
+        if lock.is_file() and not _is_link(lock) and lock.read_text(encoding="utf-8") == token:
             lock.unlink()
 
 
@@ -191,10 +226,11 @@ def propose(root: Path, target: str, content: str, *, actor: str, kind: str,
                   kind=kind, conditions=conditions, evidence=evidence, target=target,
                   before=before_text, before_sha256=_sha(before), after=content,
                   after_sha256=_sha(content.encode("utf-8")), status="candidate")
+    _check_record_capacity(record)
+    data = _record_bytes(record)
     # O_EXCL ensures proposals cannot overwrite each other, even on an ID collision.
-    with (store / "proposals" / f"{identifier}.json").open("x", encoding="utf-8") as stream:
-        json.dump(record, stream, ensure_ascii=False, indent=2)
-        stream.write("\n")
+    with (store / "proposals" / f"{identifier}.json").open("xb") as stream:
+        stream.write(data)
         stream.flush()
         os.fsync(stream.fileno())
     return identifier
@@ -218,6 +254,7 @@ def promote(root: Path, identifier: str, *, reviewed: bool = False) -> dict:
                             current_matches=_sha(_read(target)) == existing["after_sha256"])
             raise StoreError("Transaction already exists; inspect or recover it rather than replaying")
         record = _validated(_json_read(store / "proposals" / f"{identifier}.json"), identifier)
+        _check_record_capacity(record)
         target = _target(root, record["target"])
         current = _read(target)
         if _sha(current) != record["before_sha256"]:
@@ -248,6 +285,7 @@ def rollback(root: Path, identifier: str, *, reviewed: bool = False) -> dict:
         target = _target(root, transaction["target"])
         if _sha(_read(target)) != transaction["after_sha256"]:
             raise StoreError("STALE: a later revision exists; propose a reviewed inverse patch")
+        _check_record_capacity(transaction)
         transaction.update(status="rollback_prepared", rollback_started_at=_time())
         _json_write(journal, transaction)
         if transaction["before"] is None:

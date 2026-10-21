@@ -2,6 +2,8 @@
 from pathlib import Path
 import importlib.util
 import json
+import os
+import subprocess
 import tempfile
 import unittest
 
@@ -19,6 +21,12 @@ class ExperienceStoreTests(unittest.TestCase):
 
     def proposal(self, content='new', target=None):
         return self.m.propose(self.root,target or self.target,content,actor='tester',kind='technical',evidence=['test:evidence'],conditions='local fixture')
+
+    def symlink(self, link, target, **kwargs):
+        try: link.symlink_to(target, **kwargs)
+        except OSError as exc:
+            if getattr(exc,'winerror',None)==1314: self.skipTest('Windows symlink privilege unavailable; junction cases run separately')
+            raise
 
     def test_proposal_does_not_change_rule(self):
         i=self.proposal();self.assertTrue(i)
@@ -72,7 +80,7 @@ class ExperienceStoreTests(unittest.TestCase):
 
     def test_symlink_target_rejected(self):
         outside=self.root/'outside';outside.write_text('outside')
-        target=self.root/self.target;target.unlink();target.symlink_to(outside)
+        target=self.root/self.target;target.unlink();self.symlink(target,outside)
         with self.assertRaises(self.m.StoreError): self.proposal()
         self.assertEqual(outside.read_text(),'outside')
 
@@ -85,12 +93,95 @@ class ExperienceStoreTests(unittest.TestCase):
 
     def test_private_store_symlink_rejected(self):
         external=self.root/'external';external.mkdir()
-        (self.root/'.skillforge-memory').symlink_to(external,target_is_directory=True)
+        self.symlink(self.root/'.skillforge-memory',external,target_is_directory=True)
         with self.assertRaises(self.m.StoreError): self.proposal()
+
+    def test_embedded_drive_and_ads_are_refused_before_recording(self):
+        for target in ('skills/example/references/D:escape.md',
+                       'skills/example/references/rule.md:stream'):
+            with self.subTest(target=target):
+                with self.assertRaises(self.m.StoreError): self.proposal(target=target)
+        self.assertFalse((self.root/'.skillforge-memory').exists())
+        self.assertEqual((self.root/self.target).read_text(), 'old')
+
+    def junction(self, link, target):
+        if os.name != 'nt': self.skipTest('Windows junction fixture')
+        for path in (link, target):
+            self.assertTrue(path.resolve().is_relative_to(self.root.resolve()))
+        script = "New-Item -ItemType Junction -Path '"+str(link)+"' -Target '"+str(target)+"' -ErrorAction Stop | Out-Null"
+        subprocess.run(['powershell.exe','-NoProfile','-Command',script],check=True,capture_output=True)
+        self.addCleanup(lambda: link.rmdir() if link.is_junction() else None)
+
+    def test_junction_target_is_refused_without_external_write(self):
+        outside=self.root/'outside';outside.mkdir();marker=outside/'rule.md';marker.write_text('outside')
+        link=self.root/'skills/example/assets';self.junction(link,outside)
+        with self.assertRaises(self.m.StoreError): self.proposal(target='skills/example/assets/rule.md')
+        self.assertEqual(marker.read_text(),'outside')
+
+    def test_junction_private_store_is_refused_before_recording(self):
+        outside=self.root/'outside';outside.mkdir()
+        self.junction(self.root/'.skillforge-memory',outside)
+        with self.assertRaises(self.m.StoreError): self.proposal()
+        self.assertEqual(list(outside.iterdir()),[])
+
+    def test_junction_proposals_and_transactions_are_refused(self):
+        for name in ('proposals','transactions'):
+            with self.subTest(name=name):
+                store=self.root/'.skillforge-memory';store.mkdir(exist_ok=True)
+                outside=self.root/('outside-'+name);outside.mkdir()
+                link=store/name;self.junction(link,outside)
+                try:
+                    with self.assertRaises(self.m.StoreError): self.proposal()
+                    self.assertEqual(list(outside.iterdir()),[])
+                finally:
+                    link.rmdir()
 
     def test_oversized_base_is_rejected_before_recording(self):
         (self.root/self.target).write_text('x'*(self.m.MAX_CONTENT+1))
         with self.assertRaises(self.m.StoreError): self.proposal()
+
+    def test_escaped_record_size_refused_before_proposal_write(self):
+        text='"\\'*(self.m.MAX_CONTENT//2)
+        (self.root/self.target).write_text(text,encoding='utf-8')
+        with self.assertRaises(self.m.StoreError): self.proposal(text)
+        self.assertEqual(list((self.root/'.skillforge-memory/proposals').glob('*.json')),[])
+        self.assertEqual((self.root/self.target).read_text(encoding='utf-8'),text)
+
+    def test_large_metadata_is_refused_before_proposal_write(self):
+        with self.assertRaises(self.m.StoreError):
+            self.m.propose(self.root,self.target,'small',actor='test',kind='technical',
+                           evidence=['x'*(4*self.m.MAX_CONTENT)],conditions='fixture')
+        self.assertEqual((self.root/self.target).read_text(),'old')
+        self.assertEqual(list((self.root/'.skillforge-memory/proposals').glob('*.json')),[])
+
+    def test_near_limit_escaped_record_can_promote_and_rollback(self):
+        text='"\\'*(self.m.MAX_CONTENT//2-1024)
+        (self.root/self.target).write_text(text,encoding='utf-8')
+        identifier=self.proposal(text[:-2]+'ok')
+        self.assertEqual(self.m.promote(self.root,identifier,reviewed=True)['status'],'committed')
+        self.assertEqual(self.m.rollback(self.root,identifier,reviewed=True)['status'],'rolled_back')
+        self.assertEqual((self.root/self.target).read_text(encoding='utf-8'),text)
+
+    def test_legacy_record_capacity_refused_before_rollback_mutation(self):
+        identifier=self.proposal('new');self.m.promote(self.root,identifier,reviewed=True)
+        journal=self.root/'.skillforge-memory/transactions'/f'{identifier}.json'
+        record=json.loads(journal.read_text(encoding='utf-8'))
+        # The previous schema-v1 tool could generate readable committed records
+        # this close to the limit. Preserve their evidence instead of truncating it.
+        record['conditions']=''
+        encode=lambda value:(json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode('utf-8')
+        record['conditions']='x'*(self.m.MAX_RECORD_BYTES-80-len(encode(record)))
+        before=encode(record);journal.write_bytes(before)
+        self.assertLessEqual(len(before),self.m.MAX_RECORD_BYTES)
+        with self.assertRaises(self.m.StoreError):self.m.rollback(self.root,identifier,reviewed=True)
+        self.assertEqual((self.root/self.target).read_text(),'new')
+        self.assertEqual(journal.read_bytes(),before)
+
+    def test_windows_alias_component_refused_before_recording(self):
+        for target in ('skills/example/references/group./rule.md','skills/example/assets/group /rule.md'):
+            with self.subTest(target=target):
+                with self.assertRaises(self.m.StoreError):self.proposal(target=target)
+        self.assertFalse((self.root/'.skillforge-memory').exists())
 
     def rewrite_transaction(self, identifier, status):
         p=self.root/'.skillforge-memory/transactions'/f'{identifier}.json'

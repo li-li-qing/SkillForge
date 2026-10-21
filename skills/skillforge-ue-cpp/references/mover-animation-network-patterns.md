@@ -34,6 +34,12 @@ GameplayTag 可以连接这些域，但 Tag 是**身份/信号**，不意味着�
 - ragdoll pelvis/top-body transform 或其他 physics snapshot；
 - 已经过滤/量化的 lock-on / aim intent（如果设计确实要求进入预测模拟）。
 
+### 输入时间和动画基准从调用方核实
+
+UE5.8的`IMoverInputProducerInterface::ProduceInput`参数名为`SimTimeMs`，但该版NP/Standalone调用链经`UMoverComponent::ProduceInput`传入step duration `DeltaTimeMS`。不能凭接口名当作绝对模拟时刻。需要输入侧累计时钟时按当前后端定义累积，重演仍消费已记录输入；其他引擎版本/后端重读调用点，不全局套用或重命名。
+
+贴墙/倒挂动画测量要同时记录胶囊、Mesh、动画根和接触骨骼的坐标基准。离线pose评估须核对Root Motion提取、ForceRootLock和运行播放方式是否一致，再与实际Mesh世界变换/支撑面比较。先区分整体基准错误和局部肢体间隙，再决定是否需要派生姿态或IK；有限帧/有限采样不证明任意曲面支撑，不能固化一个案例的角度、爪距或IK参数。
+
 ### 2.1 自定义 Mover data 的完整合同
 
 新增一个 custom input/sync/persistent struct 时，至少同时定义：

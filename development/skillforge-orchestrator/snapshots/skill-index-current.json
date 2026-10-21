@@ -29,7 +29,7 @@
       "root": "skills",
       "path": "skillforge-engineering-preflight/SKILL.md",
       "revision": null,
-      "sha256": "406b1813a99810954ff5bd8b9e3cfeff9582b5581cc966a6d0850fd72ff8f0f0"
+      "sha256": "c218d209d7ce8941f2322d51f5c1e72f6422d441dbb17a2bebe1bbe7df441cba"
     },
     {
       "name": "skillforge-experience-maintenance",
@@ -69,7 +69,7 @@
       "root": "skills",
       "path": "skillforge-ue-blueprint/SKILL.md",
       "revision": null,
-      "sha256": "28fc255f9cbb8eedc38e4c0df13a0a895aeacafb9100adfb835907a9f49b3b89"
+      "sha256": "3e918072811d0e59f6e440a963b499774d7af24fbffd863eb5cb8445177fe878"
     },
     {
       "name": "skillforge-ue-cpp",
@@ -77,7 +77,7 @@
       "root": "skills",
       "path": "skillforge-ue-cpp/SKILL.md",
       "revision": null,
-      "sha256": "10b74f2d766b931dff189213d89db170abd593401149ead0cf8cbbf7427607d3"
+      "sha256": "1ae64a5aa629bfb47b70096328b873021d6a5f5cf4e9ac56ed2bb511986c1a8e"
     },
     {
       "name": "skillforge-ui-design",

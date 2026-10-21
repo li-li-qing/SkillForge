@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Apply a hash-guarded SkillForge change package; default is a read-only check.
 
-Pause all other writers first. --apply makes backups, checks again while holding
-our shared cooperative rule lock, and applies only listed paths. This is not a
+Use the shared lock for cooperating writers. --apply makes backups, checks again
+while holding that lock, and applies only listed paths. This is not a
 security sandbox or an all-files atomic transaction. A conflict never authorizes
 force-overwriting local changes. Interrupted work leaves backups and state.
 """
@@ -32,24 +32,37 @@ def digest(data: bytes | None) -> str | None:
     return None if data is None else hashlib.sha256(data).hexdigest()
 
 
+def is_link(path: Path) -> bool:
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return False
+    return stat.S_ISLNK(info.st_mode) or bool(getattr(info, "st_file_attributes", 0) & 0x400)
+
+
 def safe(root: Path, relative: str) -> Path:
-    if not isinstance(relative, str) or not relative or "\\" in relative:
+    if not isinstance(relative, str) or not relative or "\\" in relative or ":" in relative or "\0" in relative:
         raise PatchError("Invalid relative path")
     p = PurePosixPath(relative)
-    if p.is_absolute() or ".." in p.parts or str(p) != relative:
+    if not p.parts or p.is_absolute() or ".." in p.parts or str(p) != relative:
         raise PatchError("Non-canonical or escaping path")
+    if any(part.endswith((".", " ")) for part in p.parts):
+        raise PatchError("Trailing dot/space components are not portable Windows paths")
+    root = root.resolve(strict=True)
     result = root
     for part in p.parts:
         result = result / part
-        if result.is_symlink() or (hasattr(result, "is_junction") and result.is_junction()):
+        if is_link(result):
             raise PatchError(f"Link/junction not supported: {relative}")
+    if not result.resolve().is_relative_to(root):
+        raise PatchError(f"Path escapes root: {relative}")
     return result
 
 
 def read(path: Path) -> bytes | None:
     if not path.exists():
         return None
-    if not path.is_file() or path.is_symlink():
+    if not path.is_file() or is_link(path):
         raise PatchError(f"Not a regular file: {path}")
     return path.read_bytes()
 
@@ -86,6 +99,7 @@ def read_manifest(package: Path) -> dict:
         name = entry.get("path")
         if not isinstance(name, str) or not name:
             raise PatchError("Entry has no path")
+        safe(package, name)  # Validate before indexing parts ('.' has no parts).
         path = PurePosixPath(name)
         if name in seen or (name not in {"README.md", ".gitignore"} and path.parts[0] not in ALLOWED):
             raise PatchError(f"Duplicate or forbidden manifest path: {name}")
@@ -103,11 +117,23 @@ def read_manifest(package: Path) -> dict:
     retired = manifest.get("retire_dirs", [])
     if not isinstance(retired, list) or any(x not in RETIRABLE for x in retired) or len(retired) != len(set(retired)):
         raise PatchError("Unsupported retired directory")
+    for entry in manifest["entries"]:
+        name = os.path.normcase(entry["path"])
+        for directory in retired:
+            prefix = os.path.normcase(directory)
+            if entry["after"] is not None and (name == prefix or name.startswith(prefix + os.sep)):
+                raise PatchError(f"Retired directory would retain an added/modified file: {entry['path']}")
     return manifest
 
 
 def check(root: Path, package: Path, manifest: dict) -> list[dict]:
     changes = []
+    targets = set()
+    for entry in manifest["entries"]:
+        key = os.path.normcase(str(safe(root, entry["path"]).resolve()))
+        if key in targets:
+            raise PatchError(f"Aliased manifest targets: {entry['path']}")
+        targets.add(key)
     deletes = {e["path"] for e in manifest["entries"] if e["operation"] == "delete"}
     for entry in manifest["entries"]:
         name = entry["path"]
@@ -160,7 +186,7 @@ def writer_lock(root: Path):
                     raise PatchError("Interrupted experience transaction exists; recover it first")
         yield
     finally:
-        if path.is_file() and not path.is_symlink() and path.read_text(encoding="utf-8") == token:
+        if path.is_file() and not is_link(path) and path.read_text(encoding="utf-8") == token:
             path.unlink()
 
 
@@ -234,7 +260,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--package", type=Path, default=Path(__file__).resolve().parent)
-    parser.add_argument("--apply", action="store_true", help="Apply only after reviewing the read-only check; pause other writers")
+    parser.add_argument("--apply", action="store_true", help="Apply only after reviewing the read-only check; uses the shared writer lock")
     args = parser.parse_args(argv)
     try:
         print(json.dumps(apply_update(args.root, args.package, apply=args.apply), ensure_ascii=False, indent=2))

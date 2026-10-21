@@ -70,3 +70,15 @@ Authority grant 时至少建立：
 如果能力正处于预测/TargetData/AbilityTask 生命周期，先定义 teardown 顺序和 generation：撤销 grant 不能让旧 TargetData、Montage reject、Task delegate 在下一件同类武器上继续生效。
 
 PredictionKey、TargetData、remote termination 和多 Mesh/Layer rollback 详见 [GAS 战斗预测](gas-combat-prediction.md)。
+
+## 蓄力请求的重复与失败清理
+
+本地已pending/active时，重复Start不能覆盖尚待Release/Cancel的事务身份。Authority初始拒绝仍须回传原身份；拥有者结果接收路径只释放匹配失败的本地等待，旧失败不能清掉后来新请求。分别核对本地拒绝、服务器最终拒绝、重试、释放/取消和同步委托重入，提交回执不替代实际激活结果。沿真实分发/接收函数追踪清理，不能只凭Notify名字判断执行端；继续复用既有Request/Authority/结果协议。
+
+## 死亡表现和闪避防御沿已有真值接入
+
+隐藏动画源+可见retarget外观的工程，死亡Montage先在真实canonical源/Slot核验；保留当前可见AnimBP并观察其求值结果。只由GameMode触发一次表现不证明owner/旁观者已覆盖；消费现有死亡复制状态，处理PlayerState/Pawn绑定先后、重复通知、晚到状态和复活清理。跟踪自己的AnimInstance/Montage实例身份，旧清理不停止新动作；选择保持末帧、布娃娃或混合由当前产品合同决定，不强制所有项目禁用物理。
+
+“闪避没有无敌”先走RequestDodge→Authority窗口→统一伤害事务，分清配置空窗与公共结算缺失；已有解析器有效就不另造客户端无敌真值或平行Tag判断。真实事务分别测起手、窗口中/后、取消，读取Evaded结果、Health/Shield和受击状态。无敌时长、起点是否为0都是项目设计，不固化案例数值。自身伤害夹具能验证结算，但没经过敌人Trace/受击链就不能宣称这些路径也已覆盖。
+
+死亡至少按本次影响检查Authority、拥有者、旁观者的播放/保持和请求复活后的恢复；新增JIP/Dedicated/弱网要求按风险选择，未运行就单列。动画时间、源姿态、最终可见画面与人工手感是不同证据。

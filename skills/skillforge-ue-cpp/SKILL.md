@@ -31,6 +31,8 @@ description: "编写、修改和审查 Unreal Engine 5 C++，涵盖 UObject 反�
 
 - UObject、回调、委托或切关：读 [所有权与生命周期](references/ownership-lifecycle.md)。
 - 反射、跨模块接口、蓝图暴露、构建：读 [反射与构建](references/reflection-build.md)。
+- UE 5.8 MCP、编辑器保持开启、Live Coding、对象重实例化或判断是否必须重启：读 [MCP 与热编译迭代](references/editor-mcp-live-coding.md)。
+- Editor Automation、预建PIE、跨GameInstance/同GI多LocalPlayer、opaque句柄真实K2图验证：读 [编辑器自动化前提](references/editor-automation-validation.md)。
 - 迁移历史经验或需要回归场景：读 [案例与核验](references/cases.md)。
 - 联网 Gameplay、复制 UObject、FastArray、数据驱动 Spawn、存档、对象池或高频系统：读 [Gameplay 运行时架构审查](references/runtime-gameplay-patterns.md)。
 - 完整 Gameplay Framework 组合、PlayerState/Pawn 长短生命周期、AbilitySet 可逆授予、客户端 mutation RPC、InputTag 热路径或 AI Director：读 [Gameplay Framework 组合与生命周期模式](references/framework-composition-patterns.md)。
@@ -50,7 +52,7 @@ description: "编写、修改和审查 Unreal Engine 5 C++，涵盖 UObject 反�
 
 涉及构建或构建验证方案时，交付三个具体信息：**目标来源**（要读取哪个当前工程的 `Target.cs` 或已验证构建入口）、**目标/平台/配置**（尚未取得时列出缺少的证据）、**执行状态**（实际命令和结果，或尚未执行）。这样即使本轮只分析生命周期问题，也能让下一位执行者确定验证目标，而不是留下“按实际目标编译”的空泛结论。
 
-从上述证据和真实引擎位置生成命令。反射声明变化需要正常 UHT/构建及受影响蓝图的编译、节点与调用检查，不能只用 Live Coding 结果代替。
+从上述证据和真实引擎位置生成命令。编辑器已开启时先按 [MCP 与热编译迭代](references/editor-mcp-live-coding.md) 检查可用入口、变化种类及重实例化支持，再决定 Live Coding 或常规构建/重启。反射变化需核验 UHT 结果、实际运行反射、受影响蓝图编译和调用；点击成功或单条编译成功不能替代这些证据。
 
 按变更选择运行验证：异步生命周期覆盖关闭、重开、切关和过期请求；模块边界覆盖实际需要的目标；联网行为才验证相关网络角色。报告实际改动、证据、已运行的命令及结果，分别标记未做的编译、编辑器或运行检查。
 

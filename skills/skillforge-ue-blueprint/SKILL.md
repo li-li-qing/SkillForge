@@ -12,6 +12,7 @@ description: "创建、修改、解释和排查 Unreal Engine 5 蓝图、AnimBP�
 - 从工程或用户材料确认引擎版本、目标资产、父类、图类型、调用方与所属玩家/世界；区分类默认值、放置实例与运行实例。
 - 能读取图时检查实际变量、节点、连线、组件与事件签名。工具摘要、缓存索引或截图只代表其可见范围；未读到的资产内容保持未知。
 - 分别确认能否读图、改图、编译、保存、重新加载和运行。普通文件写入能力不等于安全修改 `.uasset`；无可靠资产工具时提供节点说明，不尝试猜测二进制结构。
+- 用户已连接 UE MCP 或使用 UE 5.8 原生工具时，先读 [MCP 编辑器工作流](references/unreal-mcp-editor-workflow.md)，发现真实能力后操作场景和资产。
 
 ## 组织逻辑
 
@@ -26,7 +27,7 @@ Construction Script 可以因编辑器重建和运行期 Actor 生成而执行�
 ## 按需参考
 
 - Accessed None、Cast 失败、初始化、重复绑定：读 [初始化与通信](references/initialization-communication.md)。
-- 工具能否实际改图、如何给节点说明和验收保存：读 [资产操作与交付](references/asset-delivery.md)。
+- 工具能否实际改图、如何给节点说明和验收保存：读 [资产操作与交付](references/asset-delivery.md)；MCP/Slate/PIE 与 C++ 重载衔接读 [MCP 编辑器工作流](references/unreal-mcp-editor-workflow.md)。
 - 资产持久化、官方预览、UMG 根层/NullRHI 几何：读 [官方资产流程](references/official-asset-workflows.md)。
 - 核对旧笔记中的 UMG 或生命周期说法：读 [案例与核验](references/cases.md)。
 - GASP 与 ALS、Linked Anim Layer、Property Access 写相位、动态 Overlay、AnimBP 与 C++、URO/SimulatedProxy、Mover、GAS 职责：读 [Linked Animation Layer 与 AnimBP 边界](references/linked-animation-layer-boundaries.md)。

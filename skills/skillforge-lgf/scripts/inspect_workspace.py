@@ -48,6 +48,14 @@ def display_path(root: Path, path: Path) -> str:
         return str(absolute)
 
 
+def descriptor_modules(data: dict[str, Any], path: Path) -> list[str]:
+    modules = data.get("Modules", [])
+    if not isinstance(modules, list):
+        raise ValueError(f"{path}: Modules 必须为数组，不能为 null 或其他类型")
+    return [entry["Name"] for entry in modules
+            if isinstance(entry, dict) and isinstance(entry.get("Name"), str)]
+
+
 def display_paths(root: Path, paths: list[Path]) -> list[str]:
     return sorted(display_path(root, path) for path in paths)
 
@@ -169,11 +177,7 @@ def collect_manifest(
     lgf_data = load_json(lgf_path) if lgf_path is not None else None
     project_build_files, lgf_build_files = collect_build_files(root, lgf_path)
 
-    lgf_modules = [
-        entry.get("Name")
-        for entry in (lgf_data or {}).get("Modules", [])
-        if isinstance(entry, dict) and isinstance(entry.get("Name"), str)
-    ]
+    lgf_modules = descriptor_modules(lgf_data, lgf_path) if lgf_data is not None else []
     lgf_source = lgf_path.parent / "Source" if lgf_path is not None else None
     lgf_headers = list(lgf_source.glob("**/*.h")) if lgf_source and lgf_source.is_dir() else []
     lgf_sources = list(lgf_source.glob("**/*.cpp")) if lgf_source and lgf_source.is_dir() else []
@@ -185,11 +189,7 @@ def collect_manifest(
             "file": project_path.name,
             "engine_association": project_data.get("EngineAssociation"),
             "engine_association_is_not_verified_version": True,
-            "modules": [
-                entry.get("Name")
-                for entry in project_data.get("Modules", [])
-                if isinstance(entry, dict) and isinstance(entry.get("Name"), str)
-            ],
+            "modules": descriptor_modules(project_data, project_path),
             "relevant_plugins": plugin_summary(project_data),
             "agents_file": (root / "AGENTS.md").is_file(),
         },
