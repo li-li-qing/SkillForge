@@ -186,6 +186,9 @@ def write_atomic(path: Path, text: str) -> None:
     interrupted write may leave a temporary file only if the OS kills the
     process before cleanup; the old destination remains intact until replace.
     """
+    # Every explicitly published index must fit the existing --check reader.
+    if len(text.encode("utf-8")) > MAX_BYTES:
+        raise IndexErrorDetail(f"serialized index exceeds {MAX_BYTES} bytes; previous output preserved")
     path = path.absolute()
     if path.suffix.lower() != ".json" or not path.parent.is_dir():
         raise IndexErrorDetail("--output must be a .json file in an existing directory")

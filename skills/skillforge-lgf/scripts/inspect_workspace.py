@@ -94,17 +94,20 @@ def collect_build_files(root: Path, lgf_plugin: Path | None) -> tuple[list[Path]
     return project_files, plugin_files
 
 
-def plugin_summary(project_data: dict[str, Any]) -> dict[str, bool]:
+def plugin_summary(project_data: dict[str, Any], path: Path | None = None) -> dict[str, bool]:
     result: dict[str, bool] = {}
     plugins = project_data.get("Plugins", [])
     if not isinstance(plugins, list):
         return result
-    for entry in plugins:
+    for index, entry in enumerate(plugins):
         if not isinstance(entry, dict):
             continue
         name = entry.get("Name")
         if isinstance(name, str) and name in INTERESTING_PLUGINS:
-            result[name] = bool(entry.get("Enabled", False))
+            enabled = entry.get("Enabled", False)
+            if type(enabled) is not bool:
+                raise ValueError(f"{path or '.uproject'}: Plugins[{index}].Enabled 必须为布尔值")
+            result[name] = enabled
     return dict(sorted(result.items()))
 
 
@@ -128,8 +131,10 @@ def inspect_engine(engine_root: Path | None) -> dict[str, Any]:
     build_data = load_json(build_version_path)
 
     version_keys = ("MajorVersion", "MinorVersion", "PatchVersion")
-    if not all(isinstance(build_data.get(key), int) for key in version_keys):
-        raise ValueError(f"Build.version 缺少有效版本字段：{build_version_path}")
+    for key in version_keys:
+        value = build_data.get(key)
+        if type(value) is not int or value < 0:
+            raise ValueError(f"{build_version_path}: {key} 必须为非负整数（不接受布尔值）")
 
     plugins_root = root / "Engine" / "Plugins"
     mover_descriptors = sorted(
@@ -190,7 +195,7 @@ def collect_manifest(
             "engine_association": project_data.get("EngineAssociation"),
             "engine_association_is_not_verified_version": True,
             "modules": descriptor_modules(project_data, project_path),
-            "relevant_plugins": plugin_summary(project_data),
+            "relevant_plugins": plugin_summary(project_data, project_path),
             "agents_file": (root / "AGENTS.md").is_file(),
         },
         "engine": inspect_engine(engine_root),

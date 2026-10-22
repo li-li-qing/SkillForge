@@ -73,7 +73,9 @@ def validate(root: Path) -> list[str]:
         if not 1<=len(desc)<=1024 or not desc.startswith('Use when'):errors.append('invalid triggering description')
         if len(data.get('compatibility',''))>500:errors.append('compatibility length')
         if len(text.splitlines())>=500:errors.append('main skill exceeds 499 lines')
-        if not data.get('metadata',{}).get('revision'):errors.append('revision metadata missing')
+        metadata=data.get('metadata',{})
+        if not isinstance(metadata,dict):errors.append('metadata must be object')
+        elif not metadata.get('revision'):errors.append('revision metadata missing')
     except (ValueError,OSError) as e:errors.append(str(e))
     for p in files:
         if p.suffix.lower() not in ('.md','.json','.py'):continue
@@ -110,7 +112,10 @@ def validate(root: Path) -> list[str]:
                     if not isinstance(expectations,list) or not expectations or not all(isinstance(x,str) and x for x in expectations):errors.append('case expectations missing:'+identity)
                     if int(identity.split('-')[-1])>=27:
                         if c.get('execution_status')!='not_run':errors.append('scenario spec is not an execution record:'+identity)
-                        if not c.get('rubric',{}).get('critical_failures'):errors.append('critical failures missing:'+identity)
+                        rubric=c.get('rubric',{})
+                        if not isinstance(rubric,dict):errors.append('case rubric must be object:'+identity)
+                        elif not rubric.get('critical_failures'):errors.append('critical failures missing:'+identity)
+                        elif not isinstance(rubric['critical_failures'],list) or not all(isinstance(x,str) and x.strip() for x in rubric['critical_failures']):errors.append('critical failures must be nonempty list of nonblank strings:'+identity)
                 elif c.get('expected') not in ('trigger','no_trigger','conditional'):
                     errors.append('invalid trigger verdict:'+identity)
         except (ValueError,OSError,TypeError) as e:errors.append('eval schema:'+filename+':'+str(e))

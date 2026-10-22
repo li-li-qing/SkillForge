@@ -53,7 +53,7 @@
       "root": "skills",
       "path": "skillforge-mfc/SKILL.md",
       "revision": null,
-      "sha256": "4eb972615e4bea8a23936ccffa588e4613903065c22ece26f83e3647ed6cb183"
+      "sha256": "030772a1a01172e86a685523d829f8bbe36d0f01386b2d7d76a3be22e0790bb0"
     },
     {
       "name": "skillforge-qt",
@@ -61,7 +61,7 @@
       "root": "skills",
       "path": "skillforge-qt/SKILL.md",
       "revision": null,
-      "sha256": "02462327697cba4ad1cd8b41f67b691029709c004c0006e6f03dc458673c8e37"
+      "sha256": "548cef5710da2d11d54fa92414c8469415b2e56c02151c7af1e402eb77a98e17"
     },
     {
       "name": "skillforge-ue-blueprint",
@@ -77,7 +77,7 @@
       "root": "skills",
       "path": "skillforge-ue-cpp/SKILL.md",
       "revision": null,
-      "sha256": "1ae64a5aa629bfb47b70096328b873021d6a5f5cf4e9ac56ed2bb511986c1a8e"
+      "sha256": "2f3df6e477859d6e6babebf0a67fc2d111e5f5b528ea3fb9df02663626b905be"
     },
     {
       "name": "skillforge-ui-design",

@@ -157,7 +157,11 @@ def check(root: Path, package: Path, manifest: dict) -> list[dict]:
         for item in directory.rglob("*"):
             relative = item.relative_to(root).as_posix()
             safe(root, relative)
-            if item.is_file() and relative not in deletes:
+            if item.is_dir():
+                continue
+            if not item.is_file():
+                raise PatchError(f"Non-regular entry in retired directory: {relative}; preserve and reconcile first")
+            if relative not in deletes:
                 raise PatchError(f"Unlisted local file in retired directory: {relative}; preserve and reconcile first")
     return changes
 
