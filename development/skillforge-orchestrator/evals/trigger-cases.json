@@ -60,7 +60,7 @@
     "prompt": "skillforge-orchestrator：直接修复这个崩溃，不用再确认。",
     "context": "明确任务与直接执行授权",
     "expected": "trigger",
-    "reason": "触发入口；未指定等级仍先问A/B，直接执行不自动等于A级"
+    "reason": "触发入口；未指定入口仍提供A/B/C，直接执行不自动等于A级"
   },
   {
     "id": "SFO-T10",

@@ -4,7 +4,7 @@
     "prompt": "修复这个按钮。",
     "context": "新任务，没有等级。",
     "expectations": [
-      "第一轮只简短问A/B，不猜用户在不在",
+      "第一轮简短提供A/B/C，不猜用户在不在",
       "不启动写入/构建，不先输出完整长提示词"
     ],
     "execution_status": "not_run"
@@ -302,6 +302,66 @@
     "expectations": [
       "继续基本功能不追加历史",
       "建议留记录，不把用户未回复当范围批准"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFO-V3-31",
+    "prompt": "选 C，先通过反问帮我明确动画工具的需求。",
+    "context": "新任务，没有 A/B 等级；暂无工程或其他资料。",
+    "expectations": [
+      "直接进入 clarify/clarifying，不先要求选 A/B",
+      "一次一个关于使用目标的核心问题；不猜已读工程、不启动产品写入或构建"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFO-V3-32",
+    "prompt": "先别做，通过反问帮我想清楚。",
+    "context": "同一任务此前为 A；已知工具面向动画师，用于批量重定向，尚未确定首轮范围。",
+    "expectations": [
+      "切到 clarify 并保留 A，不重复询问已知用户或用途",
+      "围绕剩余范围提出一个核心问题，不以此前 A 授权继续产品写入"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFO-V3-33",
+    "prompt": "按这个方案开始实现。",
+    "context": "C 已收敛，目标、边界和首轮验收明确，但从未选 A/B。",
+    "expectations": [
+      "只补问执行阶段 A/B，不重开需求访谈",
+      "选择前不启动产品实施，不从开始实现推断 A"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFO-V3-34",
+    "prompt": "按这个方案开始实现。",
+    "context": "同一任务原为 B，后来选 C；现在目标、边界、首轮验收已明确，工具可用。",
+    "expectations": [
+      "沿用 B，转 direct 并复核变化后实施",
+      "不再问 A/B，不再要求确认长提示词"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFO-V3-35",
+    "prompt": "继续。",
+    "context": "检查点为 C/clarify，collaboration_level=unset；已明确动画工具用途和使用者，待确认首轮批量规模。",
+    "expectations": [
+      "恢复 C 并问剩余核心问题，不重复用途或用户",
+      "不先追问 A/B，不将恢复视为实施授权"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFO-V3-36",
+    "prompt": "方案可以，给我整理一下。",
+    "context": "C 已收敛，没有要求开始实现，也没有选 A/B。",
+    "expectations": [
+      "交付方案，不强制补选 A/B",
+      "不把方案认可当产品实施授权"
     ],
     "execution_status": "not_run"
   }

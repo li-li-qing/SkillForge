@@ -4,8 +4,8 @@
 
 ## 原请求与状态
 
-任务ID/修订；原始消息或随包原文；当前增补；`task_kind`；`collaboration_level=A|B|unset`；`mode_source`。
-状态：awaiting_mode / preparing / running / awaiting_decision / partial / done / prompt-only。
+任务ID/修订；原始消息或随包原文；当前增补；`task_kind`；`collaboration_level=A|B|unset`；`interaction_mode=direct|clarify`（C）；`mode_source`。
+状态：awaiting_mode / clarifying / preparing / running / awaiting_decision / partial / done / prompt-only。
 允许范围、非目标、重大待决及当前用户指令来源；没有实施要求不得填写“已批准实现”。
 
 ## 事实与习惯

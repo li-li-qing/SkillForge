@@ -4,7 +4,7 @@
 
 | 技能 | 使用时机 | 入口 |
 |---|---|---|
-| `skillforge-orchestrator` | 明确调用统一入口：先选A/B，承接个人习惯与项目依据，按任务性质推进 | [统一入口](skills/skillforge-orchestrator/SKILL.md) |
+| `skillforge-orchestrator` | 明确调用统一入口：提供A/B/C入口，承接个人习惯与项目依据，按任务性质推进 | [统一入口](skills/skillforge-orchestrator/SKILL.md) |
 | `skillforge-engineering-preflight` | 高返工成本选型、性能敏感交互、大规模同步或重要UI的前置判断与最小验证 | [工程前置验证](skills/skillforge-engineering-preflight/SKILL.md) |
 | `skillforge-experience-maintenance` | 个人习惯、验证经验及多Agent共享规则的记录、晋升、冲突与撤回 | [经验维护](skills/skillforge-experience-maintenance/SKILL.md) |
 | `skillforge-debugging` | 已出现错误、崩溃、偶发失效或结果异常，需要排查与修复 | [排障](skills/skillforge-debugging/SKILL.md) |
@@ -18,7 +18,7 @@
 
 ## 从统一入口开始（0.3.0）
 
-新任务未指定等级，先问A还是B；已明确选择或同一任务继续不重复问。A级在既定边界内自主推进并保留问题；B级遇到重要取舍先解释场景、选项利弊及推荐，由用户决定。两级都要读取工程、习惯、必要技能，主动识别风险、验证并更新经验。
+新任务未指定入口，提供 A/B/C；已明确选择或同一任务继续不重复问。A在既定边界内自主推进并保留问题；B遇到重要取舍先解释场景、选项利弊及推荐，由用户决定；C先通过反问澄清需求和方案，暂不实施，不先要求选择 A/B。C收敛后交付方案；明确要求实施时沿用已有 A/B，未选则仅补选一次。三种入口都按当前任务读取工程、习惯和必要技能，核对风险与证据。
 
 等级不等于任务性质：只分析/只规划/只提示词不实施；明确实施后不再固定展示长提示词等待一次“开始”。旧版A“列计划”、B“参谋”已被替换，旧检查点必须核实含义，不能混用。
 
