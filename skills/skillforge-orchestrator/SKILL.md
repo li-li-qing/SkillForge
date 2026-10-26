@@ -9,11 +9,11 @@ description: "Use when the user selects SkillForge as the task entry, needs proj
 
 ## 入口选择与任务维度
 
-- `collaboration_level`：`A / B / unset`。A级在既定边界内自主推进；B级协同重要决策。未指定的新任务提供 A/B/C 入口；同一任务沿用，明确指定的不再问。
+- `collaboration_level`：`A / B / unset`。A 由 AI 在既定边界内自主推进；B 由人工指挥、AI 执行，方案、技术栈和未明确的功能细节先询问并等待确认。未指定的新任务提供 A/B/C 入口；同一任务沿用，明确指定的不再问。
 - `interaction_mode`：`direct / clarify`。C 对应 `clarify`（先反问澄清），不是第三个执行等级；已有 A/B 保留，未选则为 `unset`。
 - `task_kind`：`implement / debug / design / review / research / prompt-only`。等级不是任务性质；“A级，只分析”仍只分析。已明确要求实施，不强制展示长提示词或再次等待“开始”。
 
-未指定入口且没有可沿用的选择时，简短询问：**“这次选 A、B 还是 C？A：在既定边界内自主推进；B：重要取舍由你决定；C：我先通过反问帮你理清需求和方案，暂不实施。”** 等待选择期间不启动项目写入、构建或实施。明确选 C 或说“先反问/先帮我理清需求”时，直接进入 [参谋流程](references/advisory-workflow.md)，不先要求选 A/B。普通知识问答不强套此入口。
+未指定入口且没有可沿用的选择时，简短询问：**“这次选 A、B 还是 C？A：AI 自主推进；B：你指挥，AI 调查和执行，未明确的方案与细节先问你；C：AI 通过反问帮你理清需求，每轮给出选项、优缺点和适用情况，暂不实施。”** 等待选择期间不启动项目写入、构建或实施。明确选 C 或说“先反问/先帮我理清需求”时，直接进入 [参谋流程](references/advisory-workflow.md)，不先要求选 A/B。普通知识问答不强套此入口。
 
 ## 每项任务都做的共同准备
 
@@ -31,14 +31,16 @@ description: "Use when the user selects SkillForge as the task entry, needs proj
 执行前读取 [协作等级](references/collaboration-policy.md) 与 [授权边界](references/approval-policy.md)。
 
 - **A级**：有依据的直接做；符合已定边界的低风险可逆细节可暂定并记账；重大未知项不替用户拍板。隔离受影响任务，继续独立实现、验证或诊断。不能全局停等，也不能以“先做再补”为由毁坏数据或改变既定产品/架构。
-- **B级**：普通实现细节自行负责。影响体验、既有规则、成本、风险或长期方向的选择，先说明场景、选项利弊、推荐及理由，再请用户决定；通常一次一个核心问题。非阻断建议不擅自实施、不拖住主线。
+- **B级**：人工指挥、AI 工作。先调查已有事实；方案、技术栈、功能细节尚未明确时，给出选项和建议，等待用户确认后才实施相关部分。已确认内容直接执行，不重复询问，也不把普通代码编写变成逐行审批。
 - **问题修复**：默认解决共同根因，自主完成必要关联修改和影响面回归；因果范围而不是用户点名的文件数量界定责任。无关重构不夹带。
-- **C：先反问澄清**：先核对已有资料，再逐轮提出一个有依据的核心问题，帮助明确目标、边界、取舍和验收；不启动产品修改或构建。收敛后交付方案；用户明确要求实施时，已有 A/B 则沿用，否则仅补问 A/B，不重开访谈。
+- **C：先反问澄清**：从用户需要的功能出发，每轮围绕一个核心问题给出有意义的选项、各自优缺点、适用情况及推荐，帮助明确目标、边界和验收；不启动产品修改或构建。收敛后交付方案；用户明确要求实施时，已有 A/B 则沿用，否则仅补问 A/B，不重开访谈。
 - **仅参谋/仅规划/仅提示词**：完成请求的分析或交付，不启动正式产品实现。明确要求实施后，在既定边界内连续推进；不另设长提示词确认门槛。
 
 ## 验证、记忆与交付
 
 分别记录实际修改、临时措施、待决事项和未验证部分。静态检查、脚本测试、构建、真实应用/联机、用户体验验收分开；只有本轮实际运行并检查结果才能写通过。
+
+验证按本次改动选择必要检查，已有证据足够就停止。B 模式下，图像、视频、动画观感和交互手感等难以可靠自动判断的效果，给用户简短操作步骤、观察点和预期，由用户实际验收后继续调整；不为代替人工判断反复追加脚本。
 
 主动提炼已确认习惯与可复用验证经验，读取 [习惯与经验衔接](references/learning-policy.md)。写回当前确认的共享技能源，按职责更新，先核对并发变化；无能力或有冲突则保留候选，不伪称已经更新。没有可复用新知识时无需凑记录。
 
@@ -52,6 +54,7 @@ description: "Use when the user selects SkillForge as the task entry, needs proj
 | 只分析、继续、重大范围变化、执行权限 | [授权边界](references/approval-policy.md) |
 | 选择 C 或需要逐步反问澄清目标与取舍 | [参谋流程](references/advisory-workflow.md) |
 | 个人习惯、旧约定、主动提炼 | [用户习惯](references/user-workstyle.md) / [经验衔接](references/learning-policy.md) |
+| Git/P4、备份、分支或分段提交 | [版本控制与阶段交付](references/version-control-workflow.md) |
 | 动态技能发现及版本冲突 | [路由](references/routing-policy.md) / [能力](references/capability-contract.md) |
 | 长任务、恢复、上下文压力 | [清单](references/worklist-workflow.md) / [上下文](references/context-policy.md) |
 | 任务记录或交接 | [简报](assets/execution-brief.md) / [检查点](assets/checkpoint.md) / [待决记录](assets/decision-log.md) |
