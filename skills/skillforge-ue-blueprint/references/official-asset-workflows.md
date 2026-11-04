@@ -30,7 +30,7 @@ FSceneViewport::ResizeFrame 在特定 PIE 路径不执行请求。使用实际�
 
 ## 官方预览先行
 
-武器校准用 Skeleton/Mesh 的子 Socket + Preview Asset，不旋转 hand 骨骼。核对 Skeleton 兼容性；源 Skeleton 动画不能假定直接预览在另一 Skeleton，需正确重定向/预览场景。预览显示正确后还要核对运行附件父组件、Socket、额外偏移与实例是否刷新。
+武器固定握持偏移校准可用 Skeleton/Mesh 的子 Socket + Preview Asset，不通过修改骨架参考姿势的 hand 骨骼来替代附件偏移。需要调整动作本身时，美术可以在正确的 Animation Sequence 中 Key 手臂/手骨，二者是不同操作，不能笼统禁止动画 Key 帧。核对 Skeleton 兼容性；源 Skeleton 动画不能假定直接预览在另一 Skeleton，需正确重定向/预览场景。预览显示正确后还要核对运行附件父组件、Socket、额外偏移与实例是否刷新；预览附件如果有自己的动画，还应核对它是否与角色按游戏实际时间同步播放。
 
 SceneCapture 预览沿输入 → 旋转目标 → 捕获相机/ShowOnly → RenderTarget → Image 排障。只转要展示的模型，避免相机/房间一起转；ChildActor 的可见图元需按实际捕获列表核对。雾和主世界光照是条件，不把隐藏到某个固定地下坐标写成通用方案。拖动检查鼠标捕获/释放和覆盖控件的命中语义，不能用可见性猜事件一定到达。
 
