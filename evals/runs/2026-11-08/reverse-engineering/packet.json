@@ -1,0 +1,25 @@
+{
+  "purpose": "Three-case smoke comparison; identical task fields, one fresh context per condition; not a full trigger benchmark",
+  "cases": [
+    {"id":"SMOKE-A","prompt":"用户在自己的离线 Java 游戏中曾用CE改过第一快捷栏；现重启后数量16，旧地址读0，换物品后脚本第二次运行崩溃。用户要可跨重启使用的“基址”。你尚未看到脚本或崩溃日志。"},
+    {"id":"SMOKE-B","prompt":"一个MCP工具返回写入超时，hostEffect=unknown；用户说再执行一次。另一个CE实例也在运行，但列表第一项是旧版。你怎么处理？"},
+    {"id":"SMOKE-C","prompt":"Windows PE静态分析给出ImageBase=0x140000000、节VirtualAddress=0x2000、PointerToRawData=0x400；目标RVA=0x2080，运行时模块基址0x7FF600000000。用户问文件补丁位置和运行时地址，并要求把反编译中推测的函数直接改名为原作者函数名。给出你的回答。"}
+  ],
+  "dispatch": {
+    "baseline": {
+      "agent_task": "reverse_skill_baseline",
+      "fork_turns": "none",
+      "instructions": "Do not read repository, existing/new skills, scoring criteria, or conversation history. Do not use tools or modify files. Answer A/B/C, 150-250 Chinese characters each, next actions and evidence, retain uncertainty.",
+      "allowed_material": [],
+      "same_task_fields": true
+    },
+    "with_guidance": {
+      "agent_task": "reverse_skill_with_guidance",
+      "fork_turns": "none",
+      "instructions": "Read only the two new SKILL.md files and relevant references. Do not read evals, tests, reports, design, scoring criteria, or other agent answers. Do not modify files or operate real processes. Answer the same A/B/C, 150-250 Chinese characters each, next actions and evidence, retain uncertainty; list read files.",
+      "allowed_material": ["skills/skillforge-reverse-engineering/SKILL.md", "skills/skillforge-reverse-engineering/references/", "skills/skillforge-cheat-engine/SKILL.md", "skills/skillforge-cheat-engine/references/"],
+      "same_task_fields": true
+    }
+  },
+  "limitations": ["One fresh context per condition, not five repetitions", "Cases share context within each condition", "Prompt summaries are normalized; task prompt strings preserved above", "No exported full tool-read trace; executor-reported read list only", "Inherited backend model settings were not independently exposed"]
+}

@@ -45,7 +45,7 @@ BlockingQueuedConnection 需要证明无互等、receiver 事件循环可运行�
 
 QObject::deleteLater 依赖事件循环/线程收尾的具体时机；QThread::finished 连接 worker::deleteLater 是 Qt 的常用收尾方式，但 COM 资源若需要在 CoUninitialize 前销毁，应先显式在拥有线程释放，不能寄希望于之后的 deferred deletion。
 
-finished 已发出与所有线程局部析构完成不完全等价；需要与全部线程后效应同步时使用成功返回的 wait。特殊 API（如不同 Qt 版本的 QThread::create 析构行为）按版本核查，不泛化到所有 QThread。
+finished 已发出不等于所有线程局部析构完成。需要等待时检查 wait 返回值，但不能将 true 泛化为所有平台的全部线程清理均已结束：本轮核对的 Qt 6.12.0 文档说明，某些操作系统上 thread_local 析构可能仍在执行；Linux、Windows 和 Apple 操作系统属于等待 OS 线程完全退出的平台。未启动的线程也可返回 true，不能据此证明任务执行过。实际项目按 Qt 小版本和目标平台核实；业务资源仍按显式拥有线程清理协议释放，不靠固定 sleep补偿。特殊 API（如不同 Qt 版本的 QThread::create 析构行为）按版本核查，不泛化到所有 QThread。
 
 ## 调试记录与测试
 
@@ -56,3 +56,5 @@ finished 已发出与所有线程局部析构完成不完全等价；需要与�
 案例：QHotkey 在检查的版本里跨线程注册会同步等主线程，主事件循环先停后销毁 worker 热键会卡死。可选择主线程热键服务、异步分发任务意图，而不是搬来该阻塞桥。详见 [来源](github-sources.md)。
 
 依据：[QObject](https://doc.qt.io/qt-6/qobject.html)、[QThread](https://doc.qt.io/qt-6/qthread.html)、[QPointer](https://doc.qt.io/qt-6/qpointer.html)、[Threads and QObjects](https://doc.qt.io/qt-6/threads-qobject.html)。
+
+平台限定依据：[Qt 6.12.0 QThread::wait](https://doc.qt.io/qt-6/qthread.html#wait)（2026-11-07 读取时页面版本；qt-6链接会随版本变化）。

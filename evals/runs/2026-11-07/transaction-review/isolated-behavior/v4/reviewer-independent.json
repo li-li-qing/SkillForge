@@ -1,0 +1,105 @@
+[
+  {
+    "input": [],
+    "expected": 0,
+    "actual": 0,
+    "passed": true
+  },
+  {
+    "input": [
+      {
+        "count": 2
+      },
+      {
+        "count": 3
+      }
+    ],
+    "expected": 5,
+    "actual": 5,
+    "passed": true
+  },
+  {
+    "input": [
+      {
+        "count": "2"
+      },
+      {
+        "count": "3"
+      }
+    ],
+    "expected": 5,
+    "actual": 5,
+    "passed": true
+  },
+  {
+    "input": [
+      {
+        "count": "-2"
+      },
+      {
+        "count": "+3"
+      },
+      {
+        "count": 10
+      }
+    ],
+    "expected": 11,
+    "actual": 11,
+    "passed": true
+  },
+  {
+    "invalid": "",
+    "passed": true,
+    "error": "第 1 行 count 必须是十进制整数字符串，实际为 ''"
+  },
+  {
+    "invalid": "3.2",
+    "passed": true,
+    "error": "第 1 行 count 必须是十进制整数字符串，实际为 '3.2'"
+  },
+  {
+    "invalid": "1e2",
+    "passed": true,
+    "error": "第 1 行 count 必须是十进制整数字符串，实际为 '1e2'"
+  },
+  {
+    "invalid": "abc",
+    "passed": true,
+    "error": "第 1 行 count 必须是十进制整数字符串，实际为 'abc'"
+  },
+  {
+    "invalid": null,
+    "passed": true,
+    "error": "第 1 行 count 必须是整数或十进制整数字符串，实际为 None"
+  },
+  {
+    "invalid": 2.5,
+    "passed": true,
+    "error": "第 1 行 count 必须是整数或十进制整数字符串，实际为 2.5"
+  },
+  {
+    "cli": [
+      {
+        "count": "2"
+      },
+      {
+        "count": "3"
+      }
+    ],
+    "exit_code": 0,
+    "stdout": "5\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "cli": [
+      {
+        "count": "not-an-int"
+      }
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/skill_evals_v4/v4/project/report.py\", line 21, in <module>\n    print(total(json.loads(sys.argv[1])))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/skill_evals_v4/v4/project/report.py\", line 13, in total\n    raise ValueError(f\"第 {index} 行 count 必须是十进制整数字符串，实际为 {count!r}\")\nValueError: 第 1 行 count 必须是十进制整数字符串，实际为 'not-an-int'\n",
+    "passed": true
+  }
+]

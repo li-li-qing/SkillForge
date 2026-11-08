@@ -1,0 +1,25 @@
+任务：隔离审查 gas-aggregate-removal。A/direct/review；只审查，不修改产品。原始请求保留于 prompt.txt，数值与配置按题面，不将其冒充运行观察。
+能力：scoped-filesystem/read-file；文件读写限任务范围；exec 仅 cat/sed/find 与本题两份产物写入；官方网页连接只读。没有 UE 工程、引擎或运行证据。未读其他题/evals/评分。未安装、未修改产品、未执行未知代码。
+实际本地读取（根 /workspace/shared/skill_evals_v4）：
+- round6/gas-aggregate-removal/prompt.txt 全文。
+- v4/skills/skillforge-orchestrator/SKILL.md 全文。
+- 该入口 references/{capability-contract,user-workstyle,routing-policy,worklist-workflow,context-policy,collaboration-policy,approval-policy,learning-policy}.md 全文。
+- 在 v4/skills 内 find -name SKILL.md，只列技能路径用于发现。
+- skillforge-{ue-cpp,debugging,ue-blueprint,lgf,engineering-preflight}/SKILL.md 的前9行元数据。
+- skillforge-ue-cpp/SKILL.md、skillforge-debugging/SKILL.md 全文。
+- skillforge-ue-cpp/references/arpg-item-inventory-patterns.md 全文。
+- skillforge-ue-cpp/references/gas-prediction-targetdata-patterns.md：尝试全文输出与网页结果同批导致合并输出截断，之后明确补读160-310、310-520行；未将被截断的剩余内容声称完整阅读。
+路由：UE C++ 提供领域/API与生命周期，debugging 提供故障因果及证据边界。装备 GAS 选择 arpg 参考，来源/上下文选择 gas 参考。不触发 LGF（无使用证据）、Blueprint（无图）、完整 engineering-preflight（局部已知问题）；不因普通 GAS 强套项目专用技能。
+重要审查：技能中的“每装备存 handle 精确撤销”不能无条件用于聚合栈。题面一个 active effect 栈2直接要求区分 grant contribution 与 aggregate handle。使用显式减1+贡献账+幂等撤销，并给出 None 非聚合替代，未修改技能。
+官方联网实际检索：
+1 搜索 site.dev.epicgames.com UAbilitySystemComponent RemoveActiveGameplayEffect StacksToRemove -1；site:dev.epicgames.com EGameplayEffectStackingType。搜索曾返回非官方条目，未打开/未作为依据。
+2 打开 https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UAbilitySystemComponent/RemoveActiveGameplayEffect （仅 #，无可用正文，不认作核实）。
+3 打开 https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/EGameplayEffectStackingType （UE5.8枚举说明，None 独立实例，Source/Target聚合说明）。
+4 搜索 site:dev.epicgames.com/documentation "RemoveActiveGameplayEffect" "StacksToRemove=-1"。
+5 打开并 find https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/AbilitySystemComponent?application_version=5.5 （找到621-634行：默认-1、全栈移除、bool）。
+6 打开 https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UAbilitySystemComponent/RemoveActiveGameplayEffect?application_version=5.3 （两参数签名、BlueprintAuthorityOnly、-1移除所有栈；没有展示C++默认值）。
+检索摘要还出现 UE5.8 UAbilitySystemComponent 官方列表，未以其当作目标工程源码。
+已核实：上述文档语义/参数存在、枚举聚合规则。基于题面与机制得出所有权误用解释，并明确版本限制。
+未核实：用户UE版本/项目封装、实际C++默认参数、Apply聚合返回的具体实现、partial removal返回值实现、实际回调/GE配置、真实力量变化、运行网络状态。无编译/PIE/自动测试通过记录。
+行动清单：1读取与路由完成；2官方API只读核对完成（范围如上）；3审查与最小方案/回归预期交付完成；4工程实施和测试未执行且不属于授权范围。
+仅写本目录 trace-v4.txt 与 raw-answer-v4.txt。raw-answer 为用户答复原样。未自行评分。共享经验未写回，无新运行证据。

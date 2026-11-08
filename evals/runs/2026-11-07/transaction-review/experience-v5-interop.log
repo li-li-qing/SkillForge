@@ -1,0 +1,6 @@
+test_partial_updater_blocks_same_rule_but_not_unrelated_rule (tests.test_transaction_interop.TransactionInteropTests.test_partial_updater_blocks_same_rule_but_not_unrelated_rule) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.021s
+
+OK

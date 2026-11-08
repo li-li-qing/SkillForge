@@ -317,8 +317,14 @@ Task array 不是默认 sequence。
 
 当前 API 有 `EStateTreeTaskCompletionType`，至少包含：
 
-- `ALL`：所有 participating tasks 完成；
-- `ANY`：任一 participating task 完成。
+- `All`（Python API 名为 `ALL`）：参与完成判定的任务全部成功才满足成功完成条件；参与任务失败会触发失败转换处理，不等待其他任务成功。
+- `Any`（Python API 名为 `ANY`）：任一参与完成判定的任务完成即触发对应完成处理；不能把成功与失败混成同一结果。
+
+这里的 participating 取决于任务是否被计入完成判定（如 `bConsideredForCompletion`），并非状态下所有任务。成功合取不是失败等待屏障，也不代表任务按列表顺序串行执行。任务失败触发失败路径的处理，不保证一定能选中用户配置的目标状态。
+
+来源：[Epic StateTree 教程](https://dev.epicgames.com/community/learning/tutorials/lwnR/unreal-engine-your-first-60-minutes-with-statetree) 页面标记 UE5.4、最后更新 2025-08-28，正文明确单列 5.6 的完成策略变化；[当前 5.8 枚举 API](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/StateTreeModule/EStateTreeTaskCompletionType) 和 [任务 API](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/StateTreeModule/FStateTreeTaskBase?lang=en-US) 确认策略/参与字段。2026-11-07 文档核查，不是本机 UE 实测，也不把教程标签误当所有段落适用版本。
+
+失败后核对实际选中的 transition、退出的状态/任务及取消、解绑、资源释放、迟到回调防护；不要假设未完成任务会自然成功后才清理。没有可用失败 transition 时的回退、重选或终止，以及清理调用时序，必须查目标引擎版本的执行实现、资产配置并做最小运行验证，不能概括为所有 UE 都回 Root 或都挂起。
 
 UE5.8 `UStateTreeState` 还有 `TasksCompletion` / compiled `CompletionTasksControl`。
 
@@ -799,3 +805,7 @@ StateTree 可以：
 12. 如何 debug “为什么选了它”？
 13. 规模和频率是否 profile？
 14. Experimental API 是否隔离在 adapter 后？
+
+## 官方来源与版本锚点
+
+2026-11-07核对，页面显示UE5.8。[StateTree Overview](https://dev.epicgames.com/documentation/en-us/unreal-engine/overview-of-state-tree-in-unreal-engine)与[FStateTreeConsiderationBase](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/StateTreeModule/FStateTreeConsiderationBase)：层级状态/Task/Transition与仍标Experimental的Utility API。具体签名、线程/完成语义与模块成熟度以目标版本源码和启用配置为准；5.8页面不证明5.7相同，固定社区样例不覆盖当前官方合同，本页没有当前工程运行结论。

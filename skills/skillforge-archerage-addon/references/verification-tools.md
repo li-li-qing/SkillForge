@@ -54,3 +54,15 @@ base/current是**同一项目相对层级**的两个既有目录，ZIP也必须�
 ## 技能包更新与游戏补丁不同
 
 用户本轮更新的是技能，完整包放回原来的技能目录，不覆盖Addon；可选增量仅覆盖同修订基线的技能。元信息与安装方式遵守[Agent Skills格式](https://agentskills.io/specification)，具体发现/启用由宿主决定，不承诺复制文件就跨所有工具热重载。
+
+Lua 语法门禁同时限制单文件 4 MiB、2000 个文件和源码总计 128 MiB；超过总预算返回 blocked，不启动源码解析。总预算约束暂存源码，不能视为解释器进程总内存上限。
+
+## 文件门禁与输出发布边界（2026-11-07）
+
+`verify_skill.py` 对入口、遍历文本和评测JSON均通过同一读取门禁：拒绝符号链接/非常规文件，最大2MiB；打开后再次fstat并限量读取。POSIX可用时使用O_NOFOLLOW/O_NONBLOCK，防止静态FIFO及最终路径被换成FIFO时阻塞。它不是敌对文件系统沙箱：父目录替换、读期间普通文件内容变化、不同平台缺少标志的竞态仍需可信、稳定的包副本；不能由结构通过证明扫描时全包原子一致。
+
+`verify_report.py --output path` 先独占创建同目录`path.partial`，写入长度、flush、fsync和close全部成功后以硬链接无覆盖发布path。写入/关闭/发布失败保留partial，exit=1且正式文件不由本工具发布；发布竞争者的已有文件不覆盖。已有partial也拒绝，不能自动删除或覆盖，应人工核对来源后另选输出名或处理残留。
+
+正常stdout仍为验证元数据，不打印raw；指定output后除原output字段外增加output_state：published、path、partial_path、cleanup_error。发布后partial清理失败仍exit=0，cleanup_error记录残留，不用warnings发出可能变异常的通知。main内捕获到stdout在发布后失效时返回1，并尽力向stderr输出status=published_diagnostic_error、output_state（含published/path）与error；stderr也失效时有限捕获后仍返回1，不回写或重试文件，也不把完整文件称rejected。Python解释器退出时还可能刷新stdout并产生非零进程退出码，本工具不替换全局stdout；这也不表示文件未发布。此时无法保证调用者收到JSON，须直接核对正式文件，不能盲目重试同路径。未指定output的原验证/退出语义不变。
+
+硬链接发布要求文件系统支持；不支持则失败关闭。文件fsync不等于目录项已耐断电，未做目录fsync；不承诺Windows/网络文件系统或恶意并发改目录下的行为。partial和正式路径由调用者控制并位于可信目录；清理只针对本次创建的partial名称，但目录中敌对替换不在安全保证内。测试为本地临时目录故障注入，不是游戏/实机验收。

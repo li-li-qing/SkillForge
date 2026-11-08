@@ -1,0 +1,54 @@
+test_applied_and_completed_fsync_failures_preserve_verified_mutation (__main__.AuditFailureTests.test_applied_and_completed_fsync_failures_preserve_verified_mutation) ... ok
+test_cancel_stops_without_publish (__main__.GuiFailureTests.test_cancel_stops_without_publish) ... ok
+test_close_failure_clears_job_and_stops_timer (__main__.GuiFailureTests.test_close_failure_clears_job_and_stops_timer) ... ok
+test_data_write_failure_stops_without_publish (__main__.GuiFailureTests.test_data_write_failure_stops_without_publish) ... ok
+test_first_write_failure_and_close_failure_clear_job (__main__.GuiFailureTests.test_first_write_failure_and_close_failure_clear_job) ... ok
+test_open_failure_has_failed_status (__main__.GuiFailureTests.test_open_failure_has_failed_status) ... ok
+test_preflight_failure_replaces_previous_success_status (__main__.GuiFailureTests.test_preflight_failure_replaces_previous_success_status) ... ok
+test_publish_conflict_is_not_success (__main__.GuiFailureTests.test_publish_conflict_is_not_success) ... ok
+test_register_exception_cleans_up (__main__.GuiFailureTests.test_register_exception_cleans_up) ... ok
+test_register_failure_and_close_failure_clear_job (__main__.GuiFailureTests.test_register_failure_and_close_failure_clear_job) ... ok
+test_success_publishes_after_close (__main__.GuiFailureTests.test_success_publishes_after_close) ... ok
+test_terminal_write_failure_does_not_publish (__main__.GuiFailureTests.test_terminal_write_failure_does_not_publish) ... ok
+test_real_file_publish_and_close_fault (__main__.GuiFilesystemTests.test_real_file_publish_and_close_fault) ... ok
+test_address (__main__.OfflineTests.test_address) ... ok
+test_auto_wait_cancelled (__main__.OfflineTests.test_auto_wait_cancelled) ... ok
+test_bounds (__main__.OfflineTests.test_bounds) ... ok
+test_commit_rejects_database_identity_mismatch (__main__.OfflineTests.test_commit_rejects_database_identity_mismatch) ... ok
+test_commit_revalidation_partial_failure (__main__.OfflineTests.test_commit_revalidation_partial_failure) ... ok
+test_csv_injection (__main__.OfflineTests.test_csv_injection) ... ok
+test_documented_report_operations (__main__.OfflineTests.test_documented_report_operations) ... ok
+test_export_exclusive (__main__.OfflineTests.test_export_exclusive) ... ok
+test_json_rpc (__main__.OfflineTests.test_json_rpc) ... ok
+test_loopback_only (__main__.OfflineTests.test_loopback_only) ... ok
+test_main_dispatch (__main__.OfflineTests.test_main_dispatch) ... ok
+test_main_dispatch_rejected (__main__.OfflineTests.test_main_dispatch_rejected) ... ok
+test_markdown_fence (__main__.OfflineTests.test_markdown_fence) ... ok
+test_missing_hexrays (__main__.OfflineTests.test_missing_hexrays) ... ok
+test_mutation_dry_run (__main__.OfflineTests.test_mutation_dry_run) ... ok
+test_mutation_duplicate_rejected (__main__.OfflineTests.test_mutation_duplicate_rejected) ... ok
+test_mutation_hash_required (__main__.OfflineTests.test_mutation_hash_required) ... ok
+test_pending_analysis_refused (__main__.OfflineTests.test_pending_analysis_refused) ... ok
+test_protocol_version_rejected (__main__.OfflineTests.test_protocol_version_rejected) ... ok
+test_report_failure_retains_context (__main__.OfflineTests.test_report_failure_retains_context) ... ok
+test_report_rejects_code (__main__.OfflineTests.test_report_rejects_code) ... ok
+test_report_reuses_explicit_task_identity (__main__.OfflineTests.test_report_reuses_explicit_task_identity) ... ok
+test_rpc_error (__main__.OfflineTests.test_rpc_error) ... ok
+test_sha (__main__.OfflineTests.test_sha) ... ok
+test_sse_rpc (__main__.OfflineTests.test_sse_rpc) ... ok
+test_stale_recheck_is_audited (__main__.OfflineTests.test_stale_recheck_is_audited) ... ok
+test_type_readback_controls_success (__main__.OfflineTests.test_type_readback_controls_success) ... ok
+test_assembly_page_boundaries (__main__.PaginationTests.test_assembly_page_boundaries) ... ok
+test_callees_fanout_and_unresolved_are_resumable (__main__.PaginationTests.test_callees_fanout_and_unresolved_are_resumable) ... ok
+test_callers_scan_limit_includes_filtered_refs (__main__.PaginationTests.test_callers_scan_limit_includes_filtered_refs) ... ok
+test_callgraph_reports_child_pages (__main__.PaginationTests.test_callgraph_reports_child_pages) ... ok
+test_exact_page_and_empty (__main__.PaginationTests.test_exact_page_and_empty) ... ok
+test_pseudocode_line_pages (__main__.PaginationTests.test_pseudocode_line_pages) ... ok
+test_string_nested_xref_has_continuation (__main__.PaginationTests.test_string_nested_xref_has_continuation) ... ok
+test_strings_reports_real_prefix_cost_and_deep_limit (__main__.PaginationTests.test_strings_reports_real_prefix_cost_and_deep_limit) ... ok
+test_xrefs_all_pages_no_loss (__main__.PaginationTests.test_xrefs_all_pages_no_loss) ... ok
+
+----------------------------------------------------------------------
+Ran 49 tests in 0.048s
+
+OK

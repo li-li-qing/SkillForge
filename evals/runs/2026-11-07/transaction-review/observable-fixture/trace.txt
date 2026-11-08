@@ -1,0 +1,30 @@
+任务原文读取：/workspace/shared/observable_probe_v5/prompt.txt。A级自主修复，保留整数行为，不安装/联网，只写 project 与 trace/raw-answer。
+读取资料：
+/workspace/shared/observable_probe_v5/project/projection.py
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md
+其 references/{capability-contract,user-workstyle,routing-policy,worklist-workflow,context-policy,collaboration-policy,approval-policy,learning-policy}.md（批量返回中 worklist 局部截断）
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-debugging/SKILL.md
+其 references/diagnostic-boundaries.md
+只列出技能根直接目录；未读取 eval、其他版本、评分文件、criteria-private.json、before.json 或上层报告。
+
+实际命令（依次）：
+1. cat /workspace/shared/observable_probe_v5/prompt.txt
+2. pwd && ls -la /workspace/shared/observable_probe_v5/project && ls -la /workspace/shared/skill_evals_v4/v4/skills
+3. cat 上述两个 SKILL.md 与 projection.py
+4. cat 上述必要 references
+5. 在 project 执行 PYTHONDONTWRITEBYTECODE=1 python projection.py
+   输出 {'owner': 7, 'displayed': 0, 'trace': []}
+6. 在 project 执行 PYTHONDONTWRITEBYTECODE=1 python -（stdin 诊断）：
+   import projection as p; 启用 TRACE_ENABLED，调用 trace(('probe',1)) 并断言可见；reproduce 输出仅 owner_changed；关闭日志，创建 Owner/Panel，mount 后 set_count(9)，断言 displayed==9 且 TRACE==[]；最后断言 reproduce()['displayed']==7。
+   末条断言如预期失败，退出码1。确认基线缺陷与日志观测盲区。
+7. python -（pathlib 读 projection.py，唯一匹配 owner.listeners.append(self.refresh) 后插入 self.refresh(owner.count)）默认写入失败 Errno30 Read-only，未执行写入；同一命令 require_escalated 重试获准成功，退出0。
+8. 在 project 执行 PYTHONDONTWRITEBYTECODE=1 python -（stdin 验证）：
+   assert p.reproduce()=={'owner':7,'displayed':7,'trace':[]}
+   对 enabled in (False,True)，清 TRACE，创建 owner/panel，owner.set_count(-12)，mount 后断言 displayed==-12 且 type is int；逐项 set_count(0,7,-3,2**80,2**80)，每次断言 displayed==owner.count==value 且 type is int。
+   日志关时断言 TRACE==[]；日志开时断言含 ('refresh',-12)，末两条为相应 owner_changed/refresh。
+   最后日志开启 reproduce，断言 trace==[('owner_changed',7),('refresh',7)]。
+   所有断言通过，退出0。
+9. python - require_escalated：仅写本 trace.txt 与 raw-answer.txt。
+
+实际修改：project/projection.py 一行新增；日志默认 False 保留，无字符串转换，无额外依赖。
+边界：本地 Python 同步最小复现，不是真实 GUI/UE/Qt 验证，未验证多线程、异步或其他生命周期契约。无长期规则更新（用户禁止）。无剩余阻塞。

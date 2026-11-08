@@ -1,0 +1,61 @@
+{
+  "source": "/workspace/shared/skill_evals_v4/round7",
+  "current_candidate_matches_snapshot_manifest": true,
+  "verified_files": 195,
+  "snapshot_hash": "cb1479777885b2b075f5c0f412f247d3f543aa6ce9ae56817dd121f7b61ac73e",
+  "files": [
+    {
+      "path": "snapshot.json",
+      "sha256": "97ff1b887218a96ef82765f518cbf66df9d9e8d6630b3a6e1949596ef3399a4b"
+    },
+    {
+      "path": "frozen-evidence.json",
+      "sha256": "0faedec303f47e18d9c70c8e26b47cbc41ec1c3e054838347f066cbc572b5919"
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "be3c631d46fa2838e116cd494a6fa1b1ff285947794af7c9b601fe5aaafdb361"
+    },
+    {
+      "path": "judgments.json",
+      "sha256": "0b418e06039f801f8dde67a340d544526c90ee64d9240623535c2650daced6c2"
+    },
+    {
+      "path": "criteria-private.json",
+      "sha256": "84c2b788de37519fa0aa0d2f5a8fce74d058ebb74ed813e92cae923ca95a47c5"
+    },
+    {
+      "path": "METHOD.md",
+      "sha256": "cc8cb2f8c0b86e575ad7110069083c7e550f7788cae9df3ba0d99fc86cc2781c"
+    },
+    {
+      "path": "shared-consumers/trace.txt",
+      "sha256": "dd302177750bfa33fdd78d37084dbba50c1826db3c9462e3876131918283c1f0"
+    },
+    {
+      "path": "shared-consumers/raw-answer.txt",
+      "sha256": "d85c1dede5edc49c6ea22444839427169c9b7772fa6b06af4e3b6dc7f9f8b1fa"
+    },
+    {
+      "path": "shared-consumers/prompt.txt",
+      "sha256": "92f769e2d6f16743e0bb8a641962cd893baa7d8fae3606abfcd15d795aba2d25"
+    },
+    {
+      "path": "same-route/trace.txt",
+      "sha256": "c4217c19cf3acd444183b29bef124cedf8b324796f81a5ab3c74559cd0abc54d"
+    },
+    {
+      "path": "same-route/raw-answer.txt",
+      "sha256": "a3dab09f2fbe0006b886fe4c7daa796b4695c9a2ab82f3e29b91168bc12aa9f3"
+    },
+    {
+      "path": "same-route/prompt.txt",
+      "sha256": "5eab62d2aecbb9bae1f47e3926d5aa98102b3c2f6ae06ca7b4076b317ed7fb4e"
+    },
+    {
+      "path": "snapshots/cb1479777885b2b075f5c0f412f247d3f543aa6ce9ae56817dd121f7b61ac73e/manifest.json",
+      "sha256": "2f5e77b6e62aa9c5a7526e4d4e3db23db9e8e11457ae80a9f80a8cd7f90dfbe6"
+    }
+  ],
+  "excluded": "重复skills副本；保留原始manifest"
+}

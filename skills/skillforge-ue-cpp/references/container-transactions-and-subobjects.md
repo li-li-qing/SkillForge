@@ -29,6 +29,8 @@
 3. 两者可能不同帧到达，UI/业务不能假设 entry callback 时 Item 所有字段已经 ready。
 4. JIP 必须能从完整 snapshot 重建本地索引，并在 UObject 尚未 ready 时延期表现刷新或按 stable ID 二次 resolve。
 
+Iris 工程还须按[复制审查补充](replication-review.md)核验 UObject 的 RegisterReplicationFragments；容器注册、字段注册与远端销毁分别取证。
+
 ### 2.1 对称 subobject transfer
 
 跨容器移动复杂 UObject Item 时，至少要有等价于下面的显式流程：

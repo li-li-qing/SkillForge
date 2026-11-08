@@ -1,0 +1,11 @@
+[
+  {"id":"RE-T01","prompt":"这份无符号 DLL 的导出最终调用了什么？","context":"只有二进制，需反汇编与调用关系。","expected":"trigger","reason":"原生逆向。"},
+  {"id":"RE-T02","prompt":"Ghidra 的 long 指针推测可靠吗？","context":"有指令及调用方，需要类型恢复。","expected":"trigger","reason":"反编译与 ABI 核对。"},
+  {"id":"RE-T03","prompt":"把 RVA 换成可补丁的文件位置。","context":"PE 节表可读取。","expected":"trigger","reason":"地址空间换算。"},
+  {"id":"RE-T04","prompt":"Java GC 后对象地址变了，如何保持定位？","context":"要恢复运行时对象访问机制。","expected":"trigger","reason":"托管逆向。"},
+  {"id":"RE-T05","prompt":"从这些已授权 IPC 捕获推断帧布局。","context":"没有协议源码。","expected":"trigger","reason":"未文档化协议恢复。"},
+  {"id":"RE-T06","prompt":"修改 Qt 源码中的按钮文字。","context":"有完整源码，无需理解二进制。","expected":"no_trigger","reason":"普通源码修改。"},
+  {"id":"RE-T07","prompt":"java.exe 启动参数在哪里改？","context":"只读现有启动器配置，不涉及反编译或内存。","expected":"no_trigger","reason":"仅文件名不触发逆向。"},
+  {"id":"RE-T08","prompt":"这个陌生 exe 是做什么的？","context":"来源未知，先做只读身份与静态检查。","expected":"trigger","reason":"未知二进制分析，不默认执行。"},
+  {"id":"RE-T09","prompt":"帮我修复崩溃。","context":"只有源码日志；若后续必须分析无符号模块才进入逆向。","expected":"conditional","reason":"以是否需要二进制语义为条件。"}
+]

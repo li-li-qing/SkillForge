@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "sample_sha256": null,
+  "idb": null,
+  "authorization": null,
+  "changes": [],
+  "required_change_fields": [
+    "address",
+    "kind",
+    "old_value",
+    "new_value",
+    "reason",
+    "authorization",
+    "status",
+    "readback",
+    "recovery"
+  ],
+  "note": "模板；空值不代表已获授权或已验证。"
+}

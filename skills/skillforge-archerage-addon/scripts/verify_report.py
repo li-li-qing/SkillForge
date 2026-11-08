@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 from pathlib import Path
 import re
 import sys
@@ -153,20 +154,43 @@ def parse_hud(raw: str) -> dict:
     return {'format':'HUD_TEMPLATE_V2','meta':meta,'scopes':scopes,
             'application':'not_applied; validate against current project ranges and user intent'}
 
+def publish_output(path: Path, data: bytes) -> dict:
+    """先完整关闭同目录partial，再无覆盖发布；清理状态与发布结果分开。"""
+    path=Path(path)
+    if os.path.lexists(path):raise FileExistsError(path)
+    partial=Path(str(path)+'.partial')
+    with partial.open('xb') as stream:
+        if stream.write(data)!=len(data):raise OSError('short_output_write')
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.link(partial,path)
+    state={'published':True,'path':str(path),'partial_path':str(partial),'cleanup_error':None}
+    try:os.unlink(partial)
+    except OSError as exc:state['cleanup_error']=str(exc)
+    return state
+
+
 def main() -> int:
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('input',type=Path);ap.add_argument('--hud',action='store_true',help='also validate exact HUD_TEMPLATE_V2 schema')
     ap.add_argument('--output',type=Path,help='write verified raw text to a NEW file; never overwrite')
     args=ap.parse_args()
+    result=None
     try:
         if not args.input.is_file() or args.input.is_symlink() or args.input.stat().st_size>MAX_INPUT: raise ValueError('input_not_regular_or_too_large')
         with args.input.open('rb') as f:payload=f.read(MAX_INPUT+1)
         result=decode_pages(payload);raw=result.pop('raw')
         if args.hud:result['hud']=parse_hud(raw)
         if args.output:
-            with args.output.open('xb') as f:f.write(raw.encode('utf-8'))
+            result['output_state']=publish_output(args.output,raw.encode('utf-8'))
             result['output']=str(args.output)
         print(json.dumps(result,ensure_ascii=False,indent=2));return 0
     except (ValueError,OSError) as e:
+        # 诊断流失败仍非零，但已发布事实不能改称rejected，也不重试文件写入。
+        if result and result.get('output_state',{}).get('published'):
+            diagnostic={'status':'published_diagnostic_error','output_state':result['output_state'],'error':str(e)}
+            try:print(json.dumps(diagnostic,ensure_ascii=False),file=sys.stderr)
+            except (OSError,ValueError):pass
+            return 1
         print(json.dumps({'status':'rejected','error':str(e)},ensure_ascii=False),file=sys.stderr);return 1
 if __name__=='__main__':raise SystemExit(main())

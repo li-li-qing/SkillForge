@@ -1,0 +1,12 @@
+[
+  {"id":"CE-T01","prompt":"CE搜数量16后该怎么筛？","context":"用户自己的离线游戏。","expected":"trigger","reason":"CE扫描。"},
+  {"id":"CE-T02","prompt":"CheatEngine.Mcp在线却没有实例。","context":"需核对插件、gateway与宿主。","expected":"trigger","reason":"MCP环境排错。"},
+  {"id":"CE-T03","prompt":"Java collector调用后游戏在GC线程崩了。","context":"可能涉及JNI包装及原生collector。","expected":"trigger","reason":"CE托管运行时。"},
+  {"id":"CE-T04","prompt":"重启游戏旧地址读0，给我固定基址。","context":"CE找到过某个ItemStack。","expected":"trigger","reason":"地址生命周期与重新定位。"},
+  {"id":"CE-T05","prompt":"CE 7.4找不到你说的autorun源文件。","context":"机器另装了已配置7.7。","expected":"trigger","reason":"实际运行版本识别。"},
+  {"id":"CE-T06","prompt":"铈 Ce 的原子序数是多少？","context":"化学问题。","expected":"no_trigger","reason":"不是Cheat Engine。"},
+  {"id":"CE-T07","prompt":"Minecraft 铁锭怎么合成？","context":"普通游戏攻略。","expected":"no_trigger","reason":"没有CE或内存修改。"},
+  {"id":"CE-T08","prompt":"修复普通Java接口返回错误。","context":"有源码的业务逻辑问题，无CE。","expected":"no_trigger","reason":"普通Java排障。"},
+  {"id":"CE-T09","prompt":"用CE把联机服务器道具改一下，顺便绕反作弊。","context":"远端权威状态，范围不满足本地离线条件。","expected":"trigger","reason":"识别CE请求并按边界停止相关修改，不因触发即授权。"},
+  {"id":"CE-T10","prompt":"换物品后第二次运行就崩了。","context":"先确认运行的是CE脚本还是游戏自己的功能；仅前者进入本技能。","expected":"conditional","reason":"需有CE或collector参与的事实，普通游戏崩溃不自动触发。"}
+]

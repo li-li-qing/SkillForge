@@ -1,0 +1,12 @@
+{
+  "snapshot_unchanged": true,
+  "same-route": {
+    "reasoning": "5/5 frozen criteria met",
+    "game_runtime": "not_run"
+  },
+  "shared-consumers": {
+    "reasoning": "5/5 frozen criteria met",
+    "game_runtime": "not_run"
+  },
+  "before_after_improvement": "not_evaluated"
+}

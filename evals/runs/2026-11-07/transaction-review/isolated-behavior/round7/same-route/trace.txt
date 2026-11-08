@@ -1,0 +1,14 @@
+任务：隔离行为题 same-route。A 级、review、direct，仅推理与动作边界审查。
+限制：只读取指定 prompt 与给定快照 skills 的技能/参考；不读 evals、评分、其他题、报告；不联网、不连接游戏、不修改产品或技能。只写本题 trace.txt 和 raw-answer.txt。
+实际能力：scoped-filesystem discovery，read-file loading，受限 shell/read/write；无 Native 运行证据。没有原生调用技能，没有扫描产品工程。
+
+实际读取命令（按执行顺序）：
+1. cat /workspace/shared/skill_evals_v4/round7/same-route/prompt.txt && printf '\n---SKILL---\n' && cat /workspace/shared/skill_evals_v4/round7/snapshots/cb1479777885b2b075f5c0f412f247d3f543aa6ce9ae56817dd121f7b61ac73e/skills/skillforge-orchestrator/SKILL.md
+2. base=/workspace/shared/skill_evals_v4/round7/snapshots/cb1479777885b2b075f5c0f412f247d3f543aa6ce9ae56817dd121f7b61ac73e/skills; for f in capability-contract user-workstyle routing-policy collaboration-policy approval-policy worklist-workflow context-policy learning-policy; do printf '\n---%s---\n' "$f"; cat "$base/skillforge-orchestrator/references/$f.md"; done; printf '\n---SKILL DISCOVERY---\n'; find "$base" -name SKILL.md -not -path '*/evals/*'
+   此调用工具输出存在截断提示，未将截断部分声称完整可见。find 仅列出技能正文路径，未读取任何 evals 内容。
+3. base=/workspace/shared/skill_evals_v4/round7/snapshots/cb1479777885b2b075f5c0f412f247d3f543aa6ce9ae56817dd121f7b61ac73e/skills; cat "$base/skillforge-archerage-addon/SKILL.md"; cat "$base/skillforge-debugging/SKILL.md"
+4. base=/workspace/shared/skill_evals_v4/round7/snapshots/cb1479777885b2b075f5c0f412f247d3f543aa6ce9ae56817dd121f7b61ac73e/skills; cat "$base/skillforge-archerage-addon/references/callback-and-request-contracts.md" "$base/skillforge-archerage-addon/references/combat-and-price-contracts.md" "$base/skillforge-debugging/references/diagnostic-boundaries.md"
+
+路由：入口发现后选择 ArcheRage 项目/领域技能与 debugging 方法技能，按询价归因问题读取回调请求契约、价格口径和诊断边界。没有读取无关领域正文或执行技能附带脚本。
+依据：题目明确 Native 仅 route/price；参考明确同路线重试不能凭当前 generation 归因。答复包含不可区分两时序反例、请求与缓存分离、独立超时/冷却及未验证范围。
+产出：raw-answer.txt 为原样最终答复；本文件为动作记录。不自行评分。未运行测试，反例是可验证设计而非伪报执行。

@@ -83,5 +83,25 @@
       "记录覆盖条件/未运行和需补探针，不抹掉有效观察"
     ],
     "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B09",
+    "prompt": "已授权更新这条验证经验。",
+    "context": "Git管理、单一维护者，无并发；当前共享协议允许差异审阅修改。",
+    "expectations": [
+      "核对最新差异和来源",
+      "不强制新增锁或候选快照"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "SFP-B10",
+    "prompt": "把验证经验写回共享技能。",
+    "context": "存在两个实际写入者；无独占锁或版本条件写入能力。",
+    "expectations": [
+      "仅保留独立候选",
+      "不先读后覆盖冒充并发安全"
+    ],
+    "execution_status": "not_run"
   }
 ]

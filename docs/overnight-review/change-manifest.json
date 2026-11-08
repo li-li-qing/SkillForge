@@ -1,0 +1,562 @@
+{
+  "baseline_zip_sha256": "0b37cec4311b3e5d1a68c6371cd4d11f031de8ebc45e3db7dce498d674c5bb3e",
+  "entries": [
+    {
+      "path": "CHANGELOG.md",
+      "operation": "modify",
+      "before": "2aef9ed65a426ecd6719e4187c0238318b00c99a31c97a61b2389bb4ac13cfd2",
+      "after": "2d1e7ee6e5a480f2817158986a68bbe9c281b1eb6508d6edd581d21e78f8630b"
+    },
+    {
+      "path": "README.md",
+      "operation": "modify",
+      "before": "0b78253b5aa8eb909180275e864eeca74fe3fedbfa225e0f383d94282370addf",
+      "after": "77f6024446a2102f6febebaf5c633b19b96c7f4e77c9010ddbbd3e3d7f5a1333"
+    },
+    {
+      "path": "development/skillforge-orchestrator/snapshots/skill-index-current.json",
+      "operation": "modify",
+      "before": "9ba7036ecaa8b5985de0377d6cf5a616de6ef125129e8541e1e47eaae437b27e",
+      "after": "fa1743d196ebede8567f05076a04b940e9fbb2e9c91d704f86bf9c3f3665fd76"
+    },
+    {
+      "path": "docs/orchestrator/v3-maintenance-guide.md",
+      "operation": "modify",
+      "before": "7e31c8812bd90c1cbe41687eea1726c20345138d7f004ac7487e79e4d2ae2273",
+      "after": "f421e485a49b102711989308d8c22dccd967a8eec0b2c8130f1da968367e89ac"
+    },
+    {
+      "path": "docs/overnight-review/desktop-audit.md",
+      "operation": "add",
+      "before": null,
+      "after": "5c97923a3b426352c4e6e63ddbbb83dbf6b17ff1b2a0f87f3c11b25fdc0c2c74"
+    },
+    {
+      "path": "docs/overnight-review/desktop-sources.json",
+      "operation": "add",
+      "before": null,
+      "after": "e5811b62455c0031cb68847b9d0308b227265488e0685cc9b99b86e278b129e3"
+    },
+    {
+      "path": "docs/overnight-review/external-skills-research.md",
+      "operation": "add",
+      "before": null,
+      "after": "7cf74dc7628e04e464a129e96388f1757817aabfa547b189c6b76c04a15261f4"
+    },
+    {
+      "path": "docs/overnight-review/methods-audit.md",
+      "operation": "add",
+      "before": null,
+      "after": "3320bf7caefdce2ea4a3f14046d990a3cf57c31f59cb056280d1cdc61657ebe5"
+    },
+    {
+      "path": "docs/overnight-review/methods-sources.json",
+      "operation": "add",
+      "before": null,
+      "after": "6cd0c7acbe9f26700733c80e08472bdf8081d6c604be9e110d74e6f09a7f5b8b"
+    },
+    {
+      "path": "docs/overnight-review/report.md",
+      "operation": "add",
+      "before": null,
+      "after": "1971475c50f36388472383ca75e9c34b90f9ddcc9ce5c6e938406f30a17a3891"
+    },
+    {
+      "path": "docs/overnight-review/reverse-audit.md",
+      "operation": "add",
+      "before": null,
+      "after": "eae06306fee028d2dcd3bb2306aef0926d1a153a18f9e40f4a0c3f2e4da864b0"
+    },
+    {
+      "path": "docs/overnight-review/ue-audit.md",
+      "operation": "add",
+      "before": null,
+      "after": "747b6af266ee73d0be855ac8c1d5f9d9522f79b5e9e6d7d5e6632bd03b74e0dc"
+    },
+    {
+      "path": "docs/overnight-review/ue-sources.json",
+      "operation": "add",
+      "before": null,
+      "after": "68ddd4f8dc6ead256550544ab11ba12725526df7d829e03285c8ba46f43e4330"
+    },
+    {
+      "path": "docs/overnight-review/worklog.md",
+      "operation": "add",
+      "before": null,
+      "after": "c2934cc64d6cea1367851d937740a69f2a8e6c4739af437929333185758b36c8"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/baseline-addon.log",
+      "operation": "add",
+      "before": null,
+      "after": "2297f21268dbbc26ab374919c6dfd8006653dfa6e1e3b5cfaa34ee6238f40808"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/baseline-experience.log",
+      "operation": "add",
+      "before": null,
+      "after": "fb0ee2afedb3c38427057aed1226acffad3e968d6d41c838b877ab7d5647554f"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/baseline-ida.log",
+      "operation": "add",
+      "before": null,
+      "after": "b33da84a5f275b3bcadfd92f4a56cd0dd8ae9271af9ea5568218c1deaf692d66"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/baseline-index.log",
+      "operation": "add",
+      "before": null,
+      "after": "3b87871e748ffccc3bc82479e509dc484de294f2523f50700289e5346646523e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/baseline-lgf.log",
+      "operation": "add",
+      "before": null,
+      "after": "836e0331140c3b0207f8b5fcd3daa25b9e67cead879f3bcd73a638f6ca2ee7e1"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/baseline-library.log",
+      "operation": "add",
+      "before": null,
+      "after": "ae977d49d6d19cba78721ef43bf94fdb2c141e02eb9347bc2a286620044b0444"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/behavior-baseline.md",
+      "operation": "add",
+      "before": null,
+      "after": "03bed40dd616117af7c37ffd82e3f519c2b2253e96e4b30508afaeea8cc761b3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/behavior-candidate.md",
+      "operation": "add",
+      "before": null,
+      "after": "1d59ebd771c06b0a3857ce3eb7ff6711d1d823982d95c156a40e900978bf8a58"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/behavior-review.md",
+      "operation": "add",
+      "before": null,
+      "after": "7d5c3d6b1930d6035753075e23134b3822448fec2b77fadfd951ba3947d053fd"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/experience-recovery-green.log",
+      "operation": "add",
+      "before": null,
+      "after": "bed2e9e0e4c9ce347e558b4301c75fd8b37280fabf0d1d49640880f163130b1f"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/experience-recovery-red.log",
+      "operation": "add",
+      "before": null,
+      "after": "ac74a97a6af6d0f4e466efe2c6a3c3c55ba7d2178491d1084aa2fc4f08dcef06"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/final-addon.log",
+      "operation": "add",
+      "before": null,
+      "after": "2286c8fb88596c7094ed00fa13645d9588981e7004c958bc821ea226d4294e55"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/final-experience.log",
+      "operation": "add",
+      "before": null,
+      "after": "f359241f5659398f341939250438965481258e9783206895652c6cda1cca791d"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/final-ida.log",
+      "operation": "add",
+      "before": null,
+      "after": "169904c72567138ac964d04b71a41dbdb593612df492884d5e77f8318476a872"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/final-index.log",
+      "operation": "add",
+      "before": null,
+      "after": "3d05be6c9a9c56515de52982ae5a2964e767df42783624c3cafd396893cb174c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/final-lgf.log",
+      "operation": "add",
+      "before": null,
+      "after": "154067c321fbc4ae640fdd4a784a09efcfb794aa34e58f38657df24a156292c7"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/final-library.log",
+      "operation": "add",
+      "before": null,
+      "after": "538624e2e8af9c8b79a1066e8cb166c69992985e52d3047575b2b3af63723ab4"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/final-structure.log",
+      "operation": "add",
+      "before": null,
+      "after": "826939740f052c8981c686a46d95f076c4605e6d629eb6d99a1e3298e56077f3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/final-syntax.json",
+      "operation": "add",
+      "before": null,
+      "after": "ea9ffafe9bac5780d4048c9bbcd57c090c104cabb8001f8a750eb448de2a5ebd"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/root-green.log",
+      "operation": "add",
+      "before": null,
+      "after": "5aa7a49f995b491628254a7ba7d329c1dfbc1f41bd3eb4208ea02570b0a04def"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/root-red.log",
+      "operation": "add",
+      "before": null,
+      "after": "2e8a52ba1c6c94401d4a8e3dc600a18f5474a823841410b756c0dc7d85f6b0be"
+    },
+    {
+      "path": "evals/runs/2026-11-07/overnight/suite-results.json",
+      "operation": "add",
+      "before": null,
+      "after": "f3726d1b0e431e6e2ad5a6e7eb71fb69f1a4f5fcc770e49745617358ab6cff6d"
+    },
+    {
+      "path": "scripts/apply_skillforge_update.py",
+      "operation": "modify",
+      "before": "2ad8edf33f8fda815ae9774d946126a9fa7782e60a55546c8c7ca1b64c447214",
+      "after": "0de20265d089d5ccfa203c3634024c16be07f9176eada1437919d082d94ed5f6"
+    },
+    {
+      "path": "scripts/validate_skills.py",
+      "operation": "modify",
+      "before": "3bade5d725ae82f15960f2ef56e4f261bdf4d0f1cc3f0bb31ab0b9c900c3c905",
+      "after": "8feaa2411c28e17ca22eb0e343824018ea55c82da09343a4c99ccc90dd7cc1b1"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/references/verification-tools.md",
+      "operation": "modify",
+      "before": "170e12dff9e78a54832dcb5de43db6b7bdd3727d1d2b714a19b1cfc6abfb7654",
+      "after": "b930de49154aef77662471e982a7d6e10489f3055468718ab22db82fcb786ec9"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/scripts/check_lua51.py",
+      "operation": "modify",
+      "before": "e2eb402b31be3081b2ede551a2be284d4dbd14f9914ebd2a6049cdfd3db83a56",
+      "after": "372e6347529af40386f2a56a843b499c55fc53b95b112a9eef7d03c0094a4eb0"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/tests/test_tools.py",
+      "operation": "modify",
+      "before": "bab3ae79ec2af232718738693beb4cb4238f5e19645c46a63a11eca8d45b38d3",
+      "after": "73021ef081310871790b25c9b7e0aaf30d0b43a6c64c37badccb2e7f3349e00b"
+    },
+    {
+      "path": "skills/skillforge-cheat-engine/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "c3f0265a7e38254150bfc01e4e7f2f194feffd9139a58a922ecd14ae1fc0b40e",
+      "after": "ea02944f770b089eb991e84e928b33f53a7edcaf5bc21c5faf1795e517957bb4"
+    },
+    {
+      "path": "skills/skillforge-cheat-engine/references/java-and-jni.md",
+      "operation": "modify",
+      "before": "ce09389940f7b6e6313af2a3b5949ee581ca2b4b2fa130a419649a4a689e5eea",
+      "after": "52cbdb475f54db3abb0cbe3face7c8e060557252f9d52cdd1a1509272da6afa1"
+    },
+    {
+      "path": "skills/skillforge-debugging/SKILL.md",
+      "operation": "modify",
+      "before": "4a36522009df2bba13462095b7dc40adaa786281b70dc8798e843cf8700137e5",
+      "after": "789462aa3c775557e4797da3c2a284cfc6d223a85389006fbca21fa4fd730c25"
+    },
+    {
+      "path": "skills/skillforge-debugging/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "aee989b83303fc200a044801424587c99aab124b08ee08d5ced869be2b7ee159",
+      "after": "8aa80e7a909f1e61c1c3623133d986391767bb567dc23a8bc0f7f8be87b5c6f3"
+    },
+    {
+      "path": "skills/skillforge-debugging/references/verified-cases.md",
+      "operation": "modify",
+      "before": "3e8eb8eaf2763031b957ec704e72bafb8de366170e68c0f16bb60ffc15e2fd4a",
+      "after": "6d6e3c0958698609bde2f15f82d12f08d82e14071d9bd37261e2f8b68cb5251f"
+    },
+    {
+      "path": "skills/skillforge-engineering-preflight/SKILL.md",
+      "operation": "modify",
+      "before": "c218d209d7ce8941f2322d51f5c1e72f6422d441dbb17a2bebe1bbe7df441cba",
+      "after": "3b2162667ce3a5eaeecbbb640039c0e91d265c78d3dd2181ccb8056cdd278297"
+    },
+    {
+      "path": "skills/skillforge-engineering-preflight/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "bf33f72fa638f5143af5f7823b8b52d58814fff1906ff859fa006f91cd7a3bb6",
+      "after": "3d0b37a5cc6fa48420d7f5f6940f54fa1c58192e73fc8583d1a5f2a8bdea6baa"
+    },
+    {
+      "path": "skills/skillforge-engineering-preflight/references/risk-review.md",
+      "operation": "modify",
+      "before": "796e3b6f5f0b773a177896d0eb9678e9c81e1bb9e19132f10248a2d732c7f8e3",
+      "after": "dcb5abe2cc92e6de6df806b3ba0cc18eac0eab173c0edc9765133da945cd4552"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/SKILL.md",
+      "operation": "modify",
+      "before": "8d4f6a6ba2ec20876461eb3005715f61188c1df57b50fd8a8f5b469a533dd51f",
+      "after": "330fbaabb2027665ba56bd97ed4af18f8f6d38b2e3c14c8ea8f44c154488496e"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/references/skill-evaluation.md",
+      "operation": "add",
+      "before": null,
+      "after": "6b4a4afc78c0c943a32cc99a42fc9f50daf81a4619ac49262ddec8abec80b3a5"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/references/store-tool.md",
+      "operation": "modify",
+      "before": "01a23ef75884dff4738c82fb455bdec29759dc577c21f6abe27f09a71b5c9152",
+      "after": "1df1e925bd0ae213ce453240295491541fcf9f1bd573a755f1c8f1752a5fff50"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/scripts/experience_store.py",
+      "operation": "modify",
+      "before": "b125f14e726171b9a7df9766823f07122fadc7486a0b2a7c678894928abe83e5",
+      "after": "58f085f98a7bf25fa2b66f7cf9ae9d4ef0740b75978af13a16bfd3645fec3b28"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/tests/test_experience_store.py",
+      "operation": "modify",
+      "before": "e3f158a0a38976db79916271dc3ea96591823795255effa869faae57395606f6",
+      "after": "21137100d132819e05f04aad21849f4187f57ff330bb4c43a6316a057543e86a"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/idapython-api.md",
+      "operation": "modify",
+      "before": "c520fba39b7562f97a9b224b8da71455d43ca061a610bbc2d747a69884211c0e",
+      "after": "2e0137ba3f625c049943270bfbe9a7a2100864e53d845c5dfe7e3e2c09cbb16d"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/mcp-adapters.md",
+      "operation": "modify",
+      "before": "187909b204d77787c6d463e7f1903a81caa2480004170122bb77ae52280bf985",
+      "after": "7cc476c72266db33caeeba688a27c520661b015e537759d2260ffaf2615445d1"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/ida_evidence.py",
+      "operation": "modify",
+      "before": "d02ecb73c0a05b407b5d877c2314b2e4984bf4fee3148827f7a08ad6af2877f3",
+      "after": "7ab1798e7ee8daffda8740d58baec6d89ea9cf91b37d4221da65277672e23c3c"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/ida_mutations.py",
+      "operation": "modify",
+      "before": "246a09a37ecb5c150aceb70af2cdf42cd87ad1a2e8b4978f967fffe41b09a573",
+      "after": "1abc246ec4564954fd640a85875322ed0fcb295e335397643463cf2d4b6ca975"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/mcp_function_query.py",
+      "operation": "modify",
+      "before": "a087aa59f46ee160a65a1344d4169af05177bbc451451f5435a2f652429ec448",
+      "after": "50b445df5fafb84e46fc0186c1eb8f0179305fc49f046ebd6b22146f10abad64"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/test_examples.py",
+      "operation": "modify",
+      "before": "a93b464b3def9783dd19efc384d19ee6589aec99b2c12875a93b5d0e1a45f954",
+      "after": "35a22122709cbf60167d8ba9936e00ce0c788972ed015cf1961b59629ccf1846"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/test_revision_boundaries.py",
+      "operation": "add",
+      "before": null,
+      "after": "f9b7dc685fa395ff7abc2ce63051c81106d80f8515cc8b1f7f8be7b53c95c2c4"
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "d5f6e9a6210e6524736a8bee2d4d398763e54e37d389c0d63a5b3fe26ce4ec66",
+      "after": "9d1beae76bcb2261907ff2dabae8a28f7a481ac5e757ca1c71f2b83d32efd079"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/ai-decision-orchestration.md",
+      "operation": "modify",
+      "before": "0d407b5ea4a92f34eafffc388419b03e628d57fd7a69647eca26b55f2184e30d",
+      "after": "12a3095cd4eec0f36632079814ebb5dd6a677b1c4970630902112a8d54a4ef9b"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/gas-combat-prediction.md",
+      "operation": "modify",
+      "before": "37de14877857cbb111480fb227717ba85178921b487e88e5074b467b0a551ed9",
+      "after": "93b079fe659187cac2a6c8faf975046260a66c191e3b2522fa0fd49b6c38988c"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/mass-ai-scaling.md",
+      "operation": "modify",
+      "before": "6f656699691c89b089e13a5ecc460666ac6698c5be651f5d5e7dbb3f5cd817a3",
+      "after": "2107bb1ac0b093560b2234ddc855b6d67d3d258a8f46ccb0e465c29423f1f731"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/migration-evidence.md",
+      "operation": "modify",
+      "before": "67a0028391e218d9642e8305624496973bd4cd8677b7925808772f39ca3415cc",
+      "after": "68b3ac64c702fe2d4b0437b0e2e88267bc59b1fca967747a94786586a96ce9a0"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/network-and-state.md",
+      "operation": "modify",
+      "before": "3a9a1d0d84bc44ceda670536ac61540bbb1968c1059c1f9de43b9c49afacc0ae",
+      "after": "6f7b155b29b81fc600e84b63a093a8a0751e052c51329088ac43362ed5f2f6da"
+    },
+    {
+      "path": "skills/skillforge-lgf/scripts/inspect_workspace.py",
+      "operation": "modify",
+      "before": "bab715f9a876d39fd9678c790218d21d91ad98e213225a8bfaa2859603d03375",
+      "after": "10542e4efffa80143f6ea0f03d3b541dac3abc759b2eee6fec18f93994cdb48c"
+    },
+    {
+      "path": "skills/skillforge-lgf/tests/test_inspect_workspace.py",
+      "operation": "modify",
+      "before": "4dad5ca6176ac1a6b66212d60c4ca7e62599c40bcc4713703bd18d54ccb87722",
+      "after": "0025e6f1d9677e15a7c62a920989b9fb9883d0b7e7f2e3941f3e2a0af63a634d"
+    },
+    {
+      "path": "skills/skillforge-mfc/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "947b34d89670070a3edb2581f22ad337269bc407033b66465d6763409fa0514c",
+      "after": "7f4e216b660e4bb0a34c37375c303d448546cca5617eb3af21b867befb136992"
+    },
+    {
+      "path": "skills/skillforge-mfc/references/threading-com-sta.md",
+      "operation": "modify",
+      "before": "cad6e5599f40b6b43e421c657d16f8eebe32fd247110e448182f8c0517e4ab66",
+      "after": "be88322e22ef1f2e12ada894da550a91a727b5add196f78bdf9edf996c0a8b98"
+    },
+    {
+      "path": "skills/skillforge-qt/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "d3b924b2b47cacb7fcf6928ef93e61644d910b7641d7d1b003c8bd639b6fb670",
+      "after": "4fedc71450b47df77abdf9ccfb90747f1dfa6532cb20c5a47264e709f9b28bab"
+    },
+    {
+      "path": "skills/skillforge-qt/references/widgets-layout-input-dpi.md",
+      "operation": "modify",
+      "before": "2a1be20963aea86be51daf77b752f0a734b79bfa69a2fa48372e49999178166f",
+      "after": "e905d096a97e3d262844c3cf58a7b10d6b257af060285077e55d3fd45fe68903"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/SKILL.md",
+      "operation": "modify",
+      "before": "3e918072811d0e59f6e440a963b499774d7af24fbffd863eb5cb8445177fe878",
+      "after": "59d267fbefb1593a7688e24552fb56ee66fe925fbcbfe92b01678111d5fa9907"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "274edd07a491db3ddf375fc1fc3c135cf2e4717c384e7ea170abea62a5a6b373",
+      "after": "bf2154e83ad509936af53e2331c48234c77e2b262cdee66b4738c5f2d2b1cb94"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/evals/trigger-cases.json",
+      "operation": "modify",
+      "before": "16f8d2e8167660ad72b64cfca2a4b9eed977cce3e16af08ca4f45ea97640f4fd",
+      "after": "2c94e28c6fdfd9ff0f43cbf4e767bbfdd5a55de58bd600e7959312bd9d5ed687"
+    },
+    {
+      "path": "skills/skillforge-ue-blueprint/references/unreal-mcp-editor-workflow.md",
+      "operation": "modify",
+      "before": "129f47c85da61db3e6d58423ae227d882379d28dc76115d080f077b3286b71cd",
+      "after": "2c0b6a11028608c0085a749d8531611fa9cc47302d9e5c29f10d027d3e7e26d9"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/SKILL.md",
+      "operation": "modify",
+      "before": "e4953314b42a15f9f963f68423bcf322011b6afb642ced59412416f3a73ec296",
+      "after": "30af19a25f112a965f9145581ef1e38858ff19bc315e900fd734e2d4984944a1"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "b729752b7e2d6e4ed16fde7f11680ee004a528cdeda68d53c7f3eef983e69508",
+      "after": "f8ec13059be9c2f7055298674646b58de7d148f8320186d4285b8c0e01d2969c"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/trigger-cases.json",
+      "operation": "modify",
+      "before": "65ee07f0bcdc1040c6ba04c936a1a543508dc726dc0176dce5dcb3ecf46e462a",
+      "after": "e6a9f057b32d4ef7a0e9b2dca7f1370cac67be461b7d860d9da54ecb83cbcef5"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/container-transactions-and-subobjects.md",
+      "operation": "modify",
+      "before": "ea45ea6c6cdce1ee3278467486bb70973850f1fc0b7bd284b03f68f0a84e7bc1",
+      "after": "c50423803675d99eb825900c3aed88131feaf80ce31377ad9c26f5572a47925f"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/editor-mcp-live-coding.md",
+      "operation": "modify",
+      "before": "02e5fcfee86865dc7cd2f785d946c859f3d26b44b51b2d2f131aac01d844485b",
+      "after": "298421dd0112909ab4dbda3065bd200f58b0b509766446f248309740234ff257"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/gas-prediction-targetdata-patterns.md",
+      "operation": "modify",
+      "before": "0228b08f520f82c1dd205502954a470d70b53d1fb5ec15e6d827489f7af3838b",
+      "after": "8704fdc3828fefdb56a82bcd3a7d37f30624a25c75053d6f2f697f0e139f215d"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/mass-data-oriented-ai-patterns.md",
+      "operation": "modify",
+      "before": "03babff9e4431ba882b1f292897701757acfca112c5454761619c9c7247f999f",
+      "after": "9832d0f54ac9d45e86594ab75694119295d5fb65a9b3d77f826a87bb13252b01"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/replication-review.md",
+      "operation": "modify",
+      "before": "09bcad6ca17a52e054fc034b4e5b6823e2d8537924d94b82d6e0fa3336dbcd25",
+      "after": "875bce64045889ce7fd0fe4dad625d48f84f37e2a1e9f312b5ad88f0ebdc9964"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/statetree-utility-ai-patterns.md",
+      "operation": "modify",
+      "before": "5d5d9e597a4336c9186f321f8867383fc0b931ab0fc7364e1c53bcfdc320c535",
+      "after": "d3c1a655cd103d008ea30fe46dfc998381bac2266b9408f4badfed3c2b4e9c02"
+    },
+    {
+      "path": "skills/skillforge-ui-design/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "18237fcc6c5f00b382de4d6c80020819fe51a2e3090308788144aa1625d29351",
+      "after": "68c0335b75d4f63d29c59eef97ce57eedf06b8b666f66c678a0706607b81eace"
+    },
+    {
+      "path": "skills/skillforge-ui-design/references/commonui-input-routing-patterns.md",
+      "operation": "modify",
+      "before": "e0b9779c04c34b03272df1eab72932fe4b50b814021555e66a8fc64d21eaf110",
+      "after": "fc512e13af56daf270d3764660ac9b72cf32b6c84ce3eb6d5c4915632bd2eb2d"
+    },
+    {
+      "path": "skills/skillforge-ui-design/references/gameplay-ui-projection.md",
+      "operation": "modify",
+      "before": "f7d26f236d04ccfc64110718f3cfabf39577e69ff77975f0e3df4808735a059a",
+      "after": "7150bd464234b00492d844a5a3274cdcf1e8ea1e7f0b769150befaec08efc472"
+    },
+    {
+      "path": "skills/skillforge-ui-design/references/interaction-states.md",
+      "operation": "modify",
+      "before": "8097237151e1ba603c15f27494fa26fb80ceca15cfc4b84c563fc9e9b48eb3f0",
+      "after": "5e1ab9269259f4ee69062ccb2970ce40bf2977bbd2546ef98c54aa70210c9874"
+    },
+    {
+      "path": "tests/test_patch_installer.py",
+      "operation": "modify",
+      "before": "15b1339e1c158466320804700bf5263b85b024ba3815cf15054f2f6d588031a9",
+      "after": "b39209866f3c6919180b82af5f775f3b05c860096baa082a641d86d399d3ad11"
+    },
+    {
+      "path": "tests/test_validate_skills.py",
+      "operation": "modify",
+      "before": "6ae9ae8b6cdb8ed652643cef720bbb68b0cea35e62e9c792e62d01a85803567d",
+      "after": "e29759ffd11299ab5e0cc3027822c44e00741ea45605d1ce44ac52034c3d25f6"
+    }
+  ],
+  "removed": [],
+  "excluded_self_metadata": [
+    "docs/overnight-review/change-manifest.json",
+    "docs/overnight-review/integrity.json"
+  ]
+}

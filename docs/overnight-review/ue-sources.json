@@ -1,0 +1,37 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/quodsoler/unreal-engine-skills/f3742d7b688690810df369802b90430324e380b9/LICENSE",
+    "file": "/workspace/shared/overnight_ue/external/quodsoler_unreal-engine-skills/LICENSE",
+    "sha256": "5ab97d29a2c68d17b1a9400283b85836b5e3759dd893f377b6622dc732a3f357"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/quodsoler/unreal-engine-skills/f3742d7b688690810df369802b90430324e380b9/skills/ue-networking-replication/SKILL.md",
+    "file": "/workspace/shared/overnight_ue/external/quodsoler_unreal-engine-skills/skills/ue-networking-replication/SKILL.md",
+    "sha256": "fb9bb8192da0da19a56507a2a91fa97378a5350266145083374c9bca27e6cd55"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/quodsoler/unreal-engine-skills/f3742d7b688690810df369802b90430324e380b9/skills/ue-networking-replication/references/replication-patterns.md",
+    "file": "/workspace/shared/overnight_ue/external/quodsoler_unreal-engine-skills/skills/ue-networking-replication/references/replication-patterns.md",
+    "sha256": "0b0d543c657663439edc81ed4b85bf00e1ec4ea5f598ecc14021d4fd08f7526e"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/quodsoler/unreal-engine-skills/f3742d7b688690810df369802b90430324e380b9/skills/ue-blueprint-cpp-interop/references/blueprint-node-patterns.md",
+    "file": "/workspace/shared/overnight_ue/external/quodsoler_unreal-engine-skills/skills/ue-blueprint-cpp-interop/references/blueprint-node-patterns.md",
+    "sha256": "58133517119af6378f4f480d8ea6f2cf8a8ca9429743f86cac5a7a196aa8007a"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/anthropics/skills/2c5958ecac7cee2b583967a2c4981d0f4a75c579/skills/skill-creator/LICENSE.txt",
+    "file": "/workspace/shared/overnight_ue/external/anthropics_skills/skills/skill-creator/LICENSE.txt",
+    "sha256": "bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/anthropics/skills/2c5958ecac7cee2b583967a2c4981d0f4a75c579/skills/skill-creator/agents/grader.md",
+    "file": "/workspace/shared/overnight_ue/external/anthropics_skills/skills/skill-creator/agents/grader.md",
+    "sha256": "57134da0c1a4eea33fbd74a1c9c44aa814f07d6bc64de303edb586f941e5d21a"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/anthropics/skills/2c5958ecac7cee2b583967a2c4981d0f4a75c579/skills/skill-creator/scripts/aggregate_benchmark.py",
+    "file": "/workspace/shared/overnight_ue/external/anthropics_skills/skills/skill-creator/scripts/aggregate_benchmark.py",
+    "sha256": "123ef128ea5ccc01a4b1ac212ef5567f21e9c13d3d240609780beeb3200c49aa"
+  }
+]

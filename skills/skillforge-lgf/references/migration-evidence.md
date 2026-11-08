@@ -27,7 +27,7 @@
 | UMG/SceneCapture/资产检查 | UE Blueprint 技能的 official-asset-workflows 参考；本技能只处理 Gameplay/Avatar 边界 |
 | 构建、无 Git 复核、长任务证据 | UE C++ 与排障技能；不硬编码原工程路径、目标和检查数量 |
 
-旧脚本中保留 [只读工作区清点](../scripts/inspect_workspace.py) 与 [原回归测试](../tests/test_inspect_workspace.py)。它只发现文件、插件与 Build.cs 路径，不解析动画内部、不证明构建图或运行链正确；多个工程/插件副本拒绝猜测。它不替代官方 UE 资产工具。
+旧脚本中保留 [只读工作区清点](../scripts/inspect_workspace.py) 与 [原回归测试](../tests/test_inspect_workspace.py)。它只发现文件、工程 Plugins 中的插件与 Build.cs 路径，不解析动画内部、不证明构建图或运行链正确；多个工程/插件副本拒绝猜测。它不替代官方 UE 资产工具。
 
 从本文件所在 references 目录执行：
 
@@ -71,3 +71,19 @@ python -m unittest discover -s ../tests -v
 重读当前 TWINKATANA_SINGLE_SOURCE_SOCKET_DESIGN 与 WeaponLoadoutPresentationComponent 的 ResolvePresentationSourceSocketTransform：补准“源 Socket 局部变换 → 可见对应手骨”，不能将原文“武器随源骨架”理解为复用源世界位置。再读 FAnimNode_WeaponOverlay 的 Evaluate/PreUpdate、HasPreUpdate 声明、LGameWeaponPoseCoverage::OverlayAlpha 与覆盖测试：补单遍求值、非有限值处理和生成类钩子检查。
 
 新增 [动画实施与交付顺序](animation-delivery-workflow.md)，将本页故障经验落实到素材盘点、选择链、分层、附件、零伤害预览、正式逐击审核和分层验收。DirectionReview 仍是历史报告引用，当前实现读到的函数也不证明本轮运行通过；本轮没有构建、修改或运行 LGame。
+
+## 清点器的 Modules 校验边界
+
+缺少 `Modules` 或空数组仍表示本次清点没有模块声明。存在条目时要求对象及非空字符串 `Name`，完全同名重复声明显式拒绝；错误包含文件与 `$.Modules[index].Name` 等定位，CLI返回2且不输出部分成功清单。名称原样保留，不静默裁剪或合并。
+
+这是名称清点的最小校验，不是完整UE描述符校验器；`Type`、平台条件、大小写别名、Build.cs匹配及实际加载由目标引擎核验。[Epic插件文档](https://dev.epicgames.com/documentation/en-us/unreal-engine/plugins-in-unreal-engine)将模块Name定义为唯一名称并要求Type；[FModuleDescriptor::Read](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Projects/FModuleDescriptor/Read)提供引擎正式读取入口。2026-11-07读取页面显示UE5.8；本次只跑Python回归，未运行UE。
+
+清点只统计 `is_file()` 确认的 Build.cs、.h、.cpp，不将同后缀目录计为源码；`source_inspectable` 只说明发现候选文件，不证明模块完整或可构建。JSON对象内重复键（含嵌套对象）显式拒绝，避免后值覆盖配置；UTF-8 BOM和不同对象的同名字段仍合法。读取/解析阶段的RecursionError与MemoryError转为带文件的受控错误，CLI返回2；不捕获BaseException，也不宣称对任意恶意输入提供固定资源预算。
+
+`engine.verified`沿用原输出接口，仅表示提供的Build.version版本字段已检查，不证明目录是可运行引擎、与EngineAssociation匹配或当前Editor已连接。文件符号链接可合法指向工程外部，清单显示路径不保证真实内容包含于工程根；本轮不禁止合法链接工程，不自动读取其他搜索根。
+
+清单保留 `lgf.file` 搜索路径，另增 `resolved_file` 实际描述符绝对路径及 `descriptor_outside_project`；没有找到描述符时两者为null。外部描述符可以合法读取，Source仍按发现位置清点，不从外部描述符位置扩大搜索。这些字段不是并发替换/TOCTOU保护或文件系统权限边界。
+
+`EngineAssociation` 按 [FProjectDescriptor](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Projects/FProjectDescriptor) 的字符串字段核对；清点器兼容缺失、null和空字符串，非字符串值带文件及 `$.EngineAssociation` 拒绝。未将空值改成默认引擎。
+
+最终清单先完整JSON编码，再写stdout；编码阶段ValueError/RecursionError/MemoryError受控返回2且没有JSON正文输出。该边界也覆盖VersionName/Changelist等仍原样回传的元数据，不宣称已验证它们的UE类型。使用ASCII转义保持JSON解码值不变（包括中文和孤立surrogate），文本呈现与旧版未转义输出不同。输出流的OSError/ValueError使main返回2并说明可能不完整；实际进程退出时若解释器再次刷新失败，退出码可能被改为其他非零值（本轮Linux满设备输出测试实测为120），输出I/O故障只保证失败状态，不保证固定为2；这不是文件事务，不能保证I/O故障前写出的字节可撤回。没有catch BaseException或新增全局资源上限。

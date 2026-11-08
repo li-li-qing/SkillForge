@@ -50,3 +50,23 @@ python -B development/skillforge-orchestrator/tools/build_skill_index.py --root 
 索引排除编排器自身，因此11个技能对应10个候选条目。历史快照本来描述旧版本，不要求历史文件匹配当前内容。两个Lua5.1实机编译相关测试需要实际解释器配置，缺失时跳过不是通过。
 
 行为题位于development/skillforge-orchestrator/evals/collaboration-cases.json，执行者只读取prompt/context，评审者才读取expectations；所有新增题本轮仍是not_run。原始输出与真实工具轨迹应随实际运行保存，不拿关键词检查当模型实测。
+
+
+## 2026-11-07 更新器故障诊断补充
+
+本节适用于当前 `scripts/apply_skillforge_update.py`，不改写上面的历史版本记录。更新器在尝试任何目标写入前，以及持锁后，检查旧事务；未完成记录会阻止新一次 apply，包括目标已等于新版的情形。
+
+```text
+python scripts/apply_skillforge_update.py --root "你的SkillForge总目录" --inspect-pending
+```
+
+此命令只读输出未完成事务、备份和状态文件路径、已记录完成项及当前文件哈希。发生目标写入或审计保存故障时，CLI 返回 exit 3 和 `status: incomplete`，分别报告 `mutation_attempted`、已读回验证项、尚不确定项及 `journal_persisted`。日志也无法持久化时应保存终端输出；不能把非零退出当作“未改任何文件”，也不能自动重试。
+
+恢复仍是有证据的人工协调流程：停止同一更新目标的协作写入，保留备份与状态，核对计划内文件、退休目录及后来修改，选择完成剩余操作或按受保护逆向变更恢复。检查无法读取/缺失的状态文件时不得凭文件名猜测已完成。只有实际核验并处理所有项后，维护者才可在同一写锁协议保护下将该事务状态记为 `reconciled`，并用非空 `resolution` 记录处理理由与证据位置；该字段是维护者确认，不是程序证明。不要删除日志来绕过门禁。
+
+此流程不提供多文件原子事务，也不承诺断电后目录元数据持久性。Windows 保留设备名和非法路径字符在跨平台预检中被拒绝；这属于路径静态检查，仍未进行 Windows 实机测试。
+
+
+### v5 候选的锁清理状态补充
+
+更新器已完成写入并持久保存applied后，若释放自己的write.lock失败，返回exit 3和cleanup_required / transaction_status=applied，保留原applied日志。此时处理的是锁清理，不是重跑更新或把已提交事务送入恢复。核实所有权及写入者状态后显式处理，不能自动偷锁。真正未完成写入仍返回incomplete并保留前述恢复门禁。两种失败同时发生时保留业务与清理错误。

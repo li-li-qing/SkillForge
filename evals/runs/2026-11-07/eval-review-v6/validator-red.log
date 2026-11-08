@@ -1,0 +1,74 @@
+test_absolute_local_paths_in_main_or_references_are_rejected (test_validate_skills.ValidateSkillsTests.test_absolute_local_paths_in_main_or_references_are_rejected) ... ok
+test_assets_bad_link_is_not_hidden_by_standalone_copy (test_validate_skills.ValidateSkillsTests.test_assets_bad_link_is_not_hidden_by_standalone_copy) ... ok
+test_assets_valid_local_links_remain_portable (test_validate_skills.ValidateSkillsTests.test_assets_valid_local_links_remain_portable) ... ok
+test_bad_metadata_is_rejected (test_validate_skills.ValidateSkillsTests.test_bad_metadata_is_rejected) ... ok
+test_behavior_expectations_and_fixture_paths_are_validated (test_validate_skills.ValidateSkillsTests.test_behavior_expectations_and_fixture_paths_are_validated) ... ok
+test_boundary_values_and_reordered_header_are_valid (test_validate_skills.ValidateSkillsTests.test_boundary_values_and_reordered_header_are_valid) ... ok
+test_broken_inline_and_reference_links (test_validate_skills.ValidateSkillsTests.test_broken_inline_and_reference_links) ... ok
+test_default_scan_is_relative_to_script_not_working_directory (test_validate_skills.ValidateSkillsTests.test_default_scan_is_relative_to_script_not_working_directory) ... ok
+test_description_is_nonempty_and_bounded (test_validate_skills.ValidateSkillsTests.test_description_is_nonempty_and_bounded) ... ok
+test_discernible_script_reference_must_exist (test_validate_skills.ValidateSkillsTests.test_discernible_script_reference_must_exist) ... ok
+test_duplicate_eval_json_keys_are_rejected (test_validate_skills.ValidateSkillsTests.test_duplicate_eval_json_keys_are_rejected) ... 
+  test_duplicate_eval_json_keys_are_rejected (test_validate_skills.ValidateSkillsTests.test_duplicate_eval_json_keys_are_rejected) (kind='trigger', needle='"expected": "trigger"') ... FAIL
+  test_duplicate_eval_json_keys_are_rejected (test_validate_skills.ValidateSkillsTests.test_duplicate_eval_json_keys_are_rejected) (kind='trigger', needle='"context": "A project is available."') ... FAIL
+  test_duplicate_eval_json_keys_are_rejected (test_validate_skills.ValidateSkillsTests.test_duplicate_eval_json_keys_are_rejected) (kind='behavior', needle='"id":') ... FAIL
+test_duplicate_skill_names_fail_across_distinct_roots (test_validate_skills.ValidateSkillsTests.test_duplicate_skill_names_fail_across_distinct_roots) ... ok
+test_empty_default_scan_fails (test_validate_skills.ValidateSkillsTests.test_empty_default_scan_fails) ... ok
+test_eval_files_must_exist_and_be_json_arrays (test_validate_skills.ValidateSkillsTests.test_eval_files_must_exist_and_be_json_arrays) ... ok
+test_evals_are_optional_for_portable_runtime (test_validate_skills.ValidateSkillsTests.test_evals_are_optional_for_portable_runtime) ... ok
+test_explicit_package_symlink_loop_is_reported (test_validate_skills.ValidateSkillsTests.test_explicit_package_symlink_loop_is_reported) ... ok
+test_fifo_resource_is_rejected_without_reading (test_validate_skills.ValidateSkillsTests.test_fifo_resource_is_rejected_without_reading) ... ok
+test_host_specific_tool_syntax_is_rejected (test_validate_skills.ValidateSkillsTests.test_host_specific_tool_syntax_is_rejected) ... ok
+test_internal_directory_link_cannot_hide_markdown (test_validate_skills.ValidateSkillsTests.test_internal_directory_link_cannot_hide_markdown) ... ok
+test_json_quoted_names_allow_yaml_ambiguous_but_valid_skill_names (test_validate_skills.ValidateSkillsTests.test_json_quoted_names_allow_yaml_ambiguous_but_valid_skill_names) ... ok
+test_link_cannot_escape_to_existing_repository_file (test_validate_skills.ValidateSkillsTests.test_link_cannot_escape_to_existing_repository_file) ... ok
+test_main_file_line_budget (test_validate_skills.ValidateSkillsTests.test_main_file_line_budget) ... ok
+test_missing_skill_directory_fails_without_traceback (test_validate_skills.ValidateSkillsTests.test_missing_skill_directory_fails_without_traceback) ... ok
+test_name_constraints_and_directory_match (test_validate_skills.ValidateSkillsTests.test_name_constraints_and_directory_match) ... ok
+test_optional_quoted_metadata_is_portable (test_validate_skills.ValidateSkillsTests.test_optional_quoted_metadata_is_portable) ... ok
+test_quoted_name_json_escapes_are_decoded_before_validation (test_validate_skills.ValidateSkillsTests.test_quoted_name_json_escapes_are_decoded_before_validation) ... ok
+test_quoted_names_still_obey_name_constraints_and_directory_match (test_validate_skills.ValidateSkillsTests.test_quoted_names_still_obey_name_constraints_and_directory_match) ... ok
+test_rejects_malformed_or_unsupported_header (test_validate_skills.ValidateSkillsTests.test_rejects_malformed_or_unsupported_header) ... ok
+test_relative_internal_file_link_remains_supported (test_validate_skills.ValidateSkillsTests.test_relative_internal_file_link_remains_supported) ... ok
+test_scheme_urls_cannot_be_used_as_fixtures (test_validate_skills.ValidateSkillsTests.test_scheme_urls_cannot_be_used_as_fixtures) ... ok
+test_self_contained_copy_keeps_all_relative_resources_valid (test_validate_skills.ValidateSkillsTests.test_self_contained_copy_keeps_all_relative_resources_valid) ... ok
+test_single_segment_absolute_posix_paths_are_rejected (test_validate_skills.ValidateSkillsTests.test_single_segment_absolute_posix_paths_are_rejected) ... ok
+test_symlinked_external_content_cannot_pass_standalone_validation (test_validate_skills.ValidateSkillsTests.test_symlinked_external_content_cannot_pass_standalone_validation) ... ok
+test_tools_suffix_in_filename_is_not_host_api (test_validate_skills.ValidateSkillsTests.test_tools_suffix_in_filename_is_not_host_api) ... ok
+test_trigger_schema_and_three_categories_are_required (test_validate_skills.ValidateSkillsTests.test_trigger_schema_and_three_categories_are_required) ... ok
+test_unreal_virtual_roots_and_paths_remain_portable (test_validate_skills.ValidateSkillsTests.test_unreal_virtual_roots_and_paths_remain_portable) ... ok
+test_url_encoded_link_escape_is_rejected (test_validate_skills.ValidateSkillsTests.test_url_encoded_link_escape_is_rejected) ... ok
+test_valid_portable_package_runs_from_unrelated_directory (test_validate_skills.ValidateSkillsTests.test_valid_portable_package_runs_from_unrelated_directory) ... ok
+test_yaml_ambiguous_names_require_quotes (test_validate_skills.ValidateSkillsTests.test_yaml_ambiguous_names_require_quotes) ... ok
+
+======================================================================
+FAIL: test_duplicate_eval_json_keys_are_rejected (test_validate_skills.ValidateSkillsTests.test_duplicate_eval_json_keys_are_rejected) (kind='trigger', needle='"expected": "trigger"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/eval_review_v6/Skills/tests/test_validate_skills.py", line 383, in test_duplicate_eval_json_keys_are_rejected
+    self.assertNotEqual(result.returncode, 0, result.stdout)
+AssertionError: 0 == 0 : Validated 1 skill(s): 0 error(s).
+
+
+======================================================================
+FAIL: test_duplicate_eval_json_keys_are_rejected (test_validate_skills.ValidateSkillsTests.test_duplicate_eval_json_keys_are_rejected) (kind='trigger', needle='"context": "A project is available."')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/eval_review_v6/Skills/tests/test_validate_skills.py", line 383, in test_duplicate_eval_json_keys_are_rejected
+    self.assertNotEqual(result.returncode, 0, result.stdout)
+AssertionError: 0 == 0 : Validated 1 skill(s): 0 error(s).
+
+
+======================================================================
+FAIL: test_duplicate_eval_json_keys_are_rejected (test_validate_skills.ValidateSkillsTests.test_duplicate_eval_json_keys_are_rejected) (kind='behavior', needle='"id":')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/eval_review_v6/Skills/tests/test_validate_skills.py", line 383, in test_duplicate_eval_json_keys_are_rejected
+    self.assertNotEqual(result.returncode, 0, result.stdout)
+AssertionError: 0 == 0 : Validated 1 skill(s): 0 error(s).
+
+
+----------------------------------------------------------------------
+Ran 39 tests in 6.638s
+
+FAILED (failures=3)

@@ -1,0 +1,1017 @@
++ cat /workspace/shared/skill_evals_v4/round5/qt-shutdown/prompt.txt
+A 级，只审查 Qt 关闭竞态，不修改产品。请检查 fixture/snippet.cpp，说明为什么关闭窗口时可能挂住或崩溃，并给出最小修复结构和可验证测试。现有 SDK 的 blockingRead 可能永久阻塞，不能改变 SDK 源码，不能换 UI 框架。不要用固定 sleep 掩盖问题。如果当前没有 Qt 构建环境，明确区分静态审查与真实运行测试。+ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md
+---
+name: skillforge-orchestrator
+description: "Use when the user selects SkillForge as the task entry, needs project-aware skill selection, requests strategic clarification, or resumes an active orchestrated task. 用于简短研发需求、跨会话任务续接和个人协作习惯延续；普通闲聊、引用技能名称或直接使用其他技能且未请求编排时不介入。"
+---
+
+# SkillForge：个人协作入口
+
+承接用户的目标、习惯与既有约定，不把一句短需求当成脱离项目的新任务。专业判断交给按需发现的领域/方法技能；入口不维护固定技能名单，不按宿主品牌分支。
+
+## 入口选择与任务维度
+
+- `collaboration_level`：`A / B / unset`。A 由 AI 在既定边界内自主推进；B 由人工指挥、AI 执行，方案、技术栈和未明确的功能细节先询问并等待确认。未指定的新任务提供 A/B/C 入口；同一任务沿用，明确指定的不再问。
+- `interaction_mode`：`direct / clarify`。C 对应 `clarify`（先反问澄清），不是第三个执行等级；已有 A/B 保留，未选则为 `unset`。
+- `task_kind`：`implement / debug / design / review / research / prompt-only`。等级不是任务性质；“A级，只分析”仍只分析。已明确要求实施，不强制展示长提示词或再次等待“开始”。
+
+未指定入口且没有可沿用的选择时，简短询问：**“这次选 A、B 还是 C？A：AI 自主推进；B：你指挥，AI 调查和执行，未明确的方案与细节先问你；C：AI 通过反问帮你理清需求，每轮给出选项、优缺点和适用情况，暂不实施。”** 等待选择期间不启动项目写入、构建或实施。明确选 C 或说“先反问/先帮我理清需求”时，直接进入 [参谋流程](references/advisory-workflow.md)，不先要求选 A/B。普通知识问答不强套此入口。
+
+## 每项任务都做的共同准备
+
+1. **保留请求**：原始要求、附件、数字/方向/ID、非目标及当前任务状态；不是只保存改写后的提示词。
+2. **核对能力与基线**：按 [能力契约](references/capability-contract.md) 检查真实工具，读取当前工程、相关指令、配置和未提交改动；没有资料就标未知。
+3. **承接个人习惯**：必读 [用户习惯](references/user-workstyle.md)；再核对本项目约定和相关已验证经验。区分事实、长期决定、临时处理、推断及缺失信息；不要求用户重复已有答案。
+4. **动态路由**：按 [路由策略](references/routing-policy.md) 发现最小充分技能集并读取必要正文；高返工风险包含工程前置验证职责，经验更新包含证据维护职责。不虚构未安装的技能。
+5. **前置判断**：确认目标/使用场景、技术栈适配、相关联机/数据规模、UI布局和性能/兼容风险；只检查本任务适用项。带证据质疑原方案，提供取舍；不能把专业选择全推回用户。高成本且证据不足的路线先做最小验证。
+6. **组织行动**：按 [清单工作流](references/worklist-workflow.md) 和 [上下文策略](references/context-policy.md) 补齐范围、依赖、验收及恢复信息。短任务几行足够；长任务沿用一份可续接台账。
+
+设计、参谋、执行都经过共同准备。参谋收敛后复核有变化的项目/能力/路由，不跳过也不无意义重扫。没有工程时可以讨论目标、提供条件性方案，不能伪报扫描或编译。
+
+## 按等级推进
+
+执行前读取 [协作等级](references/collaboration-policy.md) 与 [授权边界](references/approval-policy.md)。
+
+- **A级**：有依据的直接做；符合已定边界的低风险可逆细节可暂定并记账；重大未知项不替用户拍板。隔离受影响任务，继续独立实现、验证或诊断。不能全局停等，也不能以“先做再补”为由毁坏数据或改变既定产品/架构。
+- **B级**：人工指挥、AI 工作。先调查已有事实；方案、技术栈、功能细节尚未明确时，给出选项和建议，等待用户确认后才实施相关部分。已确认内容直接执行，不重复询问，也不把普通代码编写变成逐行审批。
+- **问题修复**：默认解决共同根因，自主完成必要关联修改和影响面回归；因果范围而不是用户点名的文件数量界定责任。无关重构不夹带。
+- **C：先反问澄清**：从用户需要的功能出发，每轮围绕一个核心问题给出有意义的选项、各自优缺点、适用情况及推荐，帮助明确目标、边界和验收；不启动产品修改或构建。收敛后交付方案；用户明确要求实施时，已有 A/B 则沿用，否则仅补问 A/B，不重开访谈。
+- **仅参谋/仅规划/仅提示词**：完成请求的分析或交付，不启动正式产品实现。明确要求实施后，在既定边界内连续推进；不另设长提示词确认门槛。
+
+## 验证、记忆与交付
+
+分别记录实际修改、临时措施、待决事项和未验证部分。静态检查、脚本测试、构建、真实应用/联机、用户体验验收分开；只有本轮实际运行并检查结果才能写通过。
+
+验证按本次改动选择必要检查，已有证据足够就停止。B 模式下，图像、视频、动画观感和交互手感等难以可靠自动判断的效果，给用户简短操作步骤、观察点和预期，由用户实际验收后继续调整；不为代替人工判断反复追加脚本。
+
+主动提炼已确认习惯与可复用验证经验，读取 [习惯与经验衔接](references/learning-policy.md)。写回当前确认的共享技能源，按职责更新，先核对并发变化；无能力或有冲突则保留候选，不伪称已经更新。没有可复用新知识时无需凑记录。
+
+最终给出产物、原因、真实验证、遗留/待决及经验更新状态。按真实能力交修改文件或完整可复制文本；不能只交计划冒充实施完成。
+
+## 按需资料
+
+| 情况 | 读取 |
+|---|---|
+| A/B/C、切换、无人回复、遗留事项 | [协作等级](references/collaboration-policy.md) |
+| 只分析、继续、重大范围变化、执行权限 | [授权边界](references/approval-policy.md) |
+| 选择 C 或需要逐步反问澄清目标与取舍 | [参谋流程](references/advisory-workflow.md) |
+| 个人习惯、旧约定、主动提炼 | [用户习惯](references/user-workstyle.md) / [经验衔接](references/learning-policy.md) |
+| Git/P4、备份、分支或分段提交 | [版本控制与阶段交付](references/version-control-workflow.md) |
+| 动态技能发现及版本冲突 | [路由](references/routing-policy.md) / [能力](references/capability-contract.md) |
+| 长任务、恢复、上下文压力 | [清单](references/worklist-workflow.md) / [上下文](references/context-policy.md) |
+| 任务记录或交接 | [简报](assets/execution-brief.md) / [检查点](assets/checkpoint.md) / [待决记录](assets/decision-log.md) |
+| 维护入口及规则冲突 | [维护规则](references/maintenance.md) |
+
+这些规则不是权限沙箱，也不会自动安装、后台运行、释放上下文或让未读取规则的 Agent 获得记忆。不要递归调用入口自己。
++ for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/capability-contract.md
+# Capability Contract：能力优先，不识别品牌
+
+本入口不根据 Agent、IDE、模型或产品名称分支。每次只记录**当前会话可观察到的能力**；不可观察就填 `unknown`。能力可以来自宿主工具清单、明确权限提示、真实调用结果或用户提供的环境说明。
+
+## 核心字段
+
+```text
+skill_discovery      = native-list | scoped-filesystem | provided-metadata | none | unknown
+skill_loading        = native-invoke | read-file | inline-text | none | unknown
+context_meter        = exact | approximate | signal-only | none | unknown
+context_compaction   = callable | user-action | automatic | none | unknown
+file_read            = available | restricted | none | unknown
+file_write           = available | restricted | none | unknown
+command_execution    = available | restricted | none | unknown
+artifact_delivery    = file-link | attachment | text-only | mixed | none | unknown
+network_access       = available | restricted | none | unknown
+isolated_worker      = available | none | unknown
+```
+
+这些值描述能力，不代表授权。`available` 也必须继续遵守当前任务范围、用户确认和宿主权限。
+
+## 发现顺序
+
+1. 宿主明确提供技能清单时，优先使用真实清单。
+2. 没有原生清单但允许读取已知 Skill 根时，只读取候选目录的元数据；不要扫描整台机器或用户目录。
+3. 只能读用户提供的文件/文本时，只依据这些材料，不声称发现了其他 Skill。
+4. 完全无法发现 Skill 时，仍可生成执行简报并标明 `skill_discovery = none/unknown`；不要阻塞与 Skill 无关的工作。
+
+## 调用与读取必须分开
+
+- `native-invoke`：宿主有明确的 Skill 调用机制，并返回可观察结果。
+- `read-file`：只能读取 `SKILL.md`；报告“已读取”，不要说“已原生调用”。
+- `inline-text`：用户粘贴了规则；报告“已提供正文”，不要说已安装。
+- `unknown`：宿主没有暴露加载状态；不要用模型记忆猜测。
+
+## 上下文能力
+
+`context_meter` 与 `context_compaction` 独立。能看到上下文压力不代表能主动压缩；能请求压缩也不代表知道精确 token 数。
+
+只有出现宿主成功反馈，`COMPACT` 的 execution_status 才能写 `completed`。若只能由用户手动操作，写 `user-action-required`；若完全没有该能力，改用 `CHECKPOINT` 或 `HANDOFF`。
+
+## 写入、命令与交付
+
+尚未选择等级或仅授权只读分析时，“只读”必须以实际能力理解：有些命令即使名称像查询也可能产生缓存、锁文件或生成物。无法判断副作用时不要在准备阶段运行。
+
+交付格式按 `artifact_delivery` 选择：能生成文件就交文件；只能文本则提供完整可复制内容与路径建议。不要因为用户习惯偏好 ZIP 就在不支持文件产出的宿主中伪造附件。
+
+共享规则维护另核对atomic_file_create、atomic_replace与local_filesystem_semantics；未知时不声称具备锁或事务能力，保留候选不盲写。
+
+## 适配层原则
+
+若某个宿主需要专用 metadata、命令或安装路径，把它放在**宿主外部适配层**，先映射成上述能力，再进入 Orchestrator 核心。核心不得出现：
+
+- `if <product-name>` 分支；
+- 专用命令符号；
+- 固定用户目录；
+- 特定模型窗口大小；
+- 专有权限字段作为通用规则。
+
+未来新 Agent 只要能映射到这份能力契约，就不需要修改核心流程。
++ for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/user-workstyle.md
+# 个人工作习惯：跨项目、跨Agent延续
+
+这是本用户已确认的协作约定，而非对所有人的通用规定。当前用户明确变更优先于旧偏好；宿主与安全限制始终有效。项目事实必须另行核验。
+
+## 稳定协作要求
+
+1. **中文沟通**：解释、分析、提问和交付以中文为主；代码/API保留原名，必要术语解释清楚，不堆陌生缩写。
+2. **短请求不丢上下文**：先读当前工程及相关约定、经验，不让用户反复交代技术栈、联机、UI、性能。未确定的事项主动识别，而不是默默猜测。
+3. **入口选择**：新任务没有明确选择时提供 A/B/C；同一任务沿用。A 由 AI 在既定边界内自主推进；B 由人工指挥、AI 工作，方案、技术栈和未明确的功能细节先询问并等待确认；C 从用户需要的功能出发，每轮围绕一个核心问题给出选项、优缺点、适用情况和推荐，暂不实施。明确选 C 时直接进入澄清；转入明确实施时沿用已有等级或仅补选一次，具体按等级策略。
+4. **理解不等于长提示词**：始终完善目标/边界/验收；明确实施后不以展示长提示词再等一次确认。明确要交接提示词时才以提示词为产物。
+5. **主动参谋**：不仅指出明显错误，也主动评估更合适的方案，讲清场景、利弊、成本和推荐依据；知识面广不是正确性保证，不以“最佳实践”代替证据。
+6. **共同根因责任**：默认处理公共原因、必要关联修改和回归，不只补用户点名的表面问题；以因果与既定边界限定范围，不夹带无关重构。
+7. **风险前置**：新路线或高返工成本架构/性能/交互先调查和必要验证。可丢弃验证也是有效进度；普通小修改不增加仪式。
+8. **UI先理解再实现**：新布局/重要改版先给可理解的布局与交互依据，必要时参考图/原型和性能探针；已有获认可样式保持一致，小修不重做整个设计系统。
+9. **可续接工作**：复杂任务维护一份编号稳定的阶段清单，记录实际结果、临时处理、待决和恢复条件；不凑条数、不假报完成。
+10. **验证适量，体验由人验收**：AI 完成与改动有关且能可靠完成的基础检查、必要构建和定向测试；已有证据足够就停止，不机械追加验证。B 模式下，图像、视频、动画观感、交互手感和功能表现是否达标，给出简短操作步骤、观察点及预期，由用户实际验收并反馈；未验收不写通过。人工体验判断不替代实际需要的编译、数据正确性或网络权威检查。
+11. **交付便于覆盖**：优先保持相对路径的修改/新增文件包，说明移除/迁移、兼容、验证和风险。没有附件能力给完整文本；不交缓存、秘密、无关改动，不伪造文件。
+12. **主动提炼**：从明确决定、反复表达的偏好和验证结果及时维护技能；不依赖用户每次说“记住”。已确定习惯持续沿用，直到明确变更或发现需澄清的冲突。
+13. **UE 编辑器自动化**：UE 5.8 及以后，优先发现当前工程插件提供的 MCP 工具及实际连接，使用可用能力加快资产、场景和运行状态的操作与查询，并结合 Live Coding 迭代。已连接时沿用，不先要求用户手工关闭、编译、重开；确需人工处理时说明具体限制和证据。版本号不等于工具已可用，不承诺所有变化都能热更。
+
+14. **多页面低干扰协作**：先通过 P4 签出/CL、目标文件差异及实际进程自行识别归属与占用；不相干的文件和独立工作直接推进。只有同一文件或共享编译/编辑器资源发生实际冲突、需要对方动作时，才集中发送必要协调；不逐步广播、重复抄送或等待无关确认，进度在当前页面汇报。用户要求跨页总结时各页集中回传一次，由明确的维护者核验后更新共享技能。
+
+15. **头文件注释便于理解**：自有 `.h`、`.hpp` 中本次新增或修改的类、结构体、函数和成员声明，默认有简短、有用的注释，让人只读声明就知道用途和必要的使用约定，而不是翻译名称或堆模板。默认简体中文，项目明确规范优先；沿用项目格式，以真实实现为依据。函数讲用途和结果，成员讲业务含义，特殊前提、单位、边界等按需说明；不批量补无关旧代码，不动生成文件或第三方源码。
+
+16. **注释写给人看**：这条适用于各语言的代码注释。用自然、准确的中文，像维护者给接手代码的同事留话，贴着实现讲清用途、处理原因和容易误用的地方。不要机翻、机械复述代码、翻译名称，或给每段都套同一份模板；少用空泛的“优化、确保、提升”。该说明的参数、结果、单位和边界说清楚，项目要求的格式和工具标记照常保留。表达自然不靠刻意加俏皮话或编造经历，也不批量改无关旧注释。
+
+17. **已有版本控制不重复备份**：Git、P4 等已管理的工程，正常修改依靠现有差异和版本记录，不每次复制工程或资产，不自动生成备份压缩包。未纳管内容或会被覆盖的既有本地修改按实际风险单独保护；细则见 [版本控制与阶段交付](version-control-workflow.md)。
+
+18. **按完整阶段交付**：P4 的 Pending CL 按可独立交付的功能段组织，依赖的代码、资产和配置保持完整，避免大量无关修改堆积或把半套功能拆开提交。Git 个人项目默认优先 main，团队协作或用户明确要求时再采用其他分支；每段提交后应保持项目可构建和相关功能可运行。整理 Pending 不等于获准 Submit，提交和推送仍按当前授权执行。
+
+19. **策略一次确认，持续沿用**：同一窗口首次遇到版本控制或协作策略不明确时，先读已有项目约定，必要时集中询问一次；记录选择、来源及适用项目，带入上下文摘要和交接。后续切技能、换阶段、恢复上下文时沿用，只有项目或策略发生实质变化才重新确认，不宣称已写入不存在的跨窗口记忆。
+
+## 不能混成一类
+
+- 明确决定可作为用户约定的证据；反复行为可形成候选偏好，但不确定意图不能升级为硬禁止。
+- “先这样赶进度”属于临时处理，不是永久风格；AI自己的建议不等于用户决定。
+- 框架/语言/API、网络拓扑、资源路径、具体项目UI、版本与性能数字是有适用条件的项目/领域知识，不强加给其他工程。
+- 一次失败不证明所有同类技术不适合；一次成功不证明任何规模/平台都适用。
+
+## 维护方式
+
+本文件是个人协作约定的权威位置；领域机制进入对应领域，工程事实留在项目。由共享总目录延续习惯，不假定聊天会自动修改文件。
+
+写回需实际路径、写入能力和当前认可的维护范围；按 [经验衔接](learning-policy.md) 核对最新版本、证据与并发冲突。无冲突且证据充分可自动更新并记录变化；有争议保留候选，未回复不视为批准；不可写时明确尚未落盘。
++ for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/routing-policy.md
+# 动态 Skill 路由策略
+
+## 目标
+
+从“当前项目证据 × 本次任务 × 可发现 Skill 元数据”得到**最小充分 Skill 集**。不维护固定技能白名单，也不依赖某个历史索引快照。
+
+## 1. 先识别任务轴
+
+先识别入口选择：A/B 按协作等级推进；C 先进入参谋澄清，可在等级未选时读取必要技能做只读调查。路由不重启 A/B/C；任务性质、协作等级和 interaction_mode 分别记录。
+
+只读核实以下维度：
+
+- `project_scope`：项目专用 / 通用 / unknown
+- `domain`：语言、框架、运行时、平台、业务领域
+- `mode`：debug / implement / design / review / research / migrate / prompt-only
+- `surface`：UI、网络、数据、构建、性能、自动化、测试等
+- `side_effect`：只读、本地写入、外部服务、发布、删除、权限变化
+
+项目名称只是检索线索；依赖和技术栈要从当前附件、配置或源码核实。
+
+## 2. 发现候选 Skill
+
+按 capability contract 使用当前可见机制获取 `name + description + source/scope`。只读取完成判断所需的元数据；必要时再读候选正文核实硬约束。
+
+若宿主有原生渐进发现，不重复建立第二套全量索引。若只有文件系统，只在用户给定或已知的 Skill 根中查找直接候选，不递归整台设备。
+
+## 3. 用职责槽位选择，而不是用名字记组合
+
+按任务需要填职责槽位：
+
+- **Project**：项目专属契约、架构或 API 约束
+- **Domain**：语言/框架/平台实现规范
+- **Method**：调试、测试、迁移、研究、工程前置验证或经验维护等工作方法
+- **Surface**：UI、网络、数据、性能等横切关注点
+
+一个 Skill 可以覆盖多个槽位；槽位不需要全部填。通常每个槽位优先一个最具体 Skill，只有职责确实不重叠时才组合多个。没有合适 Skill 时允许空缺，不用相邻领域硬凑。
+
+## 4. 负证据同样重要
+
+以下情况应主动排除候选：
+
+- 仅因为语言相同，但框架/运行时不同；
+- 仅因为仓库里存在某技术，本次任务没有触及；
+- description 明确写了排除条件；
+- 项目专用 Skill 与当前基线不匹配；
+- Skill 不可发现、不可读取或被宿主禁用；
+- 另一个更具体 Skill 已完整覆盖职责。
+
+## 5. 冲突与同名
+
+若宿主已解析作用域，采用宿主给出的实际结果并记录来源。若多个目录出现同名 Skill 且宿主未说明优先级，不自行拼接或猜“项目级一定覆盖全局”；保留歧义；B级在真正需要取舍时询问，A级隔离受影响路径并继续可确定的工作，不猜优先级。
+
+## 6. 状态词
+
+建议统一使用：
+
+`candidate → discoverable → readable → read → invocable → invoked`
+
+某一层宿主不可观察时写 `unknown`。不要把 `candidate` 写成“已加载”，也不要把文件可读写成“已安装”。
+
+## 7. 抽象例子
+
+- 桌面 UI 故障：可能需要“该桌面框架 Skill + 调试方法 Skill + UI Skill”，但只有当前任务确实涉及三者时才组合。
+- 大型游戏工程里的纯算法函数：项目存在游戏引擎不代表本次必须加载引擎 Skill。
+- 未知框架的按钮故障：可以先选通用调试/UI 方法；框架证据不足时不要猜领域 Skill。
+
+这些例子描述职责，不绑定任何具体 Skill 名称。未来新增 Skill 通过 metadata 自动参与匹配。
++ for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/worklist-workflow.md
+# 先列清单，再按阶段推进
+
+这是用户认可的跨项目工作偏好。先沿用当前已选等级，不另启A/B或长提示词确认。用途是让工作可检查、可续接，避免漏项和重复实现；不是要求所有任务都生成长文档。先遵守当前请求、项目约定和宿主权限。
+
+## 选择清单形态
+
+| 当前任务 | 采用方式 |
+|---|---|
+| 单点、低风险、可在本轮完成的小修改 | 在回复中列几条动作/验收，随后完成，不额外创建长期台账 |
+| 跨模块、有多项依赖、跨批次或用户要求长期推进 | 维护一份 Markdown 阶段清单；优先复用用户指定或已有的文件 |
+| 用户只要计划、待做列表或执行提示词 | 交付所要求的清单/提示词，不开始实现；明确要求文件时可写该文件 |
+| 用户已批准实施或正在继续已授权范围 | 先补清单，再持续实施与回填；不因列清单或换批次再次索要相同授权 |
+
+没有文件写入能力时，在回复给出完整可复制清单并注明未落盘。未指定位置时按当前项目文档约定选择一个本地位置，不默认安装到宿主技能目录或加入版本控制。纯问答不强制套实施清单。
+
+## 1. 核对实际起点
+
+读取相关项目指令、当前源码/资产消费点和现行设计，再检查未提交工作。区分已有实现、待补缺口、仅需接入/验证和未定规则；计划不能只凭名称或截图猜机制。
+
+通用机制优先放入该项目已有的可复用层，具体内容、数值、素材和表现留在消费工程；仅在项目确有插件分层时使用“插件/项目”归属，不要求普通工程为清单创建插件。已有基础优先复用，不为了任务数量再造系统。
+
+记录目标、范围、非目标、真实约束与证据入口。规则不确定时先列设计任务，下游实现依赖该决定；不能把猜测写成已确定功能。
+
+## 2. 按可验收阶段拆解
+
+采用 **阶段 → 大模块 → 子模块 → 独立任务**；简单任务可以省略没有意义的层级。大模块是工作分类，不等于新建代码模块。
+
+每阶段写进入条件、通用层产出、项目消费、定向验证与完成标准。先形成最小可验证闭环，再扩展覆盖；保存、多人同步、取消与资源清理随所属功能推进，最后只补跨模块组合验证。
+
+阶段同时对应可交付的完整变化：P4 按功能闭环组织 Pending CL，不把依赖的代码、资产和配置拆开；Git 个人项目优先 main 小步提交。每段保留可构建、可运行的状态和必要验证，不能靠堆积大量无关改动换取一次“全部通过”。具体边界见 [版本控制与阶段交付](version-control-workflow.md)。
+
+每项必须说明：稳定编号、状态、归属、类型、优先级/交付阶段、依赖、真实落点、具体动作、产出、可观察验收、证据与阻塞。使用 [模板](../assets/worklist.md)，按任务补充字段，不机械复制空表。
+
+- 多数任务以约 1～4 小时独立工作单元为参考，开工复估；超过一个工作日且可独立验收的职责继续拆。条数不能换算人日。
+- 动作写清在哪个入口改变哪个行为、产出什么；不得仅重复标题，或给不同任务套相同泛化动作/验收。尚不存在的接口明确标“拟新增”。
+- 验收写输入/触发条件、预期状态及检查方法。例如“取消后恢复正常”应拆成停止能力、归还碰撞/运动/锁、结束音画、释放占用，再检查顺序与幂等。
+- “1～1000”若只是编号示意，则不设配额或上限。覆盖未完整就继续编号；不为整数凑数，也不为限制总数合并独立职责。用户明确要求固定数量时按当前要求执行。
+
+## 3. 审查覆盖与重叠
+
+针对各项考虑正常、失败、取消、重复、并发、生命周期、网络、保存、资产和作者/调用者使用路径。只检查该任务适用的维度；纯文档没有运行时会话时说明不适用，不能凭空扩展产品范围。
+
+复杂清单增加覆盖矩阵：能力 → 实现/复用入口 → 项目消费 → 异常处理 → 验收编号。共用机制和验证通过编号复用；证据版本、入口、配置或拓扑不同，须补实际消费验证。网络/保存不适用的工程不强加这些系统。
+
+审查语义重叠，不只比较标题。旧任务“接入声音和特效”拆为两个细项后，旧项不能仍作为第三份交付。全部范围内能力都有明确路径、必要异常和验收，才算清单覆盖充分；编制完成不等于这些能力已实现。
+
+## 4. 保持编号与依赖稳定
+
+- 编号是身份，执行顺序由依赖和阶段索引管理。续写沿当前最大编号追加，不因换阶段重排，不复用已取消编号。
+- 保留已发布内容的状态和证据。拆分未完成任务时，原项记“取消/已拆分”及子项编号，子项记来源；将有效后继改为依赖所需子项或完整覆盖它们的汇总项。
+- 已完成任务的后续扩展另加编号，不倒改其完成证据。删除或取消任务留原因；不要把取消计作完成。
+- 校验编号唯一、新号连续、依赖存在且无环、有效项不依赖取消项、阶段前置合理、引用存在、字段齐全。阶段倒置时重排阶段或修正过宽依赖，不能静默忽略。
+
+例：原清单止于 WK-0030，WK-0012 同时承担回滚与释放锁。新增 WK-0031、WK-0032；WK-0012 保留并注明替代，原后继按需要依赖两个子项；其他已发布编号不动。
+
+## 5. 执行、回填与继续
+
+每批通常选择 3～8 项依赖已满足的任务，优先完成一个小闭环；可在批内先完成前置再做后继。数量是组织参考，不让本轮已授权工作因做够一批便无故停止。
+
+开始前重核源码、文件范围、未提交改动与规则决定。结束逐项回填实际产出、验证和阻塞；未满足验收保持待做/进行中/阻塞。外包或规则阻塞时说明恢复条件，继续其他独立任务。只维护一份当前状态台账，简报和 Checkpoint 引用它。
+
+实现、编译、自动化、资产检查、真实运行及人工验收分别记录；未执行不能写通过。验证只做与改动及风险有关的必要检查，不因条目多而机械增加镜像测试。
+
+B 模式下，图像、视频、动画观感、交互手感等表现验收给用户简短步骤、观察点和预期，等待真实反馈；不为代替这次操作反复搭建自动化。已满足本次检查目标且没有新变化、失败或疑点时结束验证，将人工待验收部分单独标明。
+
+交付清单位置、修订摘要、编号总数/有效数/取消数、实际证据、未完成项和下一批入口。不自动创建目标、不自动提交/发布，不把维护清单理解为获得这些额外权限。使用目标模式时，仅在用户已授权的目标范围持续推进。
+
+## 共享工作区按实际冲突推进
+
+先核对版本控制中的签出/CL与目标文件差异，再检查将使用的进程、工程路径和输出目录。P4签出可显示归属，但不能覆盖未签出的本地差量或编辑器未保存内容；只对本轮将写的文件/包补查，不每步全仓扫描。
+
+不同文件可并行编辑；独有staging或独立Host是否冲突，取决于它们是否真的共用源码、输出、端口或同一个Editor。共同构建会纳入同工作树的其他改动，独立CL并不隔离编译输入。发现同文件写入、同输出构建或同Editor状态冲突时，仅协调这个冲突面的必要动作；没有实际冲突时不主动广播开始/结束，不把历史快照当作永久的全局预约。已有真实作业或有效排他约定仍须遵守。
+
+保护与验收限定在本次文件、依赖和实际加载产物。联合交付/迁移或明确要求证明全工程未变时再扩大范围；小改不因沿用长计划而重做全盘freeze与多页握手。
+
+## 未决事项不拖住整体
+
+A级将重大待决的依赖项隔离，继续其余闭环；低风险可逆暂定必须入账，不以临时完成冒充全部验收。B级的方案、技术栈和未明确的功能细节先询问并等待确认，只阻塞相关依赖；已确认方案内的代码编写不逐行审批。进度回填同时记录本次经验正式更新/候选/冲突/未落盘。
++ for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/context-policy.md
+# 上下文决策：工作集优先于固定阈值
+
+五个动作是语义选择，不是产品命令，也不是必须按顺序升级的等级。决策基于有效证据密度、无关历史、后续预计读取规模和 capability snapshot；不设统一 token 百分比。
+
+## 观察与状态
+
+```text
+budget_evidence = host-reported | approximate | signal-only | unknown
+action          = KEEP | NARROW | CHECKPOINT | COMPACT | HANDOFF
+execution_status= not-needed | recommended | requested | user-action-required | completed | unavailable | unknown
+```
+
+若宿主没有精确计量，就不能把“聊天很长”换算成伪精确百分比。
+
+| 动作 | 适用条件 | 实际含义 |
+|---|---|---|
+| KEEP | 当前资料集中，继续读取成本可控 | 保持当前工作集，不重复总结 |
+| NARROW | 历史主题很多，但当前任务证据足够 | 停止引入无关资料；不声称卸载已读内容 |
+| CHECKPOINT | 阶段边界、多轮失败、即将交接，或缺少压缩能力 | 输出可恢复状态；默认不写仓库 |
+| COMPACT | 有真实压力，且宿主存在可用压缩能力 | 先留恢复事实，再请求/执行合法压缩机制 |
+| HANDOFF | 切换会话/环境/执行者，或旧上下文隔离更合适 | 生成自包含交接包，新环境重新核实基线 |
+
+## COMPACT 边界
+
+Orchestrator 不能靠摘要自行释放模型上下文。只有宿主实际支持、当前权限允许并返回成功证据，才能标 `completed`。
+
+- `callable`：可由当前工具直接请求，按宿主规则执行。
+- `user-action`：只给用户动作建议，状态写 `user-action-required`。
+- `automatic`：宿主已经自动处理时记录已观察事件，不重复请求。
+- `none/unknown`：使用 CHECKPOINT/HANDOFF，不伪造 compact 命令。
+
+不要从模型名推断上下文窗口，也不要为了“节省上下文”擅自切模型或新建会话。
+
+## Checkpoint 必须保留
+
+使用 [checkpoint 模板](../assets/checkpoint.md) 保留：原始请求和增补、硬约束、项目/基线、未提交修改、简报版本与批准来源、已做/未做、实际文件变化、错误证据、失败尝试、真实测试结果、下一步、所需 Skill 与能力缺口。
+
+若有进行中操作，同时保存operation/session ID、进程与端点归属、最后观察状态/时间、部分落盘、事务/备份、锁owner与释放条件，并指定接管第一步。恢复时先查询原操作和现场，不重复启动未知终态的工作，不把交接当作夺锁或清理用户Editor的依据；进程取证细节按当前可用的debugging规则执行。
+
+不能把“怀疑根因”压成“已确认根因”，不能把 `not_run` 压成 PASS，不保存隐藏推理、凭据或无关个人信息。
+
+Checkpoint 是恢复记录，不是授权令牌。进入新会话或新宿主后仍需核实当前基线及用户对该范围的采用。
+
+恢复还需保留collaboration_level及来源、interaction_mode（尤其 C 的 clarify 状态和未决核心问题）、task_kind、个人习惯版本、待决依赖、临时处理与经验更新状态。压缩不能把旧A/B含义转换成新等级，也不能把待核实经验升级为正式结论。
+
+同一窗口已确认的版本控制策略也随上下文保留：适用项目、Git 分支策略或 P4 分段 CL、提交/推送/Submit 授权、选择来源。新窗口首次缺少明确策略时核对项目约定后集中询问一次；有可核实记录就沿用，不在切技能或每次修改时重问。上下文摘要只证明记录了这些决定，不等于已经写入跨窗口长期记忆。
++ for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/collaboration-policy.md
+# 协作等级：谁参与决定，不是质量分级
+
+## 进入与延续
+
+任务字段：`collaboration_level=A|B|unset`；`interaction_mode=direct|clarify`（C 为 clarify）；`task_kind` 单独保存；`mode_source` 记录当前用户选择或本任务的可核实延续。阶段状态包括 `awaiting_mode / clarifying / preparing / running / awaiting_decision / partial / done`。
+
+新任务没有可沿用的选择时，进入 `awaiting_mode`，简短提供 A/B/C，不根据“直接做”、用户回复速度或工具权限推断等级。明确选 A/B 时记 `interaction_mode=direct`；明确选 C 或要求先反问澄清时，直接进入 `clarifying`，不先追问 A/B。已有选择不再问；同一任务的子步骤、切技能、继续和检查点恢复沿用已核实选择。任务性质与入口选择分开；只分析、只提示词、只规划的边界仍有效。
+
+只有明确的新目标才重启选择，不把每句纠正当新任务。出现两个任务且无法确定当前目标，先一次性消歧。旧版本的A“列计划”、B“参谋”不能静默解释为新等级；恢复时仅对等级做一次短确认。
+
+## A级：既定边界内尽可能推进
+
+| 问题 | 动作 |
+|---|---|
+| 工程、当前指令、已确认习惯已有答案 | 自行核实并实施，不要求用户重答 |
+| 低风险、局部、可逆，不改变既有产品/兼容/安全边界的细节 | 采用有依据的默认，记录假设、依据、影响、替代和复核条件；不把临时方案提升为长期规则 |
+| 改技术栈/主要交互、破坏兼容、持久成本、数据损失、安全、外部副作用等重要未知 | 记录待决、隔离依赖该选择的工作，继续其他独立实现/测试/诊断；不能擅自选择实施 |
+| 关键路线证据不足、但允许局部验证 | 做可丢弃探针并保留结果，不把探针当生产完成，也不借验证安装未授权依赖 |
+| 所有剩余工作确实都依赖未决项或缺失能力 | 核对依赖，交付已完成部分、证据和恢复条件；如实 partial/blocked，不假忙、不越界 |
+
+“后期修补比不做强”适用于边界内可逆推进，不等于用户接受损坏存档、绕过权限或无界重构。未回复不是默认同意；不得循环轮询用户回答或宣称在会话结束后继续后台工作。
+
+## B级：人工指挥，AI 调查和执行
+
+先读取工程、已有决定和用户要求，查清能自行核实的事实。实施前对齐方案、技术栈和功能细节；尚未明确、存在歧义或出现新的选择时，即使看起来改动很小，也先询问并等待确认，不用 AI 的默认偏好补齐用户意图。
+
+提问说明真实场景、可选做法的优缺点和适用情况，再给推荐及依据，通常一次一个核心问题。已有明确约定的内容直接沿用，不让用户重复选技术栈；在已确认方案内编写普通代码不需要逐行、逐函数审批。
+
+非阻断建议及时提出但不追加范围，继续已确定工作。对阻断选择只暂停相关依赖，其他工作可继续；未回复不能自行切A级。用户有时间不代表每一步都要打断，专业术语要解释成使用效果。
+
+### 验证与人工反馈
+
+AI 先做与本次改动有关、能可靠完成的静态检查、必要构建和定向测试。图像、视频、动画、声音、交互手感以及功能表现是否达标，优先交由用户实际操作判断：给出入口、简短步骤、观察点和预期，等待反馈后调整对应部分。用户能直接给出更准确反馈时，不为替代这次验收堆截图脚本、长时间自动操作或重复测试。
+
+已有检查覆盖本次风险且没有新改动、失败或未解决疑点时，停止扩大验证。人工体验验收不能替代实际需要的编译、数据正确性或网络权威检查；未收到反馈时标为“待人工验收”，不写通过。
+
+## C：先反问澄清
+
+C 是需求与方案澄清入口，不是执行等级。记 `interaction_mode=clarify`、状态 `clarifying`；保留此前 A/B，没有则记 `unset`。读取 [参谋流程](advisory-workflow.md)，先查已有资料，从用户需要的功能出发，每轮围绕一个核心问题给出有意义的选项、各自优缺点、适用情况和推荐；不让用户代做源码调查，不为凑问题重复已知答案。
+
+澄清期间可只读调查，不启动产品写入、构建或实施。目标、边界、方向和首轮验收足够明确后收敛并交付方案。只有用户明确要求实施才退出澄清：已有 A/B 则沿用并直接推进，未选则仅询问执行阶段采用 A 还是 B；不把“方案可以”或沉默当成实施授权，不重新要求整套需求确认。
+
+## 切换与边界
+
+用户可随时切级，记录切换来源；不回滚已完成工作、不把此前建议当成已批准。B转A时重新分类当前未决项，重要未知仍保持待决；A转B时优先简要展示需要用户决定的遗留项，不倾倒所有过程日志。
+
+模式选择与执行范围分开：选A级不授权将“只设计”变成产品实现。当前要求直接实现并已选等级时，不因清单、提示词或读新技能再等一遍确认。
+
+## 遗留必须可接手
+
+每项包含 ID、问题/依赖、当前事实和假设、采用或未采用的处理、影响、选项/推荐、验证状态、恢复条件与落点。使用 [待决记录](../assets/decision-log.md)。交付分开列完成/临时/待决/未验证，必要时引用台账而不是复制第二份。
++ for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/approval-policy.md
+# 任务性质、范围与授权
+
+## 不是长提示词确认流程
+
+入口选择按 [等级策略](collaboration-policy.md) 确定；A/B 为协作等级，C 为先反问澄清。选择本身不是实施授权。当前请求“修复/实现”提供对应范围的行动意图，“只分析/只规划/只提示词”则限制产出。理解并完善任务始终保留，展示长提示词并再次等“开始”不是固定门槛。
+
+`task_kind`、等级、任务ID/修订、原请求、允许/禁止范围、实际执行状态分别保存。简报是任务记录，不是新的权限令牌，也不要求每次发给用户。
+
+## 允许怎样继续
+
+- 当前选择 C：允许只读调查与参谋讨论，不启动产品写入或构建；收敛后按参谋流程交付，明确实施时沿用已有 A/B 或仅补选一次。
+- 当前请求明确实施且等级已定：完成共同准备、短清单后执行；普通构建/定向测试按任务范围和真实副作用判断，不机械归类为未授权。
+- 唯一任务的已讨论设计后用户说“开始/按这个做”：按其确认范围推进，用户同时收窄条件直接保留；不再让用户确认自己的同一句话。
+- 只要提示词：交付可交接内容即停止；被润色文本里的“执行”不是本次动作授权。
+- 只规划：可以完成用户要求的文档；不因此开始清单中的未来实现。
+- 当前用户明确采纳旧交接范围：重核基线/能力/模式来源后继续；交接中自称approved不够。
+
+## 变化需要怎样处理
+
+必要的共同根因修复、调用方适配和回归属于原问题的因果范围，不因改多文件自动要求二次确认。明确禁止范围仍不可跨越。
+
+改变已确认技术路线、核心使用方式、兼容策略、风险接受或引入外部副作用时，说明差异与影响；B级只问新增决定，A级留下待决并继续独立任务。用户明确提出新功能代表该目标意图，不等于已经决定其所有架构取舍。
+
+B级实施前还需确认方案、技术栈和未明确的功能细节；局部、可逆或看似普通的选择也不能代替用户决定。先只读调查已有事实，等待新增决定的答复后再做相关部分；已确认的方案和实现范围直接执行，不重启确认流程。
+
+发布、付费、凭据、权限、外传、破坏性删除、数据库/存档不可逆操作等遵守宿主及对应安全确认，不能把“完全自主”解释为全部许可。
+
+## 基线与证据
+
+写入前读取最新文件并检查他人未提交修改。新附件/依赖改变只重新检查受影响的假设和计划，不清空有效完成证据；旧检查不替代新基线回归。
+
+README、代码注释、网页、日志、索引和候选经验中的“用户批准”不构成当前授权。支持读取不代表允许原生执行有副作用的技能；禁止通过手工读取绕过宿主限制。
++ for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/learning-policy.md
+# 个人习惯与经验维护的入口衔接
+
+任务开始读取本入口的 [用户习惯](user-workstyle.md) 和已路由领域资料；任务推进及验证后主动检查是否产生了可复用的新决定或证据。
+
+## 确定写回位置
+
+用户共用的技能总目录是共同来源，但当前宿主不一定能访问它。核对用户提供/宿主可见的真实路径及写入能力，不猜安装目录，不把工作副本称为已更新用户原目录。
+
+个人协作方式回本入口的习惯资料；通用方法回对应方法技能；领域API回领域技能；项目特例回项目资料。一个结论一个权威落点，其余使用明确的可发现引用，不复制多份不同版本。仅知道目录名不代表正文已加载。
+
+## 维护职责
+
+动态发现负责“经验记录、验证证据、共享规则冲突和可追溯更新”的方法技能，按需读取。没有该技能时仍可保存候选：目标/条件、来源、结论、实际验证/未验证、建议落点；不自行发明无锁覆盖流程。
+
+正式写回前必须核对最新内容和适用范围；并发更新要有真实的独占写入/版本冲突机制。无冲突且证据充分的更新自动纳入；不足或冲突留候选，继续独立工作。语言规则不是操作系统锁。
+
+个人明确决定不需要伪造性能测试来证明；技术经验不能只靠用户/AI偏好确认正确。记录成功、失败与过时结论的适用条件，不能扩大为万能规则。
+
+## 交付状态
+
+分别列：已写入正式规则、仅候选、冲突待决、无写入能力、无新增经验。只有实际保存并核对的文件才能报告已更新；没有新知识不凑总结。维持一份可复查变更记录，撤回只针对自己的版本，不覆盖后来有效更新。
++ find /workspace/shared/skill_evals_v4/v4/skills -maxdepth 2 -name SKILL.md -print
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-ue-blueprint/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-cheat-engine/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-experience-maintenance/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-ida-pro/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-reverse-engineering/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-ui-design/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-ue-cpp/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-engineering-preflight/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-lgf/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-debugging/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-mfc/SKILL.md
+/workspace/shared/skill_evals_v4/v4/skills/skillforge-archerage-addon/SKILL.md
++ find /workspace/shared/skill_evals_v4/round5/qt-shutdown/fixture -type f -print
+/workspace/shared/skill_evals_v4/round5/qt-shutdown/fixture/snippet.cpp
++ cat /workspace/shared/skill_evals_v4/round5/qt-shutdown/fixture/snippet.cpp
+// 合成审查片段，并非可直接构建的完整工程。
+class Worker : public QObject {
+public:
+    std::function<void(QString)> onResult;
+    void run() { auto r = sdk.blockingRead(); onResult(r); }
+};
+void Window::start() {
+    worker = new Worker(this);
+    worker->moveToThread(&thread);
+    worker->onResult = [this](QString r) { label->setText(r); };
+    connect(&thread, &QThread::started, worker, &Worker::run);
+    thread.start();
+}
+void Window::closeEvent(QCloseEvent *event) {
+    thread.requestInterruption();
+    thread.quit();
+    thread.wait();
+    delete worker;
+    event->accept();
+}
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/routing-policy.md
+# 动态 Skill 路由策略
+
+## 目标
+
+从“当前项目证据 × 本次任务 × 可发现 Skill 元数据”得到**最小充分 Skill 集**。不维护固定技能白名单，也不依赖某个历史索引快照。
+
+## 1. 先识别任务轴
+
+先识别入口选择：A/B 按协作等级推进；C 先进入参谋澄清，可在等级未选时读取必要技能做只读调查。路由不重启 A/B/C；任务性质、协作等级和 interaction_mode 分别记录。
+
+只读核实以下维度：
+
+- `project_scope`：项目专用 / 通用 / unknown
+- `domain`：语言、框架、运行时、平台、业务领域
+- `mode`：debug / implement / design / review / research / migrate / prompt-only
+- `surface`：UI、网络、数据、构建、性能、自动化、测试等
+- `side_effect`：只读、本地写入、外部服务、发布、删除、权限变化
+
+项目名称只是检索线索；依赖和技术栈要从当前附件、配置或源码核实。
+
+## 2. 发现候选 Skill
+
+按 capability contract 使用当前可见机制获取 `name + description + source/scope`。只读取完成判断所需的元数据；必要时再读候选正文核实硬约束。
+
+若宿主有原生渐进发现，不重复建立第二套全量索引。若只有文件系统，只在用户给定或已知的 Skill 根中查找直接候选，不递归整台设备。
+
+## 3. 用职责槽位选择，而不是用名字记组合
+
+按任务需要填职责槽位：
+
+- **Project**：项目专属契约、架构或 API 约束
+- **Domain**：语言/框架/平台实现规范
+- **Method**：调试、测试、迁移、研究、工程前置验证或经验维护等工作方法
+- **Surface**：UI、网络、数据、性能等横切关注点
+
+一个 Skill 可以覆盖多个槽位；槽位不需要全部填。通常每个槽位优先一个最具体 Skill，只有职责确实不重叠时才组合多个。没有合适 Skill 时允许空缺，不用相邻领域硬凑。
+
+## 4. 负证据同样重要
+
+以下情况应主动排除候选：
+
+- 仅因为语言相同，但框架/运行时不同；
+- 仅因为仓库里存在某技术，本次任务没有触及；
+- description 明确写了排除条件；
+- 项目专用 Skill 与当前基线不匹配；
+- Skill 不可发现、不可读取或被宿主禁用；
+- 另一个更具体 Skill 已完整覆盖职责。
+
+## 5. 冲突与同名
+
+若宿主已解析作用域，采用宿主给出的实际结果并记录来源。若多个目录出现同名 Skill 且宿主未说明优先级，不自行拼接或猜“项目级一定覆盖全局”；保留歧义；B级在真正需要取舍时询问，A级隔离受影响路径并继续可确定的工作，不猜优先级。
+
+## 6. 状态词
+
+建议统一使用：
+
+`candidate → discoverable → readable → read → invocable → invoked`
+
+某一层宿主不可观察时写 `unknown`。不要把 `candidate` 写成“已加载”，也不要把文件可读写成“已安装”。
+
+## 7. 抽象例子
+
+- 桌面 UI 故障：可能需要“该桌面框架 Skill + 调试方法 Skill + UI Skill”，但只有当前任务确实涉及三者时才组合。
+- 大型游戏工程里的纯算法函数：项目存在游戏引擎不代表本次必须加载引擎 Skill。
+- 未知框架的按钮故障：可以先选通用调试/UI 方法；框架证据不足时不要猜领域 Skill。
+
+这些例子描述职责，不绑定任何具体 Skill 名称。未来新增 Skill 通过 metadata 自动参与匹配。
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/SKILL.md
+---
+name: skillforge-qt
+description: "Use when designing, implementing, reviewing, migrating or debugging C++ Qt desktop applications: Qt Widgets, QML/Qt Quick, QObject, signals/slots, QThread, Model/View, Qt CMake, DPI, Qt with Windows COM or MFC-to-Qt migration. 用于 Qt 工具软件、编辑框/布局异常、跨线程回调、关闭卡死、模型刷新与部署；纯 MFC、UE、普通 C++ 不因同为 C++ 自动触发，QuickTime 的 QT 缩写也不触发。"
+---
+
+# Qt 桌面工程
+
+以当前工程为事实来源。先采用 Qt 已有控件、布局、命令、模型与生命周期机制，再为真实缺口添加薄适配；不把迁移做成另一套自研 UI 引擎。主场景是 C++ 桌面工具；Widgets 与 Quick 由项目证据决定，不互相强制替换。
+
+## 新产品与高代价方向先核实
+
+用户的历史技术栈不自动决定新产品选型。先理解目标布局、交互、规模、平台集成与长期维护需求，必要时比较现有框架和替代路线并做最小验证；不把专业分析变成只让用户选择技术名词。已经确认迁移目标的工程不反复劝重选；改变既定路线仍需按当前协作边界处理。
+
+## 首次接入
+
+读取当前项目指令、构建配置、入口、任务相关 UI/模型/线程及测试，填 [项目事实表](assets/project-profile.md)。能读到的不要反问；未知项标 `unknown`，不沿用别的工程或旧 MFC 的版本、位宽与路径。只有未知项阻断当前操作时才停止该操作，其他只读分析继续。
+
+采用项目现有命名、格式化和 C++ 标准。跨平台 Qt 不套用 Unreal 的反射、TObjectPtr、OnRep 或 FastArray；QSortFilterProxyModel 也不是网络 Proxy。实际 Qt/UE 混合工程按编译目标隔离。
+
+## 头文件注释
+
+自有 `.h`、`.hpp` 中本次新增或修改的类、结构体、函数和成员声明，默认补充有用注释，并随语义变化更新；不为补注释批量扫描无关旧代码，不改生成文件或第三方源码。
+
+- **讲清怎么用**：类/结构体说明承担什么职责；函数说明做什么、结果代表什么，按实际需要补调用前提、失败和副作用；成员说明业务含义，单位、范围、特殊值、谁更新和有效期只写相关项。
+- **写得简短自然**：默认简体中文，项目明确的语言规范优先；沿用现有 `//`、`/** */` 或文档工具格式。通常一两句直接说明，不只是翻译标识符，不堆“提高健壮性”等空话，不强制填空的 `@param`、`@return` 模板，也不靠玩笑或故意口语化制造人为感。
+- **区分接口与实现**：`.h` 说明调用者要知道的使用约定；`.cpp` 解释不明显的实现原因。避免两处复制长段说明，简单接口也不靠重复名称凑注释。
+- **先核实再描述**：对照实现、调用方和有效测试；只写证据支持的语义，不凭名字补出线程安全、自动同步、失败回滚或成功保证。缺少实现时明确待核实，不把推测写进接口承诺。
+
+## 执行契约
+
+1. **定位真值**：指出业务状态、编辑草稿、显示投影分别由谁拥有；窗口不是整个程序的业务状态容器。
+2. **锁定范围**：保留当前用户已批准的任务；设计/只审查时不改产品代码，已批准实施不因进入本 Skill 再问一次。
+3. **选择主题**：只读下表中当前任务所需的参考，不先全量加载案例库。重要 API 用实际 Qt 小版本的文档或头文件核实。
+4. **先验失败路径**：建立最小复现或失败测试；明确正常、取消、失败、过期结果和退出行为，然后做最小兼容改动。
+5. **核对影响面**：改公共控件/dispatcher/model/协议时列出调用方并回归；修改处解释原因、拥有者、线程/数据流、兼容边界和剩余风险。
+6. **按证据交付**：使用 [审查与交接模板](assets/review-handoff.md)，区分静态检查、真实构建、UI 实测和第三方接口实测。提供本次文件，不用“建议可行”冒充修复成功。
+
+## 必守边界
+
+- **单一拥有关系**：QObject parent 托管与智能指针独占托管不要同时成立。QPointer 只是非拥有观察，不延长寿命，也不使跨线程访问安全。
+- **线程职责清楚**：GUI 和与视图连接的 model 在其拥有线程修改。QThread 对象本身不自动住在它管理的线程中；worker 初始化、事件循环和资源销毁必须有实据。
+- **异步身份清楚**：跨线程传值或明确的不可变快照；回到 UI 后校验 request ID、会话代际与当前状态。对象还活着不代表旧结果仍有效。
+- **取消不造假**：quit/requestInterruption 不等于中断正在阻塞的 SDK 调用。不能用 UI 线程等待、BlockingQueuedConnection 对等互等、terminate 或 sleep 冒充安全退出。
+- **模型契约正确**：begin/end 包围实际结构修改；代理行号不是业务 ID。高吞吐数据有批次、内存上限、背压和过期处理，不逐条刷新整页。
+- **输入不被刷新破坏**：区分编辑草稿与已提交值，后台状态不能覆盖正在输入的文字；保留 IME、撤销、焦点、选择与键盘导航。
+- **热路径不做重活**：paint/data/resize/高频 timer 不反复加载图片、DLL、创建 COM、扫描磁盘或执行复杂匹配；缓存必须定义失效条件。
+- **平台边界显式**：COM/STA、句柄、位宽、IPC 只在真实用到时启用相应规则；换成 Qt 不代表 Windows 自动化本身跨平台。
+
+## 按需读取
+
+| 当前问题 | 参考 |
+|---|---|
+| Qt 版本、工具链、事实/假设、接入范围不清楚 | [项目识别](references/project-profile.md) |
+| 分层、菜单/工具栏/快捷键、业务真值 | [架构与命令](references/architecture-commands.md) |
+| 编辑框分层、输入丢失、布局、DPI、停靠恢复 | [Widgets、输入与 DPI](references/widgets-layout-input-dpi.md) |
+| 大列表、排序编辑错行、刷屏、内存增长 | [Model/View 与性能](references/model-view-performance.md) |
+| QObject、连接、线程、取消、迟到回调、关闭卡死 | [生命周期与退出](references/qobject-threading-shutdown.md) |
+| 大漠、COM/STA、Win32、位宽与进程通信 | [Windows 与 COM](references/windows-com-dmsoft.md) |
+| 正在把旧 MFC 界面迁到 Qt | [迁移切片与回滚](references/mfc-migration.md) |
+| 测试、持久化、构建、部署与许可核查 | [验证与发布](references/testing-build-deployment.md) |
+| 工程确实含 QML/Quick，或用户明确评估该路线 | [Quick 边界](references/qml-quick-boundary.md) |
+| 需要外部案例、来源、版本和不采纳理由 | [GitHub 来源](references/github-sources.md) |
+
+## 与已有 Skill 协作
+
+本 Skill 自包含，不要求安装某个 Agent 或兄弟 Skill。可发现时，`skillforge-ui-design` 负责交互与视觉验收，`skillforge-debugging` 负责故障证据；涉及旧 MFC 源码才按需读 `skillforge-mfc`。统一入口 `skillforge-orchestrator` 通过元数据发现本 Skill，不需要新增硬编码路由。
+
+跨技能保持同一任务、同一状态/拥有关系和同一验证报告；没有宿主原生调用能力时，明确是读取文件使用。Skill 不自动安装依赖、启动后台任务、压缩上下文或授权外部写入。
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-debugging/SKILL.md
+---
+name: skillforge-debugging
+description: "定位和修复代码、蓝图、插件或界面的错误、崩溃、偶发失效与异常结果。Use when debugging failures, regressions, inconsistent behavior or unexplained output. 纯功能设计、正常操作说明和没有故障目标的代码阅读不触发。"
+---
+
+# 基于证据的问题排查
+
+让每次改动回答一个可验证的问题：故障最先发生在哪个边界，什么证据支持原因，怎样证明修复有效。简单错误直接核对并修复，复杂或偶发问题再展开诊断。
+
+## 先确定现场
+
+- 从当前材料读取版本、运行入口、报错和最近改动；区分用户观察、已检查事实、旧经验和待验证假设。能自行查到的信息先查，不重复询问。
+- 确认当前能查看、修改、运行哪些内容。缺少运行环境时继续能完成的静态分析和诊断准备，明确剩余验证条件。
+- 项目文档提供上下文；旧笔记、网上方案、文件名和“以前能用”都不能替代当前代码或运行证据。
+
+## 推进方法
+
+1. 写清最短失败路径和预期结果。偶发问题记录实例、输入、时序与环境；无法复现时先寻找能区分假设的证据。
+2. 沿输入/事件 → 状态变化 → 调度/回调 → 消费者 → 展示或输出，找到首个不符合预期的边界。与同项目正常路径比较，避免一次性阅读全部架构。
+3. 选择最有证据的假设，说明什么观测支持它、什么观测会否定它。补充可关闭、有限量的诊断；保留实例或请求关联，避免高频日志改变时序。先用已知事件确认探针已启用、类别未过滤且输出可见；没有输出时先排除观测失效，不据此断言链路正常。
+4. 默认解决共同根因，修复实际需要的公共逻辑与关联调用方，并列出影响面。最小改动指最小充分因果范围，不是只修用户点名文件；验证假设时控制变化因素，实施时完成必要协同修改。失败后更新假设，不按固定补丁次数停工，也不夹带无关重构。
+5. 重跑原失败路径和相关正常路径，检查是否引入回归。静态检查、编译、现场运行分别报告；短暂未复现不等于偶发故障已消失。
+
+固定延迟、吞掉异常、把未知值变成空结果，都可能隐藏故障。只有证据证明它们符合实际契约时才采用，并分别说明临时缓解与根因修复。
+
+## 按需参考
+
+- 订阅、异步回调、UI 不更新或跨层问题：读 [诊断边界](references/diagnostic-boundaries.md)。
+- 多轮审查、无 Git/共享锁、测试假绿、长任务恢复：读 [审查与验证](references/review-and-validation.md)。
+- 从历史问题提炼规则、核对旧建议：读 [案例与证据](references/verified-cases.md)。
+
+已有领域技能可补充技术检查，但本技能无需安装其他技能。跨技能工作共享同一份证据与验证结论。
+
+## 交付
+
+围绕本次问题说明：目前结论及依据、实际改动或诊断准备、已执行验证、剩余不确定性与下一步。普通问题用短段落即可；只有多假设或多边界需要比较时才列成表。
+
+没有访问过代码、没有运行过命令或没有连接编辑器时，明确写成建议或待验证步骤，不把预期工具结果写成事实。
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-engineering-preflight/SKILL.md
+---
+name: skillforge-engineering-preflight
+description: "Use when a new product, costly architecture change, performance-sensitive interaction, data synchronization design or major UI layout has unverified requirements or technical risks before implementation. 用于高返工成本的选型和最小验证；普通已知局部Bug、只读术语解释或已有验证足够的微调不触发完整流程。"
+---
+
+# 工程前置判断与最小验证
+
+对目标负责，不只照做用户最初的技术建议。读取当前工程与已确认习惯，识别哪些决定一旦选错会昂贵返工；专业技能负责具体API与版本证据。
+
+## 输入与边界
+
+沿用当前任务、协作等级和授权，不重复问A/B。不经入口直接调用时，执行当前明确范围；存在重要未知先分析，未得到目标/边界时不把分析变实现。没有工程可以提供条件性方案；没有运行环境不能声称已验证。
+
+## 判断步骤
+
+1. **目标先于框架**：核实用户想完成的操作、使用场景和预期规模，读取现有实现/技术栈/约定。用户提的“用节点图”“沿用旧框架”是待评估方案，不是证明适合的证据；明确锁定的技术栈又不能擅自替换。
+2. **识别相关风险**：按 [风险检查](references/risk-review.md) 看数据规模、变化频率、联机/权限、UI布局、热路径、兼容与长期成本。已知答案自己读，不让用户点名某个API才考虑它。
+3. **提出有依据的取舍**：解释原方案能解决什么、何处存在风险、替代方案的用途/成本/限制及推荐。已可行仍可建议更合适方向，但不把个人喜好包装为最佳实践。
+4. **选择验证级别**：已存在同版本/同规模的足够证据则引用；否则对高返工成本假设做可丢弃的小探针。低风险小修改只做定向检查，不先设计大系统。
+5. **先定义成功和退出**：用 [验证记录](assets/probe-record.md) 写假设、代表性输入/规模、测量方法、通过/失败/无法判断标准及停止条件，再做验证。阈值来自已确认目标；自己暂定的目标标 provisional，不能说是用户要求。
+6. **根据证据推进**：通过只证明覆盖的范围；失败排查瓶颈或比较替代；无法判断记录缺口。A在既定边界内继续独立任务，B就真正的取舍问一个核心问题。改变已确认路线不属于探针自动授权。
+7. **沉淀与交付**：保留成功/失败/不确定结果、版本、条件、原始测量及限制；发现新的可复用经验时更新对应技能或候选记录，不复制完整项目历史。正式写回先发现并读取可用的 `skillforge-experience-maintenance` 共享写入协议，核对共享根、权限和最新前像；单一维护者在 Git/P4 管理下按协议检查差异并审阅修改，实际存在并发写入时才在真实独占锁/版本条件写入内比较哈希并保留必要恢复记录；无法保证并发保护时仅留独立候选。沿用既有授权，不增设固定批准轮。
+
+## 实施前要看得见的内容
+
+新UI/关键交互先提供信息分区、主要操作路径、空间不足规则及状态；需要视觉判断时使用实际可用工具给布局图/原型。没有图像能力可给文字线框并说明限制，不伪造截图。已获认可布局的小修沿用约定，不重复整套设计审批。
+
+性能探针以预期工作负载为依据，覆盖关键操作与相关生命周期；空场景、少量假数据或一次顺畅点击不代表大规模成立。先局部验证瓶颈，不做一个完整产品来证明选型。
+
+## 交付
+
+分别说明：采用的决定与依据、探针是否可丢弃、当前规模下的结果、未覆盖范围、是否允许正式实现、下一独立工作和经验落点。
+`PASS / FAIL / inconclusive / not_run / unavailable` 分开。结构检查不等于实机性能，技术名词本身不等于选型正确。
++ printf '\n--- tool capability ---\n'
+
+--- tool capability ---
++ command -v c++ g++ clang++ cmake pkg-config qmake qmake6 moc moc6
+/usr/bin/c++
+/usr/bin/g++
+/usr/bin/pkg-config
+/usr/bin/qmake
+/usr/bin/moc
++ pkg-config --modversion Qt6Core Qt6Widgets Qt6Test
+Package Qt6Core was not found in the pkg-config search path.
+Perhaps you should add the directory containing `Qt6Core.pc'
+to the PKG_CONFIG_PATH environment variable
+Package 'Qt6Core', required by 'virtual:world', not found
+Package 'Qt6Widgets', required by 'virtual:world', not found
+Package 'Qt6Test', required by 'virtual:world', not found
++ pkg-config --modversion Qt5Core Qt5Widgets Qt5Test
+Package Qt5Core was not found in the pkg-config search path.
+Perhaps you should add the directory containing `Qt5Core.pc'
+to the PKG_CONFIG_PATH environment variable
+Package 'Qt5Core', required by 'virtual:world', not found
+Package 'Qt5Widgets', required by 'virtual:world', not found
+Package 'Qt5Test', required by 'virtual:world', not found
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/references/qobject-threading-shutdown.md
+# QObject、异步与关闭：拥有者、线程和请求身份
+
+## 三个维度不要混为一谈
+
+C++ 对象是否存活、QObject 属于哪个线程、业务请求是否仍是当前请求，是三项独立条件。QPointer 非空只帮助判断被观察 QObject 尚未销毁，不意味着正在正确线程、不意味着会话没有重置。
+
+parent 托管、RAII 独占、非拥有观察分别标明。QObject 通常由 parent 释放；没有 parent 的普通资源可用 unique_ptr。不要给 parent-owned QObject 再配置独立释放的 shared_ptr/unique_ptr。外部 C API 句柄根据实际 deleter 管理，不机械套 delete。
+
+## 信号槽与捕获
+
+优先类型安全 connect；带 lambda 时提供生命周期 context，避免无上下文捕获 this。捕获能独立存活的值、request ID、session generation；临时引用、栈变量和裸 UI 指针不要跨异步边界。
+
+自动断连防止向已经销毁的 receiver 调用，但 disconnect 不撤回已投递的全部业务事件，也不使已完成但过期的结果重新有效。接收端仍检查身份/状态。窗口切换目标、任务重启、host 重连都更新代际；必要时先撤销当前请求再解绑。
+
+AutoConnection 的判断涉及发射时所在执行线程和 receiver affinity，不是看 sender 对象最初在哪里创建。跨线程排队参数需要可复制、可存活，使用目标 Qt 版本所需的元类型声明/注册；“编译成功”不证明运行时 queued invocation 没有类型错误。
+
+## QThread 的两种合法用途
+
+- 事件驱动服务：worker QObject 无 parent 地迁移到线程，在线程中的初始化步骤创建需要该线程事件循环的资源。
+- 受控 run 实现：QThread 子类可封装自足任务或 STA run 生命周期；构造与 run 所在线程不同，普通槽不会因写在该子类上自动进入 run 线程。
+
+不能 move 一个有 parent 的对象到另一线程。QObject 的成员变量不自动等于子对象；构造函数在 UI 线程创建的 timer/socket 若未正确归属，迁移外层对象不自动修复它们。核对创建、parent、moveToThread、启动/停止和销毁的位置。
+
+Qt 线程池适合可并行且没有固定 apartment/事件循环依赖的工作，不是任意 COM 对象的执行容器。QThread 的事件循环也不等于已经调用 CoInitializeEx。
+
+## 取消协议
+
+quit 让事件循环退出，不强制打断正在执行的长槽。requestInterruption 是协作信号，工作代码必须检查。若一个槽持续阻塞，排到同一线程的 cancel 槽不能及时运行。
+
+对可分割工作使用有界片段和线程安全取消 token；对 SDK 支持的取消调用核实线程和重入约束；对无法中断的调用记录 deadline 和“取消已请求、正在等待调用返回”，不能立即向 UI 谎报 Stopped。具有强隔离需求时单独设计宿主进程，不对每个普通任务强制 IPC。
+
+BlockingQueuedConnection 需要证明无互等、receiver 事件循环可运行且生命周期覆盖调用；本技能不把它作为通用同步桥。UI 正在 join worker 时，worker 同步等待 UI 是典型死锁，不能靠延长超时处理根因。
+
+## 关闭顺序与异常路径
+
+| 阶段 | 必要动作 | 验证点 |
+|---|---|---|
+| 拒收 | 标记 stopping，关闭新任务入口 | 菜单/热键/外部入口一致拒绝 |
+| 请求取消 | 取消待处理命令，向运行任务发协作取消 | 重复取消幂等，未开始任务不再启动 |
+| 拥有线程清理 | 停 timer、解绑回调、释放 SDK/COM 资源 | 失败也有终态，释放线程正确 |
+| 线程收尾 | 资源清理后退出事件循环/run；按契约等待同步完成 | 不销毁普通运行中的 QThread，不假 join |
+| 展示终态并退出 | 丢弃旧结果、完成日志与状态保存，再结束主循环 | 不依赖已停止事件循环处理关键清理 |
+
+窗口 closeEvent 可先进入 stopping 并暂缓真正销毁，保持 UI 消息循环响应；结束后重新完成关闭。不要在主循环仍承担 worker 回调时阻塞等待 worker。最终 wait 若确需使用，要在无反向依赖的路径执行并检查返回值；timeout 不是已完成。
+
+QObject::deleteLater 依赖事件循环/线程收尾的具体时机；QThread::finished 连接 worker::deleteLater 是 Qt 的常用收尾方式，但 COM 资源若需要在 CoUninitialize 前销毁，应先显式在拥有线程释放，不能寄希望于之后的 deferred deletion。
+
+finished 已发出与所有线程局部析构完成不完全等价；需要与全部线程后效应同步时使用成功返回的 wait。特殊 API（如不同 Qt 版本的 QThread::create 析构行为）按版本核查，不泛化到所有 QThread。
+
+## 调试记录与测试
+
+日志至少按需含 request ID、generation、状态变迁、发出/处理线程标识、取消与完成原因；敏感数据脱敏，不把图像识别原始内容或凭据塞入普通日志。
+
+测试：启动即关闭、初始化失败、快速启动/取消、取消晚于完成、重复取消、receiver 销毁、对象未销毁但代际变化、阻塞 SDK、清理失败、反向 UI 调用、重复打开窗口。用可控假 service 触发时序，不靠固定 sleep“恰好没崩”。
+
+案例：QHotkey 在检查的版本里跨线程注册会同步等主线程，主事件循环先停后销毁 worker 热键会卡死。可选择主线程热键服务、异步分发任务意图，而不是搬来该阻塞桥。详见 [来源](github-sources.md)。
+
+依据：[QObject](https://doc.qt.io/qt-6/qobject.html)、[QThread](https://doc.qt.io/qt-6/qthread.html)、[QPointer](https://doc.qt.io/qt-6/qpointer.html)、[Threads and QObjects](https://doc.qt.io/qt-6/threads-qobject.html)。
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/references/testing-build-deployment.md
+# 测试、持久化、构建与部署
+
+## 分清证据层级
+
+| 层级 | 可以证明 | 不能外推 |
+|---|---|---|
+| 文档/包结构检查 | frontmatter、路径、资源、题集格式有效 | 技术规则正确或 Agent 会遵守 |
+| 静态源码审查 | 指定版本/文件内观察到的机制与风险 | 真实构建、DPI 和 SDK 可用 |
+| 单元与契约测试 | 覆盖到的模型、命令、状态机与错误路径 | 全部 UI/平台行为 |
+| Qt 集成/交互测试 | 测试平台与环境里的连接、输入、控件行为 | 没运行过的 Windows IME/多屏 |
+| 真实 SDK/进程测试 | 实测位宽、COM、宿主与目标环境行为 | 其他 SDK 或插件版本 |
+| 干净环境部署 | 已测试机器/镜像上的打包依赖与启动 | 所有系统版本兼容 |
+
+每条验证记录 command/scenario、平台、配置、版本、结果与日志位置；失败不能被“本次没改这里”隐去。既有失败与新增回归分开记录。测试没运行写 not_run，缺 SDK 写 blocked，不写推测 PASS。
+
+## Qt Test 与异步
+
+小型测试可覆盖纯 service/model，UI 测试使用当前工程已有 Qt Test target。QSignalSpy 先检查 isValid，断言参数、顺序和次数；不能只看“发过一次信号”而忽略对象、状态和错误。
+
+异步等待使用可判定状态和有界 timeout，如实际版本支持的 QTRY_*；不要依赖固定 qWait/sleep 偶然碰到结果。嵌套 processEvents 可以产生重入，不作为生产阻塞代码的常规补丁。
+
+自定义 model 配 QAbstractItemModelTester，选择能使测试失败的报告模式；不要只输出 warning 后在报告写通过。额外断言业务 ID 映射、编辑 commit、过滤/排序后的选择与数据持久化。
+
+必须优先覆盖当前变更的失败路径，再执行可用的项目整体测试。没有独立 Agent 运行器时，可以提供 Skill 评测题和评分标准，但不能编造未加载/加载 Skill 后的行为差异。
+
+## 最小风险矩阵
+
+| 变更 | 至少增加的场景 |
+|---|---|
+| 编辑/布局 | 输入中后台更新、IME、复制撤销、最小尺寸、缩放与焦点 |
+| 异步/线程 | 初始化失败、关闭时忙碌、取消晚到、同窗口旧代际结果 |
+| model | insert/remove/reset 契约、代理排序后编辑正确 ID、容量上限 |
+| 平台/SDK | host 启动失败、错误位宽/注册、重连、清理失败、真实调用 |
+| 持久化 | 旧档、损坏/截断、写入失败、版本不支持、回滚 |
+| 部署 | 不带开发 PATH 的环境启动，Qt 平台插件与第三方 DLL 完整 |
+
+截图用于补充视觉证据，不替代输入与线程验证。性能报告包含数据规模、机器/配置、基线和指标，不将某 GitHub 项目性能外推成 LCot 性能。
+
+## 持久化
+
+QSettings 适合应用设置，但业务数据格式、版本和迁移仍由项目设计。不要为了减少代码把既有事务/完整性保护替换成无版本键值写入。
+
+文件整体替换可评估 QSaveFile：检查 open、实际写入长度/错误、commit 返回值；失败不更新 UI 的“已保存”状态。直接写入 fallback 是否启用会影响保护语义，不能忽略。原子替换不自动解决跨文件事务、跨进程冲突、断电持久性或 schema 兼容。
+
+序列化声明版本、编码、字段范围和未知字段政策；不要把 GUI model index、QObject 指针或内存布局当存档。使用真实旧样本，验证读写往返和失败后原文件保持。
+
+## 构建
+
+从真实构建入口使用已有 CMake/.pro/项目配置，不在 UI bug 修复中顺手重建整个 build system。CMake 链接明确 Qt targets，moc/uic/rcc 的启用方式与项目版本一致；.ui/.qrc/.qml 必须进入对应目标/模块。
+
+Qt 提供的部分 CMake helper、QThread helper 和 QML API 有小版本门槛，依据实际最低版本决定是否可用。不要把“网上最新示例能编译”当兼容证明。
+
+Windows 核对 Qt kit、编译器、MSVC/MinGW、架构、CRT、插件与 Debug/Release。平台宏/头文件污染在 adapter 边界解决，不把全局禁用警告当修复。产品代码和测试命令按实际发现的 target 给出，不发虚构 build 路径。
+
+## 部署与许可检查
+
+使用匹配 kit 的 windeployqt 或现有部署流程，检查 Qt 平台插件、资源、翻译、QML 模块及第三方动态库。windeployqt 不替你收集所有外部 SDK DLL，也不解决 COM 注册/授权条件。
+
+在干净目标环境运行，不依赖 Qt Creator、开发 PATH 或本地插件目录。测试缺依赖、无写权限、配置迁移失败时能产生可复制诊断，不只验证开发机双击启动。
+
+第三方库按实际文件和版本核对许可：参考思路不等于可以复制 GPL 源码；LGPL/商业选择、修改、链接和再分发义务应结合发布方案评审。本 Skill 不提供“只要用 DLL 就自动合规”的保证，也不把闭源一概说成必须购买所有 Qt 商业许可。
+
+依据：[Qt Test](https://doc.qt.io/qt-6/qttest-index.html)、[QSignalSpy](https://doc.qt.io/qt-6/qsignalspy.html)、[Model Tester](https://doc.qt.io/qt-6/qabstractitemmodeltester.html)、[QSaveFile](https://doc.qt.io/qt-6/qsavefile.html)、[Windows Deployment](https://doc.qt.io/qt-6/windows-deployment.html)、[Qt LGPL obligations](https://www.qt.io/development/open-source-lgpl-obligations)。
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/assets/review-handoff.md
+# Qt 审查、实现与交接
+
+## 范围与基线
+
+原始需求/增补来源：
+当前工程版本与相关配置证据：
+本次完成范围 / 未改范围：
+
+## 发现与决策
+
+| 问题 | 根因证据/仍为假设 | 风险 | 最小修复 | 兼容/回滚 |
+|---|---|---|---|---|
+| 按实际情况填写 | unknown | 待判断 | 未实施 | 待验证 |
+
+## 拥有关系与数据流
+
+| 对象/资源 | 创建/释放方 | 所在线程或进程 | 借用/拥有 | 取消/销毁/迟到结果策略 |
+|---|---|---|---|---|
+| 按实际代码填写 | unknown | unknown | unknown | unknown |
+
+业务真值、编辑草稿、UI 投影分别由谁拥有：
+跨线程/IPC payload 与身份验证：
+共享基础设施涉及的调用方：
+修改处维护注释说明：原因、拥有者、线程/数据流、兼容、实现选择和风险。
+
+## 文件与验证
+
+| 文件 | 实际更改 | 消费者影响 | 对应验证 |
+|---|---|---|---|
+| 按实际 diff 填写 | 不用计划冒充完成 | 待核实 | not_run |
+
+| 检查 | 实际命令或交互步骤 | 环境/版本 | 结果 | 日志/证据 |
+|---|---|---|---|---|
+| 包/静态/构建/单元/UI/平台/部署分开列 | 未执行就写未执行 | unknown | not_run | 无 |
+
+原有失败 / 本次新增失败 / 未验证项：
+SDK 或 UI 实测受阻原因：
+
+## 交付
+
+修改文件或实际可访问工件：
+应用位置和必要操作：
+不覆盖未提交修改、不删除已有功能的注意事项：
+下一执行者首先需要核实的事实与待做验证：
+
+不得将已读文件写成已原生安装 Skill；不得将测试题集存在写成 Agent 行为已通过；不得将 Linux/离屏检查写成 Windows IME、DPI、COM 实测。
++ qmake -v
+qmake: could not exec '/usr/lib/qt5/bin/qmake': No such file or directory
++ moc -v
+moc: could not exec '/usr/lib/qt5/bin/moc': No such file or directory
++ g++ --version
+g++ (Debian 14.2.0-19) 14.2.0
+Copyright (C) 2024 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ printf '#include <QtCore/QObject>\nint main(){}\n'
++ g++ -x c++ -fsyntax-only -
+<stdin>:1:10: fatal error: QtCore/QObject: No such file or directory
+compilation terminated.
++ nl -ba /workspace/shared/skill_evals_v4/round5/qt-shutdown/fixture/snippet.cpp
+     1	// 合成审查片段，并非可直接构建的完整工程。
+     2	class Worker : public QObject {
+     3	public:
+     4	    std::function<void(QString)> onResult;
+     5	    void run() { auto r = sdk.blockingRead(); onResult(r); }
+     6	};
+     7	void Window::start() {
+     8	    worker = new Worker(this);
+     9	    worker->moveToThread(&thread);
+    10	    worker->onResult = [this](QString r) { label->setText(r); };
+    11	    connect(&thread, &QThread::started, worker, &Worker::run);
+    12	    thread.start();
+    13	}
+    14	void Window::closeEvent(QCloseEvent *event) {
+    15	    thread.requestInterruption();
+    16	    thread.quit();
+    17	    thread.wait();
+    18	    delete worker;
+    19	    event->accept();
+    20	}
++ cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/references/qobject-threading-shutdown.md
+# QObject、异步与关闭：拥有者、线程和请求身份
+
+## 三个维度不要混为一谈
+
+C++ 对象是否存活、QObject 属于哪个线程、业务请求是否仍是当前请求，是三项独立条件。QPointer 非空只帮助判断被观察 QObject 尚未销毁，不意味着正在正确线程、不意味着会话没有重置。
+
+parent 托管、RAII 独占、非拥有观察分别标明。QObject 通常由 parent 释放；没有 parent 的普通资源可用 unique_ptr。不要给 parent-owned QObject 再配置独立释放的 shared_ptr/unique_ptr。外部 C API 句柄根据实际 deleter 管理，不机械套 delete。
+
+## 信号槽与捕获
+
+优先类型安全 connect；带 lambda 时提供生命周期 context，避免无上下文捕获 this。捕获能独立存活的值、request ID、session generation；临时引用、栈变量和裸 UI 指针不要跨异步边界。
+
+自动断连防止向已经销毁的 receiver 调用，但 disconnect 不撤回已投递的全部业务事件，也不使已完成但过期的结果重新有效。接收端仍检查身份/状态。窗口切换目标、任务重启、host 重连都更新代际；必要时先撤销当前请求再解绑。
+
+AutoConnection 的判断涉及发射时所在执行线程和 receiver affinity，不是看 sender 对象最初在哪里创建。跨线程排队参数需要可复制、可存活，使用目标 Qt 版本所需的元类型声明/注册；“编译成功”不证明运行时 queued invocation 没有类型错误。
+
+## QThread 的两种合法用途
+
+- 事件驱动服务：worker QObject 无 parent 地迁移到线程，在线程中的初始化步骤创建需要该线程事件循环的资源。
+- 受控 run 实现：QThread 子类可封装自足任务或 STA run 生命周期；构造与 run 所在线程不同，普通槽不会因写在该子类上自动进入 run 线程。
+
+不能 move 一个有 parent 的对象到另一线程。QObject 的成员变量不自动等于子对象；构造函数在 UI 线程创建的 timer/socket 若未正确归属，迁移外层对象不自动修复它们。核对创建、parent、moveToThread、启动/停止和销毁的位置。
+
+Qt 线程池适合可并行且没有固定 apartment/事件循环依赖的工作，不是任意 COM 对象的执行容器。QThread 的事件循环也不等于已经调用 CoInitializeEx。
+
+## 取消协议
+
+quit 让事件循环退出，不强制打断正在执行的长槽。requestInterruption 是协作信号，工作代码必须检查。若一个槽持续阻塞，排到同一线程的 cancel 槽不能及时运行。
+
+对可分割工作使用有界片段和线程安全取消 token；对 SDK 支持的取消调用核实线程和重入约束；对无法中断的调用记录 deadline 和“取消已请求、正在等待调用返回”，不能立即向 UI 谎报 Stopped。具有强隔离需求时单独设计宿主进程，不对每个普通任务强制 IPC。
+
+BlockingQueuedConnection 需要证明无互等、receiver 事件循环可运行且生命周期覆盖调用；本技能不把它作为通用同步桥。UI 正在 join worker 时，worker 同步等待 UI 是典型死锁，不能靠延长超时处理根因。
+
+## 关闭顺序与异常路径
+
+| 阶段 | 必要动作 | 验证点 |
+|---|---|---|
+| 拒收 | 标记 stopping，关闭新任务入口 | 菜单/热键/外部入口一致拒绝 |
+| 请求取消 | 取消待处理命令，向运行任务发协作取消 | 重复取消幂等，未开始任务不再启动 |
+| 拥有线程清理 | 停 timer、解绑回调、释放 SDK/COM 资源 | 失败也有终态，释放线程正确 |
+| 线程收尾 | 资源清理后退出事件循环/run；按契约等待同步完成 | 不销毁普通运行中的 QThread，不假 join |
+| 展示终态并退出 | 丢弃旧结果、完成日志与状态保存，再结束主循环 | 不依赖已停止事件循环处理关键清理 |
+
+窗口 closeEvent 可先进入 stopping 并暂缓真正销毁，保持 UI 消息循环响应；结束后重新完成关闭。不要在主循环仍承担 worker 回调时阻塞等待 worker。最终 wait 若确需使用，要在无反向依赖的路径执行并检查返回值；timeout 不是已完成。
+
+QObject::deleteLater 依赖事件循环/线程收尾的具体时机；QThread::finished 连接 worker::deleteLater 是 Qt 的常用收尾方式，但 COM 资源若需要在 CoUninitialize 前销毁，应先显式在拥有线程释放，不能寄希望于之后的 deferred deletion。
+
+finished 已发出与所有线程局部析构完成不完全等价；需要与全部线程后效应同步时使用成功返回的 wait。特殊 API（如不同 Qt 版本的 QThread::create 析构行为）按版本核查，不泛化到所有 QThread。
+
+## 调试记录与测试
+
+日志至少按需含 request ID、generation、状态变迁、发出/处理线程标识、取消与完成原因；敏感数据脱敏，不把图像识别原始内容或凭据塞入普通日志。
+
+测试：启动即关闭、初始化失败、快速启动/取消、取消晚于完成、重复取消、receiver 销毁、对象未销毁但代际变化、阻塞 SDK、清理失败、反向 UI 调用、重复打开窗口。用可控假 service 触发时序，不靠固定 sleep“恰好没崩”。
+
+案例：QHotkey 在检查的版本里跨线程注册会同步等主线程，主事件循环先停后销毁 worker 热键会卡死。可选择主线程热键服务、异步分发任务意图，而不是搬来该阻塞桥。详见 [来源](github-sources.md)。
+
+依据：[QObject](https://doc.qt.io/qt-6/qobject.html)、[QThread](https://doc.qt.io/qt-6/qthread.html)、[QPointer](https://doc.qt.io/qt-6/qpointer.html)、[Threads and QObjects](https://doc.qt.io/qt-6/threads-qobject.html)。
+
+[交付记录] 静态审查完成；Qt构建不可用；未构建/运行模拟或产品；仅写本题trace.txt和raw-answer.txt，work目录为空。

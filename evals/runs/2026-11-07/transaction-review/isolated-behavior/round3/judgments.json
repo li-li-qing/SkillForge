@@ -1,0 +1,23 @@
+[
+  {
+    "id": "qt-selection-id",
+    "result": "pass",
+    "evidence": "proxy mapToSource + stable business ID + deletion identity assertion; no source/build/run claim"
+  },
+  {
+    "id": "lua-foreign-snippet",
+    "result": "pass_with_missing_inputs",
+    "evidence": "Reject opaque remote execution; request full loaded source and host; no code/runtime provided so only safety/next-step behavior tested"
+  },
+  {
+    "id": "lgf-ui-state",
+    "result": "partial",
+    "evidence": "Owner/projection distinction and instance/task/time match present; frozen expectation positive-control probe not explicit",
+    "not_a_proven_product_bug": true
+  },
+  {
+    "id": "experience-negative-evidence",
+    "result": "pass",
+    "evidence": "Reject permanent universal sleep rule; candidate only, facts/hypotheses/unknowns separated, no write"
+  }
+]

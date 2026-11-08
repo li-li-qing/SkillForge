@@ -1,0 +1,1623 @@
+{
+  "baseline": "v4",
+  "baseline_sha256": "cebc606cce5690336f834aa373976e82f22de9a4e95f80476f974bdbd5c2f881",
+  "removed": [],
+  "protected_unchanged": {
+    "skills/skillforge-orchestrator/SKILL.md": "9ebcda806e77645798ee7b5a639e21ed9bbef8acb5422c6b01c6a0f835725032",
+    "skills/skillforge-orchestrator/references/routing-policy.md": "2f00f0583032b58911537b21984d12044a255300b9abb315532a380951fc91de",
+    "skills/skillforge-orchestrator/references/user-workstyle.md": "68e39e51b5dc5425059adc7102a79e150904a4decbec75c561ac5d8376e8697d"
+  },
+  "entries": [
+    {
+      "path": "CHANGELOG.md",
+      "operation": "modify",
+      "before": "2d1e7ee6e5a480f2817158986a68bbe9c281b1eb6508d6edd581d21e78f8630b",
+      "after": "9b9be2c163e69b3672f0cc86015c60e2e26df64d33c52e5535165a25b2dc138a"
+    },
+    {
+      "path": "README.md",
+      "operation": "modify",
+      "before": "77f6024446a2102f6febebaf5c633b19b96c7f4e77c9010ddbbd3e3d7f5a1333",
+      "after": "da33f54696d8be09446f8092fa23a05320b35165489e83f8adf916b5b9fe0d69"
+    },
+    {
+      "path": "development/skillforge-orchestrator/evals/collaboration-cases.json",
+      "operation": "modify",
+      "before": "e1872ac8288e43b91df975b84d4f9598f83912da61591cd5c178cd3e16dc2d57",
+      "after": "b71b36d01f692b6e192781aaf08802ac19acf0fd551fd7f238177344a82962b3"
+    },
+    {
+      "path": "docs/orchestrator/v3-maintenance-guide.md",
+      "operation": "modify",
+      "before": "f421e485a49b102711989308d8c22dccd967a8eec0b2c8130f1da968367e89ac",
+      "after": "93c416bf7bfbd72922967f628ac4d485f4605babfb45b4ac3409cb62f630e631"
+    },
+    {
+      "path": "docs/transaction-review/addon-file-safety.md",
+      "operation": "add",
+      "before": null,
+      "after": "e580e35af28c4478a8573badef72fae9d05976e77604dcbe62e549dbcdb70f8d"
+    },
+    {
+      "path": "docs/transaction-review/binary-input-review.md",
+      "operation": "add",
+      "before": null,
+      "after": "0127aebd4e6343b903aa44b0a4023d022d41f1385a4eefda5532a223212c24e3"
+    },
+    {
+      "path": "docs/transaction-review/desktop-request-clarifications.md",
+      "operation": "add",
+      "before": null,
+      "after": "675196317707f1c0b8fa190e1b2949f638ebad8af9c24cd80bcc96c4f012db9f"
+    },
+    {
+      "path": "docs/transaction-review/experience-review.md",
+      "operation": "add",
+      "before": null,
+      "after": "e09dc98c5666e1814795bf508003cd8840d6fba0d2abb5ff7b362a44a9ae0c3f"
+    },
+    {
+      "path": "docs/transaction-review/fastarray-clarification.md",
+      "operation": "add",
+      "before": null,
+      "after": "4de6376c67e84164adb9849817e40a6478f72b388abb6add2debd7e40d9d93db"
+    },
+    {
+      "path": "docs/transaction-review/ida-boundaries.md",
+      "operation": "add",
+      "before": null,
+      "after": "3a2eee55a808e91ab1ec4c322e8b0a5ce644daf420a7ee6c38452b06adb8661b"
+    },
+    {
+      "path": "docs/transaction-review/lgf-modules.md",
+      "operation": "add",
+      "before": null,
+      "after": "4379c9d53d1ebe0cd005f34996ded65ff249303d733e1d366d75f1b3bbdcd9ec"
+    },
+    {
+      "path": "docs/transaction-review/persistence-clarification.md",
+      "operation": "add",
+      "before": null,
+      "after": "6427286cf3cfb552b172691b138e31a6d098952d64af81ea35a27346299db5bc"
+    },
+    {
+      "path": "docs/transaction-review/platform-clarifications.md",
+      "operation": "add",
+      "before": null,
+      "after": "89c92ee6a2ae14412dd4577eb53b45884f2673cea460322226c8272112610476"
+    },
+    {
+      "path": "docs/transaction-review/replication-direction.md",
+      "operation": "add",
+      "before": null,
+      "after": "c00c9a19a9c145545bd6ebed5c9cd9b8be456e63395affe91e2e9be602029f32"
+    },
+    {
+      "path": "docs/transaction-review/report.md",
+      "operation": "add",
+      "before": null,
+      "after": "2ce2e858ecb2b8d4fdff3938a456aa9019b12df429dc85b43d4fb056712cfdfc"
+    },
+    {
+      "path": "docs/transaction-review/statetree-failure-clarification.md",
+      "operation": "add",
+      "before": null,
+      "after": "9bf59512d93a7ca61d462373bc287c32248c25a0281c6725a0cb2fe1c66d3af1"
+    },
+    {
+      "path": "docs/transaction-review/updater-review.md",
+      "operation": "add",
+      "before": null,
+      "after": "dc827aae8bf9a4aaebe9e8897a1fde5106b8f61c34bbb9581d0a3fcf71b5002d"
+    },
+    {
+      "path": "docs/transaction-review/validator-report.md",
+      "operation": "add",
+      "before": null,
+      "after": "fb80a7ef5d1ad18477754d5872479d005442ac93cb39682d95fffebc671905cf"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/addon-count-red.log",
+      "operation": "add",
+      "before": null,
+      "after": "8e27f2b38ae2e35a3e50744f816099f7f76306ac8611f7e7d49dca254e1ba900"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/closed-stdout-red.log",
+      "operation": "add",
+      "before": null,
+      "after": "7a2bd75c4c16456234cbd534f75a19f55a92ea6daeb84a1b3c71bb7882e1bd86"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/experience-v5-green.log",
+      "operation": "add",
+      "before": null,
+      "after": "a0a27c7d68b55dec4f5c82b380b1e4fd7770cf88062faa78782ce23a006143b0"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/experience-v5-interop.log",
+      "operation": "add",
+      "before": null,
+      "after": "4edf702e55922119447b3a5af0aaee24cd95747e633b105e24cf0e974b0565d0"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/experience-v5-red.log",
+      "operation": "add",
+      "before": null,
+      "after": "7eea8502e90ff8e74dc3ae7346d1c662590e0ac7b68e625ae9b7663434c24638"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/final-addon.log",
+      "operation": "add",
+      "before": null,
+      "after": "83502d8f30e8b8d453ff2e8a024f3c351a0f5494610d954db9625d6e4d86a7a0"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/final-experience.log",
+      "operation": "add",
+      "before": null,
+      "after": "36095fe32c96963c414166413b666cd8e5b71da818de16a3d31341cbeab91730"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/final-ida.log",
+      "operation": "add",
+      "before": null,
+      "after": "d9c798807116c9c19f9451d9b72b66ae2de3d7d7967fbb50bdad895ed95e8708"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/final-index.log",
+      "operation": "add",
+      "before": null,
+      "after": "b77ecaea321c6149b93182bd53f3256b8dfe81dce83df031cbe0707efdf3798d"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/final-lgf.log",
+      "operation": "add",
+      "before": null,
+      "after": "e5b4318a140ff6bdb01eb528577ff961aef6e443e3da305d9c3bee194d7d18ad"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/final-library.log",
+      "operation": "add",
+      "before": null,
+      "after": "6f4829b8c2c04e2e7f8312ceb6831b7ea6594d9489966cbe61dfc4461a826bde"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/HARNESS.md",
+      "operation": "add",
+      "before": null,
+      "after": "8d1cd5984296ad7b15c9b1868ff5b994e0dac30d945ffe2f93a3d670b5ca509a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/frozen-manifest.json",
+      "operation": "add",
+      "before": null,
+      "after": "3f5e8950e030b15ca77b0aaa990989ee48fedba84895370651b37f8dad5decd5"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/import-verification.json",
+      "operation": "add",
+      "before": null,
+      "after": "d95a14e81c544d5736942694f424fa588bdbcba613ce44ad41e53a216757cc54"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/integrity.json",
+      "operation": "add",
+      "before": null,
+      "after": "9904ecfefdeeae7c96c336525563bca2348121fa2ff98edcce22beaff5b4c7ee"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/mismatch-response.md",
+      "operation": "add",
+      "before": null,
+      "after": "f2e4ad8d6bd6616fff97d26ba15de19dbd1f2cfb2db08fc13004971da6ffe5d3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/readonly-response.md",
+      "operation": "add",
+      "before": null,
+      "after": "f5ac885224e730aad59312b93d330b3659fb843ba98361d340af4b00dac740ab"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/readonly.json",
+      "operation": "add",
+      "before": null,
+      "after": "5538b67aac4bb05973b5369291cf6e4d1e065bb964df93168bd07aadea781a77"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/results.json",
+      "operation": "add",
+      "before": null,
+      "after": "7c90d92e3b2f019d6eeda7b1e8a8bc3c10f58f65f7aac2c9493b294555f0ae9a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/rubric.json",
+      "operation": "add",
+      "before": null,
+      "after": "85642cd39bdb3af7ff6a38a1b2458945d09d1a7e2ef11afa075a428cd1bb68cb"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/ida-authority/write_mismatch.json",
+      "operation": "add",
+      "before": null,
+      "after": "0983fc96853f86c3c6fdae7bed93409d291ffe8437672e706d380b39e0d35e22"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/REPORT.md",
+      "operation": "add",
+      "before": null,
+      "after": "81201e2d3bb115241b9493cb81eba89b48e77a1d401c7daac5182001710df3b9"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/artifact-hashes.json",
+      "operation": "add",
+      "before": null,
+      "after": "45d5e9366bb544392ca22eb2aef39ed8dd7aaec191855d94b08c5cc488bf2dd2"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "5cf7dda043bfec6c9063c71da57dcba7c3d4dc47c1a4d6ca1a6ec4e656e0714b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/future-criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "2faa94d3b38ab2a087904bf8b97e0be4e5d706ca55b6b5fe0c628d2bf4194701"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/future-packet.json",
+      "operation": "add",
+      "before": null,
+      "after": "251ba4a1b7f99e5d7a64d46539c505e4e3501e5c354d6efa7bb925258ddbc446"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "dddfdea71def1e57b466b2e0cec99508f6de88bd7e70f428e29d459bd5bf374b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/METHOD.md",
+      "operation": "add",
+      "before": null,
+      "after": "cf19a566c0e77fcaca23675eef0d84528c8cc2e94d5201e26c2e1241348dfba2"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/REPORT.md",
+      "operation": "add",
+      "before": null,
+      "after": "96c657fbf1df987c251dbe836066e9b19786f4651e8f30bf002599ed5731af66"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "f2e7134315ea534db1a648a1dcec5303d5e1e200c843eae04cd2c6ecac4571ca"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/frozen-answers.json",
+      "operation": "add",
+      "before": null,
+      "after": "94d5a3e2b711dc7da1f626b531d139ca9cd81449a96085639e730d3ce77aca28"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/manifest-before.json",
+      "operation": "add",
+      "before": null,
+      "after": "7e76a98704f262a1ab0f73e52493b47e7204520616e8e1c94f8ce9737f6da4c0"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/readonly-reverse/fixture/target",
+      "operation": "add",
+      "before": null,
+      "after": "e5fc73889c9f2d12af1198a00a564caadf71778c66c079d814535f037239fdfe"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/readonly-reverse/fixture/target.c",
+      "operation": "add",
+      "before": null,
+      "after": "e8380d941d0fb4f5c1eb379219d3747be274be49fc9c61517988a9a1799ecde7"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/readonly-reverse/pre-hashes.txt",
+      "operation": "add",
+      "before": null,
+      "after": "e4d1f2a97025e5dae942f0f206c59f9fb9b95532afa26c2dc5e1351ae49f429f"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/readonly-reverse/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "4b786383759f485c00dcc368cfd3579a510bc3ac08830be8ad2ff76287c74cfd"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/readonly-reverse/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "7ca99949104edf7a67e3aafd47193e40bf66de390d19e60131bb190164b277f8"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/readonly-reverse/reviewer-objdump.txt",
+      "operation": "add",
+      "before": null,
+      "after": "04885503589b70629e2d2eba0f4e0b393acf0824c282b5b977293c7d91aa106f"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/readonly-reverse/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "61c53f1a8292e0e4ca37d099ed4c309e67a73e13f5f4f3b47a6920c8d5949e89"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/reviewer-files.json",
+      "operation": "add",
+      "before": null,
+      "after": "c231d89e8fc36951b3c1cebd095a744d008a582f063c704e3c5e87ee668ef0e8"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/shared-write/executed-command.txt",
+      "operation": "add",
+      "before": null,
+      "after": "857cfbbfc68347810b3a3bd6230adca4ba36952533e15edaa637c4a2124eb1d8"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/shared-write/expected-after.txt",
+      "operation": "add",
+      "before": null,
+      "after": "82fa8ecf1c78f7e697a1f0323a1dbcd4013cf08e619201242d85ef4bbcb59af3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/shared-write/fixture/baseline.md",
+      "operation": "add",
+      "before": null,
+      "after": "f55aec19c7c6bc662817f33ab99ffffd9cd2e5d8d6ea8010c42d9f82f44e569e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/shared-write/fixture/context.txt",
+      "operation": "add",
+      "before": null,
+      "after": "4650cddbd07e6e3ee7d34a4249c16c37c4f7188153febc99392dcb637234087e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/shared-write/fixture/notes.md",
+      "operation": "add",
+      "before": null,
+      "after": "82fa8ecf1c78f7e697a1f0323a1dbcd4013cf08e619201242d85ef4bbcb59af3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/shared-write/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "de98ef2c7c4936902710d38c665d36d9e1ca6e61d4b27a0ba78010d5b8c13f29"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/shared-write/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "69989dea12e3766b5fca69e1ab852fee35a757fcd22f674816ffcacbb210af82"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/shared-write/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "3d61622878b0632b2ffc4b6d59c9f1222b82cbce24d31e3a67195dc808e43757"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/ue-contract-conflict/fixture/facts.json",
+      "operation": "add",
+      "before": null,
+      "after": "2234f73dc91537a9af518e095bf32d422e681be76cbb62ffc4c6971ae75cc82c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/ue-contract-conflict/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "1a9b08620faafdeaa61eb05d15e2832175ef78584d9e0ba8d184fb24baa464ec"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/ue-contract-conflict/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "b19c2b1809da09b1e43db341c171e8501ec186e4eb9138ea2c7192a4efddece2"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round2/ue-contract-conflict/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "e82b867e5f48bad531b6ab81e84ff7c0b2ca4f6d3b0f2d610d63e6de2c2c4796"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/METHOD.md",
+      "operation": "add",
+      "before": null,
+      "after": "6207063dcbe455c776c729a1f85c16b0bcde26c84649d3ae101ee5b0076371f5"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/REPORT.md",
+      "operation": "add",
+      "before": null,
+      "after": "1170ceab8be447c8b8795cc39e36d5959f5736cc4f9f9e2fd5c1d39d83cb460e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "87632bcb4a9a6fdc5c2bfd93f623ac86cb6be5a86756ea00797b569a83b1def8"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/experience-negative-evidence/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "c429782fe6e95bf503c45433056b36d55946a9af03d8cf8981a6611322b7971a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/experience-negative-evidence/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "877eaa886657880f21400b8755fff4bbdf91581624768935ba88568f3d443bc9"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/experience-negative-evidence/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "ae5bd2b5da0cdfdcc800130ec62b9c51de99d3033b85de0172555671efedc0ae"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/frozen-answers.json",
+      "operation": "add",
+      "before": null,
+      "after": "201ac099a25b61624cd398b11652bce2c7a8b1c839162eaa015d25b7195fdb78"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/judgments.json",
+      "operation": "add",
+      "before": null,
+      "after": "56f527f601d64eed20d175dda8c6762ef5f2bf02509ecc3ffa3f29feeb67d2d5"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/lgf-ui-state/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "bd4f86bd5b6377f692df6772c783092986696e1e3460167c91d9fae8c170a22a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/lgf-ui-state/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "fd2d2bd152f7b31e8b1ecafa85e90138f53d034f1dbf5fbe4761388d51c65407"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/lgf-ui-state/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "11653b9bd432341c7bd3f2e45ec7ecdce10bf153e9f16d5f8cad72005e47cc40"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/lua-foreign-snippet/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "291921fcfe5232443b770891e71bc238b3b6540b7f6040ba4cd96671cc0f5442"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/lua-foreign-snippet/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "37a24127b2c44130209cd385521af64fc423f9fcd63102644f22328c9d2f33bc"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/lua-foreign-snippet/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "62b42f1cb63cccf61fbf30bd8f36350a25144c73b978e927e3b9ebbb4a23dafa"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/qt-selection-id/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "9a9a68974abe50355824914b4be00cc5894a75a348606e6308a3801200261b27"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/qt-selection-id/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "cf7c312bd638019d82c02d916f3968074e3764cf6573863ecfacef47223db6d4"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/qt-selection-id/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "bf29e73c65778677dfbb29158c9f162656a42c22fb906a8201780e521aff3a04"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/reviewer-integrity.json",
+      "operation": "add",
+      "before": null,
+      "after": "a68dd7dfbacc4d6cf199655d28916b5752d13380c5fa7fdf3ad1abf84ce9f08c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round3/skills-before.json",
+      "operation": "add",
+      "before": null,
+      "after": "775548b99bde4f14e622ef055cc0900671b5616891355ba676922349157bad78"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/METHOD.md",
+      "operation": "add",
+      "before": null,
+      "after": "cc7429a0e472511ce560d2db91810688e9ff8e72537cd2991944b57d81236482"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/REPORT.md",
+      "operation": "add",
+      "before": null,
+      "after": "6ac6e3320a601d6de07deffe91dff219b87053e24d8a79729f3adbb82bef5f9b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "ddb606463c1735ff60ddac25db32a0ad4d9d973e290314cc24300b67795f4cbc"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/fixture/config.json",
+      "operation": "add",
+      "before": null,
+      "after": "dbd8dbfb4ba28cb4a6fe2c43a5b732e07ce2d206c366326a1c94942298f4ec4f"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/fixture/monitor.py",
+      "operation": "add",
+      "before": null,
+      "after": "2e8fe10e466c97581bad38b4b8122fd5caf602d361b546dc393cf49787863354"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/frozen-answer.json",
+      "operation": "add",
+      "before": null,
+      "after": "136441d8b446fa3d2e3dbf3140e4651d3cadd088e2338455f4e62ed05d87d0e2"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/pre-hashes.txt",
+      "operation": "add",
+      "before": null,
+      "after": "aa24266dd9463a0fe89106ab4c1460633ef241e717f2e0cf4a60b318246414ec"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "d0f810cf6631b1f8a625c36430fd4c582256649f1ce22f4afd5297973e87382e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "fcac644bd546b20145cab6b5d6bdd0dbc08e2f05a26986824898f6a567b9f4b4"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/reviewer-runs.json",
+      "operation": "add",
+      "before": null,
+      "after": "8893e97ecfc45a0d09ee5396003dd1882da15a85640ef09f8a4a882bb452a997"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "d230658ef01c311c5368cbe8e5bc10504fe0ca62c83e47653860e271887b08f6"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/brief.txt",
+      "operation": "add",
+      "before": null,
+      "after": "bea419b3d27621b042fd3a2896ddc59064a000db122cc6f190d3cbf81fcd9603"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/diagnose.py",
+      "operation": "add",
+      "before": null,
+      "after": "84cdba96b1c77d12edb4df3ce7fe2fdbb564c5886dd3401c1b032295c0623264"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/matched-error.json",
+      "operation": "add",
+      "before": null,
+      "after": "b07fa0ea9e106b0bc5b67b7b9f5199a1b3ba4b1ff7823ac5a135339aeefb944d"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/matched-idle.json",
+      "operation": "add",
+      "before": null,
+      "after": "f66e6d4386fb2a1f083ffb8c95d8b878f688fe7d921a5775e1f4f773909c9013"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/matched-success.json",
+      "operation": "add",
+      "before": null,
+      "after": "6a9d82cbcf60684d401af4db8fcc79ce36d1915b78c1f2d034a00841e90cb62b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/matched-topic.json",
+      "operation": "add",
+      "before": null,
+      "after": "39b9803d572ff90668e44274f337365e13ad69671a7da2af669f05a05587244a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/original-error.json",
+      "operation": "add",
+      "before": null,
+      "after": "1c389a1b1c42e488481f736c9d34dfd1d7a210a1e9adde3163b5d74ac409cb6f"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/original-idle.json",
+      "operation": "add",
+      "before": null,
+      "after": "f66e6d4386fb2a1f083ffb8c95d8b878f688fe7d921a5775e1f4f773909c9013"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round4/work/original-success.json",
+      "operation": "add",
+      "before": null,
+      "after": "6a9d82cbcf60684d401af4db8fcc79ce36d1915b78c1f2d034a00841e90cb62b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/METHOD.md",
+      "operation": "add",
+      "before": null,
+      "after": "fe87961ea5521baa215ffb719015fbc82294159165613de939b902ce2a1d8c58"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/REPORT.md",
+      "operation": "add",
+      "before": null,
+      "after": "4cd70612371dfc3c20b2dd8a5e86f0450a7bec74ed353bf062c9660547eea6bb"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "f7dca6442f4ae4d03ae3011f60ed545e5a5fb21e9b9c9800f44b1c88bd2cca1c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/frozen-answers.json",
+      "operation": "add",
+      "before": null,
+      "after": "56c043a795aa2d52812b7a63ca4520ea6ee9b96ec2b247afbb9ea4812cc81b72"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/ida-unavailable/fixture/target",
+      "operation": "add",
+      "before": null,
+      "after": "e5fc73889c9f2d12af1198a00a564caadf71778c66c079d814535f037239fdfe"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/ida-unavailable/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "7073267c0238f0ed151de6dba102c5e9560240bc4828b66e0a846901c6922e35"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/ida-unavailable/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "78a7046e4708b6af60faae55a5d5c9da0422d0d3f7b2bdcb98da6157b293b9c6"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/ida-unavailable/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "86b6a209463dd8f38cd02c93f0bd28e97577a13472f2680cce9c3949f4cd1475"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/judgments.json",
+      "operation": "add",
+      "before": null,
+      "after": "691ddb6215cf039208dfbf0779cda1966e6bb25a0a71a24456f08439576578d7"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/mcp-untrusted/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "07f8c2818b4438b55f620b0ed6f41284152fbce3a5a9b355097381f7be152bc5"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/mcp-untrusted/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "36b18c16bd0778e588355c0a92e36efaaff736fefa0b917e5c83b91a6a0506fe"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/mcp-untrusted/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "60e6aa86a7b7e241897a61f12080e5db236e0dffabd3b205f64908124145dfc1"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/pre-hashes.txt",
+      "operation": "add",
+      "before": null,
+      "after": "788efa89480499f7e923d6ee5c6ddf2a035fb0643654eac403465195ef421604"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/qt-shutdown/fixture/snippet.cpp",
+      "operation": "add",
+      "before": null,
+      "after": "23883b7d5afa2f19cae4e3e070275f47896ede1a6687e358e1710cc4f9457896"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/qt-shutdown/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "19b6a9e12f8dcfdc3f7b0a9f431a6da3c2ed567bdccceab29bb4ea2873a30e3a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/qt-shutdown/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "54f414b46c54b99ded0ff24e4a942ccf1eeb818260a9e2f140626272331fbea4"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/qt-shutdown/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "c001764948e8bfd0b42177f7b0f2fae1688e3b8bcb2cf2eb499861b6cf38e33e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round5/reviewer-objdump.txt",
+      "operation": "add",
+      "before": null,
+      "after": "68098c02e5ee3b537467e31ca68e28d565e61785bba3ea31e6b5474c26d7d42c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/METHOD.md",
+      "operation": "add",
+      "before": null,
+      "after": "39c6cbb2311d53147887b56980a176ca3c539032bcfeb73f0fc9f68c63db07dd"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/REPORT.md",
+      "operation": "add",
+      "before": null,
+      "after": "ccec6eb55cd0c8defc9b7c0689b04d1a6d8d273bdebd0bb654c9e0896079737f"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/client-property-rpc/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "681999d8575d68a1b9dde5ec9d9065d9875218a9779cedfd5029edef65b8761c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/client-property-rpc/raw-answer-candidate.txt",
+      "operation": "add",
+      "before": null,
+      "after": "9227b328abc7e5413dbb7410a18c77faa8646889750d2d898534fab66f09d77b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/client-property-rpc/raw-answer-v4.txt",
+      "operation": "add",
+      "before": null,
+      "after": "ce81308f2cc381b554e2cac0e5a69210c1719afaecf0a4fc61b1a7001c6d58d9"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/client-property-rpc/trace-candidate.txt",
+      "operation": "add",
+      "before": null,
+      "after": "e791178135b4558ab18509076c733bf1ea6e21534885f4cf6d1ea13b9bf71291"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/client-property-rpc/trace-v4.txt",
+      "operation": "add",
+      "before": null,
+      "after": "c94b40d780a411407d14b400fbdab937f64c47eecdf2f5a6724479e085db1a9c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "6075d644485e2d578ad6438dc7e2f62ee2cef8e90577a487021543b1be293e20"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/frozen-evidence.json",
+      "operation": "add",
+      "before": null,
+      "after": "358c3c2c60cc884a36339786ebae76d03d9458d0e89515f1180bbb0eb778f226"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/gas-aggregate-removal/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "d4ee2048606247c59a4f66f512f0f49aa01d72cbf393e7f491a77c7880d76f09"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/gas-aggregate-removal/raw-answer-candidate.txt",
+      "operation": "add",
+      "before": null,
+      "after": "b8c0d4600c9ffd69a65a358ecd38f1edea51f51bbda7d0d3c75df92a3cbe055e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/gas-aggregate-removal/raw-answer-v4.txt",
+      "operation": "add",
+      "before": null,
+      "after": "46c3d8532d71da1b1eedb1b49c8c176b550d380f422f71208fc364424d677acd"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/gas-aggregate-removal/trace-candidate.txt",
+      "operation": "add",
+      "before": null,
+      "after": "6b49c29fe34f3899efe198ea00306335c247c29f3d075cd5e19379c1eb0eb2da"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/gas-aggregate-removal/trace-v4.txt",
+      "operation": "add",
+      "before": null,
+      "after": "7ac8927524540e216a6fe99d5d671de72f23d97ad3c4398513df70d6761809ff"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/import-manifest.json",
+      "operation": "add",
+      "before": null,
+      "after": "afea1e83f8ce3051093244faf0a30855db3097a62e2f4171cd1500fe83c50245"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/judgments.json",
+      "operation": "add",
+      "before": null,
+      "after": "2f49f3cf9459ffe7e0fe563fcf34186f730a4aa200b089f79d67b70b2147691a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/manifest-d57d1f45ea5e096aeda3d113b707e1ab76f415112674247ae10c148d084b19c4.json",
+      "operation": "add",
+      "before": null,
+      "after": "8633dd2b7cfc37796cdd251e2b5e336ea156b66b657565ba6698c6fc1b00d566"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/results/22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526/client-property-rpc/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "9227b328abc7e5413dbb7410a18c77faa8646889750d2d898534fab66f09d77b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/results/22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526/client-property-rpc/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "e791178135b4558ab18509076c733bf1ea6e21534885f4cf6d1ea13b9bf71291"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/results/22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526/gas-aggregate-removal/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "b8c0d4600c9ffd69a65a358ecd38f1edea51f51bbda7d0d3c75df92a3cbe055e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/results/22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526/gas-aggregate-removal/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "6b49c29fe34f3899efe198ea00306335c247c29f3d075cd5e19379c1eb0eb2da"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/results/d57d1f45ea5e096aeda3d113b707e1ab76f415112674247ae10c148d084b19c4/client-property-rpc/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "ce81308f2cc381b554e2cac0e5a69210c1719afaecf0a4fc61b1a7001c6d58d9"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/results/d57d1f45ea5e096aeda3d113b707e1ab76f415112674247ae10c148d084b19c4/client-property-rpc/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "c94b40d780a411407d14b400fbdab937f64c47eecdf2f5a6724479e085db1a9c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/results/d57d1f45ea5e096aeda3d113b707e1ab76f415112674247ae10c148d084b19c4/gas-aggregate-removal/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "46c3d8532d71da1b1eedb1b49c8c176b550d380f422f71208fc364424d677acd"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/results/d57d1f45ea5e096aeda3d113b707e1ab76f415112674247ae10c148d084b19c4/gas-aggregate-removal/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "7ac8927524540e216a6fe99d5d671de72f23d97ad3c4398513df70d6761809ff"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/snapshot-map.json",
+      "operation": "add",
+      "before": null,
+      "after": "de5e4725160aea0557a355cd7f1253130637872f59eff8ee0ccc39b2a6dbd28a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round6/snapshots/22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526/manifest.json",
+      "operation": "add",
+      "before": null,
+      "after": "2c53ba985ebde2baa622ed8278e73a4d3b29edf6ebc5a291410f6216c6ba3cfe"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/METHOD.md",
+      "operation": "add",
+      "before": null,
+      "after": "cc8cb2f8c0b86e575ad7110069083c7e550f7788cae9df3ba0d99fc86cc2781c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/REPORT.md",
+      "operation": "add",
+      "before": null,
+      "after": "be3c631d46fa2838e116cd494a6fa1b1ff285947794af7c9b601fe5aaafdb361"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "84c2b788de37519fa0aa0d2f5a8fce74d058ebb74ed813e92cae923ca95a47c5"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/frozen-evidence.json",
+      "operation": "add",
+      "before": null,
+      "after": "0faedec303f47e18d9c70c8e26b47cbc41ec1c3e054838347f066cbc572b5919"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/import-verification.json",
+      "operation": "add",
+      "before": null,
+      "after": "0669fdca56153ef240d1ce9d157343dfeec27286d9f1105227c45851d57cdd81"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/judgments.json",
+      "operation": "add",
+      "before": null,
+      "after": "0b418e06039f801f8dde67a340d544526c90ee64d9240623535c2650daced6c2"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/same-route/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "5eab62d2aecbb9bae1f47e3926d5aa98102b3c2f6ae06ca7b4076b317ed7fb4e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/same-route/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "a3dab09f2fbe0006b886fe4c7daa796b4695c9a2ab82f3e29b91168bc12aa9f3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/same-route/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "c4217c19cf3acd444183b29bef124cedf8b324796f81a5ab3c74559cd0abc54d"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/shared-consumers/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "92f769e2d6f16743e0bb8a641962cd893baa7d8fae3606abfcd15d795aba2d25"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/shared-consumers/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "d85c1dede5edc49c6ea22444839427169c9b7772fa6b06af4e3b6dc7f9f8b1fa"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/shared-consumers/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "dd302177750bfa33fdd78d37084dbba50c1826db3c9462e3876131918283c1f0"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/snapshot.json",
+      "operation": "add",
+      "before": null,
+      "after": "97ff1b887218a96ef82765f518cbf66df9d9e8d6630b3a6e1949596ef3399a4b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/round7/snapshots/cb1479777885b2b075f5c0f412f247d3f543aa6ce9ae56817dd121f7b61ac73e/manifest.json",
+      "operation": "add",
+      "before": null,
+      "after": "2f5e77b6e62aa9c5a7526e4d4e3db23db9e8e11457ae80a9f80a8cd7f90dfbe6"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/runtime-check.txt",
+      "operation": "add",
+      "before": null,
+      "after": "a4c7960c0ef843f85bfe3e98aee1543b13201c2912a2dd936ad91f2bf7434511"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/skill-input-hashes.json",
+      "operation": "add",
+      "before": null,
+      "after": "5774b6f115eea153a6c2cb407f55e9d84aa2a5e45c69900c5ed8bd74c138fd5e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v3/project/README.md",
+      "operation": "add",
+      "before": null,
+      "after": "07e010b5c4d9a00b6f252a3065118d362a61906395f8338e9cc5e8099ce51f09"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v3/project/fixture.json",
+      "operation": "add",
+      "before": null,
+      "after": "dcfc744233183024ddc958e61355d257f6a14acc1b36db0485c88f09dd6c5a38"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v3/project/report.py",
+      "operation": "add",
+      "before": null,
+      "after": "0b519d9d110742d1d0b8f2a1843b7daaa062dffafc414fb5e95eb167ac811c14"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v3/project/test_report.py",
+      "operation": "add",
+      "before": null,
+      "after": "9b2aa1322b6a5fc2d28d26a1046dfad5c86ee2d3faf492a98c9e23cbb3707aa2"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v3/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "328e600745936a5d11748d9f28d20888f79b0a7bf17aa46725a6c3ee5b6403a0"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v3/reviewer-independent.json",
+      "operation": "add",
+      "before": null,
+      "after": "1c2b22654aca386801b8deb090330ffa1d7721bbb802376196802bb17a1d37ee"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v3/reviewer-tests.log",
+      "operation": "add",
+      "before": null,
+      "after": "ffcb5d4e40f7c621a818bbee6b1b907472e5145d3ded5013b3e879f5a2861f06"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v3/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "7e2dec3ff5981945f9e1ea0ddd95cf36316f27ec49d8d8e0492fcc15b4b80c46"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v4/project/README.md",
+      "operation": "add",
+      "before": null,
+      "after": "07e010b5c4d9a00b6f252a3065118d362a61906395f8338e9cc5e8099ce51f09"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v4/project/fixture.json",
+      "operation": "add",
+      "before": null,
+      "after": "dcfc744233183024ddc958e61355d257f6a14acc1b36db0485c88f09dd6c5a38"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v4/project/report.py",
+      "operation": "add",
+      "before": null,
+      "after": "1b375ad0afd0c4a60766b9d7086102ceb9ebe3a89b3fa36cfdc1033ff5e472d2"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v4/project/test_report.py",
+      "operation": "add",
+      "before": null,
+      "after": "837e56100d3731c0ddce32c07f4e0827624b9acaabbea620f942c70f141b7e5e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v4/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "eaae420a214106b909e17b41cfbab4ff871bad7a332158739eb01b1eeaf57e65"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v4/reviewer-independent.json",
+      "operation": "add",
+      "before": null,
+      "after": "f779738ae85e493348d4e5b74e9dbe11e445032d6b4bcdd23017dc9cc97c209d"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v4/reviewer-tests.log",
+      "operation": "add",
+      "before": null,
+      "after": "70161dae8aefa23fb6d36476ad47055fce5264b9ddca8750431253097d7f0b5c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/isolated-behavior/v4/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "e4444facf3eaebbc9a2c864b5c5c182042bf20a0e6b2c5e9789a0ae6cb7ee6a8"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/lgf-dev-full.json",
+      "operation": "add",
+      "before": null,
+      "after": "9e1861972eb99774d197d8d948158c23facee5d68ce49c9420405839ed85001a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/lgf-independent-final.json",
+      "operation": "add",
+      "before": null,
+      "after": "8ce59688aecf61b768c78906efd4305d28982f5e50e3818001bfc5cce2f1dfa7"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/lgf-runtime-probe-after.json",
+      "operation": "add",
+      "before": null,
+      "after": "9cb0a4ac0046558de5c078d259603b6c33867a91af8fc0f688ea4f2ca9df9d52"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/sf_v5_multiprocess_audit-rerun.json",
+      "operation": "add",
+      "before": null,
+      "after": "764606485adecd1b19af80e0d7b35633153a20d5b04a310e46e1de079b480b2a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/sf_v5_multiprocess_audit-rerun.stderr",
+      "operation": "add",
+      "before": null,
+      "after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/sf_v5_multiprocess_audit.json",
+      "operation": "add",
+      "before": null,
+      "after": "5cedff3df401b6c5ed2d9ce735ab496f93f39581fdba35c2f92c564f175b5e84"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/sf_v5_multiprocess_audit.py",
+      "operation": "add",
+      "before": null,
+      "after": "ba0f8fb28a4fadacd87c46ba534dd6e40288450d899b99efb8b7e0d2d05ace0b"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/sf_v5_reverse_process-rerun.json",
+      "operation": "add",
+      "before": null,
+      "after": "2154290edeb9cbdac8172af1c2b67e5e454c9401c729e1f04a959ddaff96e298"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/sf_v5_reverse_process-rerun.stderr",
+      "operation": "add",
+      "before": null,
+      "after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/sf_v5_reverse_process.json",
+      "operation": "add",
+      "before": null,
+      "after": "166860ba8452915c5c1858e386dc3d1623e72b90d7693f8a3ca893b7fb009938"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/sf_v5_reverse_process.py",
+      "operation": "add",
+      "before": null,
+      "after": "acf6b26679760d5ee4f2b4a07d4a6603c8cd953a3c2d76ab6c898cc5b3e2960a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/multiprocess/verification.json",
+      "operation": "add",
+      "before": null,
+      "after": "48b9cf5f22d4f7a7863963774b82498e36c9685e19ed96e7e309529c619cd50a"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/REPORT.md",
+      "operation": "add",
+      "before": null,
+      "after": "489b3f975304e7a2109ef72cf04f012ae3a87b5ece4ee76def6f902a24bf00e1"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/baseline/projection.py",
+      "operation": "add",
+      "before": null,
+      "after": "8ac87d6cf552b402f7e5a80bf841b81ec6f791c3296e5b738618214b860f9003"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/before.json",
+      "operation": "add",
+      "before": null,
+      "after": "2e809dec240cb6ba4a0a1071833dc3568c172d9a8ab7a964ba110c5dbe22eb47"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/criteria-private.json",
+      "operation": "add",
+      "before": null,
+      "after": "9a1cb31a4bb87d7b6f1e04b2f39bb6dbba132a61e6c5ee33ba17996493d76859"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/project/projection.py",
+      "operation": "add",
+      "before": null,
+      "after": "90713ec86a307983fa341b679ce0d74e47000dd1a61803e584e95a4a5ffdf315"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/prompt.txt",
+      "operation": "add",
+      "before": null,
+      "after": "f94920ee9161a541f1dc3a067d816b37fcb1e0db68f5e80195c0f7159ff631cb"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/raw-answer.txt",
+      "operation": "add",
+      "before": null,
+      "after": "a24b8b501a8235aefedf4ee431a50f03bdf16bfcbdf51b6f2f2badbeeb0c26ea"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/reviewer-independent.json",
+      "operation": "add",
+      "before": null,
+      "after": "fa5374ceb329b151456109b49f21a245fb5e9b1c304ff3a1dd7a1a747f688e0f"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/observable-fixture/trace.txt",
+      "operation": "add",
+      "before": null,
+      "after": "6633b33ef9c31efe8021adb27b65a4c39d7395ca947fb1ee7ee83afd4e2963c1"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/persistence-scenarios/policy-under-test.md",
+      "operation": "add",
+      "before": null,
+      "after": "e2062336c97d086555879d13242ed953b8824d4254bc45cb973dd1c65aacc029"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/persistence-scenarios/policy.diff",
+      "operation": "add",
+      "before": null,
+      "after": "a21166ac477179ad48160050730d872f1720f18a008bc51fece09cbbaab49908"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/persistence-scenarios/report.md",
+      "operation": "add",
+      "before": null,
+      "after": "b2f146ca49daf7ef086ffb8f49fed88e50dac9508bbfd2fc02d6c311f9c80bb5"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/baseline.json",
+      "operation": "add",
+      "before": null,
+      "after": "cadcdcb85c83e37d1e736bba421a11a2c4ed62cfcdaeed6ab3bf16101f2bfc47"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/current-hash-check.json",
+      "operation": "add",
+      "before": null,
+      "after": "523ece71710cc56563206cfbeaed6031905dc0b503f01d72b15b1f671d90c857"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/report.md",
+      "operation": "add",
+      "before": null,
+      "after": "afddfbe85a9f2e027ec90852b9e9793eac303bcfa2ec232fb69968d235396b5e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/reproduce.py",
+      "operation": "add",
+      "before": null,
+      "after": "20ba9242ba2888dccd27f826c34ce39342565fa6f6bf303304f035b296bdb41e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/reverification.md",
+      "operation": "add",
+      "before": null,
+      "after": "0594fa7db8638afb713d87c298953313054ca492f5250e8f8794dd4ad10b2dac"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/reverify-extra-results.txt",
+      "operation": "add",
+      "before": null,
+      "after": "7cda2e20c5d4f1905e0d0d4829cbb4ba2d50d0990532de86f88f818b996c58f3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/reverify-race-results.txt",
+      "operation": "add",
+      "before": null,
+      "after": "ae7630bd39175cbd4a5889808bc2925843b06e806efc1bbb51dccc8de5ada0ab"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/reverify-results.json",
+      "operation": "add",
+      "before": null,
+      "after": "2fe39604197fcd259ba3fbe4df29acfef134651c7459fbda83e6a2eaf3d16e10"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/reverify.py",
+      "operation": "add",
+      "before": null,
+      "after": "f10b9e7417e93c05c537d171e55aeb42f75da500309bcad7694b3558c7c1cebd"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/reverify_extra.py",
+      "operation": "add",
+      "before": null,
+      "after": "459298f1c9f423e42b8f7646b7784b5da8ce65dad4617d19bc64d2ff4fc69a77"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/script-safety/reverify_races.py",
+      "operation": "add",
+      "before": null,
+      "after": "b7523621546efedd2591cf04410e6129c24439528969a3504b14dea893433605"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/structure.log",
+      "operation": "add",
+      "before": null,
+      "after": "826939740f052c8981c686a46d95f076c4605e6d629eb6d99a1e3298e56077f3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/transaction-review/suite-results.json",
+      "operation": "add",
+      "before": null,
+      "after": "58ffa915ef9a63dcc32a80e07f6176dbd9eaead85c4f9d4f707d8cb1c9972054"
+    },
+    {
+      "path": "scripts/apply_skillforge_update.py",
+      "operation": "modify",
+      "before": "0de20265d089d5ccfa203c3634024c16be07f9176eada1437919d082d94ed5f6",
+      "after": "ac01a831831368bbc46c9e5992f3a3679d889c465ae53458bf506fc2edb43306"
+    },
+    {
+      "path": "scripts/validate_skills.py",
+      "operation": "modify",
+      "before": "8feaa2411c28e17ca22eb0e343824018ea55c82da09343a4c99ccc90dd7cc1b1",
+      "after": "f629cb38a6530946956fa0d38f124dc6285aefc344be8285658990f643dd4fca"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/evals/README.md",
+      "operation": "modify",
+      "before": "5694f8adb7008a65ce3e5d220a674c8a8f9aedd78bbf412affb468cdf92c8f15",
+      "after": "62b11de6ad743fdbf2dd12405f1e2e88dded2ad5e34206fe8663434c89fb2956"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "a423d8fb8fe411176c8974b923b39079ef7072463cfbc7243c1b1b171017201c",
+      "after": "0907e17a671e345b3391e1b4179069ead9cce80c883654830a88f692bd31bdde"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/references/callback-and-request-contracts.md",
+      "operation": "modify",
+      "before": "5f4ec3e3f61987baac4747252acc65b5e3005cd38c31e885b39058ad602d3c5e",
+      "after": "cf2fcfb5bfe24307a82c0ef7dc270b0a2dde3b689afe68f7b2c1dd43eebbaf36"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/references/combat-and-price-contracts.md",
+      "operation": "modify",
+      "before": "76372b4cb2cadd02adddc5167278ceeb7ab6565f0ced4145112e929376da2139",
+      "after": "1af70f5b3b4504671b274c0f45ea597368b4e89bc1e919b56baebf93d8e4b3d2"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/references/runtime-and-api.md",
+      "operation": "modify",
+      "before": "1681aae09ddefa25e10cfb7bcc194cedee5851c711f497ce37a802800d1e39ce",
+      "after": "44d4ae813735c2dc56173234018646c9f8075d81aad5380a84e5ba6d0ce572ee"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/references/verification-tools.md",
+      "operation": "modify",
+      "before": "b930de49154aef77662471e982a7d6e10489f3055468718ab22db82fcb786ec9",
+      "after": "557e262816a964e1c2d7a0971e3d6bcfcb9127064d2ac07cc031fbe94e0e9b20"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/scripts/verify_report.py",
+      "operation": "modify",
+      "before": "bf8461e83ad9ab1ae78fc4325711edaced42c2874a84ee4eda831b977c553770",
+      "after": "f5715dae80f413e5551ecc0451bd61440a4433282a6c0d5e6915ed4338e38fa2"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/scripts/verify_skill.py",
+      "operation": "modify",
+      "before": "4b5931c4b99f9e345fc2930f8a511714f23979c0ec409a52f2e39ab31116dc95",
+      "after": "8a3cc11f25c389c26286d1d344ee2f162779e5edf6e66b3a29eec4ac62cbce15"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/tests/test_file_safety.py",
+      "operation": "add",
+      "before": null,
+      "after": "9d1baf028447162e788e3c870fe1d7716960e3eb7924746f68f241cf5a593dee"
+    },
+    {
+      "path": "skills/skillforge-archerage-addon/tests/test_tools.py",
+      "operation": "modify",
+      "before": "73021ef081310871790b25c9b7e0aaf30d0b43a6c64c37badccb2e7f3349e00b",
+      "after": "90651753139f7ebada86e37835454aba422245884e33f4c006bc08acf5dc4f9f"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/references/skill-evaluation.md",
+      "operation": "modify",
+      "before": "6b4a4afc78c0c943a32cc99a42fc9f50daf81a4619ac49262ddec8abec80b3a5",
+      "after": "387a2350e7626a2ad108c457594e65436347fe7c45ed185da0e009de44329d7c"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/references/store-tool.md",
+      "operation": "modify",
+      "before": "1df1e925bd0ae213ce453240295491541fcf9f1bd573a755f1c8f1752a5fff50",
+      "after": "f36ea3f7015bfac0f7ab21cfb358b915a92b3df1093af2bf5d76c354b84140e4"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/scripts/experience_store.py",
+      "operation": "modify",
+      "before": "58f085f98a7bf25fa2b66f7cf9ae9d4ef0740b75978af13a16bfd3645fec3b28",
+      "after": "4e300a4e020938f6186e609d33eb6682bac216f80881fefdb387ded6fbe441f9"
+    },
+    {
+      "path": "skills/skillforge-experience-maintenance/tests/test_experience_store.py",
+      "operation": "modify",
+      "before": "21137100d132819e05f04aad21849f4187f57ff330bb4c43a6316a057543e86a",
+      "after": "b481eeb8b0a6fbdafc50833c7df724c4461181ab004b3c93ac5c3954fdda5073"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/idapython-api.md",
+      "operation": "modify",
+      "before": "2e0137ba3f625c049943270bfbe9a7a2100864e53d845c5dfe7e3e2c09cbb16d",
+      "after": "ab38e1640f593fdd63c3149e1a7e36d4af77694f15a641962ebf409011dcc3a6"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/ida_evidence.py",
+      "operation": "modify",
+      "before": "7ab1798e7ee8daffda8740d58baec6d89ea9cf91b37d4221da65277672e23c3c",
+      "after": "31fdcadb994518e20fbe2797af24f93646aad93cf95da4bf4d37af62a0681f68"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/run_ida_batch.py",
+      "operation": "modify",
+      "before": "68825b2af378cf21abbd23ea210658beed6d2485105448c6af4f62f0ed073d56",
+      "after": "c80501d61165f0d98c787f953f72fdf06a4954e3c158d02d107d09fe5838f806"
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/test_revision_boundaries.py",
+      "operation": "modify",
+      "before": "f9b7dc685fa395ff7abc2ce63051c81106d80f8515cc8b1f7f8be7b53c95c2c4",
+      "after": "553fd57e542bd92a05d81548a481f2237c881a4532d4dc13fd99ff7413a9b463"
+    },
+    {
+      "path": "skills/skillforge-lgf/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "9d1beae76bcb2261907ff2dabae8a28f7a481ac5e757ca1c71f2b83d32efd079",
+      "after": "75370b96a24c418710542b2a31b8cfd3309180681249024b38640c401ec1a976"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/ai-decision-orchestration.md",
+      "operation": "modify",
+      "before": "12a3095cd4eec0f36632079814ebb5dd6a677b1c4970630902112a8d54a4ef9b",
+      "after": "5c9dbf74c35f112bfaa261341ba9f19821a5344ffa703d3568ece653bb3b8faf"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/external-project-patterns.md",
+      "operation": "modify",
+      "before": "d6bb25b4871a30bb94780be13feea284b052d6fecb85b8a978c65ad45327d6fa",
+      "after": "a7c971b922d8192c823974b73b17b61c1b6ceead1ed6745f1504a2cf0544fda2"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/gas-combat-prediction.md",
+      "operation": "modify",
+      "before": "93b079fe659187cac2a6c8faf975046260a66c191e3b2522fa0fd49b6c38988c",
+      "after": "fe0e0bbc667270ada513bda3d94a4bc99095f2ff98920e67bbe956cd7ccfb7da"
+    },
+    {
+      "path": "skills/skillforge-lgf/references/migration-evidence.md",
+      "operation": "modify",
+      "before": "68b3ac64c702fe2d4b0437b0e2e88267bc59b1fca967747a94786586a96ce9a0",
+      "after": "ff7d847e9657a3dc1338a262d8092d194cef26df518d5b2c7faaa540a216a959"
+    },
+    {
+      "path": "skills/skillforge-lgf/scripts/inspect_workspace.py",
+      "operation": "modify",
+      "before": "10542e4efffa80143f6ea0f03d3b541dac3abc759b2eee6fec18f93994cdb48c",
+      "after": "a7459ca7cc16acde7ac0f66d48ba546cbf5e202adf1bcccc447e6488f1942c9e"
+    },
+    {
+      "path": "skills/skillforge-lgf/tests/test_inspect_workspace.py",
+      "operation": "modify",
+      "before": "0025e6f1d9677e15a7c62a920989b9fb9883d0b7e7f2e3941f3e2a0af63a634d",
+      "after": "8824fa594351dd3e947fc0f5b7d0e527f41ca25668ac2eb4ebe67f803065c92a"
+    },
+    {
+      "path": "skills/skillforge-mfc/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "7f4e216b660e4bb0a34c37375c303d448546cca5617eb3af21b867befb136992",
+      "after": "3373b29b69534d8271ef3086815157756f1d552f66c71ff858f42afd92102b2f"
+    },
+    {
+      "path": "skills/skillforge-mfc/references/dpi-layout-controls.md",
+      "operation": "modify",
+      "before": "003afecc52431dcc53e52b8785b2367a9251dbdf6af6f2f1f7399967d828c901",
+      "after": "919266e181c9cae91bbef51564103ec84d927c87a2c83a5467ab25d1438fd433"
+    },
+    {
+      "path": "skills/skillforge-orchestrator/references/collaboration-policy.md",
+      "operation": "modify",
+      "before": "1f26ca1fe39f00f93b5fbf1f761a2fd9be9da6170fffa345c431d651f846227c",
+      "after": "e2062336c97d086555879d13242ed953b8824d4254bc45cb973dd1c65aacc029"
+    },
+    {
+      "path": "skills/skillforge-qt/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "4fedc71450b47df77abdf9ccfb90747f1dfa6532cb20c5a47264e709f9b28bab",
+      "after": "be774261e8e88c7a4057aa81ed5b5cdfc8f8c43b9667bfab803caa5fdc7719cd"
+    },
+    {
+      "path": "skills/skillforge-qt/references/qobject-threading-shutdown.md",
+      "operation": "modify",
+      "before": "3233a0fc34a2ccc5ec48943042bae45fe697f12ae34682c97373b9049241ee6d",
+      "after": "4195c703390ec5b83398a2509ae7fe2d8b7dfd2772ea9fc86f2948e4243c1b63"
+    },
+    {
+      "path": "skills/skillforge-qt/references/widgets-layout-input-dpi.md",
+      "operation": "modify",
+      "before": "e905d096a97e3d262844c3cf58a7b10d6b257af060285077e55d3fd45fe68903",
+      "after": "63b56ab7c65bdbccb417ddd4ad3a959f6722079e4c2aba118919178786f1af4a"
+    },
+    {
+      "path": "skills/skillforge-qt/references/windows-com-dmsoft.md",
+      "operation": "modify",
+      "before": "b4022bc3be20127b21ebbdb39805e227e9be1f1b356ca4e53d49761181effc64",
+      "after": "37c64c5634a252d337933780d6c76f5f7cf41c0238395afd1d0033beeb45c92a"
+    },
+    {
+      "path": "skills/skillforge-reverse-engineering/references/tools-and-validation.md",
+      "operation": "modify",
+      "before": "8ca62f34f9beadc9b269dbb56f686b5b1cb93c7c18d1ebb6ceb745644da6ee89",
+      "after": "627aa8c94a70e7e026f7d4ce0af67ea46b11054d021179bbdb0f43825b828244"
+    },
+    {
+      "path": "skills/skillforge-reverse-engineering/scripts/probe_binary.py",
+      "operation": "modify",
+      "before": "0509dd7b1f722788c0eccfea853f167ab703241d30fabd60fa9cca4aadfb344e",
+      "after": "ffa10b049e608a9907a17f3560a1abb3b7a7fe5c4c9d04959afa720c7c50c349"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "f8ec13059be9c2f7055298674646b58de7d148f8320186d4285b8c0e01d2969c",
+      "after": "c015eaba5eaa3bbcf6b2b98eb458497a688c289340098bf33a4f6668c61a9c39"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/arpg-item-inventory-patterns.md",
+      "operation": "modify",
+      "before": "859797bbfcf850e69906ba2bfec6068f4a112aedd94c3bb463deacf0ef19d6b4",
+      "after": "22196aef50453eec2d479497dec9f0517898c1982315a0bda91ad88a3dcae5d2"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/framework-composition-patterns.md",
+      "operation": "modify",
+      "before": "47432f7935fb0002099a88741bd7dbc9d57c6d240117410954cebdc10ffcd3b1",
+      "after": "54b782707eede02bf5117ecc82ffe6ffb60734af69e5722ad743a85ba37a4e26"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/gas-prediction-targetdata-patterns.md",
+      "operation": "modify",
+      "before": "8704fdc3828fefdb56a82bcd3a7d37f30624a25c75053d6f2f697f0e139f215d",
+      "after": "2803d8d4575e5d67b44e581f02a3d30051be450a6766d3ce5e7ed61a7176c15e"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/references/statetree-utility-ai-patterns.md",
+      "operation": "modify",
+      "before": "d3c1a655cd103d008ea30fe46dfc998381bac2266b9408f4badfed3c2b4e9c02",
+      "after": "9fb2c561a7b889be1b336d3bd5cf240df8e04e43e97056a990e49019ecac2931"
+    },
+    {
+      "path": "tests/test_patch_installer.py",
+      "operation": "modify",
+      "before": "b39209866f3c6919180b82af5f775f3b05c860096baa082a641d86d399d3ad11",
+      "after": "377569c8370362a583ea3910053092de428ce4b8bc66db385db0e10c16ddf324"
+    },
+    {
+      "path": "tests/test_reverse_binary_probe.py",
+      "operation": "modify",
+      "before": "5fd11b0b1a6800ad6b7d772a2c74d6ed3ea9d1acdc0e18ed74016c4707b1d3b0",
+      "after": "d9e2f817b67d0d85777ff0e2d40a2272f1972a185ec1722daf89871ec1e5bf18"
+    },
+    {
+      "path": "tests/test_transaction_interop.py",
+      "operation": "add",
+      "before": null,
+      "after": "65e497b0f6a806f43cb3afd579ef3a8d099d70d1078c3be96c39700e4e711a73"
+    },
+    {
+      "path": "tests/test_validate_skills.py",
+      "operation": "modify",
+      "before": "e29759ffd11299ab5e0cc3027822c44e00741ea45605d1ce44ac52034c3d25f6",
+      "after": "82a7217287640a2f37dda2a199066cdb380b84560e845592d4fc1135e41f6e2f"
+    }
+  ],
+  "excluded_self": [
+    "docs/transaction-review/change-manifest.json"
+  ]
+}

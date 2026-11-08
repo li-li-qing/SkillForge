@@ -1,0 +1,86 @@
+[
+  {
+    "command": [
+      "python",
+      "-B",
+      "/workspace/shared/skill_evals_v4/round4/fixture/monitor.py",
+      "--config",
+      "/workspace/shared/skill_evals_v4/round4/fixture/config.json",
+      "--event",
+      "idle"
+    ],
+    "exit": 0,
+    "stdout": "{\n  \"ui\": {\n    \"button_enabled\": false\n  },\n  \"monitor\": {\n    \"owner\": \"TaskRunner\",\n    \"status\": \"RUNNING\",\n    \"error_count\": 0\n  },\n  \"source_log\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "-B",
+      "/workspace/shared/skill_evals_v4/round4/fixture/monitor.py",
+      "--config",
+      "/workspace/shared/skill_evals_v4/round4/fixture/config.json",
+      "--event",
+      "success"
+    ],
+    "exit": 0,
+    "stdout": "{\n  \"ui\": {\n    \"button_enabled\": false\n  },\n  \"monitor\": {\n    \"owner\": \"TaskRunner\",\n    \"status\": \"SUCCEEDED\",\n    \"error_count\": 0\n  },\n  \"source_log\": [\n    {\n      \"source\": \"TaskRunner\",\n      \"event\": \"success\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "-B",
+      "/workspace/shared/skill_evals_v4/round4/fixture/monitor.py",
+      "--config",
+      "/workspace/shared/skill_evals_v4/round4/fixture/config.json",
+      "--event",
+      "error"
+    ],
+    "exit": 0,
+    "stdout": "{\n  \"ui\": {\n    \"button_enabled\": false\n  },\n  \"monitor\": {\n    \"owner\": \"TaskRunner\",\n    \"status\": \"RUNNING\",\n    \"error_count\": 0\n  },\n  \"source_log\": [\n    {\n      \"source\": \"TaskRunner\",\n      \"event\": \"task.error\",\n      \"request_id\": \"fixture-001\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "-B",
+      "/workspace/shared/skill_evals_v4/round4/fixture/monitor.py",
+      "--config",
+      "/workspace/shared/skill_evals_v4/round4/work/matched-topic.json",
+      "--event",
+      "idle"
+    ],
+    "exit": 0,
+    "stdout": "{\n  \"ui\": {\n    \"button_enabled\": false\n  },\n  \"monitor\": {\n    \"owner\": \"TaskRunner\",\n    \"status\": \"RUNNING\",\n    \"error_count\": 0\n  },\n  \"source_log\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "-B",
+      "/workspace/shared/skill_evals_v4/round4/fixture/monitor.py",
+      "--config",
+      "/workspace/shared/skill_evals_v4/round4/work/matched-topic.json",
+      "--event",
+      "success"
+    ],
+    "exit": 0,
+    "stdout": "{\n  \"ui\": {\n    \"button_enabled\": false\n  },\n  \"monitor\": {\n    \"owner\": \"TaskRunner\",\n    \"status\": \"SUCCEEDED\",\n    \"error_count\": 0\n  },\n  \"source_log\": [\n    {\n      \"source\": \"TaskRunner\",\n      \"event\": \"success\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "-B",
+      "/workspace/shared/skill_evals_v4/round4/fixture/monitor.py",
+      "--config",
+      "/workspace/shared/skill_evals_v4/round4/work/matched-topic.json",
+      "--event",
+      "error"
+    ],
+    "exit": 0,
+    "stdout": "{\n  \"ui\": {\n    \"button_enabled\": false\n  },\n  \"monitor\": {\n    \"owner\": \"TaskRunner\",\n    \"status\": \"FAILED\",\n    \"error_count\": 1\n  },\n  \"source_log\": [\n    {\n      \"source\": \"TaskRunner\",\n      \"event\": \"task.error\",\n      \"request_id\": \"fixture-001\"\n    },\n    {\n      \"source\": \"ErrorProbe\",\n      \"event\": \"observed_error\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  }
+]

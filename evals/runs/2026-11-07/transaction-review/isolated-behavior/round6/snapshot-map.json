@@ -1,0 +1,14 @@
+{
+  "earlier": {
+    "label": "v4 descriptive only",
+    "hash": "d57d1f45ea5e096aeda3d113b707e1ab76f415112674247ae10c148d084b19c4",
+    "path": "/workspace/shared/skill_evals_v4/v4/skills"
+  },
+  "candidate": {
+    "label": "v5 descriptive only",
+    "hash": "22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526",
+    "path": "/workspace/shared/skill_evals_v4/round6/snapshots/22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526/skills"
+  },
+  "candidate_copy_consistent": true,
+  "copy_attempts": 1
+}

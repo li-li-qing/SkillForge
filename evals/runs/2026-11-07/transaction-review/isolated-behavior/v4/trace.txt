@@ -1,0 +1,6 @@
+READ skills/skillforge-orchestrator/SKILL.md; READ prompt.txt via cat
+READ orchestrator references capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy; LIST project maxdepth3 and skill entries
+READ all skill frontmatter; READ project README.md report.py test_report.py fixture.json; CHECK local .git (if present) status/diff
+READ debugging SKILL.md; RUN python -B -m unittest -v; RUN python -B report.py with fixture.json
+WRITE regression tests in test_report.py; RUN python -B -m unittest -v before implementation
+WRITE report.py strict decimal conversion with Chinese validation errors; RUN python -B -m unittest -v; RUN real CLI fixture and invalid input subprocess assertions; READ final report.py and test_report.py

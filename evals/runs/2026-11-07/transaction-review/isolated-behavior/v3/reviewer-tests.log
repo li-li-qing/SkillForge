@@ -1,0 +1,14 @@
+test_basic (test_report.TotalTests.test_basic) ... ok
+test_csv_counts (test_report.TotalTests.test_csv_counts) ... ok
+test_empty (test_report.TotalTests.test_empty) ... ok
+test_integer_behavior (test_report.TotalTests.test_integer_behavior) ... ok
+test_invalid_strings_raise (test_report.TotalTests.test_invalid_strings_raise) ... ok
+test_invalid_types_raise (test_report.TotalTests.test_invalid_types_raise) ... ok
+test_missing_count_raises (test_report.TotalTests.test_missing_count_raises) ... ok
+test_mixed_counts (test_report.TotalTests.test_mixed_counts) ... ok
+test_signed_and_padded_counts (test_report.TotalTests.test_signed_and_padded_counts) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.001s
+
+OK

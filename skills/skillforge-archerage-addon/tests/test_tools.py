@@ -215,6 +215,31 @@ class LuaTests(unittest.TestCase):
             fake=subprocess.CompletedProcess([],0,'Lua 5.1','')
             with mock.patch.object(self.m.shutil,'which',return_value=sys.executable),mock.patch.object(self.m.subprocess,'run',return_value=fake) as run:
                 r=self.m.check_lua([p],'synthetic-host');self.assertEqual(r['status'],'blocked');self.assertEqual(run.call_count,1)
+    def test_shebang_bytecode_rejected_before_parser(self):
+        # Only a synthetic subprocess boundary: never load these bytes in Lua.
+        for prefix in (b'#!/usr/bin/lua\n', b'#comment\r\n'):
+            with self.subTest(prefix=prefix), tempfile.TemporaryDirectory() as d:
+                p = Path(d) / 'a.lua'
+                p.write_bytes(prefix + b'\x1bLua-not-a-real-chunk')
+                fake = subprocess.CompletedProcess([], 0, 'Lua 5.1', '')
+                with mock.patch.object(self.m.shutil, 'which', return_value=sys.executable), mock.patch.object(self.m.subprocess, 'run', return_value=fake) as run:
+                    result = self.m.check_lua([p], 'synthetic-host')
+                    self.assertEqual(result['status'], 'blocked')
+                    self.assertEqual(run.call_count, 1)
+
+    def test_total_source_budget_before_parser(self):
+        with tempfile.TemporaryDirectory() as d:
+            files = [Path(d) / name for name in ('a.lua', 'b.lua')]
+            for p in files: p.write_bytes(b'return 1')
+            fake = subprocess.CompletedProcess([], 0, 'Lua 5.1', '')
+            with mock.patch.object(self.m, 'MAX_TOTAL', 15, create=True), mock.patch.object(self.m.shutil, 'which', return_value=sys.executable), mock.patch.object(self.m.subprocess, 'run', return_value=fake) as run:
+                result = self.m.check_lua(files, 'synthetic-host')
+                self.assertEqual(result['status'], 'blocked')
+                self.assertIn('source_total_limit', result['reason'])
+                self.assertEqual(run.call_count, 1)
+            with mock.patch.object(self.m, 'MAX_TOTAL', 16, create=True), mock.patch.object(self.m.shutil, 'which', return_value=sys.executable), mock.patch.object(self.m.subprocess, 'run', return_value=fake):
+                self.assertEqual(self.m.check_lua(files, 'synthetic-host')['status'], 'passed')
+
     def test_no_files_is_not_green(self):
         r=self.m.check_lua([],os.environ.get('RS_TEST_LUA51','lua5.1'))
         self.assertNotEqual(r['status'],'passed')
@@ -234,6 +259,18 @@ class LuaTests(unittest.TestCase):
             r=self.m.check_lua([p],exe);self.assertNotEqual(r['status'],'passed')
 
 class SkillTests(unittest.TestCase):
+    def test_eval_readme_counts_and_id_range_match_specs(self):
+        import re
+        readme=(ROOT/'evals/README.md').read_text(encoding='utf-8')
+        summary=re.search(r'共(\d+)道行为题、(\d+)道触发题；行为ID范围(AR-\d+)～(AR-\d+)',readme)
+        self.assertIsNotNone(summary,'README须维护当前题数与行为ID范围')
+        behavior=json.loads((ROOT/'evals/behavior-cases.json').read_text(encoding='utf-8'))
+        triggers=json.loads((ROOT/'evals/trigger-cases.json').read_text(encoding='utf-8'))
+        self.assertEqual(int(summary[1]),len(behavior))
+        self.assertEqual(int(summary[2]),len(triggers))
+        ids=sorted((row['id'] for row in behavior),key=lambda value:int(value.split('-')[-1]))
+        self.assertEqual((summary[3],summary[4]),(ids[0],ids[-1]))
+
     def setUp(self):self.m=module(self,'verify_skill')
     def test_package_structure_valid(self):self.assertEqual(self.m.validate(ROOT),[])
     def test_broken_link_duplicate_case_and_eval_id_fail(self):

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Emit a read-only LGF/GASP/Mover workspace manifest as JSON."""
+"""Emit a read-only LGF/GASP/Mover workspace manifest as JSON.
+Controlled input/encoding errors normally exit 2. Output-I/O errors are failures,
+but interpreter shutdown flushing can replace that code (e.g. CPython 120).
+Do not treat a partial stream or a nonzero exit as a successful manifest.
+"""
 
 from __future__ import annotations
 
@@ -30,9 +34,19 @@ LGF_DOCUMENT_NAMES = (
 
 
 def load_json(path: Path) -> dict[str, Any]:
+    def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"JSON 对象内重复键：{key!r}")
+            result[key] = value
+        return result
+
     try:
-        value = json.loads(path.read_text(encoding="utf-8-sig"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        value = json.loads(path.read_text(encoding="utf-8-sig"), object_pairs_hook=unique_object)
+    except (RecursionError, MemoryError) as exc:
+        raise ValueError(f"无法读取 JSON：{path}: 超出解析资源限制 ({type(exc).__name__})") from exc
+    except (OSError, UnicodeError, ValueError) as exc:
         raise ValueError(f"无法读取 JSON：{path}: {exc}") from exc
     if not isinstance(value, dict):
         raise ValueError(f"JSON 根对象不是对象：{path}")
@@ -51,9 +65,24 @@ def display_path(root: Path, path: Path) -> str:
 def descriptor_modules(data: dict[str, Any], path: Path) -> list[str]:
     modules = data.get("Modules", [])
     if not isinstance(modules, list):
-        raise ValueError(f"{path}: Modules 必须为数组，不能为 null 或其他类型")
-    return [entry["Name"] for entry in modules
-            if isinstance(entry, dict) and isinstance(entry.get("Name"), str)]
+        raise ValueError(f"{path}: $.Modules 必须为数组，不能为 null 或其他类型")
+    names: list[str] = []
+    first_index: dict[str, int] = {}
+    for index, entry in enumerate(modules):
+        location = f"$.Modules[{index}]"
+        if not isinstance(entry, dict):
+            raise ValueError(f"{path}: {location} 必须为对象")
+        name = entry.get("Name")
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError(f"{path}: {location}.Name 必须为非空字符串")
+        if name in first_index:
+            raise ValueError(
+                f"{path}: {location}.Name 重复模块名 {name!r}；"
+                f"首次声明位于 $.Modules[{first_index[name]}].Name"
+            )
+        first_index[name] = index
+        names.append(name)
+    return names
 
 
 def display_paths(root: Path, paths: list[Path]) -> list[str]:
@@ -82,7 +111,7 @@ def find_lgf_plugin(root: Path) -> Path | None:
 
 def collect_build_files(root: Path, lgf_plugin: Path | None) -> tuple[list[Path], list[Path]]:
     project_files = (
-        sorted(path.absolute() for path in (root / "Source").glob("**/*.Build.cs"))
+        sorted(path.absolute() for path in (root / "Source").glob("**/*.Build.cs") if path.is_file())
         if (root / "Source").is_dir()
         else []
     )
@@ -90,23 +119,31 @@ def collect_build_files(root: Path, lgf_plugin: Path | None) -> tuple[list[Path]
     if lgf_plugin is not None:
         plugin_source = lgf_plugin.parent / "Source"
         if plugin_source.is_dir():
-            plugin_files = sorted(path.absolute() for path in plugin_source.glob("**/*.Build.cs"))
+            plugin_files = sorted(path.absolute() for path in plugin_source.glob("**/*.Build.cs") if path.is_file())
     return project_files, plugin_files
 
 
-def plugin_summary(project_data: dict[str, Any], path: Path | None = None) -> dict[str, bool]:
-    result: dict[str, bool] = {}
+def plugin_summary(project_data: dict[str, Any], path: Path | None = None) -> dict[str, bool | None]:
+    """Read explicit project declarations, not effective runtime plugin state."""
+    result: dict[str, bool | None] = {}
     plugins = project_data.get("Plugins", [])
+    source = path or ".uproject"
     if not isinstance(plugins, list):
-        return result
+        raise ValueError(f"{source}: Plugins 必须为数组")
+    seen: set[str] = set()
     for index, entry in enumerate(plugins):
         if not isinstance(entry, dict):
-            continue
+            raise ValueError(f"{source}: Plugins[{index}] 必须为对象")
         name = entry.get("Name")
-        if isinstance(name, str) and name in INTERESTING_PLUGINS:
-            enabled = entry.get("Enabled", False)
-            if type(enabled) is not bool:
-                raise ValueError(f"{path or '.uproject'}: Plugins[{index}].Enabled 必须为布尔值")
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError(f"{source}: Plugins[{index}].Name 必须为非空字符串")
+        if name in seen:
+            raise ValueError(f"{source}: Plugins 中存在重复插件声明 conflict：{name}")
+        seen.add(name)
+        enabled = entry.get("Enabled")
+        if "Enabled" in entry and type(enabled) is not bool:
+            raise ValueError(f"{source}: Plugins[{index}].Enabled 必须为布尔值")
+        if name in INTERESTING_PLUGINS:
             result[name] = enabled
     return dict(sorted(result.items()))
 
@@ -178,21 +215,25 @@ def collect_manifest(
 ) -> dict[str, Any]:
     project_path = find_single_project(root)
     project_data = load_json(project_path)
+    association = project_data.get("EngineAssociation")
+    if association is not None and not isinstance(association, str):
+        raise ValueError(f"{project_path}: $.EngineAssociation 必须为字符串或 null")
     lgf_path = find_lgf_plugin(root)
+    lgf_resolved = lgf_path.resolve() if lgf_path is not None else None
     lgf_data = load_json(lgf_path) if lgf_path is not None else None
     project_build_files, lgf_build_files = collect_build_files(root, lgf_path)
 
     lgf_modules = descriptor_modules(lgf_data, lgf_path) if lgf_data is not None else []
     lgf_source = lgf_path.parent / "Source" if lgf_path is not None else None
-    lgf_headers = list(lgf_source.glob("**/*.h")) if lgf_source and lgf_source.is_dir() else []
-    lgf_sources = list(lgf_source.glob("**/*.cpp")) if lgf_source and lgf_source.is_dir() else []
+    lgf_headers = [path for path in lgf_source.glob("**/*.h") if path.is_file()] if lgf_source and lgf_source.is_dir() else []
+    lgf_sources = [path for path in lgf_source.glob("**/*.cpp") if path.is_file()] if lgf_source and lgf_source.is_dir() else []
     source_inspectable = bool(lgf_build_files and (lgf_headers or lgf_sources))
 
     manifest: dict[str, Any] = {
         "workspace_root": str(root),
         "project": {
             "file": project_path.name,
-            "engine_association": project_data.get("EngineAssociation"),
+            "engine_association": association,
             "engine_association_is_not_verified_version": True,
             "modules": descriptor_modules(project_data, project_path),
             "relevant_plugins": plugin_summary(project_data, project_path),
@@ -200,9 +241,13 @@ def collect_manifest(
         },
         "engine": inspect_engine(engine_root),
         "lgf": {
-            "status": "found" if lgf_path is not None else "missing",
+            "status": "found" if lgf_path is not None else "not_found_in_project",
+            "search_scope": "project_plugins_only",
+            "runtime_enabled_verified": False,
             "found": lgf_path is not None,
             "file": display_path(root, lgf_path) if lgf_path is not None else None,
+            "resolved_file": str(lgf_resolved) if lgf_resolved is not None else None,
+            "descriptor_outside_project": not lgf_resolved.is_relative_to(root.resolve()) if lgf_resolved is not None else None,
             "version_name": lgf_data.get("VersionName") if lgf_data is not None else None,
             "module_count": len(lgf_modules),
             "source_inspectable": source_inspectable,
@@ -221,6 +266,11 @@ def collect_manifest(
         "has_git_metadata": (root / ".git").exists(),
         "limitations": [
             "未读取 .uasset 内部属性",
+            "source_inspectable 仅表示发现 Build.cs 及源码文件；未验证模块完整性、编译或运行",
+            "engine.verified 仅验证提供的 Build.version 版本字段；不证明引擎安装完整、与 EngineAssociation 匹配、可运行或当前 Editor 已连接",
+            "文件清点允许符号链接指向文件；显示路径不证明实际内容位于工程根内",
+            "LGF 仅搜索工程 Plugins；未搜索 Engine/Plugins 或额外插件目录，未找到不证明未安装",
+            "relevant_plugins 仅记录 .uproject 显式声明；null 表示 Enabled 未声明，不代表运行时禁用或启用",
             "未识别或验证 GASP 样例来源与资产修订；需要项目清单和 Unreal 资产报告",
             "未修改或保存任何工程文件",
         ],
@@ -262,7 +312,17 @@ def main() -> int:
     except ValueError as exc:
         print(f"错误：{exc}", file=sys.stderr)
         return 2
-    print(json.dumps(manifest, ensure_ascii=False, indent=2))
+    try:
+        # Complete encoding before touching stdout; ASCII escapes preserve JSON values.
+        encoded = json.dumps(manifest, ensure_ascii=True, indent=2)
+    except (ValueError, RecursionError, MemoryError) as exc:
+        print(f"错误：JSON 编码失败：{root}: {type(exc).__name__}", file=sys.stderr)
+        return 2
+    try:
+        print(encoded, flush=True)
+    except (OSError, ValueError) as exc:
+        print(f"错误：JSON 输出失败，输出可能不完整：{type(exc).__name__}", file=sys.stderr)
+        return 2
     return 0
 
 

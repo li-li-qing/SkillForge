@@ -31,12 +31,20 @@ UI teardown 时增加 generation 或关闭 token，让迟到结果自然失效�
 
 ## 3. `PostMessage` payload 所有权
 
-常见安全模式：
+仅在保证消息被消费或有显式排空协议时，以下模式才完整：
 
 - sender `new Result`；
 - `PostMessage` 成功后 ownership 转给 receiver；
 - `PostMessage` 失败时 sender delete；
 - receiver handler 立即包装 `std::unique_ptr<Result>`，保证早退也释放。
+
+`PostMessage` 成功只表示入队，不保证 handler 会运行。成功投递后窗口销毁、消息未消费时，handler 中的 `unique_ptr` 无法回收 payload；generation 只能拒绝旧结果，不能代替释放。
+
+默认可用拥有结果的 mailbox/queue 持有 `unique_ptr<Result>`，消息只传唤醒标记。关闭时先关闭接收入口，在同步保护下停止或隔离 producer，随后 drain/discard 队列，最后销毁窗口；入队与关闭必须由同一同步协议仲裁。队列的生命周期覆盖 producer，旧 HWND 被复用也不能向新实例应用结果。
+
+回归至少覆盖：成功 Post 后 handler 前关闭、Post 失败、重复关闭和 HWND 复用；每个 payload 恰好释放一次，不能依赖关闭后的 handler 执行。
+
+依据：[Microsoft PostMessageW](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postmessagew)。
 
 高吞吐不要每条记录一个 heap + 一个消息。改为 worker 批量放入 queue，UI 只收到一次“有新数据”通知，再 drain 一个有限 batch。
 
@@ -98,3 +106,11 @@ Pimpl 可以进一步让公开头文件完全看不到 COM 类型。
 WinMerge 当前源码能看到 `AfxBeginThread`、异步 task、atomic cancel/shared state 和 `PostMessage(WM_APP+...)` 结果投递。它证明成熟 MFC 项目仍会使用 MFC worker thread 与消息回 UI，但它的具体 heap payload 写法不是唯一正确实现。
 
 TortoiseGit 多个 dialog 使用 `AfxBeginThread` 避免阻塞窗口，并维护 running/cancel 状态。部分旧代码仍会在 worker 路径触碰 dialog/control，因此蒸馏时只采纳“异步、取消、状态可见性”的机制，不把每个历史线程访问模式当作新项目模板。
+
+## STA host 的消息分发与重入
+
+专用 STA 不只是 CoInitializeEx 加 command queue。它必须按宿主契约分发消息，才能处理跨 apartment 调用与相关广播；不能永久阻塞在纯 condition_variable 或无消息分发的等待循环。可按实际任务组合消息循环与命令/停止事件（如 MsgWaitForMultipleObjects），不要求普通计算线程也改成 STA。
+
+STA 同线程不等于不可重入：分发消息或发出跨 apartment 调用期间可能回调当前对象。不要在半完成的状态迁移或持有回调会再取的锁时随意泵消息；先明确事务状态、重入拒绝/排队规则及关闭时哪些回调仍允许。测试无泵导致回调无法完成，以及回调重入取消/关闭的路径；没有真实 COM 实测时标待验证。
+
+依据：[Microsoft Single-Threaded Apartments](https://learn.microsoft.com/en-us/windows/win32/com/single-threaded-apartments)（2026-11-07 核对）。

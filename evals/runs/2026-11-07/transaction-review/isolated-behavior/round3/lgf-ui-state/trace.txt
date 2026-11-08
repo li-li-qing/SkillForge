@@ -1,0 +1,9 @@
+实际读取命令（按执行顺序）：
+1. cat /workspace/shared/skill_evals_v4/round3/lgf-ui-state/prompt.txt && printf '\n---SKILL---\n' && cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md
+2. for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy; do printf '\n---%s---\n' "$f"; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/$f.md; done; printf '\n---DISCOVERY---\n'; find /workspace/shared/skill_evals_v4/v4/skills -name SKILL.md -not -path '*/evals/*' -print
+3. for d in skillforge-debugging skillforge-ui-design skillforge-lgf skillforge-qt skillforge-mfc; do printf '\n---%s metadata---\n' "$d"; sed -n '1,7p' /workspace/shared/skill_evals_v4/v4/skills/$d/SKILL.md; done; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-debugging/SKILL.md; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-ui-design/SKILL.md
+4. cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-debugging/references/diagnostic-boundaries.md; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-ui-design/references/interaction-states.md
+
+能力检查：exec_command 上述只读调用均成功，exit_code=0。技能发现 scoped-filesystem；技能加载 read-file，未宣称原生调用。file_read restricted，仅指定题面及技能根；file_write restricted，仅本题 raw-answer.txt 和 trace.txt；command_execution restricted，未运行产品命令。外部连接禁止且未调用。实际截图、项目源码、运行日志及应用连接均未提供，运行检查未执行。未读其他题面、evals 内容、评分或报告。
+路由：任务为 UI 执行状态不一致的只读 debug；读取 debugging 与 ui-design。LGF、Qt、MFC 仅核对元数据；无框架证据，未选用领域正文，不以题目录名称推断项目。collaboration_level=unset；答复提供入口选择但不启动实施。无真实项目验证和可复用已证实新经验，不修改技能库。
+写入：仅将用户答复保存至本题 raw-answer.txt，将实际轨迹保存至本题 trace.txt。未自行评分。

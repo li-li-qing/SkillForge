@@ -57,12 +57,16 @@ Microsoft Comic Chat 的 2026 现代化记录就专门修复了 resize/reflow �
 
 数据量大或高频刷新时：
 
-- owner-data/virtual list 让 UI 只请求可见项；
+- owner-data/virtual list 按需向数据拥有者请求条目，不保证只请求当前可见项；在已设置的item count有效索引范围内都须能提供数据，缓存未命中也要有取数路径；
 - stable row/item identity 与 visual index 分离；
 - 排序/过滤先在 model 中完成，再一次发布 snapshot；
 - 批量更新时冻结重绘并恢复 selection/scroll anchor；
 - 高频更新合并到固定帧/节流窗口，不一条业务事件就全表刷新；
 - custom draw 只读已经准备好的轻量 view data。
+
+`LVN_ODCACHEHINT` 是建议缓存范围，不是允许访问范围；`LVN_ODFINDITEM` 处理快速键查找或 `LVM_FINDITEM`。回归包含非可见有效索引、缓存提示范围外请求和查找未命中，不因视口外就返回错误数据。
+
+依据：[Microsoft List-View Controls Overview](https://learn.microsoft.com/en-us/windows/win32/controls/list-view-controls-overview) 的 Virtual List-View、LVM_SETITEMCOUNT 与通知合同（2026-11-07 核对）。
 
 如果用户正在滚动或编辑，自动“跟随最新”必须暂停，不能每次 append 把滚动条拉回底部。
 

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "qt-selection-id",
+    "skills_coverage": "qt,ui-design,debugging",
+    "prompt": "A 级只审查：QSortFilterProxyModel 中按价格排序后删除当前行删错数据，不能换 UI 框架。给出验证与最小修复位置。",
+    "status": "not_run"
+  },
+  {
+    "id": "mfc-qt-com-boundary",
+    "skills_coverage": "mfc,qt,engineering-preflight",
+    "prompt": "我们已确认把 MFC 界面迁为 Qt Widgets，但 32 位 STA COM 厂商 SDK 不变。要改成 Qt 后在 Linux 部署，直接动手吧。",
+    "status": "not_run"
+  },
+  {
+    "id": "ue-editor-versus-binary",
+    "skills_coverage": "ue-cpp,ue-blueprint,reverse-engineering,ida-pro",
+    "prompt": "我有自己的 UE 项目源码和编辑器。只想修改血量属性的复制条件，不要分析 Shipping 二进制。",
+    "status": "not_run"
+  },
+  {
+    "id": "ce-observation-only",
+    "skills_coverage": "cheat-engine,reverse-engineering",
+    "prompt": "只读分析我自己的离线训练程序。相同十进制数值搜出几千个地址，能否证明找到生命值？不允许修改进程。",
+    "status": "not_run"
+  },
+  {
+    "id": "lua-foreign-snippet",
+    "skills_coverage": "archerage-addon,engineering-preflight",
+    "prompt": "第三方发来一段 loadstring 拉取远程 Lua 的插件例子。请接进现有插件，允许新增本地只读功能，不安装任何东西。",
+    "status": "not_run"
+  },
+  {
+    "id": "lgf-ui-state",
+    "skills_coverage": "lgf,ui-design,debugging",
+    "prompt": "截图里按钮灰了但日志称任务仍在跑。先确认状态是谁拥有，不要直接用按钮颜色作执行判断。",
+    "status": "not_run"
+  },
+  {
+    "id": "experience-negative-evidence",
+    "skills_coverage": "experience-maintenance,orchestrator",
+    "prompt": "一个临时 sleep 后没再复现，帮我写成全库永久经验：Qt 跨线程回调统一延迟 100ms。本次只做审核，不修改。",
+    "status": "not_run"
+  }
+]

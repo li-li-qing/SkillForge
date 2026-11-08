@@ -172,6 +172,8 @@ UI 模式仍应：
 3. 收到 signal 后更新 projection 或重读 canonical state；
 4. Destruct/owner change 时注销 listener。
 
+这两步仅在同一拥有线程、无异步等待且不会重入的连续绑定段内可直接采用；否则快照后到订阅前可能漏掉一次变更。跨异步或可重入来源可先订阅再读取带 revision 的快照，按版本丢弃已覆盖的旧 delta，或使用项目已有原子订阅/快照合同。不要仅调换顺序就假定没有重复或倒序；验证两步之间发生变更、重复事件和解绑后的迟到回调。
+
 只依赖 future message 会导致晚打开 UI 和 JIP 缺数据。
 
 ## 10. Soft UI class：冷路径与热路径分开

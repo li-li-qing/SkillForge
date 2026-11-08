@@ -1,0 +1,49 @@
+结论：问题不是没保存 handle，而是把“聚合效果的 handle”误当成“装备独占的授予凭据”。本轮只审查，不修改项目。
+
+### 为什么卸 A 会把 B 一起删掉
+
+AggregateByTarget 将同一 GE 在同一目标上的应用合并。题设已经明确是一个 active effect、StackCount=2，不是 A/B 各有一个独立 active effect。A.Handle 与 B.Handle 在正常聚合路径下指向同一个聚合实例；保存两份值不会创建两份所有权。业务上 A/B 各贡献一层，GAS 的这个 handle 却只标识整个实例，并不标识“第 A 层”。[Epic 栈类型说明](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/EGameplayEffectStackingType)
+
+通常 C++ 的省略参数调用使用 StacksToRemove=-1，含义是移除所有层，因此两层都没了。已核对的 Epic 5.3 C++ 文档明确 -1 的全栈删除语义，但页面未展示默认参数；5.5 Python 文档明确展示默认 -1。你的 C++ 版本/封装仍应核对实际头文件，而不能仅凭网页断言其默认值。[C++ API](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UAbilitySystemComponent/RemoveActiveGameplayEffect?application_version=5.3) · [Python API](https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/AbilitySystemComponent?application_version=5.5)
+
+### 本题最小可靠方案
+
+保留聚合配置，每件成功授予一层的装备记录“尚未撤销的贡献数=1”，卸装时显式减一层：
+
+```cpp
+// 示意：必须先确认 A 本次装备确实还有一层未撤销贡献。
+ASC->RemoveActiveGameplayEffect(A.Handle, 1);
+```
+
+但不能只改这一行后仍把 handle 有效性当成装备状态。最小配套是：
+
+- 记录装备实例/本次授予代次、目标 ASC、聚合 handle、未撤销贡献数。只有实际成功增加一层才记账，失败或上限导致未增加时不记一层。
+- 卸 A 先检查 A 的贡献记录，防重复与回调重入；在合法权限侧执行一次减栈，结合返回值与实际栈数变化确认结果，成功后只清 A 的记录和 A.Handle 副本。不能清 B 的记录，也不能再对该共享 handle 做一次“兜底全删”。失败时不假记成功，更不能盲目重试减掉 B。
+- 正常 2→1 后，聚合实例仍存在，B.Handle 仍指向它；后续卸 B 同样显式减 1，最后一层消失才结束该实例。仅调用 handle 的 IsValid 一类检查不足以证明效果仍活跃，更不足以证明 A 还有贡献。
+- 重装 A 是一次新授予，重新保存本次 Apply 的返回 handle 和贡献记录，不能复用已撤销记录。若 B 仍在，新应用会再次聚合；若已清空，取得新实例的 handle，不依赖旧句柄值。
+
+这里“减一层”保留 B 的含义是保留等价的一层 +10，并不是 GAS 识别后精确挑出名为 A 的栈。本题两件数值相同、Infinite、每件一层，因此这套贡献记账足够。若外部驱散/其他系统也可改同一栈，必须统一协调贡献账并处理实例移除；不能让各系统独立减栈后账目仍自称完整。
+
+若以后每件装备的数值、来源上下文或清理策略不同，我更建议使用不聚合的独立效果实例（StackingType=None），每件保存自己的 handle，再整实例撤销。仅填不同 SourceObject 不会自动把 AggregateByTarget 拆开；AggregateBySource 也不能直接理解成“按装备分组”，要核实 source ASC 的身份，相同来源 ASC 的两件装备仍可能聚合。当前无需为这道等值单层问题先重构配置。
+
+### 验证步骤与预期（尚未执行）
+
+每步同时记录装备贡献账、ASC 实际 active effect 数、实际栈数、力量和 handle 指向；不要只看 UI。
+
+| 操作 | 预期聚合效果状态 | 力量 |
+|---|---|---:|
+| 初始 | 无该效果 | 100 |
+| 装 A，再装 B | 1 个实例，2 层；A/B 各记 1 | 120 |
+| 卸 A | 原实例剩 1 层；仅 B 仍有贡献 | 110 |
+| 再次请求卸 A | 无操作，不再减层 | 110 |
+| 卸 B | 最后一层移除，无该实例 | 100 |
+| 此时重装 A | 新授予记录，1 个实例、1 层 | 110 |
+| 再卸 A | 无该实例 | 100 |
+
+再独立复测“装 A/B→卸 A→B 未卸时重装 A”：应 120→110→120，原聚合实例重新达到 2 层；接着卸 B 应为 110、再卸 A 为 100。反向卸装顺序也应对称。补测重复卸装、Apply 失败和外部效果被清除后的旧记录处理，保证不误扣别人的层；若项目联网，在服务器执行业务变更，并观察客户端最终属性同步，不假定客户端可取得完整 GE 列表。
+
+### 证据边界
+
+已做：读取题面与相关技能，核对上述 Epic 官方 API/枚举文档，完成条件性审查。未做：读取项目源码/GE 资产、编译、PIE 或联机测试，故没有“修复通过”的运行结论。
+
+落地前具体核实：当前 UE 版本的 AbilitySystemComponent.h 默认参数、RemoveActiveGameplayEffect 的部分减栈及返回值语义、Apply 聚合时返回 handle 的路径、实际 GE 的栈倍率/回调与额外移除行为。当前工程版本、构建目标/平台/配置均未知；若后续实施，先从当前 .uproject、EngineAssociation/Build.version 与 Target.cs 确认，不编造构建命令。本轮没有修改共享技能或新增已验证经验。

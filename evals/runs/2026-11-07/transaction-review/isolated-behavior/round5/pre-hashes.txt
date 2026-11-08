@@ -1,0 +1,2 @@
+e5fc73889c9f2d12af1198a00a564caadf71778c66c079d814535f037239fdfe  /workspace/shared/skill_evals_v4/round5/ida-unavailable/fixture/target
+23883b7d5afa2f19cae4e3e070275f47896ede1a6687e358e1710cc4f9457896  /workspace/shared/skill_evals_v4/round5/qt-shutdown/fixture/snippet.cpp

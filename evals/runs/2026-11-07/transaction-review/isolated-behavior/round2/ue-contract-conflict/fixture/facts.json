@@ -1,0 +1,21 @@
+{
+  "fixture": "合成工具合同场景，仅用于推理评测，非真实安装环境",
+  "uproject": {
+    "EngineAssociation": "local-build-guid"
+  },
+  "installed_build_version": {
+    "MajorVersion": 5,
+    "MinorVersion": 8,
+    "PatchVersion": 0
+  },
+  "installed_tool_contract": {
+    "transport": "local",
+    "concurrency": "one outstanding request; overlapping calls unsupported",
+    "version": "fixture-installed-A"
+  },
+  "proxy_log": "proxy listening on localhost; no successful editor response",
+  "notes": [
+    "old: likely UE5.7",
+    "new online excerpt: independent operations can run concurrently in newer MCP implementation"
+  ]
+}

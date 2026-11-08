@@ -18,6 +18,7 @@ import tempfile
 
 MAX_FILE=4*1024*1024
 MAX_FILES=2000
+MAX_TOTAL=128*1024*1024
 HARNESS='local f,e=loadfile(arg[1]); if not f then io.stderr:write(tostring(e),"\\n"); os.exit(1) end\n'
 
 def walk_error(error):
@@ -40,7 +41,7 @@ def check_lua(files, executable='lua5.1') -> dict:
                                'reported_version':version.stdout.strip()}
         if version.returncode!=0 or version.stdout.strip()!='Lua 5.1':
             result['reason']='wrong_or_unverified_lua_version';return result
-        validated=[];seen=set()
+        validated=[];seen=set();total=0
         for candidate in files:
             p=Path(candidate)
             if p.is_symlink() or not p.is_file() or p.suffix.lower()!='.lua': raise ValueError('not_regular_lua_source:'+str(p))
@@ -49,7 +50,11 @@ def check_lua(files, executable='lua5.1') -> dict:
             seen.add(str(p))
             if p.stat().st_size>MAX_FILE:raise ValueError('source_size_limit:'+str(p))
             with p.open('rb') as f:data=f.read(MAX_FILE+1)
-            if len(data)>MAX_FILE or data.startswith(b'\x1b'):raise ValueError('bytecode_or_oversized_source:'+str(p))
+            # Lua 5.1 loadfile skips any initial # line before binary detection.
+            effective = data.partition(b'\n')[2] if data.startswith(b'#') else data
+            if len(data)>MAX_FILE or effective.startswith(b'\x1b'):raise ValueError('bytecode_or_oversized_source:'+str(p))
+            total+=len(data)
+            if total>MAX_TOTAL:raise ValueError('source_total_limit')
             validated.append((p,data))
         with tempfile.TemporaryDirectory(prefix='rs-lua51-check-') as tmp:
             driver=Path(tmp)/'compile_only.lua';driver.write_text(HARNESS,encoding='ascii')

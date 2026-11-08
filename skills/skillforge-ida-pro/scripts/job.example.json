@@ -1,0 +1,8 @@
+{
+  "operation": "functions",
+  "args": [],
+  "kwargs": {"start": 0, "limit": 100},
+  "wait_for_analysis": false,
+  "output": "/replace/with/local/authorized-output/functions-page-1.json",
+  "format": "json"
+}

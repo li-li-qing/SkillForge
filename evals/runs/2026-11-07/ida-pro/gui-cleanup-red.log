@@ -1,0 +1,110 @@
+test_applied_and_completed_fsync_failures_preserve_verified_mutation (__main__.AuditFailureTests.test_applied_and_completed_fsync_failures_preserve_verified_mutation) ... ok
+test_close_failure_clears_job_and_stops_timer (__main__.GuiFailureTests.test_close_failure_clears_job_and_stops_timer) ... ERROR
+test_first_write_failure_and_close_failure_clear_job (__main__.GuiFailureTests.test_first_write_failure_and_close_failure_clear_job) ... ERROR
+test_register_failure_and_close_failure_clear_job (__main__.GuiFailureTests.test_register_failure_and_close_failure_clear_job) ... ERROR
+test_terminal_write_failure_does_not_publish (__main__.GuiFailureTests.test_terminal_write_failure_does_not_publish) ... ERROR
+test_address (__main__.OfflineTests.test_address) ... ok
+test_auto_wait_cancelled (__main__.OfflineTests.test_auto_wait_cancelled) ... ok
+test_bounds (__main__.OfflineTests.test_bounds) ... ok
+test_commit_rejects_database_identity_mismatch (__main__.OfflineTests.test_commit_rejects_database_identity_mismatch) ... ok
+test_commit_revalidation_partial_failure (__main__.OfflineTests.test_commit_revalidation_partial_failure) ... ok
+test_csv_injection (__main__.OfflineTests.test_csv_injection) ... ok
+test_documented_report_operations (__main__.OfflineTests.test_documented_report_operations) ... ok
+test_export_exclusive (__main__.OfflineTests.test_export_exclusive) ... ok
+test_json_rpc (__main__.OfflineTests.test_json_rpc) ... ok
+test_loopback_only (__main__.OfflineTests.test_loopback_only) ... ok
+test_main_dispatch (__main__.OfflineTests.test_main_dispatch) ... ok
+test_main_dispatch_rejected (__main__.OfflineTests.test_main_dispatch_rejected) ... ok
+test_markdown_fence (__main__.OfflineTests.test_markdown_fence) ... ok
+test_missing_hexrays (__main__.OfflineTests.test_missing_hexrays) ... ok
+test_mutation_dry_run (__main__.OfflineTests.test_mutation_dry_run) ... ok
+test_mutation_duplicate_rejected (__main__.OfflineTests.test_mutation_duplicate_rejected) ... ok
+test_mutation_hash_required (__main__.OfflineTests.test_mutation_hash_required) ... ok
+test_pending_analysis_refused (__main__.OfflineTests.test_pending_analysis_refused) ... ok
+test_protocol_version_rejected (__main__.OfflineTests.test_protocol_version_rejected) ... ok
+test_report_failure_retains_context (__main__.OfflineTests.test_report_failure_retains_context) ... ok
+test_report_rejects_code (__main__.OfflineTests.test_report_rejects_code) ... ok
+test_report_reuses_explicit_task_identity (__main__.OfflineTests.test_report_reuses_explicit_task_identity) ... ok
+test_rpc_error (__main__.OfflineTests.test_rpc_error) ... ok
+test_sha (__main__.OfflineTests.test_sha) ... ok
+test_sse_rpc (__main__.OfflineTests.test_sse_rpc) ... ok
+test_stale_recheck_is_audited (__main__.OfflineTests.test_stale_recheck_is_audited) ... ok
+test_type_readback_controls_success (__main__.OfflineTests.test_type_readback_controls_success) ... ok
+test_assembly_page_boundaries (__main__.PaginationTests.test_assembly_page_boundaries) ... ok
+test_callees_fanout_and_unresolved_are_resumable (__main__.PaginationTests.test_callees_fanout_and_unresolved_are_resumable) ... ok
+test_callers_scan_limit_includes_filtered_refs (__main__.PaginationTests.test_callers_scan_limit_includes_filtered_refs) ... ok
+test_callgraph_reports_child_pages (__main__.PaginationTests.test_callgraph_reports_child_pages) ... ok
+test_exact_page_and_empty (__main__.PaginationTests.test_exact_page_and_empty) ... ok
+test_pseudocode_line_pages (__main__.PaginationTests.test_pseudocode_line_pages) ... ok
+test_string_nested_xref_has_continuation (__main__.PaginationTests.test_string_nested_xref_has_continuation) ... ok
+test_strings_reports_real_prefix_cost_and_deep_limit (__main__.PaginationTests.test_strings_reports_real_prefix_cost_and_deep_limit) ... ok
+test_xrefs_all_pages_no_loss (__main__.PaginationTests.test_xrefs_all_pages_no_loss) ... ok
+
+======================================================================
+ERROR: test_close_failure_clears_job_and_stops_timer (__main__.GuiFailureTests.test_close_failure_clears_job_and_stops_timer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 363, in test_close_failure_clears_job_and_stops_timer
+    self.assertEqual(self.callbacks[0](),-1)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/gui_strings_export.py", line 60, in tick
+    job["stream"].close()
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 361, in <lambda>
+    self.stream.close=lambda:(_ for _ in ()).throw(OSError("close fault"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 361, in <genexpr>
+    self.stream.close=lambda:(_ for _ in ()).throw(OSError("close fault"))
+OSError: close fault
+
+======================================================================
+ERROR: test_first_write_failure_and_close_failure_clear_job (__main__.GuiFailureTests.test_first_write_failure_and_close_failure_clear_job)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 379, in test_first_write_failure_and_close_failure_clear_job
+    with self.assertRaises(RuntimeError):self.gs.start("new.jsonl")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/gui_strings_export.py", line 25, in start
+    stream.close()
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 378, in <lambda>
+    self.stream.close=lambda:(_ for _ in ()).throw(OSError("close fault"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 378, in <genexpr>
+    self.stream.close=lambda:(_ for _ in ()).throw(OSError("close fault"))
+OSError: close fault
+
+======================================================================
+ERROR: test_register_failure_and_close_failure_clear_job (__main__.GuiFailureTests.test_register_failure_and_close_failure_clear_job)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 372, in test_register_failure_and_close_failure_clear_job
+    with self.assertRaises(RuntimeError):self.gs.start("new.jsonl")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/gui_strings_export.py", line 70, in start
+    stream.close()
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 370, in <lambda>
+    self.stream.close=lambda:(_ for _ in ()).throw(OSError("close fault"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 370, in <genexpr>
+    self.stream.close=lambda:(_ for _ in ()).throw(OSError("close fault"))
+OSError: close fault
+
+======================================================================
+ERROR: test_terminal_write_failure_does_not_publish (__main__.GuiFailureTests.test_terminal_write_failure_does_not_publish)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 386, in test_terminal_write_failure_does_not_publish
+    self.assertEqual(self.callbacks[0](),-1)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/gui_strings_export.py", line 57, in tick
+    job["stream"].write(json.dumps({"event": event, "count": job["count"],
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 385, in <lambda>
+    self.stream.write=lambda s:(_ for _ in ()).throw(OSError("write fault"))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 385, in <genexpr>
+    self.stream.write=lambda s:(_ for _ in ()).throw(OSError("write fault"))
+OSError: write fault
+
+----------------------------------------------------------------------
+Ran 41 tests in 0.031s
+
+FAILED (errors=4)

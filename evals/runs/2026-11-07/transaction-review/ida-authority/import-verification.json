@@ -1,0 +1,65 @@
+{
+  "frozen_files_verified": 23,
+  "candidate_files_matched": [
+    "skills/skillforge-ida-pro/SKILL.md",
+    "skills/skillforge-ida-pro/scripts/ida_evidence.py",
+    "skills/skillforge-ida-pro/scripts/test_revision_boundaries.py",
+    "skills/skillforge-ida-pro/scripts/test_examples.py",
+    "skills/skillforge-ida-pro/scripts/job.example.json",
+    "skills/skillforge-ida-pro/scripts/gui_strings_export.py",
+    "skills/skillforge-ida-pro/scripts/mcp_function_query.py",
+    "skills/skillforge-ida-pro/scripts/ida_mutations.py",
+    "skills/skillforge-ida-pro/scripts/run_ida_batch.py",
+    "skills/skillforge-ida-pro/references/unreal-engine.md",
+    "skills/skillforge-ida-pro/references/static-and-decompiler.md",
+    "skills/skillforge-ida-pro/references/dynamic-debugging.md",
+    "skills/skillforge-ida-pro/references/workflows.md",
+    "skills/skillforge-ida-pro/references/sources.md",
+    "skills/skillforge-ida-pro/references/idapython-api.md",
+    "skills/skillforge-ida-pro/references/class-recovery.md",
+    "skills/skillforge-ida-pro/references/mcp-adapters.md",
+    "skills/skillforge-ida-pro/references/idapython-sources.md",
+    "skills/skillforge-ida-pro/assets/analysis-report.md",
+    "skills/skillforge-ida-pro/assets/change-log.json"
+  ],
+  "source": "/workspace/shared/ida_authority_probe",
+  "files": [
+    {
+      "path": "integrity.json",
+      "sha256": "9904ecfefdeeae7c96c336525563bca2348121fa2ff98edcce22beaff5b4c7ee"
+    },
+    {
+      "path": "results.json",
+      "sha256": "7c90d92e3b2f019d6eeda7b1e8a8bc3c10f58f65f7aac2c9493b294555f0ae9a"
+    },
+    {
+      "path": "readonly.json",
+      "sha256": "5538b67aac4bb05973b5369291cf6e4d1e065bb964df93168bd07aadea781a77"
+    },
+    {
+      "path": "readonly-response.md",
+      "sha256": "f5ac885224e730aad59312b93d330b3659fb843ba98361d340af4b00dac740ab"
+    },
+    {
+      "path": "mismatch-response.md",
+      "sha256": "f2e4ad8d6bd6616fff97d26ba15de19dbd1f2cfb2db08fc13004971da6ffe5d3"
+    },
+    {
+      "path": "write_mismatch.json",
+      "sha256": "0983fc96853f86c3c6fdae7bed93409d291ffe8437672e706d380b39e0d35e22"
+    },
+    {
+      "path": "frozen-manifest.json",
+      "sha256": "3f5e8950e030b15ca77b0aaa990989ee48fedba84895370651b37f8dad5decd5"
+    },
+    {
+      "path": "HARNESS.md",
+      "sha256": "8d1cd5984296ad7b15c9b1868ff5b994e0dac30d945ffe2f93a3d670b5ca509a"
+    },
+    {
+      "path": "rubric.json",
+      "sha256": "85642cd39bdb3af7ff6a38a1b2458945d09d1a7e2ef11afa075a428cd1bb68cb"
+    }
+  ],
+  "excluded": "重复snapshot内容；保留冻结manifest"
+}

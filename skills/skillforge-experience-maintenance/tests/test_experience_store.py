@@ -28,6 +28,124 @@ class ExperienceStoreTests(unittest.TestCase):
             if getattr(exc,'winerror',None)==1314: self.skipTest('Windows symlink privilege unavailable; junction cases run separately')
             raise
 
+    def test_final_journal_failure_reports_recovery_required(self):
+        from unittest.mock import patch
+        from contextlib import redirect_stdout, redirect_stderr
+        import io
+        for action, final, expected in [('promote', 'committed', 'new'), ('rollback', 'rolled_back', 'old')]:
+            with self.subTest(action=action):
+                # Fresh base for each transaction.
+                (self.root/self.target).write_text('old')
+                i=self.proposal()
+                if action == 'rollback':
+                    self.m.promote(self.root,i,reviewed=True)
+                original=self.m._json_write
+                def fail_final(path, record):
+                    if record.get('status') == final:
+                        raise OSError('injected final journal failure')
+                    return original(path,record)
+                out,err=io.StringIO(),io.StringIO()
+                with patch.object(self.m,'_json_write',side_effect=fail_final), redirect_stdout(out), redirect_stderr(err):
+                    code=self.m.main(['--root',str(self.root),action,i,'--reviewed'])
+                self.assertEqual((self.root/self.target).read_text(),expected)
+                recovered=self.m.recover(self.root,i)
+                self.assertEqual(code,3)
+                result=json.loads(out.getvalue())
+                self.assertEqual(result['status'],'recovery_required')
+                self.assertEqual(result['id'],i)
+                self.assertEqual(result['target'],self.target)
+                self.assertEqual(result['current_sha256'],self.m._sha(expected.encode()))
+                self.assertFalse(result['retry_safe'])
+                self.assertNotIn('REFUSED',err.getvalue())
+                self.assertEqual(recovered['status'],final)
+                self.assertFalse(recovered['rule_modified'])
+                self.assertEqual((self.root/self.target).read_text(),expected)
+
+    def test_v5_cleanup_failure_preserves_committed_outcome(self):
+        from unittest.mock import patch
+        i=self.proposal()
+        original=Path.unlink
+        def fail_lock(path,*args,**kwargs):
+            if path.name=='write.lock': raise PermissionError('cleanup denied')
+            return original(path,*args,**kwargs)
+        with patch.object(Path,'unlink',fail_lock):
+            with self.assertRaises(self.m.StoreError) as caught:
+                self.m.promote(self.root,i,reviewed=True)
+        self.assertEqual(caught.exception.result['journal_status'],'committed')
+        self.assertEqual(caught.exception.result['status'],'lock_cleanup_failed')
+        self.assertEqual((self.root/self.target).read_text(),'new')
+
+    def test_v5_pending_updater_overlap_blocks_both_writes(self):
+        for action in ['promote','rollback']:
+            with self.subTest(action=action):
+                i=self.proposal()
+                if action=='rollback': self.m.promote(self.root,i,reviewed=True)
+                folder=self.root/'.skillforge-backups'/'pending';folder.mkdir(parents=True,exist_ok=True)
+                state=folder/'state.json'
+                state.write_text(json.dumps({'status':'partial','planned':[{'path':self.target}],'retire_dirs':[]}))
+                try:
+                    with self.assertRaises(self.m.StoreError):
+                        getattr(self.m,action)(self.root,i,reviewed=True)
+                finally: state.unlink();folder.rmdir()
+
+    def test_v5_cleanup_failure_rollback_and_primary_error(self):
+        from unittest.mock import patch
+        i=self.proposal();self.m.promote(self.root,i,reviewed=True)
+        original=Path.unlink
+        def fail_lock(path,*args,**kwargs):
+            if path.name=='write.lock': raise PermissionError('cleanup denied')
+            return original(path,*args,**kwargs)
+        with patch.object(Path,'unlink',fail_lock):
+            with self.assertRaises(self.m.LockCleanupFailed) as caught:
+                self.m.rollback(self.root,i,reviewed=True)
+        self.assertEqual(caught.exception.result['journal_status'],'rolled_back')
+        (self.root/'.skillforge-memory/write.lock').unlink()
+        j=self.proposal();(self.root/self.target).write_text('conflicting')
+        with patch.object(Path,'unlink',fail_lock):
+            with self.assertRaises(self.m.LockCleanupFailed) as caught:
+                self.m.promote(self.root,j,reviewed=True)
+        self.assertIn('STALE',caught.exception.result['operation_error'])
+        self.assertIs(caught.exception.__cause__,caught.exception.original_error)
+
+    def test_v5_replaced_lock_not_removed(self):
+        with self.m._lock(self.root):
+            (self.root/'.skillforge-memory/write.lock').write_text('replacement')
+        self.assertEqual((self.root/'.skillforge-memory/write.lock').read_text(),'replacement')
+
+    def test_v5_update_scope_unknown_retirement_and_unrelated(self):
+        folder=self.root/'.skillforge-backups'/'pending';folder.mkdir(parents=True)
+        state=folder/'state.json'
+        for record, blocked in [
+            ({'status':'partial','planned':[],'retire_dirs':['skills/example']},True),
+            ({'status':'partial','planned':[{'path':self.target+'.extra'}],'retire_dirs':[]},False),
+            ({'status':'partial','planned':[{'path':'skills/other/SKILL.md'}],'retire_dirs':[]},False),
+            ({'status':'partial','planned':[]},True),
+            ({'status':'partial','planned':[{'path':'../escape'}],'retire_dirs':[]},True),
+            ({'status':'applied'},False),
+            ({'status':'reconciled','resolution':'inspected'},False),
+        ]:
+            with self.subTest(record=record):
+                state.write_text(json.dumps(record))
+                if blocked:
+                    with self.assertRaises(self.m.StoreError): self.m._pending_updates(self.root,self.target)
+                else: self.m._pending_updates(self.root,self.target)
+        state.write_text('{bad')
+        with self.assertRaisesRegex(self.m.StoreError,'scope unknown'):
+            self.m._pending_updates(self.root,self.target)
+
+    def test_v5_invalid_lock_text_preserves_primary_error(self):
+        original=self.m.StoreError('primary business failure')
+        with self.assertRaises(self.m.LockCleanupFailed) as caught:
+            with self.m._lock(self.root):
+                (self.root/'.skillforge-memory/write.lock').write_bytes(b'\xff')
+                raise original
+        self.assertIs(caught.exception.__cause__,original)
+        self.assertIs(caught.exception.original_error,original)
+        self.assertIsInstance(caught.exception.cleanup_error,UnicodeDecodeError)
+        self.assertEqual(caught.exception.result['operation_error'],'primary business failure')
+        self.assertEqual(caught.exception.result['lock_path'],str(self.root/'.skillforge-memory/write.lock'))
+        self.assertEqual((self.root/'.skillforge-memory/write.lock').read_bytes(),b'\xff')
+
     def test_proposal_does_not_change_rule(self):
         i=self.proposal();self.assertTrue(i)
         self.assertEqual((self.root/self.target).read_text(),'old')

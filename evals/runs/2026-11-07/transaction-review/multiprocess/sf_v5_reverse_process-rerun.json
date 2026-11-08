@@ -1,0 +1,55 @@
+[
+  {
+    "kill": false,
+    "during_unrelated_update": [
+      "error",
+      "PatchError",
+      "Shared rule writer lock exists; do not steal it"
+    ],
+    "experience": [
+      "ok",
+      {
+        "id": "088096d07c954a408779c4bb8a2f98e3",
+        "status": "committed",
+        "target": "skills/demo/references/other.md"
+      }
+    ],
+    "after_update": [
+      "ok",
+      {
+        "status": "applied",
+        "changes": 1,
+        "backup": "/tmp/sf-reverse-f_fxbl57/root/.skillforge-backups/3780dabacf5c4f1398d2eb375095b6cb"
+      }
+    ]
+  },
+  {
+    "kill": true,
+    "during_unrelated_update": [
+      "error",
+      "PatchError",
+      "Shared rule writer lock exists; do not steal it"
+    ],
+    "exit": -15,
+    "lock_remains": true,
+    "journal": "prepared",
+    "after_explicit_lock_cleanup": [
+      "error",
+      "PatchError",
+      "Interrupted experience transaction exists; recover it first"
+    ],
+    "recover": {
+      "id": "e22ec701f56f4242a6f8c75c4fef0c25",
+      "status": "committed",
+      "rule_modified": false
+    },
+    "after_recover": [
+      "ok",
+      {
+        "status": "applied",
+        "changes": 1,
+        "backup": "/tmp/sf-reverse-7tg1gjja/root/.skillforge-backups/dd5d330018fc4ee6b7a20e8af33641dc"
+      }
+    ]
+  }
+]

@@ -36,3 +36,15 @@ MCP 可以驱动编辑器，但不自动保证 C++ 已编译/加载。没有直�
 ## 依据
 
 [Epic UE 5.8 Unreal MCP](https://dev.epicgames.com/documentation/unreal-engine/unreal-mcp-in-unreal-editor?application_version=5.8) 及当前安装版本的插件、Toolset schema。接口处于实验阶段，每次以当前能力为准；本参考不把 HCJCGame 的工具命名空间和路径当其他项目默认值。
+
+## 代理恢复与同Editor协作
+
+代理在线、unreal_mcp_status与缓存目录不证明Editor现时可达。沿原连接核对项目/进程，恢复后做一次只读Unreal调用，再刷新当前schema；不能据状态页在线直接执行待写操作，不另起竞争代理。
+
+依赖调用及同资产保存/重编译按顺序执行并核对结果。并发以安装版本合同为准：Epic5.8文档要求串行，较新官方技能允许工具支持时独立调用重叠。未核实则对该连接保守串行；确认支持才并行独立任务，发送顺序不保证完成顺序，不因此暂停无关工作。用户PIE/未保存工作继续按原有边界保护。
+
+## Cooked / Shipping发布边界
+
+UE5.8服务存在Runtime模块，Editor适配器负责工具集发现。发行时核对模块、实际StartServer路径、显式工具注册、启动配置和监听地址；不能凭模块存在断言服务已启动或公网可达，也不假定Cook自动移除服务。实际可达性需另取证。
+
+补充来源：[Epic官方unreal-mcp技能](https://github.com/EpicGames/unreal-engine-skills-for-claude-code-plugin/blob/0e27bde2b55c5d3f6948532f4296aaa3654d8f4b/skills/unreal-mcp/SKILL.md)与同提交references/operations.md，MIT，2026-10-23提交，2026-11-07读取；与5.8文档的并发差异须按安装版本核对，不照搬全量保存/停止用户PIE建议。

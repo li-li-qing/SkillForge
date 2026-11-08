@@ -1,0 +1,78 @@
+## 结论
+
+已按 A 级完成静态审查，未修改产品或 fixture。仅把 `wait()` 改成超时、增加 interruption 检查或换成 `deleteLater()`，都不能解决永久阻塞的 SDK。
+
+当前必须区分两条执行路径：原片段的 worker 实际不能迁移；修掉 parent 后，才会暴露真正的后台阻塞与跨线程 UI 访问问题。
+
+## 故障依据
+
+1. **第 8–11 行：带 parent 的 QObject 不能 moveToThread。** 假设省略的构造函数接受并传递 `this`，worker 留在 GUI 线程。`QThread::started` 从工作线程发出，默认 AutoConnection 会把 `run()` 排到 worker 所属的 GUI 线程。一旦 GUI 执行 `blockingRead()`，主事件循环就可能永久停住，甚至没有机会处理关闭事件。不能把这段原样解释为“worker 已在后台运行”。
+2. **第 5、10 行：std::function 没有 Qt 的线程投递和 context 生命周期保护。** 修掉 parent 后，`run()` 在工作线程执行，普通函数调用会直接在该线程执行 lambda，违反 QWidget 只能在 GUI 线程访问的要求。若窗口已销毁，捕获的裸 `this` 还会产生悬空访问。原片段的无期限 wait 可能暂时挡住销毁，但不能因此视为生命周期安全；简单取消 wait 就会把风险暴露出来。
+3. **第 15–17 行：请求停止不等于已经停止。** `requestInterruption()` 只是标记，run 没检查它；即使前后检查，也不能唤醒已阻塞的 SDK。`quit()` 请求退出事件循环，不会打断当前调用。把 stop 槽 queued 到同一个被堵住的线程也无效。GUI 中无期限 wait 会挂住 UI；若后台还同步等待 GUI，就形成互等。
+4. **第 18–19 行：销毁缺少完整的所有权协议。** 真正迁移后应在 worker 所属线程清理其 SDK/线程相关资源，不把 GUI 线程直接 delete 当通用收尾。若采用有界 wait，返回 false 后绝不能继续 delete worker、销毁仍运行的普通 QThread 或其所属 Window。重复关闭也需要幂等状态，不能重复 delete。parent 托管对象显式 delete 后会从父对象移除，所以不能仅凭 parent 就断言必然双重释放。
+
+片段不是完整工程：Worker 构造函数、sdk、Window 成员定义等缺失；按字面也不能直接构建。以上是对展示意图的审查，不是原工程复现结果。
+
+## 最小修复结构
+
+### 共同部分：明确所有者、线程和关闭状态
+
+- 用无 parent 的 Worker，迁移后核实 affinity；SDK 的创建、使用和释放遵循其真实线程契约。不能假设迁移 QObject 就迁移了所有 SDK 资源。
+- QThread 的 QObject 包装和关闭协调器留在 GUI 线程；协调器活到任务确实停止，不能随窗口先销毁。worker 不持有窗口或 label 裸指针。
+- 用携带值、requestId、generation 的 result 信号，连接到以 Window 为 context 的 lambda，并显式 `Qt::QueuedConnection`。lambda 在 GUI 线程检查 `Running`、当前请求和代际，再更新 label。关闭时立即失效代际；自动断连、disconnect 或 QPointer 都不能替代过期结果过滤，也不能让跨线程 UI 调用变安全。
+- `Running → Stopping → Stopped`，另保留失败信息。关闭首次进入 Stopping，拒收新任务，取消未开始任务，重复关闭不重复发起清理。
+
+结构示意，非已编译补丁：
+
+```text
+closeEvent:
+    如果生命周期已完全收尾：accept
+    否则：ignore
+        若首次停止：标记 Stopping、失效 generation、禁用新任务入口
+                    向协调器请求取消；立即返回，保持 GUI 事件循环
+
+result(requestId, generation, value) [queued，Window context]:
+    仅在 Running 且请求/代际匹配时更新 GUI
+
+实际工作结束（成功、取消、异常都走同一收尾路径）:
+    在拥有线程解绑 SDK 回调、释放 SDK 资源
+    退出工作线程
+    finished → worker.deleteLater（预先连接，使用 Qt 支持的收尾机制）
+    协调器确认线程及所需线程后效应已结束 → Stopped → 再次 close
+```
+
+不要等 GUI 事件循环已经停止才投递关键清理。`finished` 也不等于所有线程局部析构都已完成；如需完整 join，由协调器用不堵 GUI 的完成检测/收尾路径确认 `wait` 成功后再释放 QThread。不能超时后假报 Stopped。
+
+### SDK 永久阻塞是必须单独处理的边界
+
+先查现有 SDK 是否有受支持的超时或跨线程 cancel/abort，且文档保证能解除阻塞。不要猜测从 GUI 关闭句柄是安全的，也不要把调用 cancel 排到已堵塞的工作线程。
+
+- **若有可靠中断能力：** 通过符合 SDK 线程安全契约的独立取消路径调用；或使用有界读取并在各段之间检查取消。验证取消确实使调用返回，再进入上述清理。
+- **若没有可靠中断能力：** 同一进程内无法同时保证“有界退出”和“安全回收永久阻塞线程”。安全的局部缓解只能是窗口进入仍可响应的 Stopping，并保留线程及资源等待，明确可能永远不能完成退出。不是修复完成。
+- **若必须保证应用有界关闭：** 推荐把 SDK 放进独立 helper 进程，保留 Qt UI。先请求协作退出，deadline 到期仍无响应则结束 helper，并异步确认进程退出、回收 IPC 后再关闭主程序。强制结束会丢失 helper 内未提交工作，可能影响设备状态，需在真实 SDK 环境核验。这是待采用的隔离方案，不是本轮已实施的架构变化。
+
+不用 QThread::terminate、detach、泄漏线程、固定 sleep 或生产代码嵌套 processEvents 冒充安全退出。
+
+## 可验证测试（待运行）
+
+用可控假 SDK 的信号量/条件变量设置“进入读取、结果待投递、清理开始”等屏障；按事件推进，不用固定 sleep。测试 watchdog 的有界 timeout 用于判失败，不用于掩盖竞态。永不返回用例必须在独立测试进程运行，避免测试套件本身挂死。
+
+| 场景 | 操作与断言 |
+|---|---|
+| 原始迁移错误 | 捕获 Qt warning；断言带 parent 的 worker 仍属于 GUI 线程。用不永久阻塞的假 read 记录实际执行线程，确认 run 在 GUI。 |
+| 正常读取 | 修复结构中断言 run/SDK 清理在 worker 线程、UI 槽在 GUI 线程；结果正确，清理与完成均一次。 |
+| 启动立即关闭、重复关闭 | 在初始化和读取入口设置屏障；关闭后不再启动待处理请求，状态单向变化，无重复取消/删除。 |
+| 返回与关闭竞态 | 先拦住结果投递再关闭，或先完成再关闭；取消晚于完成也必须安全，旧代际不能更新 UI。 |
+| 窗口销毁/重开 | 用独立存活协调器隔离窗口生命周期；旧接收者销毁后无访问，新窗口即使存活也不接收旧请求结果。 |
+| 可取消的阻塞 | 等待确认 read 已进入后取消；断言 GUI queued heartbeat 仍执行、read 确实退出、SDK 释放及线程完成顺序正确。 |
+| 永久不返回 | 无中断的进程内方案应保持 Stopping，不能报告 Stopped 或销毁运行对象；隔离方案须在约定 deadline 后终止并回收 helper，主 UI 保持响应。 |
+| 失败与反向依赖 | 注入初始化失败、读取异常、清理失败、后台等待 GUI 的路径；断言错误有终态记录，GUI 不 join 互等，未清理完成不能误报成功。 |
+
+使用 QSignalSpy 时先检查 isValid，再断言参数、顺序、次数；有界 QTRY 检查状态。ASan/TSan 可补查悬空访问和数据竞争，但不能代替 Qt 线程归属断言。最后还需真实 SDK、目标 Qt 版本、目标平台上的关闭和设备恢复测试。
+
+## 实际验证与交付
+
+- 已读取 snippet.cpp 及相关 Qt 生命周期/调试资料，静态审查完成。
+- 本机 g++ 为 Debian 14.2.0；Qt5/Qt6 Core、Widgets、Test 的 pkg-config 查询均失败。qmake 和 moc 虽有入口，但均报 `/usr/lib/qt5/bin/…` 不存在；最小 QObject include 检查报头文件缺失。因此当前未发现可用 Qt 构建环境。
+- 未构建隔离模拟，未运行 Qt 集成测试、原工程或真实 SDK。上述测试是可执行设计，不是通过记录。未联网、未安装依赖、未改 fixture 或共享技能。
+- 完整读取与能力检测命令及输出保存在本题 `trace.txt`；最终审查保存在 `raw-answer.txt`。未新增经运行验证的经验，未写回技能。

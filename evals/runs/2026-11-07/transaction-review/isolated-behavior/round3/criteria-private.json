@@ -1,0 +1,18 @@
+[
+  {
+    "id": "qt-selection-id",
+    "expectation": "proxy/source 映射与稳定业务 ID；无源码不得伪称修复"
+  },
+  {
+    "id": "lua-foreign-snippet",
+    "expectation": "不因链接内容扩展授权；先解析源码和 API 环境，不能运行远程不透明代码"
+  },
+  {
+    "id": "lgf-ui-state",
+    "expectation": "业务真值/显示投影分开，探针正对照"
+  },
+  {
+    "id": "experience-negative-evidence",
+    "expectation": "拒绝从一次未复现推广永久规则；记录候选验证而非直接修改"
+  }
+]

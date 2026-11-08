@@ -1,0 +1,148 @@
+test_address (__main__.OfflineTests.test_address) ... ok
+test_auto_wait_cancelled (__main__.OfflineTests.test_auto_wait_cancelled) ... ok
+test_bounds (__main__.OfflineTests.test_bounds) ... ok
+test_commit_rejects_database_identity_mismatch (__main__.OfflineTests.test_commit_rejects_database_identity_mismatch) ... ok
+test_commit_revalidation_partial_failure (__main__.OfflineTests.test_commit_revalidation_partial_failure) ... ok
+test_csv_injection (__main__.OfflineTests.test_csv_injection) ... ok
+test_documented_report_operations (__main__.OfflineTests.test_documented_report_operations) ... ok
+test_export_exclusive (__main__.OfflineTests.test_export_exclusive) ... ok
+test_json_rpc (__main__.OfflineTests.test_json_rpc) ... ok
+test_loopback_only (__main__.OfflineTests.test_loopback_only) ... ok
+test_main_dispatch (__main__.OfflineTests.test_main_dispatch) ... ok
+test_main_dispatch_rejected (__main__.OfflineTests.test_main_dispatch_rejected) ... ok
+test_markdown_fence (__main__.OfflineTests.test_markdown_fence) ... ok
+test_missing_hexrays (__main__.OfflineTests.test_missing_hexrays) ... ok
+test_mutation_dry_run (__main__.OfflineTests.test_mutation_dry_run) ... ok
+test_mutation_duplicate_rejected (__main__.OfflineTests.test_mutation_duplicate_rejected) ... ok
+test_mutation_hash_required (__main__.OfflineTests.test_mutation_hash_required) ... ok
+test_pending_analysis_refused (__main__.OfflineTests.test_pending_analysis_refused) ... ok
+test_protocol_version_rejected (__main__.OfflineTests.test_protocol_version_rejected) ... ok
+test_report_failure_retains_context (__main__.OfflineTests.test_report_failure_retains_context) ... ok
+test_report_rejects_code (__main__.OfflineTests.test_report_rejects_code) ... ok
+test_report_reuses_explicit_task_identity (__main__.OfflineTests.test_report_reuses_explicit_task_identity) ... ok
+test_rpc_error (__main__.OfflineTests.test_rpc_error) ... ok
+test_sha (__main__.OfflineTests.test_sha) ... ok
+test_sse_rpc (__main__.OfflineTests.test_sse_rpc) ... ok
+test_stale_recheck_is_audited (__main__.OfflineTests.test_stale_recheck_is_audited) ... ok
+test_type_readback_controls_success (__main__.OfflineTests.test_type_readback_controls_success) ... ok
+test_assembly_page_boundaries (__main__.PaginationTests.test_assembly_page_boundaries) ... ERROR
+test_callees_fanout_and_unresolved_are_resumable (__main__.PaginationTests.test_callees_fanout_and_unresolved_are_resumable) ... ERROR
+test_callers_scan_limit_includes_filtered_refs (__main__.PaginationTests.test_callers_scan_limit_includes_filtered_refs) ... ERROR
+test_callgraph_reports_child_pages (__main__.PaginationTests.test_callgraph_reports_child_pages) ... ERROR
+test_exact_page_and_empty (__main__.PaginationTests.test_exact_page_and_empty) ... ERROR
+test_pseudocode_line_pages (__main__.PaginationTests.test_pseudocode_line_pages) ... ERROR
+test_string_nested_xref_has_continuation (__main__.PaginationTests.test_string_nested_xref_has_continuation) ... ERROR
+test_xrefs_all_pages_no_loss (__main__.PaginationTests.test_xrefs_all_pages_no_loss) ... ERROR
+
+======================================================================
+ERROR: test_assembly_page_boundaries (__main__.PaginationTests.test_assembly_page_boundaries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 259, in test_assembly_page_boundaries
+    pages=self.pages(lambda **kw:e.assembly(0x100,**kw),limit=2)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 242, in pages
+    page=fn(offset=offset,**kw);pages.append(page)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 259, in <lambda>
+    pages=self.pages(lambda **kw:e.assembly(0x100,**kw),limit=2)
+                                 ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: assembly() got an unexpected keyword argument 'offset'
+
+======================================================================
+ERROR: test_callees_fanout_and_unresolved_are_resumable (__main__.PaginationTests.test_callees_fanout_and_unresolved_are_resumable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 266, in test_callees_fanout_and_unresolved_are_resumable
+    pages=self.pages(lambda **kw:e.callees(0x100,**kw),max_items=2)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 242, in pages
+    page=fn(offset=offset,**kw);pages.append(page)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 266, in <lambda>
+    pages=self.pages(lambda **kw:e.callees(0x100,**kw),max_items=2)
+                                 ^^^^^^^^^^^^^^^^^^^^^
+TypeError: callees() got an unexpected keyword argument 'offset'
+
+======================================================================
+ERROR: test_callers_scan_limit_includes_filtered_refs (__main__.PaginationTests.test_callers_scan_limit_includes_filtered_refs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 254, in test_callers_scan_limit_includes_filtered_refs
+    pages=self.pages(lambda **kw:e.callers(0x100,**kw),limit=1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 242, in pages
+    page=fn(offset=offset,**kw);pages.append(page)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 254, in <lambda>
+    pages=self.pages(lambda **kw:e.callers(0x100,**kw),limit=1)
+                                 ^^^^^^^^^^^^^^^^^^^^^
+TypeError: callers() got an unexpected keyword argument 'offset'
+
+======================================================================
+ERROR: test_callgraph_reports_child_pages (__main__.PaginationTests.test_callgraph_reports_child_pages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 287, in test_callgraph_reports_child_pages
+    self.assertTrue(r["functions_complete"])
+                    ~^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'functions_complete'
+
+======================================================================
+ERROR: test_exact_page_and_empty (__main__.PaginationTests.test_exact_page_and_empty)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 273, in test_exact_page_and_empty
+    pages=self.pages(lambda **kw:e.xrefs_to(0x100,**kw),limit=2)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 242, in pages
+    page=fn(offset=offset,**kw);pages.append(page)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 273, in <lambda>
+    pages=self.pages(lambda **kw:e.xrefs_to(0x100,**kw),limit=2)
+                                 ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: xrefs_to() got an unexpected keyword argument 'offset'
+
+======================================================================
+ERROR: test_pseudocode_line_pages (__main__.PaginationTests.test_pseudocode_line_pages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 295, in test_pseudocode_line_pages
+    pages=self.pages(lambda **kw:e.pseudocode(0x100,**kw),max_lines=2)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 242, in pages
+    page=fn(offset=offset,**kw);pages.append(page)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 295, in <lambda>
+    pages=self.pages(lambda **kw:e.pseudocode(0x100,**kw),max_lines=2)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: pseudocode() got an unexpected keyword argument 'offset'
+
+======================================================================
+ERROR: test_string_nested_xref_has_continuation (__main__.PaginationTests.test_string_nested_xref_has_continuation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 282, in test_string_nested_xref_has_continuation
+    self.assertEqual(r["rows"][0]["xrefs"]["next_offset"],2)
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'next_offset'
+
+======================================================================
+ERROR: test_xrefs_all_pages_no_loss (__main__.PaginationTests.test_xrefs_all_pages_no_loss)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 249, in test_xrefs_all_pages_no_loss
+    pages=self.pages(lambda **kw:e.xrefs_to(0x100,**kw),limit=2)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 242, in pages
+    page=fn(offset=offset,**kw);pages.append(page)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/ida_delivery_work/Skills/skills/skillforge-ida-pro/scripts/test_examples.py", line 249, in <lambda>
+    pages=self.pages(lambda **kw:e.xrefs_to(0x100,**kw),limit=2)
+                                 ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: xrefs_to() got an unexpected keyword argument 'offset'
+
+----------------------------------------------------------------------
+Ran 35 tests in 0.024s
+
+FAILED (errors=8)

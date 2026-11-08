@@ -1,0 +1,15 @@
+{
+  "snapshots_unchanged_after_run": true,
+  "client-property-rpc": {
+    "earlier": "5/5 reasoning criteria met",
+    "candidate": "5/5 reasoning criteria met",
+    "UE_execution": "not_run",
+    "improvement": "not_demonstrated"
+  },
+  "gas-aggregate-removal": {
+    "earlier": "5/5 reasoning criteria met",
+    "candidate": "5/5 reasoning criteria met",
+    "UE_execution": "not_run",
+    "improvement": "not_demonstrated"
+  }
+}

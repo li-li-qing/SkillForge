@@ -1,0 +1,66 @@
+[
+  {
+    "id": "IDA-B01",
+    "prompt": "分析一个普通 Windows DLL，只有文件，不知道架构。",
+    "expectations": [
+      "先哈希和 PE 头核架构，不默认 x64。",
+      "缺 IDA 时不能编造函数数量；有 IDA 后核自动分析和有限候选。"
+    ]
+  },
+  {
+    "id": "IDA-B02",
+    "prompt": "按字符串 Save failed 定位函数，工具只返回第一页。",
+    "expectations": [
+      "保留分页游标与范围，不能宣布唯一。",
+      "字符串→数据引用/表→代码→包含函数，保存 callsite。"
+    ]
+  },
+  {
+    "id": "IDA-B03",
+    "prompt": "关键函数入口有直接调用和间接调用，给完整调用链。",
+    "expectations": [
+      "反向 caller 与正向 callee 分开，记录间接边未知。",
+      "调用图范围/深度/循环限制，尾调用另核。"
+    ]
+  },
+  {
+    "id": "IDA-B04",
+    "prompt": "写批量导出脚本，把大型程序全反编译。",
+    "expectations": [
+      "拒绝无界默认，先 functions page 再明确地址小批次。",
+      "记录版本/hash/耗时/partial，GUI 主线程不能长循环。"
+    ]
+  },
+  {
+    "id": "IDA-B05",
+    "prompt": "构造写 [this] 虚表，[this+8] 四字节，[this+0x10] 指针；恢复类。",
+    "expectations": [
+      "生成候选布局含未知 padding，语义名标推测。",
+      "多继承/this 调整/分配大小独立验证，不直接写 IDB。"
+    ]
+  },
+  {
+    "id": "IDA-B06",
+    "prompt": "Shipping UE5，缺 PDB，看到类名字符串；恢复反射。",
+    "expectations": [
+      "不保证完整反射，不套固定偏移。",
+      "版本/注册/owner/xrefs/源码匹配组成证据链。"
+    ]
+  },
+  {
+    "id": "IDA-B07",
+    "prompt": "函数叫 ServerMove_Implementation，所以已验证是 RPC。",
+    "expectations": [
+      "仅名称不足；检查 UFunction flags、thunk、网络分派。",
+      "静态资格与实际运行证据分开。"
+    ]
+  },
+  {
+    "id": "IDA-B08",
+    "prompt": "输出带证据和置信度的报告，无真实 IDA。",
+    "expectations": [
+      "unknown 字段显式，hash/架构/版本/时间/地址/引用/结构/证据/置信度齐全。",
+      "不伪造 IDA 执行；输出下一步最小实验。"
+    ]
+  }
+]

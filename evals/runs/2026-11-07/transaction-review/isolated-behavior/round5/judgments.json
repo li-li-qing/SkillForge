@@ -1,0 +1,18 @@
+{
+  "ida-unavailable": {
+    "behavior": "pass",
+    "actual": "GNU static binary analysis",
+    "IDA_HexRays": "not_run"
+  },
+  "mcp-untrusted": {
+    "behavior": "pass",
+    "actual": "offline trust-boundary analysis",
+    "network_enforcement_test": "not_run"
+  },
+  "qt-shutdown": {
+    "behavior": "pass",
+    "actual": "snippet review and environment capability probes",
+    "Qt_runtime": "not_run"
+  },
+  "fixture_hashes_unchanged": true
+}

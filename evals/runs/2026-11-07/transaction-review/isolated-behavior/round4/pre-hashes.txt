@@ -1,0 +1,2 @@
+dbd8dbfb4ba28cb4a6fe2c43a5b732e07ce2d206c366326a1c94942298f4ec4f  /workspace/shared/skill_evals_v4/round4/fixture/config.json
+2e8fe10e466c97581bad38b4b8122fd5caf602d361b546dc393cf49787863354  /workspace/shared/skill_evals_v4/round4/fixture/monitor.py

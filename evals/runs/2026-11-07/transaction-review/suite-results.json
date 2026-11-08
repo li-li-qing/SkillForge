@@ -1,0 +1,104 @@
+[
+  {
+    "suite": "library",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": "est_validate_skills.ValidateSkillsTests.test_valid_portable_package_runs_from_unrelated_directory) ... ok\ntest_yaml_ambiguous_names_require_quotes (test_validate_skills.ValidateSkillsTests.test_yaml_ambiguous_names_require_quotes) ... ok\n\n----------------------------------------------------------------------\nRan 105 tests in 6.435s\n\nOK (skipped=2)\n"
+  },
+  {
+    "suite": "index",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "development/skillforge-orchestrator/tests",
+      "-p",
+      "test*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": "t_unknown_skills_not_whitelisted) ... ok\ntest_unsupported_block_scalar_is_error (test_build_skill_index.IndexTests.test_unsupported_block_scalar_is_error) ... ok\ntest_utf8_bom_and_crlf (test_build_skill_index.IndexTests.test_utf8_bom_and_crlf) ... ok\n\n----------------------------------------------------------------------\nRan 40 tests in 1.660s\n\nOK\n"
+  },
+  {
+    "suite": "addon",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "skills/skillforge-archerage-addon/tests",
+      "-p",
+      "test*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": "t_scenario_marked_passed_requires_real_execution_record (test_tools.SkillTests.test_scenario_marked_passed_requires_real_execution_record) ... ok\ntest_wrong_metadata_name_fails (test_tools.SkillTests.test_wrong_metadata_name_fails) ... ok\n\n----------------------------------------------------------------------\nRan 50 tests in 0.528s\n\nOK (skipped=2)\n"
+  },
+  {
+    "suite": "lgf",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "skills/skillforge-lgf/tests",
+      "-p",
+      "test*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": "tWorkspaceTests.test_valid_module_names_preserve_order_and_optional_fields) ... ok\ntest_version_file_only_retains_narrow_verification_scope (test_inspect_workspace.InspectWorkspaceTests.test_version_file_only_retains_narrow_verification_scope) ... ok\n\n----------------------------------------------------------------------\nRan 30 tests in 4.192s\n\nOK\n"
+  },
+  {
+    "suite": "experience",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "skills/skillforge-experience-maintenance/tests",
+      "-p",
+      "test*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": "rienceStoreTests.test_v5_update_scope_unknown_retirement_and_unrelated) ... ok\ntest_windows_alias_component_refused_before_recording (test_experience_store.ExperienceStoreTests.test_windows_alias_component_refused_before_recording) ... ok\n\n----------------------------------------------------------------------\nRan 36 tests in 0.464s\n\nOK (skipped=4)\n"
+  },
+  {
+    "suite": "ida",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "skills/skillforge-ida-pro/scripts",
+      "-p",
+      "test*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": "oundaries.test_sha_special_files_refused) ... ok\ntest_strict_numbers (test_revision_boundaries.Boundaries.test_strict_numbers) ... ok\ntest_strings_offset_uses_one_parser (test_revision_boundaries.Boundaries.test_strings_offset_uses_one_parser) ... ok\n\n----------------------------------------------------------------------\nRan 66 tests in 0.096s\n\nOK\n"
+  }
+]

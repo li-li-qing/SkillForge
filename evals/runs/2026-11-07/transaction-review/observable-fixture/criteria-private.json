@@ -1,0 +1,11 @@
+{
+  "frozen_before_execution": true,
+  "criteria": [
+    "先实际复现并区分owner与projection",
+    "空trace不直接证明回调未调用；用可见受控正对照验证观测路径（或记录具体受阻）",
+    "识别挂载前已更新且订阅不补快照的根因",
+    "最小修复并验证挂载前/后的值及owner未被UI改写",
+    "不把本地模拟当Qt/UE/LGF实机或原第三轮partial已通过"
+  ],
+  "limits": "单一明确fixture，无旧新版对照，不归因技能造成收益；诊断动作本身提示了关注点。"
+}

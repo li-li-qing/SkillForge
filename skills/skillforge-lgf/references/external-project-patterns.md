@@ -114,7 +114,7 @@ LGF 使用前先核对 UE5.7/Iris 当前路径。FastArray 条目复制与 Item 
 
 ### Equipment -> GAS 可逆授予
 
-Obsidian 为每个 EquipmentEntry 保存 Authority-only GrantedHandles，装备时记录 AbilitySpecHandle/ActiveGameplayEffectHandle，卸装和 swap-out 精确撤销。这个模式直接适合 LGF：**grant source owns revoke handles**。
+Obsidian 为每个 EquipmentEntry 保存 Authority-only GrantedHandles，装备时记录 AbilitySpecHandle/ActiveGameplayEffectHandle，卸装和 swap-out 精确撤销。可吸收来源保存凭证的模式，但 active GE handle 不保证逐装备独占：共享堆叠不能整实例删除，Instant 不能靠 active handle 撤销。
 
 不要通过 GameplayTag 或 Ability class 全局扫描后删除，因为同一内容可能来自职业、技能树、Buff 或另一件装备。可用 ItemInstance/Equipment source 做 GAS `SourceObject`，但持久化使用稳定 ItemId，而不是 UObject 地址/handle。
 
@@ -280,7 +280,7 @@ Query 支持 Section -> Slot -> Item 的 predicate early-out，也值得吸收�
 
 ### AbilitySet 与 copy-empty-handle 反例
 
-AbilitySet 本身的 GrantedHandles 模式值得保留：AbilitySpecHandle、ActiveGameplayEffectHandle、AttributeSet 都可以按 grant source 精确撤销。
+AbilitySet 本身的 GrantedHandles 模式值得保留：AbilitySpecHandle、独立 active GE instance、独占授予的 AttributeSet 可按来源管理；共享 GE 堆叠要另管实际来源贡献/层数、上限、刷新和到期，不能整实例删除；Instant 不依赖 active handle 反向撤销。UE5.8 [StackingType](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/EGameplayEffectStackingType) 与 [GE lifetime](https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-effects-for-the-gameplay-ability-system-in-unreal-engine) 是版本依据，目标版本需复核。
 
 但该 commit 的 `UDaAbilitySystemComponent::InitAbilitiesWithPawnData` / `GrantSet` 先把空局部 `FDaAbilitySet_GrantedHandles` 拷入数组，再调用 `GiveToAbilitySystem` 填局部变量，存在 `copy-empty-handle` 风险。LGF 不复制这个顺序。
 

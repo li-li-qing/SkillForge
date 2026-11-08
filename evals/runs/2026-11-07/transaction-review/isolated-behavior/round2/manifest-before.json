@@ -1,0 +1,8 @@
+{
+  "shared-write/fixture/notes.md": "68dc90262906ad07a784849989b5282139606584b740913ec811f3f4bcf0c6bf",
+  "shared-write/fixture/context.txt": "4650cddbd07e6e3ee7d34a4249c16c37c4f7188153febc99392dcb637234087e",
+  "shared-write/fixture/baseline.md": "f55aec19c7c6bc662817f33ab99ffffd9cd2e5d8d6ea8010c42d9f82f44e569e",
+  "readonly-reverse/fixture/target": "e5fc73889c9f2d12af1198a00a564caadf71778c66c079d814535f037239fdfe",
+  "readonly-reverse/fixture/target.c": "e8380d941d0fb4f5c1eb379219d3747be274be49fc9c61517988a9a1799ecde7",
+  "ue-contract-conflict/fixture/facts.json": "2234f73dc91537a9af518e095bf32d422e681be76cbb62ffc4c6971ae75cc82c"
+}

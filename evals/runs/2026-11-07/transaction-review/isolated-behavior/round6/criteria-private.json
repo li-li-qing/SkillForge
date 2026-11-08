@@ -1,0 +1,16 @@
+{
+  "client-property-rpc": [
+    "明确普通复制属性由服务器到客户端，客户端本地赋值不自动更新服务器",
+    "可靠 RPC 调用不把本地属性状态隐式同步，不能靠延迟/ForceNetUpdate 修复",
+    "传意图/槽位参数到 Server RPC 或服务器已维护权威选择，服务器校验拥有者/范围/库存等后使用",
+    "客户端 UI 与权威结果分离，提出服务器+拥有者+其他客户端与非法参数验证",
+    "没有真实UE环境则运行not_run"
+  ],
+  "gas-aggregate-removal": [
+    "识别同ASC聚合可能共用active effect/handle，不能将handle视为装备独占租约",
+    "不默认RemoveActiveGameplayEffect(handle)只删一层，指出默认全删语义需版本核实",
+    "若栈不可区分且装备都是同质一层，显式移除一层并同步外部贡献台账可行，不能伪称精确删除A来源层",
+    "若要求独立来源/生命周期采用不聚合独立effect或适合的独立来源设计，不能声称AggregateBySource必然按装备隔离",
+    "测试A/B卸载重装、计数、失效handle及其他贡献，未运行标注"
+  ]
+}

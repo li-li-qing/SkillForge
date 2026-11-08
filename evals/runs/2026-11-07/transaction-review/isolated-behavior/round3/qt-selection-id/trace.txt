@@ -1,0 +1,16 @@
+任务：A 级 / direct / review。只审查 Qt 排序后删除错行；不换框架，不执行产品修改。
+授权读取范围：本题 prompt.txt 与 v4/skills 下技能和参考，不读 evals。仅输出 raw-answer.txt 与 trace.txt。
+
+实际读取命令（按执行顺序）：
+1. cat /workspace/shared/skill_evals_v4/round3/qt-selection-id/prompt.txt && printf '\n---ENTRY---\n' && cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md
+2. for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy; do printf '\n---%s---\n' "$f"; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/$f.md; done; printf '\n---SKILL DISCOVERY---\n'; find /workspace/shared/skill_evals_v4/v4/skills -name SKILL.md -not -path '*/evals/*'
+3. for s in skillforge-qt skillforge-debugging skillforge-ui-design; do printf '\n---%s METADATA---\n' "$s"; sed -n '1,7p' /workspace/shared/skill_evals_v4/v4/skills/$s/SKILL.md; done; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/SKILL.md; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-debugging/SKILL.md
+4. cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/references/model-view-performance.md; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/assets/review-handoff.md; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/references/testing-build-deployment.md
+以上命令均 exit_code=0。
+
+技能选择：入口后按元数据选择 Qt（Domain/Model View）与 debugging（Method）。UI design 只读元数据；任务是身份映射，不改视觉布局，Qt 与 debugging 已覆盖。未加载其他领域或评测资料。
+能力核对：基于宿主工具说明、隔离任务授权及 exec_command 的真实返回。
+skill_discovery=scoped-filesystem；skill_loading=read-file（没有声称原生调用）；file_read=restricted；file_write=restricted（仅两份输出）；command_execution=restricted（读取及输出文件写入）；artifact_delivery=text-only+本地指定输出文件；network_access=禁止本任务使用，未连接；isolated_worker=宿主可见但未使用；context_meter=unknown；context_compaction=unknown。
+未提供工程源码/Qt 版本/构建入口/运行现场，不搜索其他工程，不检查系统 Qt 安装，不执行构建、产品测试或外部查询。
+产出为条件性审查：proxy/source/稳定 ID 边界、最小修复落点及可执行的验证步骤。全部运行验证 not_run，未把预期作为通过证据。
+写入：以 shell here-doc 写入本目录 raw-answer.txt 与 trace.txt；无其他文件写入，无经验库维护，无自行评分。

@@ -1,8 +1,8 @@
 [
   {
-    "id":"MFC-01",
-    "prompt":"MFC 对话框里用 AfxBeginThread 扫描 5 万个文件，worker 直接调用 m_List.InsertItem。关闭窗口时偶发崩溃。请审查并给修复方案。",
-    "expectations":[
+    "id": "MFC-01",
+    "prompt": "MFC 对话框里用 AfxBeginThread 扫描 5 万个文件，worker 直接调用 m_List.InsertItem。关闭窗口时偶发崩溃。请审查并给修复方案。",
+    "expectations": [
       "指出 MFC 控件应由 UI 线程拥有，worker 不直接修改 CListCtrl",
       "设计 worker result queue 或 typed WM_APP payload + PostMessage 回 UI，并明确 payload ownership",
       "加入 request/generation 或 receiver token，说明仅 IsWindow 不能防止旧结果打到新实例",
@@ -11,9 +11,9 @@
     ]
   },
   {
-    "id":"MFC-02",
-    "prompt":"Dialog-based MFC 工具同时有菜单、工具栏按钮和 Ctrl+R 刷新。三处现在各写一套 EnableWindow/checked 逻辑，状态经常不一致。请重构。",
-    "expectations":[
+    "id": "MFC-02",
+    "prompt": "Dialog-based MFC 工具同时有菜单、工具栏按钮和 Ctrl+R 刷新。三处现在各写一套 EnableWindow/checked 逻辑，状态经常不一致。请重构。",
+    "expectations": [
       "让同一动作共享 command ID/handler，不让三个入口直接维护三份业务逻辑",
       "用 ON_UPDATE_COMMAND_UI 或现有 command target 统一 enabled/checked 状态",
       "PreTranslateMessage 若参与快捷键，只负责输入适配而不复制业务 command",
@@ -21,9 +21,9 @@
     ]
   },
   {
-    "id":"MFC-03",
-    "prompt":"MFC C++17 工具通过 COM 调大漠插件。现在 UI 创建 COM 对象后把 IDispatch* 直接交给 std::thread，多线程偶发 RPC 错误。希望继续保持 UI 流畅。",
-    "expectations":[
+    "id": "MFC-03",
+    "prompt": "MFC C++17 工具通过 COM 调大漠插件。现在 UI 创建 COM 对象后把 IDispatch* 直接交给 std::thread，多线程偶发 RPC 错误。希望继续保持 UI 流畅。",
+    "expectations": [
       "识别 COM apartment/thread-affinity 问题，不把裸 interface pointer 当普通跨线程指针",
       "提出专用 STA host thread 或合法 COM marshaling，并让每个 COM 线程独立初始化/反初始化",
       "Pimpl/adapter 隔离 IDispatch/BSTR/VARIANT/HRESULT，Model 只看项目值类型",
@@ -32,9 +32,9 @@
     ]
   },
   {
-    "id":"MFC-04",
-    "prompt":"modeless CDialog 用 new 创建，关闭后偶发 double free；另一个 dialog 是 MainFrame 的成员对象。有人建议所有类都在 PostNcDestroy 里 delete this。请审查。",
-    "expectations":[
+    "id": "MFC-04",
+    "prompt": "modeless CDialog 用 new 创建，关闭后偶发 double free；另一个 dialog 是 MainFrame 的成员对象。有人建议所有类都在 PostNcDestroy 里 delete this。请审查。",
+    "expectations": [
       "区分 C++ object、HWND 与 owner 生命周期",
       "指出 self-owned heap modeless 才可能在匹配的 PostNcDestroy 自删，成员/栈对象不能统一 delete this",
       "检查 DestroyWindow、OnDestroy、PostNcDestroy、destructor 各阶段职责",
@@ -42,9 +42,9 @@
     ]
   },
   {
-    "id":"MFC-05",
-    "prompt":"老 MFC 程序在 100% DPI 正常，150% 时图标小、点击区域错，拖到另一台 200% 显示器布局又乱。还会恢复到屏幕外。请给现代化方案。",
-    "expectations":[
+    "id": "MFC-05",
+    "prompt": "老 MFC 程序在 100% DPI 正常，150% 时图标小、点击区域错，拖到另一台 200% 显示器布局又乱。还会恢复到屏幕外。请给现代化方案。",
+    "expectations": [
       "新代码优先 Per-Monitor DPI-aware，而不是把 SetProcessDPIAware 当最终方案",
       "集中缩放字体/图标/margin/hit rect，并处理 WM_DPICHANGED 与 DPI-dependent resource 重建",
       "窗口位置持久化考虑 monitor work area、DPI 和屏外 clamp/repair",
@@ -53,9 +53,9 @@
     ]
   },
   {
-    "id":"MFC-06",
-    "prompt":"CListCtrl 每 100ms 重建 2 万行状态，CPU 高而且用户滚动时总被拉回顶部。怎么改？",
-    "expectations":[
+    "id": "MFC-06",
+    "prompt": "CListCtrl 每 100ms 重建 2 万行状态，CPU 高而且用户滚动时总被拉回顶部。怎么改？",
+    "expectations": [
       "把高频刷新与重型数据计算移出 paint/timer 热路径，timer 只触发/合并",
       "建议 owner-data/virtual list 或 snapshot + 增量/批量更新，并保持 stable item identity",
       "合并跨线程结果，不为每条记录单独 PostMessage",
@@ -64,9 +64,9 @@
     ]
   },
   {
-    "id":"MFC-07",
-    "prompt":"把一个 VC6 时代的 MFC 工具直接升级到当前 Visual Studio。编译、DPI、线程、UI 全都想一起重写，怎样安排更稳？",
-    "expectations":[
+    "id": "MFC-07",
+    "prompt": "把一个 VC6 时代的 MFC 工具直接升级到当前 Visual Studio。编译、DPI、线程、UI 全都想一起重写，怎样安排更稳？",
+    "expectations": [
       "按 build compatibility、behavior compatibility、modern Windows compatibility、internal modernization 分阶段",
       "先从项目读取 toolset/SDK/MFC linkage/Unicode/架构/manifest，不套用旧样例配置",
       "把历史 VCSamples 只当 MFC 机制参考，不当现代安全/线程/DPI 权威",
@@ -75,13 +75,33 @@
     ]
   },
   {
-    "id":"MFC-08",
-    "prompt":"CDialog 里有编辑框，后台刷新每秒调用 UpdateData(FALSE)，用户输入经常被覆盖；删除文本后又瞬间回来。请分析。",
-    "expectations":[
+    "id": "MFC-08",
+    "prompt": "CDialog 里有编辑框，后台刷新每秒调用 UpdateData(FALSE)，用户输入经常被覆盖；删除文本后又瞬间回来。请分析。",
+    "expectations": [
       "识别 DDX 刷新把 model 值覆盖到用户正在编辑的 draft，而不是把 UpdateData 当通用刷新器",
       "区分 editing draft 与 committed model，编辑期间不无条件做全窗口 UpdateData(FALSE)",
       "后台更新只刷新不冲突字段或通过 dirty/focus/edit session 协调",
       "验证输入、删除、失焦提交、后台事件到达和取消编辑路径"
     ]
+  },
+  {
+    "id": "MFC-STA-PUMP-01",
+    "prompt": "专用STA host只在condition_variable上等命令，跨apartment回调一直不完成；加入任意process messages后取消回调又重入半完成状态。请审查。",
+    "expectations": [
+      "识别STA消息分发需求，结合消息与命令等待而非增加sleep",
+      "识别消息分发/COM调用可能重入，明确状态及锁的边界",
+      "不把普通计算线程都改为STA，未实测COM不宣称通过"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "MFC-OWNERDATA-RANGE-01",
+    "prompt": "LVS_OWNERDATA列表仅缓存当前可见行，LVN_GETDISPINFO请求视口外但item count内的行就返回空；LVN_ODCACHEHINT之外也拒绝。这样是否符合合同？",
+    "expectations": [
+      "指出owner-data按需而非只可见，有效范围内均须能供数",
+      "区分缓存提示与访问边界，缓存未命中有取数路径",
+      "覆盖非可见行、提示范围外、LVN_ODFINDITEM与未命中；未实测不称通过"
+    ],
+    "execution_status": "not_run"
   }
 ]

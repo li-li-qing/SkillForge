@@ -1,0 +1,1 @@
+A 级，只审查 UE 联机逻辑，不修改项目。合成代码如下：角色 Pawn 的 UPROPERTY(Replicated) int32 SelectedSlot 默认 0；本地拥有该 Pawn 的客户端在输入时 SelectedSlot = 2; ServerUseSelected();。ServerUseSelected 标记 Server, Reliable，函数体读取 SelectedSlot 并使用该槽位。这个调用没有参数。现在客户端 UI 显示 2，但服务器仍使用 0。为什么？请给出最小正确的数据流、服务器校验与测试方案。不要假设具体 UE 小版本或已有真实运行结果。
