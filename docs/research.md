@@ -249,3 +249,7 @@ R17.1 不新增外部项目，只复查 R17 与 `TodayYueC/ChronicleEngine@b2fb3
 - `Microsoft/VCSamples@9e1d4475555b76a17a3568369867f1d7b6cc6126`（2019-11-24，Historical/archived）：只用于 Doc/View、message map、command/update UI、docking/ribbon 等稳定 MFC 机制，不作为当前线程、DPI、安全、Unicode 或工具链权威。
 
 首版正式参考拆为：架构/命令路由、线程/COM STA、窗口/资源生命周期、DPI/复杂控件、构建/测试/现代化、来源蒸馏。新增 7 个触发样本、8 个行为案例，并更新组合案例，让 MFC 布局任务使用 MFC+UI，MFC 故障使用 MFC+debugging。行为用例目前是结构化验收题，没有在隔离 Agent 上执行 RED→GREEN，因此不得写成“技能效果已证明”。
+
+## IDA 专业能力（2026-11-07）
+
+[架构](ida-pro/design-and-integration.md)、[MCP 固定提交审阅](ida-pro/github-mcp-research.md)、[UE 与工具索引审阅](ida-pro/github-ue-research.md)；区分官方规范、第三方候选与未运行验证。

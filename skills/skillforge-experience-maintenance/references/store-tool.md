@@ -42,3 +42,13 @@ python ../scripts/experience_store.py --root <共享根> recover <ID>
 崩溃锁不自动过期。先确认没有存活写入者并获得恢复许可，再人工处理遗留锁并执行recover；不能仅凭时间或陌生PID删除锁。
 
 退出码0表示指定机械操作完成，2表示拒绝/错误。它不证明技术结论真实、所有引用正确、实际Agent行为通过，或任意非协作程序无法改文件。正式更新后仍要做范围相应的结构/引用/行为检查。
+
+## 目标写入后的不确定结果
+
+promote/rollback 已记录 prepared 状态后，目标操作或最终事务日志失败时，CLI 返回退出码 3，并在 stdout 输出 JSON：status=recovery_required、id、target、current_sha256、retry_safe=false。哈希是故障后一次观察；null 表示文件缺失，unknown 表示无法读取，不保证之后无人修改。不得自动重试或把它视为未写入。先检查事务与目标，再显式 recover；原 pending 保护仍阻止新的规则写入。recover 根据前后哈希协调状态，不修改正式规则。
+
+## 锁清理与其他写入者的未完成计划
+
+锁退出清理失败时，退出码3的JSON使用status=lock_cleanup_failed，分别报告journal_status、id、target、current_sha256、cleanup_error及operation_error/operation_result。committed或rolled_back表示日志记录的业务结论，不能误称未写入，也不能盲目调用只接受prepared或rollback_prepared状态的recover。先检查锁归属和日志；不自动重试、不删除替换token的锁。业务失败与清理失败同时发生时保留两者，不用后者覆盖前者。
+
+promote/rollback持有共享锁后，还读取同根.skillforge-backups中每个事务子目录的state.json。未完成更新计划的planned路径或retire_dirs与目标重叠时拒绝写入；明确无关范围允许继续。范围缺失、损坏、非规范路径或不可读时报告scope unknown并停止正式写入。applied或带非空resolution的reconciled不阻断。propose不修改正式规则，recover仅协调自身日志，因此不因更新器范围门禁阻断。这个协议读取公开日志格式，不依赖导入其他技能或根更新器。

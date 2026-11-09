@@ -22,6 +22,10 @@ description: "Use when discussions establish personal work habits, an investigat
 
 入口保持短小；详细经验放按需资料，真实项目状态回项目文档。别为每个Bug建一个Skill，别为所有Agent建各自副本。直接使用其他技能时，个人习惯是否已加载需有证据，不能假定全局自动注入。
 
+## 按需评测技能行为
+
+重大触发边界或关键规则变化、需要比较新旧效果时，读 [技能行为评测](references/skill-evaluation.md)。公平条件、近邻负例、弱断言和可观测成本按问题选择；普通修订不机械增加完整模型评测，未运行不写通过。
+
 ## 可选本地保护工具
 
 提供 [工具说明](references/store-tool.md) 与 `scripts/experience_store.py`。它只做唯一候选记录、预期内容哈希核对、独占写锁、事务记录及受保护撤回，不判断语义真伪，不绕过权限，不是后台服务。

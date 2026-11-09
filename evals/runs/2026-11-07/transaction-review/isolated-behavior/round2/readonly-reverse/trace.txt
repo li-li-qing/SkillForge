@@ -1,0 +1,27 @@
+任务模式：A / direct / research；仅静态读取自有离线程序，不运行、不修改 fixture、不安装工具。产物仅 trace.txt、raw-answer.txt。
+原请求读取：cat /workspace/shared/skill_evals_v4/round2/readonly-reverse/prompt.txt。
+入口首次 cat /workspace/shared/skill_evals_v4/v4/skills/orchestrator/SKILL.md 失败：不存在。
+发现命令：find /workspace/shared/skill_evals_v4/v4/skills -name SKILL.md -not -path '*/evals/*'；仅列技能文件路径，未读 evals。
+fixture 发现命令：find /workspace/shared/skill_evals_v4/round2/readonly-reverse/fixture -maxdepth 2 -type f；仅 target、target.c。
+读取实际入口：cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md。
+读取入口 references/{capability-contract,user-workstyle,routing-policy,collaboration-policy,approval-policy,worklist-workflow,context-policy}.md（for 循环 cat）；输出有少量截断。
+最小路由：skillforge-orchestrator + skillforge-reverse-engineering。CE/IDA 专用技能不选：未做扫描、附加或 IDA 执行。技能状态 read-file，不声称原生调用。
+读取：cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-reverse-engineering/SKILL.md 以及 references/native-analysis.md。
+读取源码：cat /workspace/shared/skill_evals_v4/round2/readonly-reverse/fixture/target.c。health、score 初值均为 100，take_damage 仅正 amount 时扣 health，main 调用 7。
+清单：1 核对样本/工具；2 源码、符号、数据、指令交叉验证；3 报告证据和运行时限制。均完成静态部分。
+能力：scoped-filesystem/read-file；文件与命令受限但可执行分析 CLI；输出两份文本。没有要求或使用动态工具、联网、安装、编译。
+命令（下列 T=/workspace/shared/skill_evals_v4/round2/readonly-reverse/fixture/target）：
+command -v file sha256sum readelf nm objdump -> 均 /usr/bin/ 下存在。
+file --version | head -1 -> file-5.46。
+readelf --version | head -1；objdump --version | head -1 -> GNU Binutils for Debian 2.44。
+sha256sum fixture/{target,target.c}（实际使用完整绝对路径） -> target e5fc73889c9f2d12af1198a00a564caadf71778c66c079d814535f037239fdfe；target.c e8380d941d0fb4f5c1eb379219d3747be274be49fc9c61517988a9a1799ecde7。
+file T -> ELF64 LSB PIE x86-64，带 debug_info，未剥符号。
+readelf -h T -> DYN、little endian、x86-64，入口 0x1050。
+nm -n T -> take_damage 0x1139、main 0x1158、health 0x4018、score 0x401c。
+objdump -d -Mintel T -> take_damage 比较正数，读取 health，减 amount，写回 health；main 传 7 调用，读取两值 printf。
+objdump -s -j .data T -> 0x4018 处 64000000 64000000。
+readelf -SW T | grep -E '\.data|\.rodata' -> .data VA 0x4008，文件偏移 0x3008，大小 0x18；据此 health 文件偏移 0x3018，score 0x301c。
+readelf -sW T | grep -E ' health$| score$' -> 两者 OBJECT，GLOBAL，4 字节。
+再次 sha256sum fixture/{target,target.c}（完整绝对路径） -> 与初次完全一致。
+未执行 target 或 fixture 内任何文件，未写进程内存，未修改 fixture，未更新技能树。预测输出 93 100 仅静态推导；运行时地址、数值、输出未验证。
+最终用 shell heredoc 写 raw-answer.txt 和本 trace.txt。无评分。

@@ -1,0 +1,22 @@
+{
+  "before": {
+    "scripts/apply_skillforge_update.py": "ac01a831831368bbc46c9e5992f3a3679d889c465ae53458bf506fc2edb43306",
+    "skills/skillforge-experience-maintenance/scripts/experience_store.py": "4e300a4e020938f6186e609d33eb6682bac216f80881fefdb387ded6fbe441f9"
+  },
+  "after": {
+    "scripts/apply_skillforge_update.py": "ac01a831831368bbc46c9e5992f3a3679d889c465ae53458bf506fc2edb43306",
+    "skills/skillforge-experience-maintenance/scripts/experience_store.py": "4e300a4e020938f6186e609d33eb6682bac216f80881fefdb387ded6fbe441f9"
+  },
+  "runs": [
+    {
+      "script": "sf_v5_multiprocess_audit",
+      "exit_code": 0
+    },
+    {
+      "script": "sf_v5_reverse_process",
+      "exit_code": 0
+    }
+  ],
+  "scope": "Linux spawn controlled interleaving; real processes and SIGTERM; no Windows/network-filesystem validation; manual lock removal only in isolated fixture after all writers joined",
+  "original_hash_status": "Original supplied JSON has no embedded source hash; matched-version evidence is this rerun with unchanged before/after hashes."
+}

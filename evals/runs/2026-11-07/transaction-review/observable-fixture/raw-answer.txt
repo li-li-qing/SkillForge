@@ -1,0 +1,9 @@
+已完成最小修复：在 project/projection.py 的 Panel.mount 中，订阅后增加 self.refresh(owner.count)，挂载时立即同步已有状态，后续事件更新路径保持不变。
+
+根因是 reproduce 先 set_count(7)，后 mount；初始事件发生时面板尚未订阅，原 mount 又未读取当前状态，所以显示停在 0。
+
+现有空 trace 不能排除刷新回调发生：TRACE_ENABLED 默认 False。修复前已用挂载后 set_count(9) 实证 displayed=9 但 trace=[]。开启日志并用已知 probe 确认记录可见后，原复现仅有 owner_changed；这是结合源码与可用探针确认的时序问题，不能单凭原来的空 trace 下结论。
+
+验证：原复现修复前 owner=7/displayed=0，修复后 owner=7/displayed=7；日志开、关两种配置下，初始负整数及后续 0、7、-3、2**80、重复大整数均通过断言，值和整数类型保持；开启日志的修复后复现包含 owner_changed 与 refresh 两条记录。
+
+仅为 Python 同步事件/投影模型验证，未进行真实 GUI、UE、Qt、线程或异步平台测试。正式技能、长期规则和其他工作区未修改；无安装、无联网。默认只读写入失败后，已通过授权提升完成指定 project 写入，无剩余阻塞。读取资料、命令及验证边界见 trace.txt。

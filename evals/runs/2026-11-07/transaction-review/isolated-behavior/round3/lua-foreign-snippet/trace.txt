@@ -1,0 +1,16 @@
+实际读取命令（均由 exec_command 执行）：
+1. cat /workspace/shared/skill_evals_v4/round3/lua-foreign-snippet/prompt.txt && printf '\n---ENTRY---\n' && cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md
+2. for f in capability-contract user-workstyle routing-policy worklist-workflow context-policy collaboration-policy approval-policy learning-policy; do printf '\n---%s---\n' "$f"; cat "/workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/$f.md"; done; printf '\n---SKILL HEADERS---\n'; find /workspace/shared/skill_evals_v4/v4/skills -name SKILL.md -not -path '*/evals/*' -exec sh -c 'for f do echo "---$f"; head -n 6 "$f"; done' sh {} +
+第 2 次返回在 worklist/context 部分发生显示截断，因此补读：
+3. cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/context-policy.md; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/worklist-workflow.md
+
+能力与范围核对：
+- skill_discovery=scoped-filesystem；skill_loading=read-file，以上调用实际成功；未声称原生调用或安装技能。
+- file_read=restricted，只读本题 prompt 与许可技能根下非 evals 材料。
+- file_write=restricted，仅写本题 raw-answer.txt 与 trace.txt。
+- command_execution=restricted，仅用于读取规则和写交付文件；未运行第三方 Lua 或其他不可信程序。
+- network_access=本任务禁止；未建立外部连接，未安装依赖。
+- 未获得第三方片段、被拉取源码、插件入口或宿主版本。产品读写、Lua 解释器及运行验证能力未探测，不声称存在。
+- task_kind=implement；collaboration_level=unset；状态=awaiting_mode，同时缺少接入必需源码。
+- 元数据发现 ArcheRage 专用技能明确排除泛用 Lua 且服务器不明须确认；本题未提供项目匹配证据，未加载其正文。亦无 CE、UE 或其他领域证据，不凭 Lua 关键字套用专属接口。
+- 仅完成安全边界说明和恢复所需资料请求；无产品改动、测试、构建、远程执行或共享经验写回。

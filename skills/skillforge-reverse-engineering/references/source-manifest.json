@@ -1,0 +1,36 @@
+{
+  "checked_on": "2026-11-08",
+  "method": "GitHub public fixed-commit raw downloads after connector search timeout; focused reads, no upstream code execution",
+  "sources": [
+    {
+      "repository": "cellebrite-labs/ghidra-rpc",
+      "revision": "fa3866243dcfcbc876baa7b13ae0deac2c443cd8",
+      "path": "SKILL.md",
+      "sha256": "693FF0AACED764A77DEC4E00CEED374C35ED044D4173FF32E72856CDC76E6EB9",
+      "read_ranges": [[1, 150]],
+      "additional_search_hits": [196, 200, 204, 206, 230, 234],
+      "classification": "Current",
+      "license_review": "not completed; no upstream content bundled"
+    },
+    {
+      "repository": "juank115/reverse-engineerskill",
+      "revision": "02a29545cc16599b5f181f082a9d96dbce82791f",
+      "path": "skills/reverse-engineering/SKILL.md",
+      "sha256": "80EDD17813AE9F11E3770A443A900A2B92E8ACC28D3410DC709A6D2C85DECAD9",
+      "read_ranges": [[1, 105], [186, 275]],
+      "classification": "Current",
+      "declared_license": "MIT"
+    },
+    {
+      "repository": "PyModel/reverse-engineering-skill",
+      "revision": "d531c4fdfec68171f0b9f0da7a3db2710fcd9a6a",
+      "path": "SKILL.md",
+      "sha256": "D0581940F9FD700D7C441D172D7FA92C8EE023714BBEF6785213444E96ECA317",
+      "read_scope": "full entrypoint only",
+      "classification": "Current",
+      "declared_license": "MIT",
+      "rejected": ["authorization override", "mandatory MCP", "mandatory full pipeline"]
+    }
+  ],
+  "limitations": ["No live Ghidra, IDA or x64dbg qualification", "No upstream helper scripts adopted", "No whole-repository review"]
+}

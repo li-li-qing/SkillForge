@@ -1,0 +1,9 @@
+{
+  "all_match": true,
+  "sha256": {
+    "skills/skillforge-reverse-engineering/scripts/probe_binary.py": "ffa10b049e608a9907a17f3560a1abb3b7a7fe5c4c9d04959afa720c7c50c349",
+    "skills/skillforge-ida-pro/scripts/ida_evidence.py": "31fdcadb994518e20fbe2797af24f93646aad93cf95da4bf4d37af62a0681f68",
+    "skills/skillforge-archerage-addon/scripts/verify_skill.py": "8a3cc11f25c389c26286d1d344ee2f162779e5edf6e66b3a29eec4ac62cbce15",
+    "skills/skillforge-archerage-addon/scripts/verify_report.py": "f5715dae80f413e5551ecc0451bd61440a4433282a6c0d5e6915ed4338e38fa2"
+  }
+}

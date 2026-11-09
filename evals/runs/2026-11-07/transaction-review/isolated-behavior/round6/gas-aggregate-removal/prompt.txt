@@ -1,0 +1,1 @@
+A 级，只审查 GAS 卸装逻辑，不修改项目。两个装备 A/B 向同一个 ASC 应用同一 Infinite GameplayEffect，每件贡献 +10 力量的一层；配置为 AggregateByTarget，栈数上限足够，应用后 active effect 栈数为 2。假设初始力量 100，此时正确显示 120。代码分别把 Apply 返回值存进 A.Handle 与 B.Handle。卸下 A 时直接调用 RemoveActiveGameplayEffect(A.Handle)，结果 B 的加成也不见了。请解释所有权与栈聚合的问题，并提出保留 B 的最小可靠方案、后续卸 B/重装 A 的验证。若 API 参数或细节依赖版本，需要明确核实点，不编造已运行证据。

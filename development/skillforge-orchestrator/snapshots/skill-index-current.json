@@ -5,7 +5,7 @@
   "root_labels": [
     "skills"
   ],
-  "skill_count": 10,
+  "skill_count": 13,
   "skills": [
     {
       "name": "skillforge-archerage-addon",
@@ -13,7 +13,15 @@
       "root": "skills",
       "path": "skillforge-archerage-addon/SKILL.md",
       "revision": "2026.09.14-r4",
-      "sha256": "f7d2a02363a880b6fda87698327992cb1478c7b885a803b201a3d9bbbd38422b"
+      "sha256": "451ecaab437291cce8ef7c4450414d845b5eb6ef6f861c1f35e750ddd07af244"
+    },
+    {
+      "name": "skillforge-cheat-engine",
+      "description": "Use when working with Cheat Engine (CE), memory scans, pointer/AOB relocation, Lua tables, CheatEngine.Mcp, or Java/Mono/.NET collectors in authorized local software or offline games. 用于 CE 安装与实例识别、搜值、地址失效、对象更换及 collector 崩溃；不因元素符号 Ce、普通 Java 开发或单纯游戏攻略触发。",
+      "root": "skills",
+      "path": "skillforge-cheat-engine/SKILL.md",
+      "revision": null,
+      "sha256": "0f484e938a28085ec86fc7d0bbbb9b9e14500528d904ec49b1063073791814d2"
     },
     {
       "name": "skillforge-debugging",
@@ -21,7 +29,7 @@
       "root": "skills",
       "path": "skillforge-debugging/SKILL.md",
       "revision": null,
-      "sha256": "76163ccb4001789b81284b9de89663511d55737b049ba1875f576aad19655198"
+      "sha256": "b5a040102d4b86fb923572f1922f3c943860c170811a4353114db8302eadf6fd"
     },
     {
       "name": "skillforge-engineering-preflight",
@@ -29,7 +37,7 @@
       "root": "skills",
       "path": "skillforge-engineering-preflight/SKILL.md",
       "revision": null,
-      "sha256": "c218d209d7ce8941f2322d51f5c1e72f6422d441dbb17a2bebe1bbe7df441cba"
+      "sha256": "3b2162667ce3a5eaeecbbb640039c0e91d265c78d3dd2181ccb8056cdd278297"
     },
     {
       "name": "skillforge-experience-maintenance",
@@ -37,7 +45,15 @@
       "root": "skills",
       "path": "skillforge-experience-maintenance/SKILL.md",
       "revision": null,
-      "sha256": "afb0bac8945127a4b86f4f2bb83ac2611b063a23319720162f92af4c68cc3233"
+      "sha256": "330fbaabb2027665ba56bd97ed4af18f8f6d38b2e3c14c8ea8f44c154488496e"
+    },
+    {
+      "name": "skillforge-ida-pro",
+      "description": "Use when executing authorized IDA Pro binary analysis, Hex-Rays decompilation, IDAPython automation, IDA MCP/RPC, native class recovery or Unreal Engine binary investigation. 用于 EXE/DLL/SO 静态分析、调用链、结构体、UE 反射与动态证据；普通源码开发、仅出现 exe 文件名、纯 CE 扫描或其他工具专属操作不触发。",
+      "root": "skills",
+      "path": "skillforge-ida-pro/SKILL.md",
+      "revision": null,
+      "sha256": "1e422a49222fba0bdeb2d22751d6cc518de169b123ddaa0f95e07ddeaef90cf3"
     },
     {
       "name": "skillforge-lgf",
@@ -45,7 +61,7 @@
       "root": "skills",
       "path": "skillforge-lgf/SKILL.md",
       "revision": null,
-      "sha256": "5620429703eafd131dc699930acdacec830f384339679ff93848f9bb84e2e3ad"
+      "sha256": "dc7857e076362798c091ed473dc903c1cb131b37406419c4d128fa7b98b9c832"
     },
     {
       "name": "skillforge-mfc",
@@ -64,12 +80,20 @@
       "sha256": "548cef5710da2d11d54fa92414c8469415b2e56c02151c7af1e402eb77a98e17"
     },
     {
+      "name": "skillforge-reverse-engineering",
+      "description": "Use when inspecting compiled binaries, disassembly, decompiler output, runtime traces or undocumented layouts and protocols: PE/ELF/Mach-O, DLL, Ghidra/IDA/x64dbg, native ABI, JVM/.NET and object lifetimes. 用于逆向分析、类型与调用关系恢复、动态证据和二进制差异；源码已知的普通功能开发、常规日志排障或仅出现 exe 文件名不触发。",
+      "root": "skills",
+      "path": "skillforge-reverse-engineering/SKILL.md",
+      "revision": null,
+      "sha256": "f01d88ed97b47f40d4f369df40fc417692706027f4c12814a1ed2b9949e3dafb"
+    },
+    {
       "name": "skillforge-ue-blueprint",
       "description": "创建、修改、解释和排查 Unreal Engine 5 蓝图、AnimBP、IK Retargeter、Widget Blueprint、事件图与节点连接。Use when working with Blueprint graphs, runtime retargeting, variables, functions, interfaces, dispatchers or Accessed None. 纯 C++ 实现、材质图和其他软件节点图不触发。",
       "root": "skills",
       "path": "skillforge-ue-blueprint/SKILL.md",
       "revision": null,
-      "sha256": "3e918072811d0e59f6e440a963b499774d7af24fbffd863eb5cb8445177fe878"
+      "sha256": "13d05150aaa38e7ef736577eb4c0db9e4b37b4d71377fc40940aa3feb9475ac5"
     },
     {
       "name": "skillforge-ue-cpp",
@@ -77,7 +101,7 @@
       "root": "skills",
       "path": "skillforge-ue-cpp/SKILL.md",
       "revision": null,
-      "sha256": "e4953314b42a15f9f963f68423bcf322011b6afb642ced59412416f3a73ec296"
+      "sha256": "27e740cb80716c53f7fee177b416883ec30a5e468aeb648a5368fa6b0d1a2783"
     },
     {
       "name": "skillforge-ui-design",

@@ -1,0 +1,238 @@
+[
+  {
+    "path": "development/skillforge-orchestrator/tools/build_skill_index.py",
+    "sha256": "796d3053a8bf24fb03fbfb3c013ab47f8421584709efe346e81285f4ef98d8eb",
+    "lines": 251,
+    "functions": [
+      "is_link",
+      "read_limited",
+      "quoted",
+      "parse_frontmatter",
+      "parse_roots",
+      "build_index",
+      "write_atomic",
+      "main"
+    ]
+  },
+  {
+    "path": "scripts/apply_skillforge_update.py",
+    "sha256": "ac01a831831368bbc46c9e5992f3a3679d889c465ae53458bf506fc2edb43306",
+    "lines": 404,
+    "functions": [
+      "digest",
+      "is_link",
+      "safe",
+      "read",
+      "atomic_write",
+      "read_manifest",
+      "check",
+      "writer_lock",
+      "inspect_pending_updates",
+      "require_reconciled",
+      "apply_update",
+      "main"
+    ]
+  },
+  {
+    "path": "scripts/validate_skills.py",
+    "sha256": "f629cb38a6530946956fa0d38f124dc6285aefc344be8285658990f643dd4fca",
+    "lines": 364,
+    "functions": [
+      "read_text",
+      "validate_header",
+      "resolve_local",
+      "validate_markdown",
+      "nonempty_string",
+      "validate_evals",
+      "validate_package",
+      "validate_packages",
+      "main"
+    ]
+  },
+  {
+    "path": "skills/skillforge-archerage-addon/scripts/audit_patch.py",
+    "sha256": "5a195f0782a0dd2f901ad4e501b7758b93f2d8bf466825604758502cab04bddc",
+    "lines": 116,
+    "functions": [
+      "safe_name",
+      "digest",
+      "walk_error",
+      "snapshot",
+      "archive_files",
+      "audit_patch",
+      "main"
+    ]
+  },
+  {
+    "path": "skills/skillforge-archerage-addon/scripts/check_lua51.py",
+    "sha256": "372e6347529af40386f2a56a843b499c55fc53b95b112a9eef7d03c0094a4eb0",
+    "lines": 92,
+    "functions": [
+      "walk_error",
+      "check_lua",
+      "main"
+    ]
+  },
+  {
+    "path": "skills/skillforge-archerage-addon/scripts/verify_report.py",
+    "sha256": "bf8461e83ad9ab1ae78fc4325711edaced42c2874a84ee4eda831b977c553770",
+    "lines": 172,
+    "functions": [
+      "check",
+      "decode_pages",
+      "pairs",
+      "number",
+      "parse_hud",
+      "main"
+    ]
+  },
+  {
+    "path": "skills/skillforge-archerage-addon/scripts/verify_skill.py",
+    "sha256": "4b5931c4b99f9e345fc2930f8a511714f23979c0ec409a52f2e39ab31116dc95",
+    "lines": 131,
+    "functions": [
+      "frontmatter",
+      "unique_object",
+      "walk_error",
+      "validate",
+      "main"
+    ]
+  },
+  {
+    "path": "skills/skillforge-experience-maintenance/scripts/experience_store.py",
+    "sha256": "4e300a4e020938f6186e609d33eb6682bac216f80881fefdb387ded6fbe441f9",
+    "lines": 463,
+    "functions": [
+      "_sha",
+      "_time",
+      "_root",
+      "_is_link",
+      "_no_links",
+      "_target",
+      "_store",
+      "_read",
+      "_json_read",
+      "_atomic_write",
+      "_record_bytes",
+      "_check_record_capacity",
+      "_json_write",
+      "_id",
+      "_lock",
+      "_pending",
+      "_pending_updates",
+      "_validated",
+      "propose",
+      "promote",
+      "rollback",
+      "recover",
+      "main"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ida-pro/scripts/gui_strings_export.py",
+    "sha256": "1ca129ae7f90d3312e72c8032cd69dc0268eb87af97e1ab87188ed3b7bfc65cb",
+    "lines": 119,
+    "functions": [
+      "status",
+      "_finish",
+      "start",
+      "cancel"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ida-pro/scripts/ida_evidence.py",
+    "sha256": "7b7c3519dd0178ca2cd9f75ca571c10c6266765af48a8ef6b384b4af3a55d39c",
+    "lines": 416,
+    "functions": [
+      "module",
+      "require",
+      "bounded",
+      "ea",
+      "hex_ea",
+      "sha256_file",
+      "analysis_state",
+      "wait_for_analysis",
+      "ready",
+      "context",
+      "function_at",
+      "function_info",
+      "count_functions",
+      "functions_page",
+      "_window",
+      "strings_page",
+      "xrefs_to",
+      "string_xrefs",
+      "assembly",
+      "hexrays_status",
+      "pseudocode",
+      "callers",
+      "callees",
+      "callgraph_page",
+      "decompile_batch",
+      "report",
+      "csv_safe",
+      "export",
+      "on_main_thread"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ida-pro/scripts/ida_mutations.py",
+    "sha256": "1abc246ec4564954fd640a85875322ed0fcb295e335397643463cf2d4b6ca975",
+    "lines": 196,
+    "functions": [
+      "_identifier",
+      "_prepare",
+      "run_plan"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ida-pro/scripts/mcp_function_query.py",
+    "sha256": "50b445df5fafb84e46fc0186c1eb8f0179305fc49f046ebd6b22146f10abad64",
+    "lines": 145,
+    "functions": [
+      "validate_url",
+      "decode_response",
+      "main"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ida-pro/scripts/run_ida_batch.py",
+    "sha256": "c80501d61165f0d98c787f953f72fdf06a4954e3c158d02d107d09fe5838f806",
+    "lines": 36,
+    "functions": [
+      "run"
+    ]
+  },
+  {
+    "path": "skills/skillforge-lgf/scripts/inspect_workspace.py",
+    "sha256": "a7459ca7cc16acde7ac0f66d48ba546cbf5e202adf1bcccc447e6488f1942c9e",
+    "lines": 330,
+    "functions": [
+      "load_json",
+      "display_path",
+      "descriptor_modules",
+      "display_paths",
+      "find_single_project",
+      "find_lgf_plugin",
+      "collect_build_files",
+      "plugin_summary",
+      "inspect_engine",
+      "collect_manifest",
+      "parse_args",
+      "main"
+    ]
+  },
+  {
+    "path": "skills/skillforge-reverse-engineering/scripts/probe_binary.py",
+    "sha256": "0509dd7b1f722788c0eccfea853f167ab703241d30fabd60fa9cca4aadfb344e",
+    "lines": 150,
+    "functions": [
+      "hex_value",
+      "read_at",
+      "parse_pe",
+      "map_rva",
+      "inspect_file",
+      "main"
+    ]
+  }
+]

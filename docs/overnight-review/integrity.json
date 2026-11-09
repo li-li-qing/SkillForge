@@ -1,0 +1,11 @@
+{
+  "protected_unchanged": {
+    "skills/skillforge-orchestrator/SKILL.md": "9ebcda806e77645798ee7b5a639e21ed9bbef8acb5422c6b01c6a0f835725032",
+    "skills/skillforge-orchestrator/references/routing-policy.md": "2f00f0583032b58911537b21984d12044a255300b9abb315532a380951fc91de",
+    "skills/skillforge-orchestrator/references/user-workstyle.md": "68e39e51b5dc5425059adc7102a79e150904a4decbec75c561ac5d8376e8697d"
+  },
+  "removed_files": [],
+  "changed_count_excluding_self_metadata": 92,
+  "skills": 14,
+  "note": "ZIP byte-equality and CRC verified after generation; archive hash reported separately to avoid self-reference."
+}

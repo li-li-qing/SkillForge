@@ -1,0 +1,12 @@
+[
+  {
+    "repo": "anthropics/skills",
+    "commit": "2c5958ecac7cee2b583967a2c4981d0f4a75c579",
+    "date": "2026-11-06T22:32:28Z"
+  },
+  {
+    "repo": "openai/skills",
+    "commit": "49f948faa9258a0c61caceaf225e179651397431",
+    "date": "2026-06-24T02:36:12Z"
+  }
+]

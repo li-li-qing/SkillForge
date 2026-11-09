@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "baseline reproduced",
+    "callback can run while trace empty",
+    "positive observation control",
+    "original reproduction excludes refresh after enabled control",
+    "mount and later integers preserved trace=False",
+    "mount and later integers preserved trace=True",
+    "corrected reproduction with trace"
+  ],
+  "passed": 7,
+  "scope": "Local synchronous Python model; not Qt/UE/LGF or race testing",
+  "project_sha256": "90713ec86a307983fa341b679ce0d74e47000dd1a61803e584e95a4a5ffdf315"
+}

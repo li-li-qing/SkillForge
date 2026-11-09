@@ -7,6 +7,8 @@ description: "编写、修改和审查 Unreal Engine 5 C++，涵盖 UObject 反�
 
 以当前工程的源码、版本和目标为依据，保持改动范围与任务一致。跨模块接口、对象生命周期与蓝图调用方共同构成完成条件。
 
+仅有Shipping EXE、无源码或可编辑资产，目标是定位UFunction/RPC/偏移时，以二进制分析/IDA等实际能力为主；UE术语提供背景，不推断具备源码、Live Coding或蓝图写入条件。
+
 ## 工程定位
 
 先读取当前项目的说明、`.uproject`、相关 `.uplugin`、`Build.cs` 和实际 `Target.cs`；将 EngineAssociation 对应到真实引擎，必要时查看 `Engine/Build/Build.version`。确认模块类型、目标平台、构建配置和可用工具，再给命令或选择 API。

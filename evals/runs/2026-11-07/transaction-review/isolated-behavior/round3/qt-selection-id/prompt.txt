@@ -1,0 +1,1 @@
+A 级只审查：QSortFilterProxyModel 中按价格排序后删除当前行删错数据，不能换 UI 框架。给出验证与最小修复位置。

@@ -1,0 +1,46 @@
+结论：这是把“聚合效果句柄”误当成“装备独占效果句柄”，不是力量计算错误。以下仅审查，不修改项目；没有工程或运行环境，未编译、未运行 UE。
+
+### 所有权为什么丢了
+`AggregateByTarget` 会把同一 GE 在同一目标上的应用合并。本题已确认只有一个 active effect、StackCount=2，因此 A.Handle 与 B.Handle 应指向同一聚合实例，而不是分别拥有一层的删除凭据。把 Apply 的返回值分别存进两个字段，并不会创造两个独立效果，也不会让 GAS 自动记住哪一层属于哪件装备。
+
+`RemoveActiveGameplayEffect` 的 `StacksToRemove=-1` 表示移除全部层。省略参数通常走这个默认值，因此会把共享实例连同 B 的贡献一起移除。目标版本头文件与项目封装的实际默认参数仍需核实；不能仅靠文档展示的签名证明默认值。
+
+### 本题的最小可靠方案
+保留现有聚合配置，卸 A 时显式只减一层：
+
+```cpp
+// 示意调用；仅在 A 仍有一层已确认、尚未撤销的贡献时执行。
+ASC->RemoveActiveGameplayEffect(A.Handle, 1);
+```
+
+但可靠修复不只是多写一个 `1`，还应维护最小来源记录：`装备身份/授予代次 → ASC、聚合Handle、实际贡献层数、撤销状态`。
+
+- 本题已给定 A/B 各成功贡献一层，故各记 1。一般路径必须确认实际接受的层数，不能把“调用 Apply 一次”或“有返回 handle”直接等同于新增一层。
+- 卸 A 前检查其贡献未撤销、ASC 与当前聚合实例仍匹配。将本次操作标记为处理中，避免同步回调或重复卸装再次减层。
+- 调用后核对 active effect 与实际栈数变化：2→1。成功后只清掉 A 的贡献记录和 A.Handle；B 仍保留该共享句柄及一层贡献。检查失败则进入对账，不报告成功，也不盲目再减。
+- 不以 `Handle.IsValid()` 单独证明效果仍存在。外部清除后句柄可能只是一个旧标识，需查询 ASC 当前 active effect；整个实例被移除时使相关来源记录失效，避免旧卸装请求扣掉后来重装的贡献。
+
+这里“减 A 的一层”是业务账本赋予的含义，GAS 实际执行的是共享栈总数减一，并未选择一条带 A 身份的层。它对本题同质、每层 +10、Infinite、上限足够的条件成立。若以后出现不同数值、溢出、外部减层或其他来源混入，需要明确对账/重建策略，不能继续无条件减一。不要用直接给力量减 10 来掩盖仍在生效的 GE。
+
+如果希望天然逐装备独立撤销，可另选非堆叠（`StackingType=None`）的 Infinite GE，让每次成功 Apply 产生独立 active effect，再按各自 handle 移除；这会改变配置，不是本次最小方案。只设置不同 SourceObject 不会拆开 AggregateByTarget；改成 AggregateBySource 也不保证按装备隔离，同一 source ASC 的装备仍可能聚合。
+
+### 待运行的验证
+全程同时检查装备贡献记录、active effect 数/句柄、StackCount 和力量，不只看 UI。
+
+| 操作 | 预期 |
+|---|---|
+| 无装备 | 无该效果，力量 100 |
+| 装 A，再装 B | 同一聚合实例，栈数 1→2，力量 110→120 |
+| 卸 A | 实例仍在，栈数 1，力量 110；仅 A 记录清除 |
+| 重复卸 A | 不再调用减层；B 仍在，力量 110 |
+| 继续卸 B | 最后一层移除，实例消失，力量 100 |
+| 两件都卸后重装 A | 保存这次 Apply 的当前句柄/新授予代次，栈数 1，力量 110；再卸 A 回 100 |
+
+另开一条分支：卸 A、保留 B 后立刻重装 A，应从 1 层/110 回到 2 层/120；再卸 B 应保留 A 的 1 层/110，最后卸 A 回到 100。旧 A 代次的迟到卸装不能影响重装后的 A。补测倒序卸装、Apply 失败和外部整组清除，确保不会误扣其他来源。若项目联机，在 Authority 执行装备变更，并确认客户端最终属性同步；本题没有网络拓扑资料，不声称联机已验证。
+
+### 已核实与待核实
+本轮只读核对了 Epic 官方文档：
+- [UE5.8 堆叠类型](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/EGameplayEffectStackingType)：按目标聚合，以及 None 每次应用为独立实例。
+- [UE5.3 C++ 移除 API](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UAbilitySystemComponent/RemoveActiveGameplayEffect?application_version=5.3) 与 [UE5.8 蓝图移除 API](https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/GameplayEffects/RemoveActiveGameplayEffect?lang=en-US)：移除层数参数和 -1 全移除语义。
+
+落地前仍须核对实际 UE 版本的 `AbilitySystemComponent.h/.cpp`、项目包装函数、Apply 返回聚合句柄的路径、减层返回值/回调时序，以及 GE 资产配置。上述表格是验收预期，不是已运行结果；本轮没有项目修改，也没有把结论写回共享技能。

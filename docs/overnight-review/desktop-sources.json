@@ -1,0 +1,26 @@
+{
+  "commit": "b9e19e6f44773509fbdd7001d77ff41a49a486c1",
+  "commit_date": "2026-04-20T21:38:16Z",
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "file": "SKILL.md",
+      "url": "https://raw.githubusercontent.com/anthropics/skills/b9e19e6f44773509fbdd7001d77ff41a49a486c1/skills/webapp-testing/SKILL.md",
+      "sha256": "51b7349e77ec63b7744a6f63647e7566a0b4d2e301121cc10e8c2113af6556a2",
+      "bytes": 3913
+    },
+    {
+      "file": "scripts/with_server.py",
+      "url": "https://raw.githubusercontent.com/anthropics/skills/b9e19e6f44773509fbdd7001d77ff41a49a486c1/skills/webapp-testing/scripts/with_server.py",
+      "sha256": "b0dcf4918935b795f4eda9821579b9902119235ff4447f687a30286e7d0925fd",
+      "bytes": 3693
+    },
+    {
+      "file": "LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/anthropics/skills/b9e19e6f44773509fbdd7001d77ff41a49a486c1/skills/webapp-testing/LICENSE.txt",
+      "sha256": "bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362",
+      "bytes": 11345
+    }
+  ],
+  "status": "fixed commit files fetched; public repository, latest directory commit above; no maintenance response guarantee"
+}

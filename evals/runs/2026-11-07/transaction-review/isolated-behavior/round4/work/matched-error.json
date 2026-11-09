@@ -1,0 +1,21 @@
+{
+  "ui": {
+    "button_enabled": false
+  },
+  "monitor": {
+    "owner": "TaskRunner",
+    "status": "FAILED",
+    "error_count": 1
+  },
+  "source_log": [
+    {
+      "source": "TaskRunner",
+      "event": "task.error",
+      "request_id": "fixture-001"
+    },
+    {
+      "source": "ErrorProbe",
+      "event": "observed_error"
+    }
+  ]
+}

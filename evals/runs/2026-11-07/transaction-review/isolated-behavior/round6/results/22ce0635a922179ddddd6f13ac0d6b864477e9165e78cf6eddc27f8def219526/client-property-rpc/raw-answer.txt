@@ -1,0 +1,61 @@
+结论：这是数据流方向错误，不是 `Reliable` 不够可靠。
+
+客户端和服务器各有 Pawn 实例。客户端执行 `SelectedSlot = 2` 只改了本地副本；普通属性复制是服务器向客户端同步，不会把这次客户端赋值上传。无参数的 `ServerUseSelected()` 没有携带槽位，服务器函数读的是服务器自己的 `SelectedSlot`，仍为 0。UI 显示 2 只能证明本地显示状态变了。[Epic 属性复制文档](https://dev.epicgames.com/documentation/en-us/unreal-engine/replicate-actor-properties-in-unreal-engine)
+
+`Server` 指定执行端，`Reliable` 提供 RPC 的可靠传递语义，不会附带同步调用者的全部属性，也不等于业务成功。客户端必须通过自己拥有、已启用复制且具有有效 owning connection 的 Actor 调用；本题既然服务器函数已经执行并读到 0，首要根因是缺少输入数据，而不是先怀疑拥有权。[Epic RPC 文档](https://dev.epicgames.com/documentation/en-us/unreal-engine/remote-procedure-calls-in-unreal-engine)
+
+## 最小正确数据流
+
+推荐把“使用哪个槽位”放进同一次请求，避免依赖另一次选择同步：
+
+`本地输入 2 → ServerUseSlot(2) → 服务器校验并解析自己的槽位数据 → 权威执行 → 状态复制/结果反馈 → UI 确认或回退`
+
+下面是逻辑示意，不是已经编译的完整工程代码；业务辅助函数均需由项目实现：
+
+```cpp
+// 请求使用指定槽位；参数只是意图，服务器决定能否执行。
+UFUNCTION(Server, Reliable)
+void ServerUseSlot(int32 RequestedSlot);
+
+void AMyPawn::ServerUseSlot_Implementation(int32 RequestedSlot)
+{
+    // 先检查范围，再访问服务器库存，避免越界。
+    if (!ServerSlots.IsValidIndex(RequestedSlot))
+    {
+        return; // 完整 UI 流程应反馈拒绝原因。
+    }
+    if (!CanUseSlotOnServer(RequestedSlot))
+    {
+        return;
+    }
+
+    // 校验、扣费与使用在服务器同一次业务操作内完成。
+    CommitUseSlotOnServer(RequestedSlot);
+}
+```
+
+客户端输入改为 `ServerUseSlot(2)`，不要再写权威复制属性来“上传选择”。若要即时高亮，用独立的本地 `PendingSelectedSlot`，明确只是待确认表现。
+
+如果玩法还要求持久保存“当前选中槽位”，服务器接受请求后更新权威 `SelectedSlot`；若它只用于本次使用，则甚至不必新增这份共享状态。需要复制时核对：Actor 的 `bReplicates`、`UPROPERTY(ReplicatedUsing=OnRep_SelectedSlot)`、`GetLifetimeReplicatedProps` 内的 `Super` 和 `DOREPLIFETIME`、接收条件；使用 Push Model 时另核对工程实际脏标记要求。`OnRep` 刷新客户端表现，Listen Host 走显式共享刷新路径，不假定服务器本地赋值自动触发 C++ OnRep。
+
+拒绝请求或权威值没有变化时，不能只等属性变化来清掉 UI 的待确认状态。需要预测 UI 时可增加请求 ID 和明确的成功/拒绝反馈，并防止旧反馈覆盖更新的选择；无预测的最小实现则只展示已确认状态。不要用固定延迟、客户端 `ForceNetUpdate`、Multicast 或增加 `Reliable` 来替代缺失的上行参数。
+
+## 服务器必须校验
+
+- 调用对象确属该连接，且 Pawn 仍是该玩家当前控制的有效角色；`HasAuthority()` 本身不证明业务授权。
+- 槽位范围合法；按服务器自己的库存解析物品，物品存在且属于玩家、允许使用。不要相信客户端传入的价格、数量、伤害或“校验通过”标记。
+- 角色存活/可操作状态、物品数量、资源、冷却和请求频率；涉及目标交互时再检查距离、视线和目标权限。
+- 执行时重新确认当前数据。若槽位可能在请求途中换物品，先明确“使用服务器当前槽位内容”还是“使用点击时那件物品”；后者需附带稳定物品标识/版本并校验，不靠数组下标充当永久身份。
+- 校验失败无消耗、无使用副作用；校验与扣费/使用避免重入导致重复消耗。业务层若允许重试，再用请求 ID 做去重，不能把 Reliable 当作业务幂等方案。
+
+不假定某个 UE 小版本必须采用 `WithValidation`。业务拒绝可以在服务器实现内完成；若采用 `_Validate`，须核对目标版本契约及失败断开连接的行为，不把正常冷却失败一概当恶意输入处理。
+
+## 测试方案（均未执行）
+
+1. **基线复现**：Dedicated Server + 至少两个客户端，远端拥有者设本地 2 后调用原无参 RPC。分别记录进程/NetMode、Pawn 标识、角色、Owner、客户端值、服务器入口值及实际使用槽位，预期本地 2、服务器 0。
+2. **正常路径**：改用带参数请求，服务端初始仍为 0；请求 2 后，日志证明参数是 2、校验通过、实际使用的是服务器槽位 2 的物品。若保存选择，再核对服务器状态、拥有者 UI、允许接收该状态的其他客户端。
+3. **拒绝路径**：负数/越界、空槽、无数量、冷却中、死亡、非拥有者尝试调用。预期无非法使用、无错误扣费；非拥有者 RPC 不应成功在服务器执行。预测 UI 能得到拒绝并回退。
+4. **时序与压力**：模拟延迟和丢包，连续请求不同槽位，检查每次使用与请求参数一致，不依赖属性先抵达；请求途中换物品、解除控制/重生时，陈旧请求按约定拒绝。连按受限流/冷却约束；若实现业务重试，验证去重。
+5. **拓扑与同步**：另测 Listen Host 和远端玩家，避免主机同进程权限掩盖问题。若保留复制状态，测迟加入/相关性恢复及权威值未变的拒绝反馈。状态复制可能合并中间变化，不能用 OnRep 次数当使用次数。
+
+本轮只完成合成逻辑审查和官方文档核对，没有修改项目、编译或运行联机测试。所读官方页面当前显示 UE 5.8，不代表你的项目版本。真实实施前需从项目 `.uproject`、引擎关联、`Source/*Target.cs`/已验证构建入口确认目标、平台与配置，再核验 UHT/RPC 签名及复制注册；目前这些材料均缺失，构建与上述测试状态均为 not_run。

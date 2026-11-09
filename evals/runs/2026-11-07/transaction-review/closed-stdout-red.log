@@ -1,0 +1,30 @@
+test_backup_same_inode_and_unknown (test_revision_boundaries.Boundaries.test_backup_same_inode_and_unknown) ... ok
+test_batch_closed_stdout_preserves_published_result (test_revision_boundaries.Boundaries.test_batch_closed_stdout_preserves_published_result) ... ERROR
+test_batch_does_not_swallow_interrupt (test_revision_boundaries.Boundaries.test_batch_does_not_swallow_interrupt) ... ok
+test_batch_propagates_export_state_without_changing_analysis (test_revision_boundaries.Boundaries.test_batch_propagates_export_state_without_changing_analysis) ... ok
+test_envelope (test_revision_boundaries.Boundaries.test_envelope) ... ok
+test_export_cleanup_warning_cannot_hide_publication (test_revision_boundaries.Boundaries.test_export_cleanup_warning_cannot_hide_publication) ... ok
+test_export_close_failure_not_published (test_revision_boundaries.Boundaries.test_export_close_failure_not_published) ... ok
+test_export_fsync_failure (test_revision_boundaries.Boundaries.test_export_fsync_failure) ... ok
+test_export_optional_status (test_revision_boundaries.Boundaries.test_export_optional_status) ... ok
+test_export_publish_conflict (test_revision_boundaries.Boundaries.test_export_publish_conflict) ... ok
+test_failed_export_not_published (test_revision_boundaries.Boundaries.test_failed_export_not_published) ... ok
+test_mutation_invalid_address_stops_before_prepare (test_revision_boundaries.Boundaries.test_mutation_invalid_address_stops_before_prepare) ... ok
+test_strict_numbers (test_revision_boundaries.Boundaries.test_strict_numbers) ... ok
+test_strings_offset_uses_one_parser (test_revision_boundaries.Boundaries.test_strings_offset_uses_one_parser) ... ok
+
+======================================================================
+ERROR: test_batch_closed_stdout_preserves_published_result (test_revision_boundaries.Boundaries.test_batch_closed_stdout_preserves_published_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/transaction_review_v5/Skills/skills/skillforge-ida-pro/scripts/test_revision_boundaries.py", line 78, in test_batch_closed_stdout_preserves_published_result
+    result = batch.run({'operation': 'fixture', 'output': str(p)})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/transaction_review_v5/Skills/skills/skillforge-ida-pro/scripts/run_ida_batch.py", line 22, in run
+    print("SkillForge result: ok=%s seconds=%.3f output=%s published=%s cleanup_error=%s" %
+ValueError: I/O operation on closed file
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.008s
+
+FAILED (errors=1)

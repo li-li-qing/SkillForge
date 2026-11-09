@@ -51,6 +51,27 @@ def unique_object(items):
 def walk_error(error):
     raise error
 
+def read_regular_text(path: Path) -> str:
+    """统一入口：先拒绝特殊文件，再以已打开描述符核对并限量读取。"""
+    limit=2*1024*1024
+    info=path.lstat()
+    if not stat.S_ISREG(info.st_mode) or info.st_size>limit:
+        raise ValueError('not_regular_or_size_limit')
+    flags=os.O_RDONLY|getattr(os,'O_BINARY',0)|getattr(os,'O_NONBLOCK',0)|getattr(os,'O_NOFOLLOW',0)
+    fd=os.open(path,flags)
+    try:
+        info=os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_size>limit:
+            raise ValueError('not_regular_or_size_limit')
+        with os.fdopen(fd,'rb') as stream:
+            fd=None
+            raw=stream.read(limit+1)
+        if len(raw)>limit:raise ValueError('text_size_limit')
+        return raw.decode('utf-8').replace('\r\n','\n').replace('\r','\n')
+    finally:
+        if fd is not None:os.close(fd)
+
+
 def validate(root: Path) -> list[str]:
     root=Path(root);errors=[]
     if root.is_symlink() or not root.is_dir():return ['skill root not a regular directory']
@@ -67,7 +88,7 @@ def validate(root: Path) -> list[str]:
     main=root/'SKILL.md'
     if not main.is_file():return errors+['SKILL.md missing']
     try:
-        text=main.read_text(encoding='utf-8');data=frontmatter(text)
+        text=read_regular_text(main);data=frontmatter(text)
         name=data.get('name','');desc=data.get('description','')
         if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*',name) or len(name)>64 or name!=root.name:errors.append('invalid/mismatched skill name')
         if not 1<=len(desc)<=1024 or not desc.startswith('Use when'):errors.append('invalid triggering description')
@@ -80,9 +101,7 @@ def validate(root: Path) -> list[str]:
     for p in files:
         if p.suffix.lower() not in ('.md','.json','.py'):continue
         try:
-            if not stat.S_ISREG(p.stat().st_mode) or p.stat().st_size>2*1024*1024:
-                raise ValueError('not_regular_or_size_limit')
-            raw=p.read_text(encoding='utf-8')
+            raw=read_regular_text(p)
             if p.suffix.lower()=='.json':json.loads(raw,object_pairs_hook=unique_object)
             elif p.suffix.lower()=='.py':
                 try:ast.parse(raw,filename=str(p))
@@ -99,7 +118,7 @@ def validate(root: Path) -> list[str]:
         if not (root/'scripts'/tool).is_file():errors.append('required tool missing:'+tool)
     for filename in ('behavior-cases.json','trigger-cases.json'):
         try:
-            cases=json.loads((root/'evals'/filename).read_text(encoding='utf-8'),object_pairs_hook=unique_object);seen=set()
+            cases=json.loads(read_regular_text(root/'evals'/filename),object_pairs_hook=unique_object);seen=set()
             if not isinstance(cases,list) or not cases:raise ValueError('expected nonempty case list')
             for c in cases:
                 if not isinstance(c,dict):raise ValueError('case must be object')

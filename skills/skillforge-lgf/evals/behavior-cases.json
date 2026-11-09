@@ -839,5 +839,39 @@
       "按影响观察Authority/owner/proxy和真实伤害的窗口/取消，Health/Shield/结果/受击分别核对",
       "源Montage时间不代替可见画面，自伤不替代敌人Trace；Dedicated/JIP/弱网未运行就保留"
     ]
+  },
+  {
+    "id": "LGF-76",
+    "slug": "workspace-scope-and-descriptor-unknown",
+    "prompt": "LGF清点器只搜索Project/Plugins；LGF实际可能装在Engine/Plugins。另有Plugins:null、重复Mover条目及未写Enabled。团队想统一按missing/false报告并重装插件。请审查。",
+    "expectations": [
+      "未找到限定project_plugins_only，不证明全工程未安装，不扫描全盘或擅自安装",
+      "Plugins格式/重复显式报错，Enabled缺失保持unknown/null而非false",
+      "描述符存在、显式启用声明与Editor实际加载分别核验",
+      "只读清点/脚本测试通过不证明LGF运行或真实UE网络正确"
+    ]
+  },
+  {
+    "id": "LGF-77",
+    "slug": "client-property-is-not-upload",
+    "prompt": "Client赋值replicated CurrentTarget后激活GAS，server仍旧目标。建议Delay等待复制；另有人改成本地GameplayEventData或WaitGameplayEvent就说已上传。未给源码/网络日志，如何定位？",
+    "expectations": [
+      "先说明标准属性Server到Client，客户端赋值无自动上传，等待不解决",
+      "沿所有权/执行策略和实际调用追踪TargetData RPC或项目正式通道，不把NetSerialize成功当已送达",
+      "本地事件不是通用transport；LocalPredicted event-triggered activation可能经WithEventData RPC，逐路径确认而非断言事件永不联网",
+      "仅确认通道后讨论activation identity/监听缓存/过期和Authority验证；未执行不声称UE复现通过"
+    ]
+  },
+  {
+    "id": "LGF-78",
+    "slug": "shared-ge-stack-unequip-contribution",
+    "prompt": "两件装备从同一ASC施加同一AggregateBySource GE，保存的active handle指向共享stack；卸下一件就remove所有层。另一个装备用Instant GE并想凭handle撤销。请审查，不运行工程。",
+    "expectations": [
+      "保留AbilitySpec精确撤销，区分独立Duration/Infinite和共享聚合active effect",
+      "GAS source不等于装备SourceObject/ItemId，不能全部移除共享GE损及另件",
+      "按实际接受贡献管理层数或重建，考虑上限overflow刷新到期外部移除，不假定一次apply一层",
+      "Instant执行结果不能靠active handle撤销，提出可逆持续或明确补偿合同",
+      "建议两装备卸一保留另一的回归，明确not_run而非实机通过"
+    ]
   }
 ]

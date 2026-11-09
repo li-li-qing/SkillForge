@@ -1,0 +1,19 @@
+结论：“面板错误数为 0，所以任务健康”不可靠。已实际运行现有程序，不只是静态推断。
+
+观察到的事实
+- 原配置注入 error：源日志记录 TaskRunner 发出 task.error（request_id=fixture-001），但没有 ErrorProbe 的 observed_error；监控仍为 RUNNING、error_count=0。
+- 只在 work/ 创建替代配置，把 error_topic 从 tasks.error 改为 task.error，再运行同一程序和同一 error 输入：源事件不变，出现 observed_error，监控变为 FAILED、error_count=1。
+- 两份配置各运行 idle、success、error，共 6 次，全部正常退出，诊断断言通过。idle/success 的结果在配置替换前后完全一致。
+- 6 次输出的 button_enabled 都为 false，包括 SUCCEEDED 与 FAILED。源码直接固定这个值，因此灰按钮不是此 fixture 中的健康状态指示器。
+
+根因及最先失真的边界
+事件源 → 订阅回调：源发出 task.error，订阅却注册 tasks.error，字典查找无法找到回调，错误探针及 FAILED/计数更新均未发生。最先失真并不是显示层，而是错误事件没有进入监控回调。单变量替代配置实验验证了这个因果关系。这里的“0”仅表示没有计入错误，不能解释为没有错误。
+
+尚未证明的事情
+这只证明本合成 fixture 的链路问题，不证明真实任务健康，也不涉及真实 LGF/UE、异步系统或实际 GUI。替代配置不解决按钮恒为 false；按钮应何时可用的产品契约并未提供。没有修改或宣称修复产品及正式监控实现。
+
+复核
+运行：
+python -B /workspace/shared/skill_evals_v4/round4/work/diagnose.py
+
+完整命令、源码读取记录、6 次原始输出与退出状态在 round4/trace.txt；测试及替代配置在 round4/work/，每次 JSON 输出也分别保留。fixture 两个文件运行前后 SHA256 相同。未联网、未运行外部代码；正式技能库未更新，经验仅记录为本题候选。

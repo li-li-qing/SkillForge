@@ -149,4 +149,78 @@ class PatchInstallerTests(unittest.TestCase):
                     self.assertEqual(marker.read_bytes(),b'unchanged')
                 finally:link.rmdir()
 
+    def test_windows_device_names_rejected_on_every_host(self):
+        for name in ("scripts/CON.txt", "scripts/nul.py", "docs/COM1.md",
+                     "docs/LPT9.txt", "docs/COM¹.txt", "docs/bad?.md", "docs/a\x01.md"):
+            with self.subTest(name=name):
+                with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+
+    def test_journal_failure_reports_changed_target_and_blocks_retry(self):
+        from unittest.mock import patch
+        original=self.m.atomic_write
+        state_writes=[0]
+        def faulty(path,data,mode=None):
+            if path.name=="state.json":
+                state_writes[0]+=1
+                if state_writes[0]>=2:raise OSError("injected state disk failure")
+            return original(path,data,mode)
+        with patch.object(self.m,"atomic_write",side_effect=faulty):
+            with self.assertRaises(self.m.PatchError) as caught:self.run_update(True)
+        self.assertEqual((self.root/"README.md").read_bytes(),b"new")
+        self.assertIn("backup",str(caught.exception).lower())
+        self.assertTrue(caught.exception.details["mutation_attempted"])
+        self.assertEqual(caught.exception.details["verified_paths"],["README.md"])
+        self.assertFalse(caught.exception.details["journal_persisted"])
+        with self.assertRaises(self.m.PatchError):self.run_update(True)
+
+    def test_pending_journal_checked_before_already_current(self):
+        self.run_update(True)
+        state=next((self.root/".skillforge-backups").glob("*/state.json"))
+        data=json.loads(state.read_text());data["status"]="prepared";state.write_text(json.dumps(data))
+        with self.assertRaises(self.m.PatchError):self.run_update(True)
+
+    def test_initial_journal_failure_has_no_target_mutation(self):
+        from unittest.mock import patch
+        original=self.m.atomic_write
+        def faulty(path,data,mode=None):
+            if path.name=="state.json":raise OSError("initial state failure")
+            return original(path,data,mode)
+        with patch.object(self.m,"atomic_write",side_effect=faulty):
+            with self.assertRaises(self.m.PatchError) as caught:self.run_update(True)
+        self.assertEqual((self.root/"README.md").read_bytes(),b"old")
+        self.assertFalse(caught.exception.details["mutation_attempted"])
+        with self.assertRaises(self.m.PatchError):self.run_update(True)
+
+    def test_committed_lock_cleanup_failure_preserves_applied(self):
+        from unittest.mock import patch
+        unlink = Path.unlink
+        def faulty(path,*args,**kwargs):
+            if path.name == "write.lock": raise OSError("lock cleanup failed")
+            return unlink(path,*args,**kwargs)
+        with patch.object(Path,"unlink",faulty):
+            with self.assertRaises(self.m.PatchIncompleteError) as caught:self.run_update(True)
+        details=caught.exception.details
+        self.assertEqual(details["status"],"cleanup_required")
+        self.assertEqual(details["transaction_status"],"applied")
+        state=next((self.root/".skillforge-backups").glob("*/state.json"))
+        self.assertEqual(json.loads(state.read_text())["status"],"applied")
+        self.assertEqual((self.root/"README.md").read_bytes(),b"new")
+        self.assertTrue((self.root/".skillforge-memory/write.lock").exists())
+        self.assertEqual(self.m.inspect_pending_updates(self.root),[])
+
+    def test_primary_failure_survives_lock_cleanup_failure(self):
+        from unittest.mock import patch
+        unlink=Path.unlink;write=self.m.atomic_write
+        def failed_write(path,data,mode=None):
+            if path == self.root/"README.md":raise OSError("primary target failure")
+            return write(path,data,mode)
+        def failed_cleanup(path,*args,**kwargs):
+            if path.name=="write.lock":raise OSError("secondary cleanup failure")
+            return unlink(path,*args,**kwargs)
+        with patch.object(Path,"unlink",failed_cleanup),patch.object(self.m,"atomic_write",side_effect=failed_write):
+            with self.assertRaises(self.m.PatchIncompleteError) as caught:self.run_update(True)
+        self.assertIn("primary target failure",caught.exception.details["error"])
+        self.assertIn("secondary cleanup failure",caught.exception.details["error"])
+        self.assertEqual((self.root/"README.md").read_bytes(),b"old")
+
 if __name__=='__main__':unittest.main()

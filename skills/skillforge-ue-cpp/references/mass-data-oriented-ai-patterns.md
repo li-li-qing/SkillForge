@@ -672,3 +672,7 @@ UE5.8 Mass Debugger 可以检查：
 - event/signal wakeup；
 - Authority + projection；
 - hybrid simulation tiers。
+
+## 官方来源与版本锚点
+
+2026-11-07核对，页面显示UE5.8。[MassEntity Overview](https://dev.epicgames.com/documentation/en-us/unreal-engine/overview-of-mass-entity-in-unreal-engine)与[UE5.8 Release Notes](https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-release-notes)：数据与Processor边界，以及Signals、离开GameThread创建、稀疏fragment和MassCore演进。具体签名、线程/完成语义与模块成熟度以目标版本源码和启用配置为准；5.8页面不证明5.7相同，固定社区样例不覆盖当前官方合同，本页没有当前工程运行结论。

@@ -12,7 +12,17 @@ Optional compatibility/license/allowed-tools are JSON-quoted strings; metadata
 is a map of JSON-quoted strings. Comments, block scalars, aliases and arbitrary
 YAML remain unsupported.
 
-Markdown checks cover ordinary inline links and reference-link definitions,
+Markdown checks inspect SKILL.md, references/**/*.md and assets/**/*.md.
+Directory symlinks and directory reparse points inside packages are rejected:
+recursive discovery/copy must not silently skip linked subtrees. Relative file
+symlinks remain allowed when both original and standalone targets stay inside.
+Only directories and regular files (including permitted file links) are package
+resources; FIFOs, sockets and devices are rejected before reading/copying.
+Validation assumes a trusted, stable input tree: pause cooperating writes or
+validate a fixed revision. Prechecks and later reads are not an atomic operation;
+this tool is not a security sandbox against concurrent replacement (TOCTOU).
+Do not use it to safely inspect a tree controlled by a hostile concurrent writer.
+They cover ordinary inline links and reference-link definitions,
 not HTML or a complete CommonMark grammar. Relative links and recognizable
 script paths resolve from the containing Markdown file. HTTPS links are not
 fetched and fragment identifiers are not checked. Prose portability checks
@@ -32,6 +42,7 @@ import json
 from pathlib import Path, PureWindowsPath
 import re
 import shutil
+import stat
 import tempfile
 from urllib.parse import unquote, urlsplit
 
@@ -198,13 +209,23 @@ def nonempty_string(value: object) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def unique_json_object(pairs):
+    """Reject ambiguous evaluation objects, including nested context fields."""
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key!r}")
+        result[key] = value
+    return result
+
+
 def validate_evals(package: Path, kind: str, report: Report) -> None:
     path = package / "evals" / f"{kind}-cases.json"
     text = read_text(path, report)
     if text is None:
         return
     try:
-        cases = json.loads(text)
+        cases = json.loads(text, object_pairs_hook=unique_json_object)
     except ValueError as error:
         report.error(path, f"invalid JSON: {error}")
         return
@@ -261,8 +282,18 @@ def validate_package(package: Path, report: Report) -> str | None:
     boundary_errors = len(report.errors)
     try:
         for resource in package.rglob("*"):
+            info = resource.lstat()
+            linked = stat.S_ISLNK(info.st_mode) or bool(getattr(info, "st_file_attributes", 0) & 0x400)
+            if linked and resource.is_dir():
+                report.error(resource, "directory links/reparse points are not supported in portable packages")
+                continue
             if not resource.resolve().is_relative_to(package):
                 report.error(resource, "resource target escapes package")
+                continue
+            # stat follows permitted file links; a link to a FIFO is not a file.
+            mode = resource.stat().st_mode
+            if not (stat.S_ISREG(mode) or stat.S_ISDIR(mode)):
+                report.error(resource, "package resources must be regular files or directories; special files are refused")
     except (OSError, RuntimeError) as error:
         report.error(package, f"cannot inspect package resources: {error}")
     if len(report.errors) != boundary_errors:
@@ -275,7 +306,9 @@ def validate_package(package: Path, report: Report) -> str | None:
         if len(text.splitlines()) > 500:
             report.error(main, "SKILL.md exceeds the 500-line limit")
         validate_markdown(package, main, text, report)
-    for path in sorted((package / "references").rglob("*.md")):
+    runtime_markdown = [path for folder in ("references", "assets")
+                        for path in (package / folder).rglob("*.md")]
+    for path in sorted(runtime_markdown):
         text = read_text(path, report)
         if text is not None:
             validate_markdown(package, path, text, report)
@@ -296,7 +329,11 @@ def validate_packages(packages: list[Path], *, self_contained: bool = False) -> 
         return report
     names = {}
     for candidate in packages:
-        package = candidate.resolve()
+        try:
+            package = candidate.resolve()
+        except (OSError, ValueError, RuntimeError) as error:
+            report.error(candidate, f"cannot resolve package: {error}")
+            continue
         before = len(report.errors)
         name = validate_package(package, report)
         if name is not None:

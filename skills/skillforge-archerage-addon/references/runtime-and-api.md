@@ -65,3 +65,13 @@ Native事件也一样。看到 `PLAYER_MONEY(40834, "40834", 0)` 不能因为第
 重点核查：新版语法如`goto`/位运算/`//`/`<const>`，以及运行库差异`table.unpack`、`utf8`、`load`参数、`xpcall`传参、环境表。语法检查只抓语法，不会证明API可调用；保留中间nil和实参数量。`loadfile`加载返回函数不等于执行函数，离线语法工具不应执行整个插件。
 
 Lua5.1默认数值类型是double且可定制，不能仅凭`_VERSION`推断客户端或SaveData存储精度。`-2→0`也不能自动归因于浮点精度。桌面文件系统、os库、C模块等存在不代表RU沙箱允许。依据：[Lua5.1参考手册](https://www.lua.org/manual/5.1/manual.html)；工具见[验证工具](verification-tools.md)。
+
+## Lua 5.1.5 局部变量编译上限
+
+仅针对本轮核对的标准 Lua 5.1.5 源码：默认 `LUAI_MAXVARS=200`。检查按当前函数中仍在作用域的局部加本次声明计数，不是整文件 `local` 关键字总数；主 chunk 也作为函数检查。离开块会减少活跃局部，嵌套函数另有编译状态，但闭包捕获另受 upvalue 上限约束。
+
+命名参数和方法隐含 `self` 计入；启用 `LUA_COMPAT_VARARG` 时旧式 `arg` 也占局部（该版本默认启用）。数值 for 另有3个隐藏控制局部和1个显式循环变量；泛型 for 为3个隐藏控制局部加声明的迭代变量。不能只数源码可见的 local。
+
+修复优先收窄临时变量作用域、按职责拆函数或用明确归属的状态表；不要为绕上限批量改全局。200是编译配置默认，不推广到LuaJIT、其他Lua版本或游戏定制VM；即便未超此限，寄存器/表达式、upvalue和调试局部记录仍可触及其他限制。缺可信Lua5.1编译器时只报告源码核验，不称客户端已通过。
+
+来源：[Lua 5.1.5 luaconf.h](https://www.lua.org/source/5.1/luaconf.h.html) 的 LUAI_MAXVARS/LUA_COMPAT_VARARG；[lparser.c](https://www.lua.org/source/5.1/lparser.c.html) 的 new_localvar、removevars/leaveblock、parlist/body、fornum/forlist。2026-11-07 核对，无源码复制。

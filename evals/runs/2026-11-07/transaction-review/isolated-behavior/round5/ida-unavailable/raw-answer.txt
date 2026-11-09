@@ -1,0 +1,45 @@
+已完成本地只读静态分析。没有 IDA/Hex-Rays 或 IDA MCP，也没有安装、运行目标或修改目标文件；以下伪代码是依据 GNU objdump 指令和 DWARF 调试信息人工整理，不是 Hex-Rays 输出，也不声称逐字恢复源码。
+
+## 样本与证据
+- 文件：fixture/target；ELF64、小端、x86-64、Linux PIE，保留符号和调试信息。调用参数与 System V AMD64 ABI 一致。
+- SHA-256：e5fc73889c9f2d12af1198a00a564caadf71778c66c079d814535f037239fdfe。分析前后相同。
+- 实际工具：file 5.46、GNU readelf/objdump 2.44，以及 nm、strings、sha256sum。完整静态命令和原始输出见同目录 trace.txt。
+- 下述地址都是 ELF 链接时虚拟地址，不是实际进程地址。PIE 实际加载基址未知，运行时地址为加载偏移加相应地址。这里代码所在 LOAD 段的文件偏移与虚拟地址相同；数据段不同。
+
+## 函数说明
+1. take_damage，0x1139，31 字节，范围 [0x1139, 0x1158)。名称来自符号表；DWARF 给出参数 amount 为 4 字节有符号 int，函数无返回值类型。0x1140 比较 amount 与 0，0x1144 的 jle 在 amount <= 0 时跳过修改；否则 0x1146 读取 health，0x114c 做 32 位减法，0x114f 写回 health。没有最低为 0 的钳制，也不修改 score。直接调用点为 main 的 0x1161。
+2. main，0x1158，55 字节，范围 [0x1158, 0x118f)。0x115c 将 7 放入 edi，0x1161 调用 take_damage；0x1166 读取 score，0x116c 读取 health；0x1183 调用 printf@plt（0x1030），格式字符串位于 0x2004，为 "%d %d\n"；0x1188 设置返回值 0。
+3. 启动和收尾代码：_start（0x1050）把 main 地址交给 __libc_start_main；_init（0x1000）条件调用 __gmon_start__；frame_dummy（0x1130）跳转 register_tm_clones（0x10b0）；deregister_tm_clones（0x1080）及 __do_global_dtors_aux（0x10f0）承担运行库清理，后者包含防重复标志和 __cxa_finalize 调用；_fini（0x1190）只有栈调整及返回。这些不属于训练样本的扣血业务函数。
+
+## 全局数据与人工伪代码
+health 位于 ELF 地址 0x4018、文件偏移 0x3018；score 位于 0x401c、文件偏移 0x301c。两者均为 4 字节，原始字节均为 64 00 00 00，即十进制 100。DWARF 将二者标为 volatile int，并与指令访问宽度相符。
+
+```c
+// 基于符号、DWARF 和汇编整理的 C 风格伪代码
+volatile int health = 100;
+volatile int score = 100;
+
+void take_damage(int amount) {
+    if (amount > 0) {
+        health = health - amount;
+    }
+}
+
+int main(void) {
+    take_damage(7);
+    // 该二进制实际先读取 score，再读取 health。
+    int observed_score = score;
+    int observed_health = health;
+    printf("%d %d\n", observed_health, observed_score);
+    return 0;
+}
+```
+
+伪代码中的 observed_score/observed_health 为说明求值顺序而添加，并非恢复的源码变量。极值情况下，机器的 32 位 sub 保留低 32 位；上面的有符号 C 表达式不能被当作所有溢出输入下都等价的可移植 C 实现。
+
+从初始数据和这条 main 路径静态推导，正常运行应输出 `93 100` 后换行并返回 0。这是静态推导，不是运行实测。
+
+## 覆盖与限制
+已检查 ELF 头、段/节、符号、动态依赖、全部 objdump -d 输出、字符串、.rodata/.data 和完整 DWARF info。首次 readelf 默认列宽截短了部分符号名称，随后用 -W -s 补齐。业务函数的分支、读写和直接调用均已回看指令；未执行目标、未验证动态链接器或外部库运行行为，没有运行时内存、IDA 数据库、IDA xrefs 或反编译器结果。嵌入调试信息中的源码路径仅作为样本元数据读取，未访问该路径。
+
+当前函数说明与人工伪代码已经可交付，无需为缺少 IDA 停止本地分析。若后续必须取得 Hex-Rays 原生输出，需要在另一个已有合法 IDA/对应架构 Hex-Rays 授权的环境中导入同一哈希样本；本轮没有尝试安装或绕过授权。共享技能未改动。

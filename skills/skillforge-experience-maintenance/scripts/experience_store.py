@@ -26,6 +26,45 @@ class StoreError(RuntimeError):
     """An operation was refused without overwriting a conflicting rule."""
 
 
+class RecoveryRequired(StoreError):
+    """A prepared operation may have changed the target; inspect before retrying."""
+
+    def __init__(self, identifier: str, relative: str, target: Path, cause: Exception):
+        try:
+            current = _sha(_read(target))
+        except (OSError, StoreError, ValueError):
+            current = "unknown"
+        self.result = dict(status="recovery_required", id=identifier, target=relative,
+                           current_sha256=current, retry_safe=False,
+                           next_action="Inspect transaction and target; run explicit recover; do not retry automatically.",
+                           error=str(cause))
+        super().__init__(str(cause))
+
+
+class LockCleanupFailed(StoreError):
+    """Business outcome and lock cleanup are separate observations."""
+
+    def __init__(self, root, identifier, cleanup, original):
+        self.original_error = original
+        self.cleanup_error = cleanup
+        result = dict(status="lock_cleanup_failed", id=identifier, target="unknown",
+                      current_sha256="unknown", journal_status="unknown", retry_safe=False,
+                      lock_path=str(root / ".skillforge-memory/write.lock"),
+                      cleanup_error=str(cleanup),
+                      operation_error=None if original is None else str(original),
+                      operation_result=getattr(original, "result", None),
+                      next_action="Inspect journal and lock ownership; do not retry or delete an unknown lock. Recover only prepared or rollback_prepared journals; do not recover committed or rolled_back journals.")
+        try:
+            journal = _json_read(_no_links(root, f".skillforge-memory/transactions/{identifier}.json"))
+            result["journal_status"] = journal.get("status", "unknown")
+            result["target"] = journal["target"]
+            result["current_sha256"] = _sha(_read(_target(root, journal["target"])))
+        except (OSError, StoreError, ValueError, KeyError, TypeError):
+            pass
+        self.result = result
+        super().__init__(str(cleanup))
+
+
 MAX_CONTENT = 1024 * 1024
 MAX_RECORD_BYTES = 4 * MAX_CONTENT
 IDENTIFIER = re.compile(r"[0-9a-f]{32}\Z")
@@ -162,7 +201,7 @@ def _id(value: str) -> str:
 
 
 @contextmanager
-def _lock(root: Path):
+def _lock(root: Path, identifier: str | None = None):
     store = _store(root)
     lock = _no_links(root, ".skillforge-memory/write.lock")
     token = uuid.uuid4().hex
@@ -170,16 +209,23 @@ def _lock(root: Path):
         descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     except FileExistsError as exc:
         raise StoreError("Writer busy or recovery lock remains; candidate retained; do not steal the lock") from exc
+    original = None
     try:
         with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
             stream.write(token)
             stream.flush()
             os.fsync(stream.fileno())
         yield store
+    except BaseException as exc:
+        original = exc
+        raise
     finally:
         # Never unlink a lock replaced by an external actor.
-        if lock.is_file() and not _is_link(lock) and lock.read_text(encoding="utf-8") == token:
-            lock.unlink()
+        try:
+            if lock.is_file() and not _is_link(lock) and lock.read_text(encoding="utf-8") == token:
+                lock.unlink()
+        except (OSError, ValueError) as cleanup:
+            raise LockCleanupFailed(root, identifier, cleanup, original) from (original or cleanup)
 
 
 def _pending(store: Path, *, allowed: str | None = None) -> None:
@@ -187,6 +233,43 @@ def _pending(store: Path, *, allowed: str | None = None) -> None:
         transaction = _json_read(path)
         if transaction.get("status") in {"prepared", "rollback_prepared"} and path.stem != allowed:
             raise StoreError("An interrupted transaction needs explicit recovery before further rule writes")
+
+
+def _pending_updates(root: Path, target: str) -> None:
+    """Read the updater journal format without importing another package."""
+    try:
+        backups = _no_links(root, ".skillforge-backups")
+        if not backups.exists():
+            return
+        for folder in backups.iterdir():
+            relative = folder.relative_to(root).as_posix()
+            _no_links(root, relative)
+            record = _json_read(_no_links(root, relative + "/state.json"))
+            if record.get("status") == "applied":
+                continue
+            if record.get("status") == "reconciled" and isinstance(record.get("resolution"), str) and record["resolution"].strip():
+                continue
+            planned, retired = record.get("planned"), record.get("retire_dirs")
+            if not isinstance(planned, list) or not isinstance(retired, list):
+                raise ValueError("missing or invalid planned/retire_dirs")
+            paths = []
+            for item in planned:
+                if not isinstance(item, dict):
+                    raise ValueError("invalid planned entry")
+                paths.append(item.get("path"))
+            # Validate every scope before deciding it is unrelated.
+            for name in paths + retired:
+                _no_links(root, name)
+            key = target.casefold() if os.name == "nt" else target
+            scopes = [(p.casefold() if os.name == "nt" else p) for p in paths + retired]
+            if any(key == p or key.startswith(p + "/") or p.startswith(key + "/") for p in scopes):
+                raise StoreError(f"Pending updater overlaps target: {relative}; inspect and reconcile updater first")
+    except StoreError as exc:
+        if str(exc).startswith("Pending updater overlaps"):
+            raise
+        raise StoreError(f"Pending updater scope unknown; no rule write: {exc}") from exc
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        raise StoreError(f"Pending updater scope unknown; no rule write: {exc}") from exc
 
 
 def _validated(record: dict, identifier: str) -> dict:
@@ -242,7 +325,7 @@ def promote(root: Path, identifier: str, *, reviewed: bool = False) -> dict:
         raise StoreError("Semantic review is required; the tool cannot provide it")
     root = _root(root)
     identifier = _id(identifier)
-    with _lock(root) as store:
+    with _lock(root, identifier) as store:
         _pending(store)
         journal = store / "transactions" / f"{identifier}.json"
         if journal.exists():
@@ -256,17 +339,21 @@ def promote(root: Path, identifier: str, *, reviewed: bool = False) -> dict:
         record = _validated(_json_read(store / "proposals" / f"{identifier}.json"), identifier)
         _check_record_capacity(record)
         target = _target(root, record["target"])
+        _pending_updates(root, record["target"])
         current = _read(target)
         if _sha(current) != record["before_sha256"]:
             raise StoreError("STALE: target changed; reread and semantically merge into a new candidate")
         mode = stat.S_IMODE(target.stat().st_mode) if target.exists() else 0o644
         transaction = dict(record, status="prepared", reviewed=True, prepared_at=_time())
         _json_write(journal, transaction)
-        _atomic_write(target, record["after"].encode("utf-8"), mode=mode)
-        if _sha(_read(target)) != record["after_sha256"]:
-            raise StoreError("Post-write mismatch; preserve the prepared record for investigation")
-        transaction.update(status="committed", completed_at=_time())
-        _json_write(journal, transaction)
+        try:
+            _atomic_write(target, record["after"].encode("utf-8"), mode=mode)
+            if _sha(_read(target)) != record["after_sha256"]:
+                raise StoreError("Post-write mismatch; preserve the prepared record for investigation")
+            transaction.update(status="committed", completed_at=_time())
+            _json_write(journal, transaction)
+        except (OSError, StoreError, ValueError) as exc:
+            raise RecoveryRequired(identifier, record["target"], target, exc) from exc
         return dict(id=identifier, status="committed", target=record["target"])
 
 
@@ -276,27 +363,31 @@ def rollback(root: Path, identifier: str, *, reviewed: bool = False) -> dict:
         raise StoreError("Explicit reviewed rollback is required")
     root = _root(root)
     identifier = _id(identifier)
-    with _lock(root) as store:
+    with _lock(root, identifier) as store:
         _pending(store)
         journal = store / "transactions" / f"{identifier}.json"
         transaction = _validated(_json_read(journal), identifier)
         if transaction.get("status") != "committed":
             raise StoreError("Only a committed transaction can be rolled back")
         target = _target(root, transaction["target"])
+        _pending_updates(root, transaction["target"])
         if _sha(_read(target)) != transaction["after_sha256"]:
             raise StoreError("STALE: a later revision exists; propose a reviewed inverse patch")
         _check_record_capacity(transaction)
         transaction.update(status="rollback_prepared", rollback_started_at=_time())
         _json_write(journal, transaction)
-        if transaction["before"] is None:
-            target.unlink()
-        else:
-            mode = stat.S_IMODE(target.stat().st_mode)
-            _atomic_write(target, transaction["before"].encode("utf-8"), mode=mode)
-        if _sha(_read(target)) != transaction["before_sha256"]:
-            raise StoreError("Rollback post-write mismatch; investigation required")
-        transaction.update(status="rolled_back", rollback_completed_at=_time())
-        _json_write(journal, transaction)
+        try:
+            if transaction["before"] is None:
+                target.unlink()
+            else:
+                mode = stat.S_IMODE(target.stat().st_mode)
+                _atomic_write(target, transaction["before"].encode("utf-8"), mode=mode)
+            if _sha(_read(target)) != transaction["before_sha256"]:
+                raise StoreError("Rollback post-write mismatch; investigation required")
+            transaction.update(status="rolled_back", rollback_completed_at=_time())
+            _json_write(journal, transaction)
+        except (OSError, StoreError, ValueError) as exc:
+            raise RecoveryRequired(identifier, transaction["target"], target, exc) from exc
         return dict(id=identifier, status="rolled_back")
 
 
@@ -304,7 +395,7 @@ def recover(root: Path, identifier: str) -> dict:
     """Reconcile journal state from hashes; never change the active rule."""
     root = _root(root)
     identifier = _id(identifier)
-    with _lock(root) as store:
+    with _lock(root, identifier) as store:
         _pending(store, allowed=identifier)
         journal = store / "transactions" / f"{identifier}.json"
         transaction = _validated(_json_read(journal), identifier)
@@ -360,6 +451,9 @@ def main(argv: list[str] | None = None) -> int:
             result = recover(args.root, args.id)
         print(json.dumps(result, ensure_ascii=False))
         return 0
+    except (RecoveryRequired, LockCleanupFailed) as exc:
+        print(json.dumps(exc.result, ensure_ascii=False))
+        return 3
     except (StoreError, OSError, ValueError, KeyError, TypeError, UnicodeError) as exc:
         print(f"REFUSED: {exc}", file=sys.stderr)
         return 2

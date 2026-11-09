@@ -1,0 +1,118 @@
+[
+  {
+    "case": "probe_fifo",
+    "pass": true
+  },
+  {
+    "case": "probe_zero",
+    "pass": true
+  },
+  {
+    "case": "probe_fifo_symlink",
+    "pass": true
+  },
+  {
+    "case": "hash_fifo",
+    "pass": true
+  },
+  {
+    "case": "hash_zero",
+    "pass": true
+  },
+  {
+    "case": "hash_fifo_symlink",
+    "pass": true
+  },
+  {
+    "case": "verifier_reader_fifo",
+    "pass": true
+  },
+  {
+    "case": "verifier_reader_zero",
+    "pass": true
+  },
+  {
+    "case": "verifier_reader_fifo_symlink",
+    "pass": true
+  },
+  {
+    "case": "probe_normal",
+    "pass": true
+  },
+  {
+    "case": "probe_regular_symlink",
+    "pass": true
+  },
+  {
+    "case": "hash_normal_symlink",
+    "pass": true
+  },
+  {
+    "case": "reader_regular_symlink_refused",
+    "pass": true
+  },
+  {
+    "case": "reader_normal",
+    "pass": true
+  },
+  {
+    "case": "reader_size_cap",
+    "pass": true
+  },
+  {
+    "case": "verifier_whole_normal",
+    "pass": true
+  },
+  {
+    "case": "verifier_whole_fifo",
+    "pass": true
+  },
+  {
+    "case": "publish_normal",
+    "pass": true
+  },
+  {
+    "case": "publish_refuse_file",
+    "pass": true
+  },
+  {
+    "case": "publish_refuse_symlink",
+    "pass": true
+  },
+  {
+    "case": "publish_refuse_dangling",
+    "pass": true
+  },
+  {
+    "case": "publish_refuse_fifo",
+    "pass": true
+  },
+  {
+    "case": "publish_fault_write",
+    "pass": true
+  },
+  {
+    "case": "publish_fault_short",
+    "pass": true
+  },
+  {
+    "case": "publish_fault_flush",
+    "pass": true
+  },
+  {
+    "case": "publish_fault_fsync",
+    "pass": true
+  },
+  {
+    "case": "publish_fault_close",
+    "pass": true
+  },
+  {
+    "case": "publish_fault_link",
+    "pass": true
+  },
+  {
+    "case": "publish_fault_cleanup",
+    "pass": true
+  }
+]

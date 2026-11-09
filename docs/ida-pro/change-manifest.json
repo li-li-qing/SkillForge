@@ -1,0 +1,268 @@
+{
+  "revision": "v3",
+  "changes": [
+    {
+      "path": "CHANGELOG.md",
+      "change": "added",
+      "sha256": "2aef9ed65a426ecd6719e4187c0238318b00c99a31c97a61b2389bb4ac13cfd2",
+      "bytes": 4495
+    },
+    {
+      "path": "README.md",
+      "change": "modified",
+      "sha256": "0b78253b5aa8eb909180275e864eeca74fe3fedbfa225e0f383d94282370addf",
+      "bytes": 16765
+    },
+    {
+      "path": "development/skillforge-orchestrator/snapshots/skill-index-current.json",
+      "change": "modified",
+      "sha256": "9ba7036ecaa8b5985de0377d6cf5a616de6ef125129e8541e1e47eaae437b27e",
+      "bytes": 8163
+    },
+    {
+      "path": "docs/ida-pro/design-and-integration.md",
+      "change": "added",
+      "sha256": "d2ddd14829188d497efc68666ed335d38c9aa3d66b031018c0047c3402c1266a",
+      "bytes": 1903
+    },
+    {
+      "path": "docs/ida-pro/github-mcp-research.md",
+      "change": "added",
+      "sha256": "61bbaa7a9dbacb59df693b723a69b9afde72b39dbfec49458aca857741bd0194",
+      "bytes": 12856
+    },
+    {
+      "path": "docs/ida-pro/github-ue-research.md",
+      "change": "added",
+      "sha256": "687aef935fc0ac44a65b153cc52ee01505808244594fe5b2f12bc01d1238edc2",
+      "bytes": 13092
+    },
+    {
+      "path": "docs/ida-pro/packaging-exclusions.json",
+      "change": "added",
+      "sha256": "f2b2bda3fc9a01ebb008f808832b0cef9f9cae910d26f7ec2f4d258b30f70c01",
+      "bytes": 41211
+    },
+    {
+      "path": "docs/ida-pro/skill-inventory.json",
+      "change": "added",
+      "sha256": "a759334c7e9e8de9fc34f6c9243fe15aef30cd0a0035c2b133e9545b815fdb27",
+      "bytes": 15947
+    },
+    {
+      "path": "docs/ida-pro/v2-reverse-review.md",
+      "change": "added",
+      "sha256": "fe9883ca4398791fb2eb727679e1ebb6e8a4ebbca3af2fd9f74f4cede3534be7",
+      "bytes": 697
+    },
+    {
+      "path": "docs/ida-pro/v3-gui-review.md",
+      "change": "added",
+      "sha256": "fbd40d0b1c327b3e37cd33df9c19247d49c8f44d9f18e998dca4fc17d0f27256",
+      "bytes": 349
+    },
+    {
+      "path": "docs/research.md",
+      "change": "modified",
+      "sha256": "878a635f8e42145b452752f26bb78b3672f7b297c53f816f44595cfcd6ce4c09",
+      "bytes": 37292
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/examples-tests.log",
+      "change": "added",
+      "sha256": "1ba3dfed5882dc993608809bbeb16dc24345f5308989bf9974db7bf2433d75c2",
+      "bytes": 4891
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/gui-cleanup-red.log",
+      "change": "added",
+      "sha256": "9642cd21b8818f5324291c8f2ffd9a59c8b00b138ae5e5e1cadb9574203763ac",
+      "bytes": 9222
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/index-tests.log",
+      "change": "added",
+      "sha256": "8f2f7877bd918f53a5a4f0be74e8ff175599e38ac44aaa525f04c148c82a3a81",
+      "bytes": 4567
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/library-tests.log",
+      "change": "added",
+      "sha256": "394c17f0643c7fe8a7ef1c0242162f4b9c2ecbf97770502f6b54e688993db178",
+      "bytes": 12332
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/pagination-red.log",
+      "change": "added",
+      "sha256": "adc16037c6c6d71d9893217b9651d43eeda5e5b5e20f7571898e800f12a4d97f",
+      "bytes": 11128
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/report.md",
+      "change": "added",
+      "sha256": "c3656204f949411e64d70db0211e5a04d84a5e93063190cc9b7de6b7de3f004d",
+      "bytes": 5324
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/review-notes.md",
+      "change": "added",
+      "sha256": "a342dccacad7813e55d74d15d74b2c3472c61440408fcc208e501c219f9462a6",
+      "bytes": 969
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/structure.log",
+      "change": "added",
+      "sha256": "826939740f052c8981c686a46d95f076c4605e6d629eb6d99a1e3298e56077f3",
+      "bytes": 67
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/syntax.log",
+      "change": "added",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evals/runs/2026-11-07/ida-pro/task-simulations.md",
+      "change": "added",
+      "sha256": "658ff6ec5b943b34d526ece840297d5a382ac9c616c9e50426eb98f6e6916fb3",
+      "bytes": 4116
+    },
+    {
+      "path": "skills/skillforge-ida-pro/SKILL.md",
+      "change": "added",
+      "sha256": "1e422a49222fba0bdeb2d22751d6cc518de169b123ddaa0f95e07ddeaef90cf3",
+      "bytes": 4134
+    },
+    {
+      "path": "skills/skillforge-ida-pro/assets/analysis-report.md",
+      "change": "added",
+      "sha256": "50cbb2c877c7c846108a7ce516d47f92cf4772147f592ec328cc057908a87156",
+      "bytes": 968
+    },
+    {
+      "path": "skills/skillforge-ida-pro/assets/change-log.json",
+      "change": "added",
+      "sha256": "f5d9488bcd5622229db1c706827262cd9880d72300a3cbbe8c9a36a6f2464c67",
+      "bytes": 348
+    },
+    {
+      "path": "skills/skillforge-ida-pro/evals/behavior-cases.json",
+      "change": "added",
+      "sha256": "b1018a7967349592a8ed65a3e2992ab6c232b44d854242eeacbd107cdd99bd36",
+      "bytes": 2273
+    },
+    {
+      "path": "skills/skillforge-ida-pro/evals/trigger-cases.json",
+      "change": "added",
+      "sha256": "aa91953b7c1ba5570d79b33674e2f41e5cabad330da8a38adefe343b1c28c4cc",
+      "bytes": 1120
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/class-recovery.md",
+      "change": "added",
+      "sha256": "8fa77f52fb25a0fd2eff01747f30ec5d82f406b41d7648a0466605274135e0c1",
+      "bytes": 2021
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/dynamic-debugging.md",
+      "change": "added",
+      "sha256": "9b7305003703e0c1f1dce182b8dd3afdf493cf98199d21070e0946d60ff3ab0e",
+      "bytes": 1940
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/idapython-api.md",
+      "change": "added",
+      "sha256": "c520fba39b7562f97a9b224b8da71455d43ca061a610bbc2d747a69884211c0e",
+      "bytes": 17571
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/idapython-sources.md",
+      "change": "added",
+      "sha256": "eee4bda1e4614eaf8367b1d80a4796651e1c4be6105f5f6242da39ebbabb8887",
+      "bytes": 6951
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/mcp-adapters.md",
+      "change": "added",
+      "sha256": "187909b204d77787c6d463e7f1903a81caa2480004170122bb77ae52280bf985",
+      "bytes": 4478
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/sources.md",
+      "change": "added",
+      "sha256": "c0c7195f1fa84e5726c1f97bd29d59334d7cf464d1d8f0e1b6a8dedab78e6b20",
+      "bytes": 3808
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/static-and-decompiler.md",
+      "change": "added",
+      "sha256": "94534e156b0fb92b8a0852059582bfce321cf7a51fa0587e37aed0500a752230",
+      "bytes": 2127
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/unreal-engine.md",
+      "change": "added",
+      "sha256": "9e8f3f62334cc40bac4556abf3dae7dedc56767edf3654fa7126fa818297c196",
+      "bytes": 5723
+    },
+    {
+      "path": "skills/skillforge-ida-pro/references/workflows.md",
+      "change": "added",
+      "sha256": "0542a9da9046e3be94e18bd69debc0c2f22581a0aa0d1d9f41a901a20e688035",
+      "bytes": 2838
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/gui_strings_export.py",
+      "change": "added",
+      "sha256": "1ca129ae7f90d3312e72c8032cd69dc0268eb87af97e1ab87188ed3b7bfc65cb",
+      "bytes": 4858
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/ida_evidence.py",
+      "change": "added",
+      "sha256": "d02ecb73c0a05b407b5d877c2314b2e4984bf4fee3148827f7a08ad6af2877f3",
+      "bytes": 16880
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/ida_mutations.py",
+      "change": "added",
+      "sha256": "246a09a37ecb5c150aceb70af2cdf42cd87ad1a2e8b4978f967fffe41b09a573",
+      "bytes": 11498
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/job.example.json",
+      "change": "added",
+      "sha256": "c9c73456244d1463cf626fe0c15917a77feb1833bab1956e1681737f5bec7e3c",
+      "bytes": 210
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/mcp_function_query.py",
+      "change": "added",
+      "sha256": "a087aa59f46ee160a65a1344d4169af05177bbc451451f5435a2f652429ec448",
+      "bytes": 6045
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/run_ida_batch.py",
+      "change": "added",
+      "sha256": "68825b2af378cf21abbd23ea210658beed6d2485105448c6af4f62f0ed073d56",
+      "bytes": 1244
+    },
+    {
+      "path": "skills/skillforge-ida-pro/scripts/test_examples.py",
+      "change": "added",
+      "sha256": "a93b464b3def9783dd19efc384d19ee6589aec99b2c12875a93b5d0e1a45f954",
+      "bytes": 28863
+    },
+    {
+      "path": "skills/skillforge-reverse-engineering/SKILL.md",
+      "change": "modified",
+      "sha256": "f01d88ed97b47f40d4f369df40fc417692706027f4c12814a1ed2b9949e3dafb",
+      "bytes": 4160
+    }
+  ],
+  "deleted_source_files": [],
+  "generated_metadata": [
+    "docs/ida-pro/change-manifest.json",
+    "evals/runs/2026-11-07/ida-pro/final-integrity.json"
+  ]
+}

@@ -94,5 +94,25 @@
       "关闭modal要精确恢复之前layer状态/焦点，而不是Pop错误实例；并发modal需stack identity/refcount",
       "若保留blank blocker，应明确owner、instance identity、异常teardown和可访问性影响，并做nested modal回归"
     ]
+  },
+  {
+    "id": "UI-ACCESS-01",
+    "prompt": "工具面板只有红绿状态和无文字图标按钮；键盘可用，截图完整。请验收。",
+    "expectations": [
+      "检查非颜色状态和可识别语义标签",
+      "检查系统字体放大和长标签",
+      "辅助工具与视觉验证分列，未执行标待验证"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "UI-SNAPSHOT-GAP-01",
+    "prompt": "UI读取snapshot后异步等待再订阅事件；期间状态仅变化一次，之后没有事件。重新打开前一直显示旧值，直接改成先订阅就能保证正确吗？",
+    "expectations": [
+      "指出快照与订阅之间漏事件；同步方案需同线程无yield且无重入前提",
+      "使用已有原子合同或订阅后带revision快照，并处理重复和旧delta，不把换顺序视为充分证明",
+      "覆盖夹缝变更、重复事件、解绑迟到回调，未运行不称通过"
+    ],
+    "execution_status": "not_run"
   }
 ]

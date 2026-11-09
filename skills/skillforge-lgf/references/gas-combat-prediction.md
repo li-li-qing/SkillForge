@@ -189,7 +189,7 @@ AuthorityWindowGeneration
 GameplayEvent / TargetData / LGF current request payload
 ```
 
-只要它们能与本次 activation identity 绑定。
+前提是当前项目存在实际承载这些数据的网络调用，并能与本次 activation identity 绑定；仅创建 payload 不满足前提。
 
 不推荐：
 
@@ -198,7 +198,13 @@ Client set replicated CurrentTarget
 Client immediately ActivateAbility
 ```
 
-服务器可能先收到 Ability 请求，再看到旧 `CurrentTarget`。
+标准 replicated 属性更新方向是 Server → Client；客户端给本地 `CurrentTarget` 赋值不会自动上传服务器，增加 Delay 等待也不能补出上传通道。先检查实际调用点、网络所有权/执行策略、序列化的数据及 server handler：例如现有 TargetData task/wrapper 是否真正调用 `CallServerSetReplicatedTargetData` / `ServerSetReplicatedTargetData`（或当前版本对应 batch），以及服务端如何消费同一 activation 的数据。
+
+`GameplayEventData`、TargetData 或对象赋值本身不是网络发送。普通本地事件和 `WaitGameplayEvent` 也不是通用 transport；但 LocalPredicted 的 event-triggered activation 可能进入 `ServerTryActivateAbilityWithEventData`。必须逐路径核实触发方式、execution policy、实际 RPC 与 activation identity，不能反向断言 GameplayEvent 永不联网。已有正式通道能满足合同就复用，不机械新增 RPC。
+
+只有确认真实网络通道后，才排查跨请求/激活的数据关联、到达与监听先后、缓存消费及过期拒绝；不能把“根本没有上传”诊断成乱序。将请求与 AbilitySpec/activation prediction key、业务 generation 绑定，并由 Authority 重验。
+
+版本依据：2026-11-07 核对 Epic UE5.8 [属性复制](https://dev.epicgames.com/documentation/unreal-engine/replicate-actor-properties-in-unreal-engine)、[ASC API](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/GameplayAbilities/UAbilitySystemComponent) 和 [PredictionKey](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/GameplayAbilities/FPredictionKey)。这些 API 是追踪候选入口，不证明当前项目已经调用；其他 UE/GAS/LGF 版本须对照安装源码。
 
 ### 5.1 TargetData 不等于可信 Hit
 
@@ -484,3 +490,7 @@ Montage mesh/layer instance
 ```
 
 这样才能把“动画看着错”“技能只打一段”“右刀误伤”追到同一数据链上。
+
+## 官方版本核对入口
+
+[当前主题Epic依据](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/GameplayAbilities/FPredictionKey)，2026-11-07读取页面显示UE5.8。以实际LGF消费工程Build.version、启用模块和对应源码重核API/行为；本页建议不证明LGF当前分支已实现，也不能把5.8能力直接用于5.7。

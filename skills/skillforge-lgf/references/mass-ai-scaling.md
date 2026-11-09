@@ -577,3 +577,7 @@ LGF Mass 试验必须与现有 Actor AI baseline 比。
 - Save/reconnect。
 
 每一阶段都先做性能和失败注入，再继续扩展。
+
+## 官方版本核对入口
+
+[当前主题Epic依据](https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-release-notes)，2026-11-07读取页面显示UE5.8。以实际LGF消费工程Build.version、启用模块和对应源码重核API/行为；本页建议不证明LGF当前分支已实现，也不能把5.8能力直接用于5.7。

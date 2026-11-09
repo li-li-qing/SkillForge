@@ -1,0 +1,273 @@
+[
+  {
+    "path": "skills/skillforge-archerage-addon/SKILL.md",
+    "name": "skillforge-archerage-addon",
+    "frontmatter": "name: skillforge-archerage-addon\ndescription: \"Use when developing or debugging ArcheRage RU Lua addons or Replicated Suite: PVP图标延迟/抖动、首领倒计时、HUD校准/默认模板、存档回读、RS-ERROR-PAGE复制、Buff追踪、询价及生命周期，或更新本技能。泛用Lua、UE5/UE Lua、AAEmu服务端和仅AAClassic不触发；服务器不明时先确认。\"\ncompatibility: \"阅读无需依赖；随包离线工具需Python 3.10+。Lua语法门禁另需可信的Lua 5.1可执行文件；不安装依赖、不联网、不操作客户端。\"\nmetadata:\n  revision: \"2026.09.14-r4\"",
+    "sha256": "f7d2a02363a880b6fda87698327992cb1478c7b885a803b201a3d9bbbd38422b",
+    "references": [
+      "references/runtime-and-api.md",
+      "references/runtime-and-api.md",
+      "references/server-day-ledger.md",
+      "references/persistence-and-diagnostics.md",
+      "references/pvp-hud-and-freshness.md",
+      "references/status-tracking-contracts.md",
+      "references/boss-alert-clock-and-layout.md",
+      "references/hud-template-and-defaults.md",
+      "references/ui-and-lifecycle.md",
+      "references/callback-and-request-contracts.md",
+      "references/callback-and-request-contracts.md",
+      "references/ui-and-lifecycle.md",
+      "references/callback-and-request-contracts.md",
+      "references/diagnostic-report-workflow.md",
+      "references/combat-and-price-contracts.md",
+      "references/server-day-ledger.md",
+      "references/regression-and-release.md",
+      "references/replicated-suite.md",
+      "references/feedback.md",
+      "references/maintenance-lessons-2026-09.md",
+      "references/sources.md",
+      "references/migration-release-boundaries.md",
+      "references/verification-tools.md",
+      "evals/README.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-cheat-engine/SKILL.md",
+    "name": "skillforge-cheat-engine",
+    "frontmatter": "name: skillforge-cheat-engine\ndescription: \"Use when working with Cheat Engine (CE), memory scans, pointer/AOB relocation, Lua tables, CheatEngine.Mcp, or Java/Mono/.NET collectors in authorized local software or offline games. 用于 CE 安装与实例识别、搜值、地址失效、对象更换及 collector 崩溃；不因元素符号 Ce、普通 Java 开发或单纯游戏攻略触发。\"",
+    "sha256": "0f484e938a28085ec86fc7d0bbbb9b9e14500528d904ec49b1063073791814d2",
+    "references": [
+      "references/environment-and-mcp.md",
+      "references/scanning-and-relocation.md",
+      "references/java-and-jni.md",
+      "references/minecraft-case.md",
+      "references/sources.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-debugging/SKILL.md",
+    "name": "skillforge-debugging",
+    "frontmatter": "name: skillforge-debugging\ndescription: \"定位和修复代码、蓝图、插件或界面的错误、崩溃、偶发失效与异常结果。Use when debugging failures, regressions, inconsistent behavior or unexplained output. 纯功能设计、正常操作说明和没有故障目标的代码阅读不触发。\"",
+    "sha256": "4a36522009df2bba13462095b7dc40adaa786281b70dc8798e843cf8700137e5",
+    "references": [
+      "references/diagnostic-boundaries.md",
+      "references/review-and-validation.md",
+      "references/verified-cases.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-engineering-preflight/SKILL.md",
+    "name": "skillforge-engineering-preflight",
+    "frontmatter": "name: skillforge-engineering-preflight\ndescription: \"Use when a new product, costly architecture change, performance-sensitive interaction, data synchronization design or major UI layout has unverified requirements or technical risks before implementation. 用于高返工成本的选型和最小验证；普通已知局部Bug、只读术语解释或已有验证足够的微调不触发完整流程。\"",
+    "sha256": "c218d209d7ce8941f2322d51f5c1e72f6422d441dbb17a2bebe1bbe7df441cba",
+    "references": [
+      "references/risk-review.md",
+      "assets/probe-record.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-experience-maintenance/SKILL.md",
+    "name": "skillforge-experience-maintenance",
+    "frontmatter": "name: skillforge-experience-maintenance\ndescription: \"Use when discussions establish personal work habits, an investigation or probe yields reusable evidence, or multiple agents update shared Skills and need conflict review, traceable promotion or rollback. 用于主动经验沉淀和技能演进；没有新知识时不凑记录，不把临时措施当长期规则。\"",
+    "sha256": "8d4f6a6ba2ec20876461eb3005715f61188c1df57b50fd8a8f5b469a533dd51f",
+    "references": [
+      "assets/experience-record.md",
+      "references/promotion-policy.md",
+      "references/concurrent-updates.md",
+      "references/store-tool.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ida-pro/SKILL.md",
+    "name": "skillforge-ida-pro",
+    "frontmatter": "name: skillforge-ida-pro\ndescription: \"Use when executing authorized IDA Pro binary analysis, Hex-Rays decompilation, IDAPython automation, IDA MCP/RPC, native class recovery or Unreal Engine binary investigation. 用于 EXE/DLL/SO 静态分析、调用链、结构体、UE 反射与动态证据；普通源码开发、仅出现 exe 文件名、纯 CE 扫描或其他工具专属操作不触发。\"",
+    "sha256": "1e422a49222fba0bdeb2d22751d6cc518de169b123ddaa0f95e07ddeaef90cf3",
+    "references": [
+      "references/mcp-adapters.md",
+      "references/workflows.md",
+      "references/static-and-decompiler.md",
+      "references/idapython-api.md",
+      "references/class-recovery.md",
+      "references/unreal-engine.md",
+      "references/dynamic-debugging.md",
+      "references/mcp-adapters.md",
+      "references/idapython-api.md",
+      "references/sources.md",
+      "assets/analysis-report.md",
+      "assets/change-log.json"
+    ]
+  },
+  {
+    "path": "skills/skillforge-lgf/SKILL.md",
+    "name": "skillforge-lgf",
+    "frontmatter": "name: skillforge-lgf\ndescription: \"使用、接入、扩展、排查或维护 LGameplayFramework（LGF）插件及其消费工程，包括 Foundation、Request/Authority、背包交互、GAS、GASP/Mover、PSD/PSS、武器动画、UI 路由和项目文档。Use for LGameplayFramework integration and development. 普通 UE C++、CommonUI、GAS 或名为 LGame 的目录不自动触发；先确认实际使用 LGF。\"",
+    "sha256": "5620429703eafd131dc699930acdacec830f384339679ff93848f9bb84e2e3ad",
+    "references": [
+      "references/project-map.md",
+      "references/integration.md",
+      "references/network-and-state.md",
+      "references/ui-platform.md",
+      "references/avatar-and-assets.md",
+      "references/validation-and-evolution.md",
+      "references/engine-upgrade-checkpoints.md",
+      "references/blueprint-api-handoff.md",
+      "references/gasp-mover-integration.md",
+      "references/multi-blade-combo-validation.md",
+      "references/gas-combat-prediction.md",
+      "references/animation-delivery-workflow.md",
+      "references/weapon-animation-diagnostics.md",
+      "references/directional-hit-reaction-validation.md",
+      "references/equipment-ability-lifecycle.md",
+      "references/migration-evidence.md",
+      "references/sources.md",
+      "references/external-project-patterns.md",
+      "references/lyra-modern-framework-mapping.md",
+      "references/container-transaction-contracts.md",
+      "references/mass-ai-scaling.md",
+      "references/ai-decision-orchestration.md",
+      "references/quest-world-flow-orchestration.md",
+      "references/quest-objective-contracts.md",
+      "references/dialogue-conversation-contracts.md",
+      "references/graph-authoring-foundation.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-mfc/SKILL.md",
+    "name": "skillforge-mfc",
+    "frontmatter": "name: skillforge-mfc\ndescription: \"设计、实现、审查和维护 Windows MFC C++ 桌面程序，涵盖 CWinApp/Frame/Dialog/Doc-View、消息与命令路由、窗口生命周期、工作线程与 UI 线程、COM/STA、资源所有权、DPI/布局、复杂控件、构建与测试。Use when work targets MFC, afxwin, CWnd, CDialog, CFrameWnd, CView, message maps, DDX/DDV, AfxBeginThread or MFC/ATL desktop integration. 普通 C++、Win32-only、Qt、.NET、UE 不因 C++ 字样触发。\"",
+    "sha256": "66fe1132f76ec1152c374a935b6f36b15cd983b885fb259a9a2109ed46c2e886",
+    "references": [
+      "references/architecture-message-routing.md",
+      "references/window-lifetime-resources.md",
+      "references/threading-com-sta.md",
+      "references/dpi-layout-controls.md",
+      "references/build-testing-modernization.md",
+      "references/github-sources.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-orchestrator/SKILL.md",
+    "name": "skillforge-orchestrator",
+    "frontmatter": "name: skillforge-orchestrator\ndescription: \"Use when the user selects SkillForge as the task entry, needs project-aware skill selection, requests strategic clarification, or resumes an active orchestrated task. 用于简短研发需求、跨会话任务续接和个人协作习惯延续；普通闲聊、引用技能名称或直接使用其他技能且未请求编排时不介入。\"",
+    "sha256": "9ebcda806e77645798ee7b5a639e21ed9bbef8acb5422c6b01c6a0f835725032",
+    "references": [
+      "references/advisory-workflow.md",
+      "references/capability-contract.md",
+      "references/user-workstyle.md",
+      "references/routing-policy.md",
+      "references/worklist-workflow.md",
+      "references/context-policy.md",
+      "references/collaboration-policy.md",
+      "references/approval-policy.md",
+      "references/learning-policy.md",
+      "references/collaboration-policy.md",
+      "references/approval-policy.md",
+      "references/advisory-workflow.md",
+      "references/user-workstyle.md",
+      "references/learning-policy.md",
+      "references/version-control-workflow.md",
+      "references/routing-policy.md",
+      "references/capability-contract.md",
+      "references/worklist-workflow.md",
+      "references/context-policy.md",
+      "assets/execution-brief.md",
+      "assets/checkpoint.md",
+      "assets/decision-log.md",
+      "references/maintenance.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-qt/SKILL.md",
+    "name": "skillforge-qt",
+    "frontmatter": "name: skillforge-qt\ndescription: \"Use when designing, implementing, reviewing, migrating or debugging C++ Qt desktop applications: Qt Widgets, QML/Qt Quick, QObject, signals/slots, QThread, Model/View, Qt CMake, DPI, Qt with Windows COM or MFC-to-Qt migration. 用于 Qt 工具软件、编辑框/布局异常、跨线程回调、关闭卡死、模型刷新与部署；纯 MFC、UE、普通 C++ 不因同为 C++ 自动触发，QuickTime 的 QT 缩写也不触发。\"",
+    "sha256": "f4bf06c1ac8baa568bb2762389e6e3d36c5dd471ee7a570337e7f75667e6b4df",
+    "references": [
+      "assets/project-profile.md",
+      "assets/review-handoff.md",
+      "references/project-profile.md",
+      "references/architecture-commands.md",
+      "references/widgets-layout-input-dpi.md",
+      "references/model-view-performance.md",
+      "references/qobject-threading-shutdown.md",
+      "references/windows-com-dmsoft.md",
+      "references/mfc-migration.md",
+      "references/testing-build-deployment.md",
+      "references/qml-quick-boundary.md",
+      "references/github-sources.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-reverse-engineering/SKILL.md",
+    "name": "skillforge-reverse-engineering",
+    "frontmatter": "name: skillforge-reverse-engineering\ndescription: \"Use when inspecting compiled binaries, disassembly, decompiler output, runtime traces or undocumented layouts and protocols: PE/ELF/Mach-O, DLL, Ghidra/IDA/x64dbg, native ABI, JVM/.NET and object lifetimes. 用于逆向分析、类型与调用关系恢复、动态证据和二进制差异；源码已知的普通功能开发、常规日志排障或仅出现 exe 文件名不触发。\"",
+    "sha256": "f01d88ed97b47f40d4f369df40fc417692706027f4c12814a1ed2b9949e3dafb",
+    "references": [
+      "references/native-analysis.md",
+      "references/native-analysis.md",
+      "references/managed-runtimes.md",
+      "references/tools-and-validation.md",
+      "references/sources.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ue-blueprint/SKILL.md",
+    "name": "skillforge-ue-blueprint",
+    "frontmatter": "name: skillforge-ue-blueprint\ndescription: \"创建、修改、解释和排查 Unreal Engine 5 蓝图、AnimBP、IK Retargeter、Widget Blueprint、事件图与节点连接。Use when working with Blueprint graphs, runtime retargeting, variables, functions, interfaces, dispatchers or Accessed None. 纯 C++ 实现、材质图和其他软件节点图不触发。\"",
+    "sha256": "3e918072811d0e59f6e440a963b499774d7af24fbffd863eb5cb8445177fe878",
+    "references": [
+      "references/unreal-mcp-editor-workflow.md",
+      "references/initialization-communication.md",
+      "references/initialization-communication.md",
+      "references/asset-delivery.md",
+      "references/unreal-mcp-editor-workflow.md",
+      "references/official-asset-workflows.md",
+      "references/cases.md",
+      "references/linked-animation-layer-boundaries.md",
+      "references/runtime-retarget-diagnostics.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ue-cpp/SKILL.md",
+    "name": "skillforge-ue-cpp",
+    "frontmatter": "name: skillforge-ue-cpp\ndescription: \"编写、修改和审查 Unreal Engine 5 C++，涵盖 UObject 反射、所有权、生命周期、模块依赖及蓝图接口。Use when UE C++ work involves UCLASS, UPROPERTY, UFUNCTION, delegates, async callbacks or Build.cs. 普通 C++、MFC 和纯蓝图布局不触发。\"",
+    "sha256": "e4953314b42a15f9f963f68423bcf322011b6afb642ced59412416f3a73ec296",
+    "references": [
+      "references/network-data-preflight.md",
+      "references/ownership-lifecycle.md",
+      "references/reflection-build.md",
+      "references/editor-mcp-live-coding.md",
+      "references/editor-automation-validation.md",
+      "references/cases.md",
+      "references/runtime-gameplay-patterns.md",
+      "references/framework-composition-patterns.md",
+      "references/mover-animation-network-patterns.md",
+      "references/gas-prediction-targetdata-patterns.md",
+      "references/external-project-freshness-and-lyra.md",
+      "references/arpg-item-inventory-patterns.md",
+      "references/item-value-semantics-and-transactions.md",
+      "references/container-transactions-and-subobjects.md",
+      "references/mass-data-oriented-ai-patterns.md",
+      "references/statetree-utility-ai-patterns.md",
+      "references/flow-graph-runtime-patterns.md",
+      "references/quest-objective-runtime-patterns.md",
+      "references/dialogue-runtime-patterns.md",
+      "references/generic-graph-authoring-patterns.md",
+      "references/editor-mcp-live-coding.md",
+      "references/replication-review.md"
+    ]
+  },
+  {
+    "path": "skills/skillforge-ui-design/SKILL.md",
+    "name": "skillforge-ui-design",
+    "frontmatter": "name: skillforge-ui-design\ndescription: \"设计、调整或检查游戏 HUD、工具窗口、配置面板的信息结构、布局、交互状态、缩放、焦点与输入层级。Use for UI layout, interaction states, responsive tool panels and HUD design across existing frameworks. 纯业务算法、无界面任务和仅制作图片不触发；已有界面故障可与排障技能组合。\"",
+    "sha256": "4658bf5aa7753c274ffadc694800f823a3a65e535fb186cead25daf341bc10aa",
+    "references": [
+      "references/design-preflight.md",
+      "references/layout-patterns.md",
+      "references/interaction-states.md",
+      "references/gameplay-ui-projection.md",
+      "references/cases.md",
+      "references/commonui-input-routing-patterns.md"
+    ]
+  }
+]

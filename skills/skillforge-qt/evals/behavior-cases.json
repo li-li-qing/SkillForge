@@ -238,5 +238,45 @@
       "在无开发 PATH 的干净目标环境运行。",
       "明确实际验证的架构、配置、Qt/SDK版本和未覆盖平台。"
     ]
+  },
+  {
+    "id": "QT-ACCESS-01",
+    "prompt": "Qt自绘图标按钮截图正常，只靠红绿显示状态；系统字体放大后标签裁切。能否验收？",
+    "expectations": [
+      "核查实际Qt版本的辅助名称角色值与状态",
+      "非颜色提示、字体与DPI分别验证",
+      "用目标辅助工具核验，不凭截图宣布通过"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "QT-WAIT-PLATFORM-01",
+    "prompt": "QThread的wait返回true，所以所有平台的thread_local析构一定已结束且任务一定运行过，对吗？",
+    "expectations": [
+      "区分finished与线程清理，说明Qt 6.12.0 wait文档的平台限定，Linux/Windows/Apple的OS线程退出保证不能外推全部OS",
+      "指出未启动的线程wait也可返回true",
+      "按项目Qt版本/平台核实，不用sleep替代资源清理合同"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "QT-LAYOUT-PARENT-01",
+    "prompt": "new QPushButton无parent，加入已安装在window的QVBoxLayout后是否必须再setParent？若layout尚无宿主呢？删除layout是否会删除按钮？",
+    "expectations": [
+      "已安装标准layout自动将widget parent设为宿主，不要求冗余手动设置",
+      "区分未安装layout与已安装宿主，layout不是widget parent",
+      "区分QLayoutItem与QObject所有权，删除layout不等于删除widget，动态替换检查旧控件"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "QT-INPUT-OWNER-01",
+    "prompt": "会话A断开，B仍按住同一按键，用户也可能物理按下；大漠后端未知。A账本里有keydown，能全局keyup全部按键恢复吗？",
+    "expectations": [
+      "不能全局释放，清理限能证明拥有且后端可安全配对的会话输入",
+      "A账本不能证明OS独占；共享/物理/未知状态按实际后端仲裁，不能假定自动回滚",
+      "不将SendInput返回或隔离语义套给未核实大漠后端，缺证据标未知"
+    ],
+    "execution_status": "not_run"
   }
 ]

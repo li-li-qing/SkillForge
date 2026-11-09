@@ -1,0 +1,1 @@
+Available: Python, g++. qmake command exists but `qmake --version` fails: could not exec /usr/lib/qt5/bin/qmake: No such file or directory. Qt5Core/Widgets pkg-config metadata absent. No real Qt runtime claim.

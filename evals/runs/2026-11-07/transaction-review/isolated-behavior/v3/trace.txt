@@ -1,0 +1,13 @@
+Read prompt.txt and skills/skillforge-orchestrator/SKILL.md
+Read orchestrator preparation references; list project and skill entrypoints
+Read project README.md, report.py, test_report.py, fixture.json; inspect candidate metadata, debugging full text; check local .git only
+路由：读取 orchestrator + debugging；本次独立 Python 数据处理，无 Qt/UI 修改，不读取 Qt/UI 正文。局部已知错误，不启动架构预验证。
+能力：限定目录读写、shell 执行可用；技能仅 read-file；上下文 KEEP。无项目本地 .git，不能核实 README 所称 main 或已有 Git 差异。
+命令：cd project; PYTHONDONTWRITEBYTECODE=1 python -m unittest -v; PYTHONDONTWRITEBYTECODE=1 python report.py "$(cat fixture.json)"
+基线：3 项 unittest 中 CSV 字符串用例 TypeError，fixture CLI 同样失败；根因是 str 未解析即累加。
+命令：写入 test_report.py 新增混合输入、符号/空白/前导零、大整数、非法字符串、非法类型、缺失字段用例；随后运行 unittest（修复前）。
+局部约定：十进制字符串允许符号、外围空白和前导零；拒绝小数、指数、下划线、非十进制前缀及其他类型。不吞异常，不改整数路径。
+命令：重写 report.py，仅在 total 累加前校验/转换 count；整数原样累加，非法值明确报错。运行 python -m unittest -v 和 subprocess CLI 断言（fixture 输出 5；非法小数字符串非零退出且错误含 count）。最后 cat report.py 检查落盘。
+最终证据：9 项 unittest 全部通过；fixture CLI 返回 0、输出 5；非法小数字符串 CLI 非零退出、ValueError 包含 count，未输出部分汇总。已回读 report.py。
+仅改 project/report.py、project/test_report.py；未提交、未创建备份、未修改 Qt/Web。Web 迁移待产品形态与技术栈确定后另行授权；本轮不等待、不实施。
+经验状态：本次为局部类型边界修复，无新增通用规则；技能只读，未写回共享技能。原始请求保留在 prompt.txt，本记录引用它；不读取其他版本或测试评估材料。

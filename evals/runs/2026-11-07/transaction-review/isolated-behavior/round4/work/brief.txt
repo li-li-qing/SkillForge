@@ -1,0 +1,9 @@
+模式：A / direct / debug；来源：prompt.txt 明确选择。范围：仅本地可信合成 fixture 的诊断，禁止联网、外部代码、修改 fixture/ 或正式技能库。
+能力：scoped-filesystem 发现、read-file 加载、受限读写及本地命令可用；context_meter unknown；不需要压缩、外部服务或独立 worker。
+路由：skillforge-orchestrator → skillforge-debugging → diagnostic-boundaries。没有实际 UE/LGF 工程证据，不加载项目领域规则；不属于 UI 重设计，不用 UI 实现技能。
+基线：fixture 只有 monitor.py / config.json；运行前后 SHA256 一致。未访问题目范围外版本控制元数据，未提交状态未知，不冒称干净。
+WK-1 完成：读取请求、代码、配置，记录基线。
+WK-2 完成：实际原配置运行 idle/success/error，明确错误源与监控冲突。
+WK-3 完成：仅替代配置修改订阅 topic，实际三路径对照，断言通过。
+WK-4 完成：分开交付事实、因果和未证范围。正式实现未修改。
+经验状态：仅本题候选；“零错误不能独立证明健康，先以已知错误验证探针覆盖”。正式库只读，无写回。

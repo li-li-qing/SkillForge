@@ -1,0 +1,32 @@
+任务：client-property-rpc，v4 隔离行为题。
+模式：collaboration_level=A（题面明确）；interaction_mode=direct；task_kind=review/debug；只审查，不实施。
+原始题面实际读取：/workspace/shared/skill_evals_v4/round6/client-property-rpc/prompt.txt。
+范围：只读取题面与指定 v4 skills 下技能/参考；只写本题 trace-v4.txt、raw-answer-v4.txt。无评分或其他题读取。
+
+实际路由与读取（均为 read-file，不是原生技能调用）：
+1. /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md。
+2. 该入口 references/ 下 capability-contract.md、user-workstyle.md、routing-policy.md、worklist-workflow.md、context-policy.md、collaboration-policy.md、approval-policy.md、learning-policy.md。
+3. 在允许的 skills 根内 find -name SKILL.md，发现技能路径；没有读取其他题或 evals。基于 UE UPROPERTY/UFUNCTION 与错误消费链选择领域及调试职责。
+4. skillforge-ue-cpp/SKILL.md：适配 UE C++ 反射及网络审查。
+5. skillforge-debugging/SKILL.md：适配本地输入到服务器消费的故障边界。
+6. skillforge-ue-cpp/references/network-data-preflight.md、replication-review.md、framework-composition-patterns.md：读取普通复制、RPC拥有权、权威业务校验、UI投影及验证约束。
+未路由 LGF、蓝图、UI重设计等：无该项目/实施需求证据；不引入大型容器或框架重构。
+
+来源 URL 状态：
+本轮没有访问网络文档，没有声称联网核实 API。以下仅是在实际读取参考正文中出现的来源链接，不算本轮网页核验：
+https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/NetCore/FFastArraySerializer
+https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/NetCore/TFastArrayTypeHelper
+https://dev.epicgames.com/documentation/unreal-engine/replicating-uobjects-in-unreal-engine
+https://dev.epicgames.com/documentation/en-us/unreal-engine/replicating-uobjects-in-unreal-engine
+其中 FastArray/UObject 不是本题必须采用的技术；未将参考正文的版本/历史核对日期作为本工程证据。
+
+能力：scoped-filesystem discovery/read-file loading；file_read restricted；file_write restricted（只两份指定产物）；command_execution restricted（仅 cat/find 读取及产物写入）；network 未使用；UE运行环境和工程未知；没有安装、构建、产品修改、执行未知代码。
+
+核实与结论：
+- 已核实题面描述：客户端改本地 Replicated 属性；Server Reliable RPC 无参数；服务器读服务器副本。
+- 静态机制结论：普通属性复制不是 client→server 写入；可靠 RPC 不隐式携带对象状态。以参数表达使用槽位意图，服务器校验并操作权威数据。
+- 给出持久状态可选复制闭环、拥有权和业务校验区别、预测/拒绝反馈（包括无属性变化）、定向联机测试预期。
+- 未核实：实际引擎小版本/复制体系、Actor复制开关、属性注册、拥有权配置、项目源码与资产、UHT/编译、PIE、独立进程、真实网络测试。
+- 所有测试均为方案 not_run，无真实成功声明。未编造具体构建目标或结果。
+
+交付：raw-answer-v4.txt 为面向用户答复原样。仅写两份指定产物。经验状态：无正式规则写回；本轮无新增运行验证证据。不自行评分。

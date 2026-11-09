@@ -910,7 +910,7 @@
     "expectations": [
       "把本次响应SLA和下一次请求冷却拆成两个状态/时钟",
       "watchdog到期释放本次SingleFlight不等于冷却结束",
-      "迟到回调按当前路线/请求代次判断是否还能接收，新请求覆盖旧结果",
+      "迟到回调须有可归属响应证据；当前路线/本地代次不能区分无ID同路线R1/R2，不错误完成新请求",
       "不靠连续点击刷新或把60秒冷却继续延长为响应等待"
     ],
     "reference": "references/callback-and-request-contracts.md",
@@ -920,7 +920,8 @@
       "maximum_points": 4,
       "critical_failures": [
         "把cooldown直接当response timeout",
-        "无限重试或持续卡“正在查询”"
+        "无限重试或持续卡“正在查询”",
+        "将路线相同或本地generation当无ID响应归属证明"
       ],
       "critical_failure_score": 0
     }
@@ -1033,6 +1034,59 @@
         "绕过门禁轮询经验Getter"
       ],
       "critical_failure_score": 0
+    }
+  },
+  {
+    "id": "AR-61",
+    "prompt": "Lua5.1.5某函数已有197个活跃局部，再写for i=1,1 do end失败；全文件累计超过200个local但分在不同do块却能编译。请分析，是否改成全局？",
+    "expectations": [
+      "基于Lua5.1.5默认LUAI_MAXVARS解释活跃作用域而非文件关键字计数",
+      "数值for计3个隐藏控制变量加显式变量；参数/self及兼容arg也可能占用",
+      "优先收窄作用域或拆职责，不批量全局化；区分定制VM/其他Lua版本和其他编译上限",
+      "未运行真实Lua时不宣称语法或游戏通过"
+    ],
+    "execution_status": "not_run",
+    "rubric": {
+      "critical_failures": [
+        "将200推广所有Lua版本",
+        "只计可见local或宣称整文件总共只能200个",
+        "伪造真实编译通过"
+      ]
+    }
+  },
+  {
+    "id": "AR-62",
+    "title": "无ID同路线重复请求",
+    "prompt": "R1(A)超时、R2(A)发出后，R1响应迟到；事件只有路线A没有ID。当前pending是R2且generation最新，能宣布R2成功吗？",
+    "expectations": [
+      "不能用当前pending/generation给事件赋予请求身份，路线一致不足",
+      "超时与单pending不证明旧服务端请求结束；无证据时保持未知",
+      "区分共享样本与本次请求完成，任何取消/延迟上界策略须有实际合同"
+    ],
+    "reference": "references/callback-and-request-contracts.md",
+    "execution_status": "not_run",
+    "rubric": {
+      "critical_failures": [
+        "按当前generation接收并完成R2",
+        "仅靠固定等待声称排除旧响应"
+      ]
+    }
+  },
+  {
+    "id": "AR-63",
+    "title": "共享询价独立消费者",
+    "prompt": "页面P与悬浮窗Q持有同一查询lease，P关闭；Q仍需要结果。应清空全局请求和订阅吗？",
+    "expectations": [
+      "只释放P owner/lease和回调，不中断Q有效需求",
+      "可靠归属的响应仍更新Q，不能唤醒P或写P新路线",
+      "全部消费者释放后才按合同停止共享底层任务，无法取消Native须如实标注"
+    ],
+    "reference": "references/combat-and-price-contracts.md",
+    "execution_status": "not_run",
+    "rubric": {
+      "critical_failures": [
+        "关闭P导致Q请求或共享监听器一并被清空"
+      ]
     }
   }
 ]

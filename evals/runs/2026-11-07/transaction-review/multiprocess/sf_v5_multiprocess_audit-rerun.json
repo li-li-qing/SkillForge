@@ -1,0 +1,75 @@
+{
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "start_method": "spawn",
+  "scenarios": [
+    {
+      "kill": false,
+      "during_same": [
+        "error",
+        "StoreError",
+        "Writer busy or recovery lock remains; candidate retained; do not steal the lock"
+      ],
+      "during_unrelated": [
+        "error",
+        "StoreError",
+        "Writer busy or recovery lock remains; candidate retained; do not steal the lock"
+      ],
+      "updater_result": [
+        "update",
+        {
+          "status": "applied",
+          "changes": 1,
+          "backup": "/tmp/sf-realprocess-yit_fh9d/root/.skillforge-backups/6fe52726e72748c68c22f4ccf08277aa"
+        }
+      ],
+      "after_same_stale": [
+        "error",
+        "StoreError",
+        "STALE: target changed; reread and semantically merge into a new candidate"
+      ],
+      "after_unrelated": [
+        "ok",
+        {
+          "id": "e63ca5344a754e84a82b6ede8d9c59ba",
+          "status": "committed",
+          "target": "skills/demo/references/other.md"
+        }
+      ]
+    },
+    {
+      "kill": true,
+      "during_same": [
+        "error",
+        "StoreError",
+        "Writer busy or recovery lock remains; candidate retained; do not steal the lock"
+      ],
+      "during_unrelated": [
+        "error",
+        "StoreError",
+        "Writer busy or recovery lock remains; candidate retained; do not steal the lock"
+      ],
+      "terminated_exitcode": -15,
+      "lock_remains": true,
+      "journal": "prepared",
+      "target": "update",
+      "before_manual_cleanup": [
+        "error",
+        "StoreError",
+        "Writer busy or recovery lock remains; candidate retained; do not steal the lock"
+      ],
+      "after_cleanup_same": [
+        "error",
+        "StoreError",
+        "Pending updater overlaps target: .skillforge-backups/de875707dcd74fdeb2f3caf19303097e; inspect and reconcile updater first"
+      ],
+      "after_cleanup_unrelated": [
+        "ok",
+        {
+          "id": "ce8f4a5ac60c484c9f9cad6bc35b6d03",
+          "status": "committed",
+          "target": "skills/demo/references/other.md"
+        }
+      ]
+    }
+  ]
+}

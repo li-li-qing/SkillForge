@@ -1,0 +1,23 @@
+任务：A/direct/review；只审查 GAS 卸装，不改项目。原请求读取自本题 prompt.txt。未读取评分、evals、其他题或其他回答。
+能力：scoped-filesystem/read-file，官方文档只读 web 检索；没有 UE 工程/源码/版本/运行环境。仅写本题 trace-candidate.txt、raw-answer-candidate.txt。
+
+实际本地读取（以下技能相对共同根 /workspace/shared/skill_evals_v4/round6/snapshots/22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526/skills/）：
+1. skillforge-orchestrator/SKILL.md
+2. 其 references/capability-contract.md、user-workstyle.md、routing-policy.md、worklist-workflow.md、context-policy.md、collaboration-policy.md、approval-policy.md、learning-policy.md。合并输出中 worklist-workflow 有约222 tokens 截断，未声称逐字完整读取。
+3. 用限定根 find -name SKILL.md 发现候选路径，未读取 evals。
+4. skillforge-ue-cpp/SKILL.md、skillforge-debugging/SKILL.md。
+5. skillforge-ue-cpp/references/arpg-item-inventory-patterns.md；gas-prediction-targetdata-patterns.md。
+路由：UE C++ 覆盖 GAS 所有权及装备授予合同；debugging 覆盖既有异常定位和验收。未加载无关 UI/逆向/框架专用领域。上述是文件读取而非原生技能调用。既定 A 级且只分析，不重新索要 A/B/C，不进行产品实施。
+
+官方文档工具：发现 mcp__codex_apps__chat_search_web_run。
+实际 search_query：site.dev.epicgames.com RemoveActiveGameplayEffect StacksToRemove -1。工具返回 Epic API/Blueprint 结果及若干非官方结果；未打开或采用非官方结果。
+实际打开并读取：
+https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/EGameplayEffectStackingType
+页面标题显示 UE5.8；确认 None 每次独立、AggregateByTarget 同目标再应用堆叠、AggregateBySource 同来源再应用堆叠。
+https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UAbilitySystemComponent/RemoveActiveGameplayEffect?application_version=5.3
+页面标题显示 UE5.3；确认参数 Handle/StacksToRemove，-1 移除全部；页面未展示默认赋值，不能声称已核实 C++ 默认值。
+https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/GameplayEffects/RemoveActiveGameplayEffect?lang=en-US
+页面标题显示 UE5.8；确认按 Handle 移除、Stacks to Remove=-1 全部、返回 bool 的概述。
+
+核实与限制：题面作为给定事实：A/B 各+10、Infinite、同一个 ASC、AggregateByTarget、2层、力量120。技能与官方文档支持聚合/删层解释；没有实际 handle 日志、目标版本源码、工程包装、资产配置或测试。默认值、返回聚合 handle 实现、回调时序、网络状态均列目标工程核实点。
+产物：用户答复原样保存 raw-answer-candidate.txt。最小方案为显式移除1层 + 实际来源贡献/幂等/代次记录，给出卸 B、重装 A 两条分支与预期数值。未编译、未运行、未修改产品、未更新共享技能、不自行评分。

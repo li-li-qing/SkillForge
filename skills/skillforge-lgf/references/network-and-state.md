@@ -66,3 +66,9 @@ FastArray 已有条目/容器回调，不机械给每个 Item 加 OnRep。普通
 ## 表现关联身份不自动授予Gameplay权限
 
 表现请求的Epoch/Ordinal、Cue序号或UIData版本，只证明其协议定义的显示关联。旧输入来源、能力激活实例和迟到Ability回调是否仍获授权，须沿当前Authority验证及真实消费点另查；不要把已有表现序号直接升级成主GAS输入的来源凭证。消费时刻从真正Branch/Consume入口取证，不按下一段首次观察时间猜缓冲年龄。项目已确认的输入窗口寿命与角色替换策略分别验证；合同例静态审查、显式Combat RPC正对照和主GAS/按Tag真实路径的结果不互相代替。
+
+## Iris 与清点结果的证据范围
+
+实际LGF工程启用Iris时，自定义非Actor/ActorComponent UObject除registered subobject list外，还核对目标版本RegisterReplicationFragments与模块/编译条件，不能用旧ReplicateSubobjects替代。依据：[Epic Object Replication](https://dev.epicgames.com/documentation/en-us/unreal-engine/replicating-uobjects-in-unreal-engine)，2026-11-07读取页面显示UE5.8；运行结果仍须当前工程验证。
+
+清点器lgf.search_scope=project_plugins_only仅覆盖工程Plugins；not_found_in_project不证明引擎或额外目录未安装。relevant_plugins只反映.uproject显式声明，Enabled缺失为null，实际启用未知；存在描述符也不证明进程已加载。无效格式及重复声明显式报错，不静默当禁用。

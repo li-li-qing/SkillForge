@@ -1,0 +1,1 @@
+使用 SkillForge，A 级。请把已验证的经验 E1 更新到当前共享 notes.md：Windows 调用路径必须先核对进程位宽与 COM 注册位宽。基线是 baseline.md，同事已经并发更新了当前 notes.md。只更新 E1，保留其他已确认内容，不改协作约定。直接完成，写后验证；只允许在本 fixture 里操作。

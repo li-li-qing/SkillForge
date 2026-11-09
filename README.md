@@ -1,6 +1,6 @@
 # SkillForge
 
-面向游戏开发与创作工具的个人 Agent Skills 技能源。当前包含 10 个专业/方法技能，以及统一入口 `skillforge-orchestrator`，共 11 个；专业技能仍可独立或组合使用。正文以中文为主，API、节点名和技术关键词保留英文。
+面向游戏开发与创作工具的个人 Agent Skills 技能源。当前包含 13 个专业/方法技能，以及统一入口 `skillforge-orchestrator`，共 14 个；专业技能仍可独立或组合使用。正文以中文为主，API、节点名和技术关键词保留英文。
 
 | 技能 | 使用时机 | 入口 |
 |---|---|---|
@@ -8,6 +8,9 @@
 | `skillforge-engineering-preflight` | 高返工成本选型、性能敏感交互、大规模同步或重要UI的前置判断与最小验证 | [工程前置验证](skills/skillforge-engineering-preflight/SKILL.md) |
 | `skillforge-experience-maintenance` | 个人习惯、验证经验及多Agent共享规则的记录、晋升、冲突与撤回 | [经验维护](skills/skillforge-experience-maintenance/SKILL.md) |
 | `skillforge-debugging` | 已出现错误、崩溃、偶发失效或结果异常，需要排查与修复 | [排障](skills/skillforge-debugging/SKILL.md) |
+| `skillforge-reverse-engineering` | 二进制、反汇编/伪代码、ABI、布局、运行时与未文档化协议分析 | [逆向分析](skills/skillforge-reverse-engineering/SKILL.md) |
+| `skillforge-ida-pro` | IDA Pro、Hex-Rays、IDAPython、MCP 与 UE 二进制取证 | [IDA 专业分析](skills/skillforge-ida-pro/SKILL.md) |
+| `skillforge-cheat-engine` | CE 扫描、地址重新定位、Lua、MCP、Java collector 与崩溃排障 | [CE 实战](skills/skillforge-cheat-engine/SKILL.md) |
 | `skillforge-ue-cpp` | 当前任务确实涉及 UE C++、反射、生命周期、模块或蓝图暴露接口 | [UE C++](skills/skillforge-ue-cpp/SKILL.md) |
 | `skillforge-ue-blueprint` | 创建、修改、解释或排查 UE 蓝图、Widget Blueprint 与节点图 | [蓝图](skills/skillforge-ue-blueprint/SKILL.md) |
 | `skillforge-ui-design` | 设计或调整 HUD、工具窗口、配置面板的布局与交互 | [UI](skills/skillforge-ui-design/SKILL.md) |
@@ -58,6 +61,8 @@
 |---|---|---|
 | 用蓝图做背包界面 | 蓝图 + UI | 数据与节点流；布局、输入和状态 |
 | C++ 控件点不到 | C++ + 排障；涉及层级时加 UI | 接口与生命周期；定位证据；输入层级 |
+| 无符号 DLL 的行为或结构恢复 | 逆向；存在故障时加排障 | 指令/地址/ABI 证据；最小复现 |
+| 自有离线 Java 游戏 CE 地址失效或 collector 崩溃 | CE；按需加逆向与排障 | 实例/对象/扫描；JNI 与故障证据 |
 | Qt 工具增加任务/日志面板 | Qt；涉及交互时加 UI | Qt 模型/线程/拥有关系；布局与输入 |
 | Qt 页面偶发卡死或输入被覆盖 | Qt + 排障；按需加 UI | Qt 契约；故障链；交互验收 |
 | 已决定从 MFC 迁到 Qt | Qt；读取旧代码时按需 MFC | 行为迁移与 Qt 目标架构；旧实现解释 |
@@ -110,6 +115,8 @@ LGF 的触发与六个接入/排障方案案例见 [LGF 技能评测](evals/runs
 
 MFC 首轮 GitHub 蒸馏、结构验证与未验证边界见 [MFC 首轮验证](evals/runs/2026-09-21/mfc-initial-validation.md)。
 
+逆向与 CE 首轮补充见 [设计与范围](docs/reverse-engineering-design-2026-11-08.md) 和 [实际验证](evals/runs/2026-11-08/reverse-engineering/report.md)。包括只读 PE 地址核验工具、固定提交来源、独立触发/行为题，以及有条件的 CE/JNI 历史案例；没有自动安装宿主技能或修改游戏。
+
 后续在实际使用中继续蒸馏 MFC，并扩展其他 Lua 宿主、Maya、Photoshop 专属技能；每个新技能仍先明确触发边界和真实验收案例。
 
 ## 2026-09-14 旧库迁移与实战经验
@@ -134,3 +141,23 @@ MFC 首轮 GitHub 蒸馏、结构验证与未验证边界见 [MFC 首轮验证](
 本次保留所有原专业 Skill 与 orchestrator 核心，未改 LCot 产品源码、未安装 SDK。动态入口发现新 Skill 不需要硬编码目录白名单。
 
 [设计与研究范围](docs/qt-skill-design-2026-09-22.md)说明取材和裁剪；[实际验证报告](evals/runs/2026-09-22/qt-initial-validation.md)区分结构通过、原包已有失败及未运行的 Qt/Windows/Agent 验证。历史说明：2026-09-22当时未清理的入口便携性问题，已在0.3.0中统一处理，见上方本轮报告。
+
+## 2026-11-07 IDA 专业能力
+
+新增一个可独立使用的 IDA 技能，保留动态路由与既有协作规则。IDA 任务按需组合通用逆向；UE 二进制分析由 IDA 执行、源码契约可组合 UE C++；CE 扫描仍由 CE 技能负责。
+
+[架构与路由](docs/ida-pro/design-and-integration.md)、[GitHub MCP 调研](docs/ida-pro/github-mcp-research.md)、[UE 与知识库调研](docs/ida-pro/github-ue-research.md)、[知识索引](skills/skillforge-ida-pro/references/sources.md)、[验证报告](evals/runs/2026-11-07/ida-pro/report.md)、[详细变更](CHANGELOG.md)。本次未安装到宿主，未执行真实 IDA/UE。
+
+## 2026-11-07 全库定向审查
+
+保持14个技能与原动态入口，补强脚本故障处理、UE/桌面生命周期和可选行为评测。完整范围、来源、兼容变化及未验证项见[本轮交付报告](docs/overnight-review/report.md)，逐文件记录见[CHANGELOG](CHANGELOG.md)。这是独立完整副本，尚未安装到用户环境。
+
+## v5 候选复审
+
+[事务与返回状态复审](docs/transaction-review/report.md)记录v4之后的定向修复、实际回归和未验证项；当前为独立候选，尚未发布或安装。
+
+当前v6评测门禁修订与验收：[报告](docs/eval-review-v6/report.md)。此前v5报告与清单为历史快照。
+
+## 2026-11-09 简洁实现准则融合
+
+保持 14 个技能、原路由与协作规则，在现有入口/预检/审查中澄清复杂度取舍、校验失效边界、行为保持和有限反查，并补充配对评测。完整范围、验证与历史包保留情况见 [本轮报告](docs/simplicity-review/report.md)。

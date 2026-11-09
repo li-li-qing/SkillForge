@@ -56,6 +56,12 @@ LGF 当前已有 UE5.7 目标，未来可能升级 5.8。
 
 StateTree hierarchical state/transition/task/context 可以作为 adapter 后的决策框架。
 
+### 完成策略与失败退出
+
+StateTree 的 All 成功条件是参与完成判定的任务全部成功；参与任务失败进入失败转换处理，不等待其他任务成功。participating 需核对 `bConsideredForCompletion` 等配置，不等于所有 Task；All/Any 也不是执行顺序策略。LGF adapter 要核对失败时的 transition 与退出范围，处理 GAS/移动请求取消、解绑和资源释放，拒绝过期异步结果。没有可用 transition 时的结果与清理时序按项目引擎源码、资产和运行观察确认，不假定所有版本自动回 Root。
+
+依据 [Epic 教程](https://dev.epicgames.com/community/learning/tutorials/lwnR/unreal-engine-your-first-60-minutes-with-statetree) 的 5.6 更新说明及 [5.8 任务 API](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/StateTreeModule/FStateTreeTaskBase?lang=en-US)；教程页面标签为 5.4、更新于 2025-08-28，不代表本文已验证 LGF 目标 5.7 的具体实现。本次仅文档核查，未运行 UE。
+
 ### 2.2 Utility consideration
 
 5.8 当前有原生 Utility Selector/Consideration，但 consideration API 官方仍标 Experimental。
@@ -707,3 +713,7 @@ LGameplayMassAdapter
 - [ ] Experimental Utility/MassAI 不进入 Foundation public ABI。
 - [ ] Debug trace 能解释“为什么选它/为什么没执行成功”。
 - [ ] 性能由目标规模 profile，而不是固定 25ms tick。
+
+## 官方版本核对入口
+
+[当前主题Epic依据](https://dev.epicgames.com/documentation/en-us/unreal-engine/overview-of-state-tree-in-unreal-engine)，2026-11-07读取页面显示UE5.8。以实际LGF消费工程Build.version、启用模块和对应源码重核API/行为；本页建议不证明LGF当前分支已实现，也不能把5.8能力直接用于5.7。

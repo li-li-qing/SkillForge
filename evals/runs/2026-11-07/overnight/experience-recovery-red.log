@@ -1,0 +1,20 @@
+======================================================================
+FAIL: test_final_journal_failure_reports_recovery_required (test_experience_store.ExperienceStoreTests.test_final_journal_failure_reports_recovery_required) (action='promote')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 52, in test_final_journal_failure_reports_recovery_required
+    self.assertEqual(code,3)
+AssertionError: 2 != 3
+
+======================================================================
+FAIL: test_final_journal_failure_reports_recovery_required (test_experience_store.ExperienceStoreTests.test_final_journal_failure_reports_recovery_required) (action='rollback')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 52, in test_final_journal_failure_reports_recovery_required
+    self.assertEqual(code,3)
+AssertionError: 2 != 3
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.426s
+
+FAILED (failures=2, skipped=4)

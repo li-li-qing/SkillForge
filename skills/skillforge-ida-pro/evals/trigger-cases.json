@@ -1,0 +1,44 @@
+[
+  {
+    "id": "IDA-T01",
+    "prompt": "在 IDA 分析 SO 的关键函数。",
+    "context": "已授权 ELF 文件",
+    "expected": "trigger",
+    "reason": "IDA 原生二进制"
+  },
+  {
+    "id": "IDA-T02",
+    "prompt": "写 IDAPython 批量导出 Xrefs。",
+    "context": "工具专属自动化",
+    "expected": "trigger",
+    "reason": "IDAPython"
+  },
+  {
+    "id": "IDA-T03",
+    "prompt": "分析 UE Shipping 的 RPC 候选。",
+    "context": "IDA 二进制",
+    "expected": "trigger",
+    "reason": "UE 二进制专项"
+  },
+  {
+    "id": "IDA-T04",
+    "prompt": "修改 UE C++ 源码的按钮文字。",
+    "context": "无需二进制分析",
+    "expected": "no_trigger",
+    "reason": "源码开发"
+  },
+  {
+    "id": "IDA-T05",
+    "prompt": "用 CE 搜索变化数值。",
+    "context": "纯扫描",
+    "expected": "no_trigger",
+    "reason": "CE 专属"
+  },
+  {
+    "id": "IDA-T06",
+    "prompt": "这个 DLL 为什么崩溃？",
+    "context": "若后续需要 IDA 则触发；仅日志时用排障",
+    "expected": "conditional",
+    "reason": "取决于执行工具与证据需求"
+  }
+]

@@ -38,7 +38,7 @@ SourceEntry
   -> GrantedAttributeSets / other reversible handles
 ```
 
-Authority 用这些精确 handle 撤销，不通过 AbilityClass 或 GameplayTag 全局扫描，因为同一能力可能同时来自职业、技能树、Buff 和多件装备。
+Authority 按来源撤销实际贡献，不通过 AbilityClass 或 GameplayTag 全局扫描。AbilitySpec handle 可标识授予；GE handle 仅在独立 active instance 时可直接视为独占撤销凭证，聚合 stacking 要管理各来源实际贡献，Instant 不能靠 active handle 撤销。详见 [装备 GAS 撤销边界](arpg-item-inventory-patterns.md)。
 
 ### copy-empty-handle 反例
 
@@ -173,12 +173,16 @@ local cache: TMap<Tag, Count>
 合同：
 
 - Authority mutation 同步维护 cache；
-- save load、RPC copy、FastArray Add/Change 后 rebuild；
+- save load、RPC copy与FastArray增删改应用后维护cache；纯删除批次也必须修正剩余条目的ItemId→index，不能只靠Add/Change回调；
 - cache miss/stale 最多导致慢路径扫描，不能改变正确答案；
 - JIP 只靠 canonical snapshot 可重建；
 - 不复制 cache 来制造第二份一致性问题。
 
 这适合 per-item stats、ItemId->index、slot lookup、InputTag index 等。
+
+删除前回调只记录稳定业务身份、撤销该身份的投影并令索引失效；此时数组尚未完成删除，直接遍历不能取得最终映射。删除应用后的实际数组才用于重建或增量修正剩余index，不能假定保序或最后一项不移动。目标版本支持时，可在接收端PostReplicatedReceive收尾阶段按失效标记处理；旧版本或其他序列化路径先核验等价完成点。回调给出的临时index/view不保留到next-tick或异步任务，延后工作携带稳定身份并重新解析。
+
+依据：[Epic PreReplicatedRemove](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/NetCore/FFastArraySerializer/PreReplicatedRemove)及[FPostReplicatedReceiveParameters](https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/NetCore/FFastArraySerializer/FPostReplicatedReceiveParameters)，2026-11-07读取页面显示UE5.8；前者在删除前且indices仅本次调用有效，后者说明接收端NetDeltaSerialize之后的可选钩子，包括未映射引用后续解析。具体回调支持和顺序以目标FastArraySerializer.h与复制路径复核，不外推所有UE版本。
 
 ## 7. InputAction -> InputTag -> AbilitySpec
 

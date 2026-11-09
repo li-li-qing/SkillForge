@@ -1,0 +1,229 @@
+test_absolute_local_paths_in_main_or_references_are_rejected (tests.test_validate_skills.ValidateSkillsTests.test_absolute_local_paths_in_main_or_references_are_rejected) ... ok
+test_assets_bad_link_is_not_hidden_by_standalone_copy (tests.test_validate_skills.ValidateSkillsTests.test_assets_bad_link_is_not_hidden_by_standalone_copy) ... FAIL
+test_assets_valid_local_links_remain_portable (tests.test_validate_skills.ValidateSkillsTests.test_assets_valid_local_links_remain_portable) ... ok
+test_bad_metadata_is_rejected (tests.test_validate_skills.ValidateSkillsTests.test_bad_metadata_is_rejected) ... ok
+test_behavior_expectations_and_fixture_paths_are_validated (tests.test_validate_skills.ValidateSkillsTests.test_behavior_expectations_and_fixture_paths_are_validated) ... ok
+test_boundary_values_and_reordered_header_are_valid (tests.test_validate_skills.ValidateSkillsTests.test_boundary_values_and_reordered_header_are_valid) ... ok
+test_broken_inline_and_reference_links (tests.test_validate_skills.ValidateSkillsTests.test_broken_inline_and_reference_links) ... ok
+test_default_scan_is_relative_to_script_not_working_directory (tests.test_validate_skills.ValidateSkillsTests.test_default_scan_is_relative_to_script_not_working_directory) ... ok
+test_description_is_nonempty_and_bounded (tests.test_validate_skills.ValidateSkillsTests.test_description_is_nonempty_and_bounded) ... ok
+test_discernible_script_reference_must_exist (tests.test_validate_skills.ValidateSkillsTests.test_discernible_script_reference_must_exist) ... ok
+test_duplicate_skill_names_fail_across_distinct_roots (tests.test_validate_skills.ValidateSkillsTests.test_duplicate_skill_names_fail_across_distinct_roots) ... ok
+test_empty_default_scan_fails (tests.test_validate_skills.ValidateSkillsTests.test_empty_default_scan_fails) ... ok
+test_eval_files_must_exist_and_be_json_arrays (tests.test_validate_skills.ValidateSkillsTests.test_eval_files_must_exist_and_be_json_arrays) ... ok
+test_evals_are_optional_for_portable_runtime (tests.test_validate_skills.ValidateSkillsTests.test_evals_are_optional_for_portable_runtime) ... ok
+test_host_specific_tool_syntax_is_rejected (tests.test_validate_skills.ValidateSkillsTests.test_host_specific_tool_syntax_is_rejected) ... ok
+test_json_quoted_names_allow_yaml_ambiguous_but_valid_skill_names (tests.test_validate_skills.ValidateSkillsTests.test_json_quoted_names_allow_yaml_ambiguous_but_valid_skill_names) ... ok
+test_link_cannot_escape_to_existing_repository_file (tests.test_validate_skills.ValidateSkillsTests.test_link_cannot_escape_to_existing_repository_file) ... ok
+test_main_file_line_budget (tests.test_validate_skills.ValidateSkillsTests.test_main_file_line_budget) ... ok
+test_missing_skill_directory_fails_without_traceback (tests.test_validate_skills.ValidateSkillsTests.test_missing_skill_directory_fails_without_traceback) ... ok
+test_name_constraints_and_directory_match (tests.test_validate_skills.ValidateSkillsTests.test_name_constraints_and_directory_match) ... ok
+test_optional_quoted_metadata_is_portable (tests.test_validate_skills.ValidateSkillsTests.test_optional_quoted_metadata_is_portable) ... ok
+test_quoted_name_json_escapes_are_decoded_before_validation (tests.test_validate_skills.ValidateSkillsTests.test_quoted_name_json_escapes_are_decoded_before_validation) ... ok
+test_quoted_names_still_obey_name_constraints_and_directory_match (tests.test_validate_skills.ValidateSkillsTests.test_quoted_names_still_obey_name_constraints_and_directory_match) ... ok
+test_rejects_malformed_or_unsupported_header (tests.test_validate_skills.ValidateSkillsTests.test_rejects_malformed_or_unsupported_header) ... ok
+test_scheme_urls_cannot_be_used_as_fixtures (tests.test_validate_skills.ValidateSkillsTests.test_scheme_urls_cannot_be_used_as_fixtures) ... ok
+test_self_contained_copy_keeps_all_relative_resources_valid (tests.test_validate_skills.ValidateSkillsTests.test_self_contained_copy_keeps_all_relative_resources_valid) ... ok
+test_single_segment_absolute_posix_paths_are_rejected (tests.test_validate_skills.ValidateSkillsTests.test_single_segment_absolute_posix_paths_are_rejected) ... ok
+test_symlinked_external_content_cannot_pass_standalone_validation (tests.test_validate_skills.ValidateSkillsTests.test_symlinked_external_content_cannot_pass_standalone_validation) ... ok
+test_tools_suffix_in_filename_is_not_host_api (tests.test_validate_skills.ValidateSkillsTests.test_tools_suffix_in_filename_is_not_host_api) ... ok
+test_trigger_schema_and_three_categories_are_required (tests.test_validate_skills.ValidateSkillsTests.test_trigger_schema_and_three_categories_are_required) ... ok
+test_unreal_virtual_roots_and_paths_remain_portable (tests.test_validate_skills.ValidateSkillsTests.test_unreal_virtual_roots_and_paths_remain_portable) ... ok
+test_url_encoded_link_escape_is_rejected (tests.test_validate_skills.ValidateSkillsTests.test_url_encoded_link_escape_is_rejected) ... ok
+test_valid_portable_package_runs_from_unrelated_directory (tests.test_validate_skills.ValidateSkillsTests.test_valid_portable_package_runs_from_unrelated_directory) ... ok
+test_yaml_ambiguous_names_require_quotes (tests.test_validate_skills.ValidateSkillsTests.test_yaml_ambiguous_names_require_quotes) ... ok
+test_apply_and_backup (tests.test_patch_installer.PatchInstallerTests.test_apply_and_backup) ... ok
+test_busy_shared_rule_lock_does_not_overwrite (tests.test_patch_installer.PatchInstallerTests.test_busy_shared_rule_lock_does_not_overwrite) ... ok
+test_case_alias_refused_before_any_write (tests.test_patch_installer.PatchInstallerTests.test_case_alias_refused_before_any_write) ... skipped 'case-sensitive filesystem'
+test_corrupt_payload_rejected (tests.test_patch_installer.PatchInstallerTests.test_corrupt_payload_rejected) ... ok
+test_current_file_conflict_stops_all_writes (tests.test_patch_installer.PatchInstallerTests.test_current_file_conflict_stops_all_writes) ... ok
+test_delete_and_retire_only_known_empty_dirs (tests.test_patch_installer.PatchInstallerTests.test_delete_and_retire_only_known_empty_dirs) ... ok
+test_dot_manifest_path_refused_without_traceback (tests.test_patch_installer.PatchInstallerTests.test_dot_manifest_path_refused_without_traceback) ... ok
+test_dry_run_does_not_change_any_root_files (tests.test_patch_installer.PatchInstallerTests.test_dry_run_does_not_change_any_root_files) ... ok
+test_embedded_drive_and_ads_refused_by_safe (tests.test_patch_installer.PatchInstallerTests.test_embedded_drive_and_ads_refused_by_safe) ... ok
+test_empty_manifest_path_refused_cleanly (tests.test_patch_installer.PatchInstallerTests.test_empty_manifest_path_refused_cleanly) ... ok
+test_git_is_never_a_manifest_target (tests.test_patch_installer.PatchInstallerTests.test_git_is_never_a_manifest_target) ... ok
+test_initial_journal_failure_has_no_target_mutation (tests.test_patch_installer.PatchInstallerTests.test_initial_journal_failure_has_no_target_mutation) ... ERROR
+test_journal_failure_reports_changed_target_and_blocks_retry (tests.test_patch_installer.PatchInstallerTests.test_journal_failure_reports_changed_target_and_blocks_retry) ... ERROR
+test_junction_in_protected_paths_refused (tests.test_patch_installer.PatchInstallerTests.test_junction_in_protected_paths_refused) ... skipped 'Windows junction fixture'
+test_new_file_conflict_rejected (tests.test_patch_installer.PatchInstallerTests.test_new_file_conflict_rejected) ... ok
+test_path_escape_rejected (tests.test_patch_installer.PatchInstallerTests.test_path_escape_rejected) ... ok
+test_pending_journal_checked_before_already_current (tests.test_patch_installer.PatchInstallerTests.test_pending_journal_checked_before_already_current) ... FAIL
+test_repeat_apply_is_idempotent (tests.test_patch_installer.PatchInstallerTests.test_repeat_apply_is_idempotent) ... ok
+test_retire_add_conflict_refused_before_any_write (tests.test_patch_installer.PatchInstallerTests.test_retire_add_conflict_refused_before_any_write) ... ok
+test_target_symlink_rejected (tests.test_patch_installer.PatchInstallerTests.test_target_symlink_rejected) ... ok
+test_unknown_file_in_retired_directory_is_preserved (tests.test_patch_installer.PatchInstallerTests.test_unknown_file_in_retired_directory_is_preserved) ... ok
+test_win32_alias_spelling_refused_before_any_write (tests.test_patch_installer.PatchInstallerTests.test_win32_alias_spelling_refused_before_any_write) ... ok
+test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) ... 
+  test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='scripts/CON.txt') ... FAIL
+  test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='scripts/nul.py') ... FAIL
+  test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/COM1.md') ... FAIL
+  test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/LPT9.txt') ... FAIL
+  test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/COM¹.txt') ... FAIL
+  test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/bad?.md') ... FAIL
+  test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/a\x01.md') ... FAIL
+
+======================================================================
+ERROR: test_initial_journal_failure_has_no_target_mutation (tests.test_patch_installer.PatchInstallerTests.test_initial_journal_failure_has_no_target_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 189, in test_initial_journal_failure_has_no_target_mutation
+    with self.assertRaises(self.m.PatchError) as caught:self.run_update(True)
+                                                        ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 28, in run_update
+    def run_update(self,apply=False):return self.m.apply_update(self.root,self.package,apply=apply)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/scripts/apply_skillforge_update.py", line 217, in apply_update
+    save()
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/scripts/apply_skillforge_update.py", line 216, in save
+    atomic_write(state_path, (json.dumps(state, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 186, in faulty
+    if path.name=="state.json":raise OSError("initial state failure")
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: initial state failure
+
+======================================================================
+ERROR: test_journal_failure_reports_changed_target_and_blocks_retry (tests.test_patch_installer.PatchInstallerTests.test_journal_failure_reports_changed_target_and_blocks_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/scripts/apply_skillforge_update.py", line 240, in apply_update
+    save()
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/scripts/apply_skillforge_update.py", line 216, in save
+    atomic_write(state_path, (json.dumps(state, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 165, in faulty
+    if state_writes[0]>=2:raise OSError("injected state disk failure")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: injected state disk failure
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 168, in test_journal_failure_reports_changed_target_and_blocks_retry
+    with self.assertRaises(self.m.PatchError) as caught:self.run_update(True)
+                                                        ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 28, in run_update
+    def run_update(self,apply=False):return self.m.apply_update(self.root,self.package,apply=apply)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/scripts/apply_skillforge_update.py", line 256, in apply_update
+    save()
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/scripts/apply_skillforge_update.py", line 216, in save
+    atomic_write(state_path, (json.dumps(state, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 165, in faulty
+    if state_writes[0]>=2:raise OSError("injected state disk failure")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: injected state disk failure
+
+======================================================================
+FAIL: test_assets_bad_link_is_not_hidden_by_standalone_copy (tests.test_validate_skills.ValidateSkillsTests.test_assets_bad_link_is_not_hidden_by_standalone_copy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_validate_skills.py", line 355, in test_assets_bad_link_is_not_hidden_by_standalone_copy
+    self.assert_invalid(flags=("--self-contained",))
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_validate_skills.py", line 76, in assert_invalid
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Validated 1 skill(s): 0 error(s); 1 standalone copies validated.
+
+
+======================================================================
+FAIL: test_pending_journal_checked_before_already_current (tests.test_patch_installer.PatchInstallerTests.test_pending_journal_checked_before_already_current)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 180, in test_pending_journal_checked_before_already_current
+    with self.assertRaises(self.m.PatchError):self.run_update(True)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PatchError not raised
+
+======================================================================
+FAIL: test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='scripts/CON.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 156, in test_windows_device_names_rejected_on_every_host
+    with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PatchError not raised
+
+======================================================================
+FAIL: test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='scripts/nul.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 156, in test_windows_device_names_rejected_on_every_host
+    with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PatchError not raised
+
+======================================================================
+FAIL: test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/COM1.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 156, in test_windows_device_names_rejected_on_every_host
+    with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PatchError not raised
+
+======================================================================
+FAIL: test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/LPT9.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 156, in test_windows_device_names_rejected_on_every_host
+    with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PatchError not raised
+
+======================================================================
+FAIL: test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/COM¹.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 156, in test_windows_device_names_rejected_on_every_host
+    with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PatchError not raised
+
+======================================================================
+FAIL: test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/bad?.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 156, in test_windows_device_names_rejected_on_every_host
+    with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PatchError not raised
+
+======================================================================
+FAIL: test_windows_device_names_rejected_on_every_host (tests.test_patch_installer.PatchInstallerTests.test_windows_device_names_rejected_on_every_host) (name='docs/a\x01.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/overnight_review_20261107/Skills/tests/test_patch_installer.py", line 156, in test_windows_device_names_rejected_on_every_host
+    with self.assertRaises(self.m.PatchError):self.m.safe(self.root,name)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PatchError not raised
+
+----------------------------------------------------------------------
+Ran 57 tests in 6.333s
+
+FAILED (failures=9, errors=2, skipped=2)

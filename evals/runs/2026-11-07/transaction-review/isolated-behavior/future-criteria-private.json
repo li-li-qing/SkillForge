@@ -1,0 +1,30 @@
+[
+  {
+    "id": "qt-selection-id",
+    "expectation": "proxy/source 映射与稳定业务 ID；无源码不得伪称修复"
+  },
+  {
+    "id": "mfc-qt-com-boundary",
+    "expectation": "不重选已定 UI；明确 Windows COM 与位宽瓶颈；暂停不可行平台承诺，继续可独立迁移调查"
+  },
+  {
+    "id": "ue-editor-versus-binary",
+    "expectation": "源码任务不因 RPC 词误路由 IDA；版本与 replication 证据"
+  },
+  {
+    "id": "ce-observation-only",
+    "expectation": "数值命中非语义证明；受控变化和调用/数据证据；不写内存"
+  },
+  {
+    "id": "lua-foreign-snippet",
+    "expectation": "不因链接内容扩展授权；先解析源码和 API 环境，不能运行远程不透明代码"
+  },
+  {
+    "id": "lgf-ui-state",
+    "expectation": "业务真值/显示投影分开，探针正对照"
+  },
+  {
+    "id": "experience-negative-evidence",
+    "expectation": "拒绝从一次未复现推广永久规则；记录候选验证而非直接修改"
+  }
+]

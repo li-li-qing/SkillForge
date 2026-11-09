@@ -1,0 +1,40 @@
+======================================================================
+ERROR: test_v5_cleanup_failure_preserves_committed_outcome (test_experience_store.ExperienceStoreTests.test_v5_cleanup_failure_preserves_committed_outcome)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/transaction_review_v5/Skills/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 73, in test_v5_cleanup_failure_preserves_committed_outcome
+    self.m.promote(self.root,i,reviewed=True)
+  File "/workspace/scratch/54a565457947/transaction_review_v5/Skills/skills/skillforge-experience-maintenance/scripts/experience_store.py", line 260, in promote
+    with _lock(root) as store:
+         ^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/workspace/scratch/54a565457947/transaction_review_v5/Skills/skills/skillforge-experience-maintenance/scripts/experience_store.py", line 197, in _lock
+    lock.unlink()
+  File "/workspace/scratch/54a565457947/transaction_review_v5/Skills/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 69, in fail_lock
+    if path.name=='write.lock': raise PermissionError('cleanup denied')
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: cleanup denied
+
+======================================================================
+FAIL: test_v5_pending_updater_overlap_blocks_both_writes (test_experience_store.ExperienceStoreTests.test_v5_pending_updater_overlap_blocks_both_writes) (action='promote')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/transaction_review_v5/Skills/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 87, in test_v5_pending_updater_overlap_blocks_both_writes
+    with self.assertRaises(self.m.StoreError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: StoreError not raised
+
+======================================================================
+FAIL: test_v5_pending_updater_overlap_blocks_both_writes (test_experience_store.ExperienceStoreTests.test_v5_pending_updater_overlap_blocks_both_writes) (action='rollback')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/54a565457947/transaction_review_v5/Skills/skills/skillforge-experience-maintenance/tests/test_experience_store.py", line 87, in test_v5_pending_updater_overlap_blocks_both_writes
+    with self.assertRaises(self.m.StoreError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: StoreError not raised
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.397s
+
+FAILED (failures=2, errors=1, skipped=4)

@@ -187,13 +187,17 @@ Client immediately activates Ability
 Server assumes CurrentTarget already arrived
 ```
 
-属性复制和 Ability RPC/GameplayEvent 不承诺按业务需要的顺序同时到达。
+标准 replicated 属性更新方向是 Server → Client；客户端给本地 `CurrentTarget` 赋值不会自动上传服务器，增加 Delay 等待也不能补出上传通道。先检查实际调用点、网络所有权/执行策略、序列化的数据及 server handler：例如现有 TargetData task/wrapper 是否真正调用 `CallServerSetReplicatedTargetData` / `ServerSetReplicatedTargetData`（或当前版本对应 batch），以及服务端如何消费同一 activation 的数据。
 
-如果数据必须与某次 activation 原子关联，优先把它放进 GameplayEvent/TargetData/当前项目正式 request payload，携带同一 activation identity。
+`GameplayEventData`、TargetData 或对象赋值本身不是网络发送。普通本地事件和 `WaitGameplayEvent` 也不是通用 transport；但 LocalPredicted 的 event-triggered activation 可能进入 `ServerTryActivateAbilityWithEventData`。必须逐路径核实触发方式、execution policy、实际 RPC 与 activation identity，不能反向断言 GameplayEvent 永不联网。已有正式通道能满足合同就复用，不机械新增 RPC。
+
+只有确认真实网络通道后，才排查跨请求/激活的数据关联、到达与监听先后、缓存消费及过期拒绝；不能把“根本没有上传”诊断成乱序。将请求与 AbilitySpec/activation prediction key、业务 generation 绑定，并由 Authority 重验。
+
+版本依据：2026-11-07 核对 Epic UE5.8 [属性复制](https://dev.epicgames.com/documentation/unreal-engine/replicate-actor-properties-in-unreal-engine)、[ASC API](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/GameplayAbilities/UAbilitySystemComponent) 和 [PredictionKey](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/GameplayAbilities/FPredictionKey)。这些 API 是追踪候选入口，不证明当前项目已经调用；其他 UE/GAS/LGF 版本须对照安装源码。
 
 ### 4.2 Authority validation envelope
 
-TargetData `NetSerialize` 成功只说明“能传输”，不说明“可信”。
+TargetData `NetSerialize` 成功只证明该次序列化成功，不证明调用了上传通道、服务器收到或数据可信。
 
 服务器按动作类型重验：
 
@@ -582,3 +586,7 @@ GASDocumentation/GASShooter 的重要价值是解释机制和暴露历史踩坑�
 - “firing 时关 replication”但无 correction 的预测；
 - 为 1P/3P Mesh 整体复制旧 ASC montage fork；
 - 用 batching 替代 Authority transaction。
+
+## 官方来源与版本锚点
+
+2026-11-07核对，页面显示UE5.8。[Epic GAS Overview](https://dev.epicgames.com/documentation/unreal-engine/gameplay-ability-system-for-unreal-engine)与[FPredictionKey](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/GameplayAbilities/FPredictionKey)：activation预测窗口、latent边界及新ScopedPredictionWindow。具体签名、线程/完成语义与模块成熟度以目标版本源码和启用配置为准；5.8页面不证明5.7相同，固定社区样例不覆盖当前官方合同，本页没有当前工程运行结论。

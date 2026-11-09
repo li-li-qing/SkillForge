@@ -102,7 +102,7 @@
     "prompt": "装备每条随机Affix可能关联一个Soft AbilitySet。现实现遍历Affix时LoadSynchronous，然后GiveAbility/ApplyEffect；卸装时团队准备按GameplayTag遍历ASC把匹配能力全删掉。批量换装会一次处理几十条Affix。请给生产级方案。",
     "expectations": [
       "装备热路径/affix循环禁止LoadSynchronous/StaticLoadObject/FObjectFinder；通过AssetManager/DeveloperSettings预加载并缓存，未就绪时走Pending/AssetNotReady或带generation的异步事务",
-      "每个装备来源保存精确FGameplayAbilitySpecHandle/FActiveGameplayEffectHandle等Authority-only GrantedHandles，unequip/swap/death/load按来源精确撤销",
+      "每个装备来源记录Authority授予及实际贡献：AbilitySpec按精确handle撤销；独立Duration/Infinite GE可用对应active handle，聚合GE不能当作装备独占，须核对层数/来源贡献与刷新到期策略；Instant及过去的周期execution不靠active handle反向撤销",
       "不能按Tag/Class广泛删除，因为同一Ability/Effect可能来自技能树、职业、Buff或其他装备；可使用SourceObject关联来源但存档仍用稳定ItemId",
       "异步完成时重校验Owner/ASC/Avatar/ItemId/slot/request generation，批量装备要有失败/回滚和Host/Remote表现验证"
     ]
@@ -190,7 +190,7 @@
     "prompt": "一个ASC初始化PawnData时先创建局部GrantedHandles，把这个空struct Add进TArray，然后再把局部变量指针传给AbilitySet::GiveToAbilitySystem填写。ClearAbilitySets以后遍历TArray撤销。装备系统另一处则先把NewEntry的GrantedHandles填满，最后才把NewEntry加入FastArray。请审查两种生命周期，并给可逆授予合同。",
     "expectations": [
       "grant registry必须保存真正被GiveToAbilitySystem填充的同一份handle状态：可先填局部后Move/Copy入容器，或先取得稳定entry再直接填它；不能先复制空handle再修改另一个局部变量",
-      "Ability/Effect/Attribute等动态授予由grant source拥有撤销句柄，Authority撤销使用精确handle，不通过AbilityClass/GameplayTag全局扫描猜来源",
+      "动态授予由grant source管理实际撤销合同，不按AbilityClass/GameplayTag全局扫描猜来源；AbilitySpec按精确handle撤销，独立持续GE核对active handle；聚合GE需贡献/堆叠策略，Instant及过去周期execution不可凭handle撤销；AttributeSet按其真实拥有及移除合同处理",
       "包含可重入操作时优先construct fully -> publish once；发布前完成SourceObject、spawned presentation、GrantedHandles和必要反向索引，避免监听者看到半初始化entry",
       "验证重复Grant/Clear、Pawn切换/死亡、装备替换、部分grant失败和Listen Host本地事件；TakeFrom后清空registry或generation，防重复撤销旧handle"
     ]
@@ -1323,6 +1323,64 @@
       "区分同UUserWidget显示层重建与新UObject初始化，不能称新对象也必然永久失联",
       "绑定解绑按同层生命周期配对，当前版本初始化条件和显示释放路径另核",
       "Accepted保留仍在等待的请求；完成/替换时固定旧身份并移走/终止旧记录以支持回调重入，广播后重查当前代次"
+    ]
+  },
+  {
+    "id": "CPP-122",
+    "slug": "iris-uobject-fragments-registration",
+    "prompt": "UE5.8启用Iris。自定义Item UObject已经IsSupportedForNetworking、DOREPLIFETIME和AddReplicatedSubObject，远端引用能解析。团队准备宣称完整复制通过，并以ReplicateSubobjects作fallback；是否足够？",
+    "expectations": [
+      "核对真实复制体系；Iris要求registered list，旧ReplicateSubobjects不是Iris fallback",
+      "检查非Actor/ActorComponent UObject的RegisterReplicationFragments、UE_WITH_IRIS与模块条件",
+      "引用解析不证明字段/RPC；按目标体系验证字段更新、清理/JIP，未运行不宣称通过",
+      "区分注销、远端销毁和保留客户端副本；转移容器不机械销毁"
+    ]
+  },
+  {
+    "id": "CPP-123",
+    "slug": "fastarray-delete-only-final-index-cache",
+    "prompt": "客户端FastArray缓存ItemId到TArray index。只有Add/Change回调重建；PreReplicatedRemove仅删除被删ItemId，或立即遍历仍未删除的数组重建。现在收到纯删除批次，团队把RemovedIndices保存到next tick再刷UI。请审查时序和最小验证，不假定已有项目缺陷或已运行UE。",
+    "expectations": [
+      "删除前记录稳定ItemId、清理该身份投影并使索引失效；不把尚未删除的数组当最终映射",
+      "删除应用后按实际剩余数组重建或修正所有受影响index，纯删除批次不能依赖Add/Change；不假定保序",
+      "仅在目标版本/复制路径确认支持后使用PostReplicatedReceive或等价完成点；未映射引用后续通知应幂等，next tick不是完成证据",
+      "回调临时indices/view不跨异步保存；使用稳定身份和代次重解析，Authority本地删除也维护cache",
+      "验证删除首项/中项/多项及纯删除、混合批次、JIP和迟到UI；具体网络或版本未执行明确标记"
+    ]
+  },
+  {
+    "id": "UECPP-V5-STATETREE-FAILURE",
+    "prompt": "StateTree用All，移动任务失败但另一个参与任务还Running，是不是必须等它也结束才失败？",
+    "context": "目标UE版本未给出；两个任务均参与完成判定；尚未检查失败transition与退出清理。",
+    "expectations": [
+      "区分All的成功合取与参与任务失败触发失败转换，不将失败写成等待全部",
+      "核对引擎版本、participating配置和实际transition；不把任务列表当串行执行",
+      "检查退出取消解绑与迟到回调，未配置可用transition的结果不猜所有UE",
+      "只文档证据不能称UE运行验证通过"
+    ],
+    "execution_status": "not_run"
+  },
+  {
+    "id": "CPP-124",
+    "slug": "client-property-is-not-upload",
+    "prompt": "Client赋值replicated CurrentTarget后激活GAS，server仍旧目标。建议Delay等待复制；另有人改成本地GameplayEventData或WaitGameplayEvent就说已上传。未给源码/网络日志，如何定位？",
+    "expectations": [
+      "先说明标准属性Server到Client，客户端赋值无自动上传，等待不解决",
+      "沿所有权/执行策略和实际调用追踪TargetData RPC或项目正式通道，不把NetSerialize成功当已送达",
+      "本地事件不是通用transport；LocalPredicted event-triggered activation可能经WithEventData RPC，逐路径确认而非断言事件永不联网",
+      "仅确认通道后讨论activation identity/监听缓存/过期和Authority验证；未执行不声称UE复现通过"
+    ]
+  },
+  {
+    "id": "CPP-125",
+    "slug": "shared-ge-stack-unequip-contribution",
+    "prompt": "两件装备从同一ASC施加同一AggregateBySource GE，保存的active handle指向共享stack；卸下一件就remove所有层。另一个装备用Instant GE并想凭handle撤销。请审查，不运行工程。",
+    "expectations": [
+      "保留AbilitySpec精确撤销，区分独立Duration/Infinite和共享聚合active effect",
+      "GAS source不等于装备SourceObject/ItemId，不能全部移除共享GE损及另件",
+      "按实际接受贡献管理层数或重建，考虑上限overflow刷新到期外部移除，不假定一次apply一层",
+      "Instant执行结果不能靠active handle撤销，提出可逆持续或明确补偿合同",
+      "建议两装备卸一保留另一的回归，明确not_run而非实机通过"
     ]
   }
 ]

@@ -6,7 +6,9 @@
 
 固定尺寸不是绝对禁令：工具栏图标、特定预览比例可有约束，但以逻辑尺寸和设计 tokens 表达，不能卡死翻译文字、输入法和字体缩放。只在确有定制排布需求时写 layout 子类，先给出标准 layout 无法满足的证据。
 
-使用 .ui 时编辑源 .ui 或正确的自定义类，不手工修改自动生成的 ui_*.h。把控件放入 layout 后仍需明确 QWidget parent；删除 layout 不等于自动删除其中所有 widget，动态替换需按 QObject 拥有关系处理，避免隐藏旧控件叠在新控件下面。
+使用 .ui 时编辑源 .ui 或正确的自定义类，不手工修改自动生成的 ui_*.h。已安装到宿主 QWidget 的标准 layout 会将加入的 widget 自动 reparent 到该宿主，通常不必在构造每个子控件时手动传 parent。widget 的 parent 是宿主 QWidget，不是 layout；layout 拥有的 QLayoutItem 与 widget 的 QObject 生命周期是两层关系。尚未安装到任何宿主（parentWidget为空）的独立 layout，不能据一次 addWidget 就断言已有宿主托管；先核实最终安装关系。删除 layout 不等于自动删除其中所有 widget，removeWidget/replaceWidget也不自动改变原widget parent，动态替换须明确隐藏、复用或释放旧控件。
+
+依据：[Qt布局管理](https://doc.qt.io/qt-6/layout.html#tips-for-using-layouts)、[QLayout](https://doc.qt.io/qt-6/qlayout.html#addWidget) 的parentWidget/removeWidget/replaceWidget合同（2026-11-07读取页面Qt 6.12.0；项目仍核实际版本）。
 
 ## 编辑框分层/重影的检查顺序
 
@@ -55,3 +57,9 @@ dock 的 objectName 是稳定非本地化 ID，显示标题可以翻译；保存
 关闭/移除/延迟删除分清：注销 manager 关系、断开订阅、释放 QObject 不能重复。ADS 的恢复代码注释展示了“旧 manager 反向指针 + deleteLater”造成双重移除的风险，不能只复制一个 deleteLater 修复所有寿命问题。
 
 依据：[布局管理](https://doc.qt.io/qt-6/layout.html)、[QLineEdit](https://doc.qt.io/qt-6/qlineedit.html)、[High DPI](https://doc.qt.io/qt-6/highdpi.html)、[QMainWindow](https://doc.qt.io/qt-6/qmainwindow.html)、[来源案例](github-sources.md)。
+
+## 辅助语义与字体设置
+
+定制图标按钮和自绘控件时，检查辅助名称、角色、值/状态是否按实际 Qt 版本暴露；沿用标准控件现有能力，不以绘制文字等同可读语义。错误/选中/禁用同时提供非颜色提示。系统字体放大与 DPI 分别验证布局、标签裁切和关键按钮可达性，并用目标平台屏幕阅读器或辅助语义检查工具验证；未运行工具不得用截图替代通过记录。
+
+依据：[Qt Accessibility](https://doc.qt.io/qt-6/accessible.html)（2026-11-07 核对）。

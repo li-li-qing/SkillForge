@@ -43,6 +43,8 @@ UI 绑定通常分两步：
 1. 读取一次 initial snapshot；
 2. 订阅 Add/Change/Remove、Attribute delegate、LoadoutChanged 等事件。
 
+这两步仅在同一拥有线程、无异步等待且不会重入的连续绑定段内可直接采用；否则快照后到订阅前可能漏掉一次变更。跨异步或可重入来源可先订阅再读取带 revision 的快照，按版本丢弃已覆盖的旧 delta，或使用项目已有原子订阅/快照合同。不要仅调换顺序就假定没有重复或倒序；验证两步之间发生变更、重复事件和解绑后的迟到回调。
+
 不要只等 future event，否则打开界面时已有数据为空；也不要只轮询 snapshot，否则高频 Tick 浪费并增加焦点/排序抖动。
 
 FastArray callback 到达时如果关联 UObject/Actor 引用还未解析，允许暂缺并在后续 related delta/changed event 重新解析，而不是把 null 永久缓存。

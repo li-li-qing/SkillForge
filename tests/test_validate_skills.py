@@ -1,6 +1,7 @@
 """Exercise the public CLI with real temporary skill packages, not prose checks."""
 
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -18,6 +19,17 @@ class ValidateSkillsTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         self.skill = self.make_skill(self.root)
+
+    def test_explicit_package_symlink_loop_is_reported(self):
+        loop = self.root / "loop"
+        try:
+            loop.symlink_to(loop)
+        except (OSError, NotImplementedError):
+            self.skipTest("symlinks unavailable")
+        result = subprocess.run([sys.executable, "-B", str(VALIDATOR), str(loop)], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("cannot resolve package", result.stdout)
+        self.assertNotIn("Traceback", result.stderr)
 
     def make_skill(self, parent, name="skillforge-example"):
         package = parent / name
@@ -81,6 +93,42 @@ class ValidateSkillsTests(unittest.TestCase):
     def append(self, text, relative="SKILL.md"):
         path = self.skill / relative
         path.write_text(path.read_text(encoding="utf-8") + text + "\n", encoding="utf-8")
+
+    def test_internal_directory_link_cannot_hide_markdown(self):
+        docs = self.skill / "docs"
+        docs.mkdir()
+        (docs / "hidden.md").write_text("[broken](missing.md)\n", encoding="utf-8")
+        link = self.skill / "references" / "linked"
+        try:
+            link.symlink_to(Path("..") / "docs", target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest("Creating symlinks unavailable")
+        self.append("[hidden](references/linked/hidden.md)")
+        result = self.assert_invalid(flags=("--self-contained",))
+        self.assertIn("directory links", result.stdout)
+
+    def test_fifo_resource_is_rejected_without_reading(self):
+        if not hasattr(os, "mkfifo"):
+            self.skipTest("FIFO unavailable on this platform")
+        fifo = self.skill / "references" / "blocked.md"
+        os.mkfifo(fifo)
+        try:
+            result = subprocess.run([sys.executable, "-B", str(VALIDATOR), str(self.skill)],
+                                    capture_output=True, text=True, timeout=2)
+        except subprocess.TimeoutExpired:
+            self.fail("validator tried to read FIFO and blocked")
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertIn("regular files", result.stdout)
+
+    def test_relative_internal_file_link_remains_supported(self):
+        link = self.skill / "references" / "alias.md"
+        try:
+            link.symlink_to("details.md")
+        except (OSError, NotImplementedError):
+            self.skipTest("Creating symlinks unavailable")
+        self.append("[alias](references/alias.md)")
+        result = self.run_validator(self.skill, flags=("--self-contained",))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_valid_portable_package_runs_from_unrelated_directory(self):
         result = self.run_validator(self.skill)
@@ -320,6 +368,22 @@ class ValidateSkillsTests(unittest.TestCase):
                     self.assert_invalid()
             path.write_text(original, encoding="utf-8")
 
+    def test_duplicate_eval_json_keys_are_rejected(self):
+        for kind, needle, replacement in (
+            ("trigger", '"expected": "trigger"', '"expected": "no_trigger", "expected": "trigger"'),
+            ("trigger", '"context": "A project is available."', '"context": {"nested": 1, "nested": 2}'),
+            ("behavior", '"id":', '"id": "shadow", "id":'),
+        ):
+            path = self.skill / "evals" / (kind + "-cases.json")
+            original = path.read_text(encoding="utf-8")
+            with self.subTest(kind=kind, needle=needle):
+                self.assertIn(needle, original)
+                path.write_text(original.replace(needle, replacement, 1), encoding="utf-8")
+                result = self.run_validator(self.skill)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn("duplicate JSON key", result.stdout + result.stderr)
+            path.write_text(original, encoding="utf-8")
+
     def test_trigger_schema_and_three_categories_are_required(self):
         path = self.skill / "evals" / "trigger-cases.json"
         original = json.loads(path.read_text(encoding="utf-8"))
@@ -346,6 +410,21 @@ class ValidateSkillsTests(unittest.TestCase):
                 self.write_json(path, [{**original, **replacement}])
                 self.assert_invalid()
 
+
+    def test_assets_bad_link_is_not_hidden_by_standalone_copy(self):
+        assets = self.skill / "assets"
+        assets.mkdir()
+        (assets / "workflow.md").write_text("[missing](not-here.md)\n", encoding="utf-8")
+        self.append("[workflow](assets/workflow.md)")
+        self.assert_invalid(flags=("--self-contained",))
+
+    def test_assets_valid_local_links_remain_portable(self):
+        assets = self.skill / "assets"
+        assets.mkdir()
+        (assets / "workflow.md").write_text("[details](../references/details.md)\n", encoding="utf-8")
+        self.append("[workflow](assets/workflow.md)")
+        result = self.run_validator(self.skill, flags=("--self-contained",))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 if __name__ == "__main__":
     unittest.main()

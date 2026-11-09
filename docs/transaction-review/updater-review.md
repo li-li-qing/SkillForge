@@ -1,0 +1,17 @@
+# Updater事务与锁清理独立复查
+
+仅修改v5副本updater和对应测试；未修改experience脚本或动态路由。
+
+## 故障证据和修复
+
+临时目录注入Path.unlink(write.lock)失败：原实现先保存applied，退出锁失败却重写partial；手动清锁后仍RECOVERY_REQUIRED。同时目标写失败和清锁失败时，原错误被清理错误吞没。
+
+新增两项测试先RED：已提交状态错误降级、主要错误丢失。修复后25项updater测试通过，其中2项平台相关跳过（23实际通过）。非Windows实测。
+
+最小合同：只有applied日志保存成功，且后续错误来自锁清理时，保持磁盘applied，返回结构化cleanup_required、transaction_status=applied、verified_paths、lock_path/lock_status、journal_persisted=true。CLI仍exit3，但不建议recover或重放。锁状态为瞬时观测，不自动删除或偷锁。提交前主要失败与清理失败同时发生时两者均保留，仍走incomplete/partial合同。初始锁写失败不伪称业务提交。
+
+## Experience交叉门禁建议（另Agent实施）
+
+共享锁仅解决同时写入，不能阻止上次未完成更新释放锁后继续写。同目标经验promote/rollback应检查pending updater的planned路径；retire_dirs对目标自身及后代匹配。匹配按规范化路径组件/平台大小写语义，不能字符串前缀把a与ab混同。只保存候选的propose和历史already_committed查询不应因无关更新被禁止；recover只对真实prepared/rollback_prepared进行状态协调，已提交仅锁清理失败不能要求recover。
+
+明确无关的有效计划不得阻断其他文档；缺失/损坏计划无法证明无关时可以拒绝，但必须报告范围未知，不伪称确有冲突。本轮不重构旧有全局pending规则；新cross gate按关联路径实施即可。应覆盖同路径、父目录retire、不同路径、部分已写仍pending、无planned/损坏、已applied/reconciled、主异常+清理异常，以及锁令牌被替换时不自动删除。

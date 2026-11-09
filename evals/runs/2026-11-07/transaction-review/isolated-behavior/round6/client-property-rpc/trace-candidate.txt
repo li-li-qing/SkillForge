@@ -1,0 +1,33 @@
+任务：client-property-rpc，隔离候选行为回答。不自行评分。
+范围：A/direct/review；只审查合成 UE 联机逻辑，不修改项目、不安装、不构建、不执行未知代码。
+实际读取：
+1. /workspace/shared/skill_evals_v4/round6/client-property-rpc/prompt.txt（完整原题）
+2. 以下均在授权快照 /workspace/shared/skill_evals_v4/round6/snapshots/22ce0635a922179ddddd6f13ac0d6b864477e9165e78cf6eddc27f8def219526/skills/ 内：
+- skillforge-orchestrator/SKILL.md
+- skillforge-orchestrator/references/capability-contract.md
+- skillforge-orchestrator/references/user-workstyle.md
+- skillforge-orchestrator/references/routing-policy.md
+- skillforge-orchestrator/references/worklist-workflow.md（批量输出部分被工具截断，不宣称逐字完整读取）
+- skillforge-orchestrator/references/context-policy.md
+- skillforge-orchestrator/references/collaboration-policy.md
+- skillforge-orchestrator/references/approval-policy.md
+- skillforge-orchestrator/references/learning-policy.md
+- find 仅列出授权 skills 根内 SKILL.md 路径，未读取 evals 或其他题/回答。
+- skillforge-ue-cpp/SKILL.md
+- skillforge-debugging/SKILL.md
+- skillforge-ue-cpp/references/network-data-preflight.md
+- skillforge-ue-cpp/references/replication-review.md
+- skillforge-ue-cpp/references/framework-composition-patterns.md
+- skillforge-ue-cpp/references/runtime-gameplay-patterns.md
+路由：orchestrator → UE C++（Domain/网络 Surface）+ debugging（故障数据流 Method）。没有真实工程，不套用 LGF、蓝图编辑、性能优化或外部架构迁移。技能状态为 read-file，不宣称原生调用。
+能力：scoped-filesystem 发现/read-file 加载；文件读写受本题范围限制；可只读官方网页；未访问 UE 工程、编辑器或运行环境。无精确上下文计量/压缩证据；无需压缩。
+实际网页核对：通过连接的 chat_search_web_run open 读取以下官方页面，工具结果均成功，标题显示 Unreal Engine 5.8 Documentation：
+- https://dev.epicgames.com/documentation/en-us/unreal-engine/replicate-actor-properties-in-unreal-engine
+  核对 server → client 属性方向、bReplicates、GetLifetimeReplicatedProps/Super/DOREPLIFETIME、ReplicatedUsing/OnRep。
+- https://dev.epicgames.com/documentation/en-us/unreal-engine/remote-procedure-calls-in-unreal-engine
+  核对 Server RPC owning connection、调用标准入口与 _Implementation、可靠性、RPC 执行矩阵、WithValidation 失败断连。
+未打开参考文件内其他来源URL，不把参考中历史核验日期当本轮实际网页核验。
+静态结论：本地属性赋值没有上行数据通道；无参数 RPC 读取服务器副本。建议单请求携带槽位意图，服务器解析校验再提交；UI 预测与权威状态分离。
+未核实：真实 UE 小版本、复制后端、Pawn 实际拥有链、复制注册、项目辅助函数、UHT/编译、联机/丢包/迟加入表现。全部运行测试 not_run。示意代码非完整可编译补丁。
+执行：仅 cat/find 读取允许资料、工具元数据发现、官方文档只读访问及本题两个输出文件写入。无产品更改、无安装、无提交、无测试结果编造。
+产物：raw-answer-candidate.txt 保存用户答复原样；trace-candidate.txt 保存本过程记录。共享技能未修改，无新增实测经验写回。

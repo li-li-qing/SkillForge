@@ -25,3 +25,11 @@ Server RPC 核对拥有权；世界 NPC/仓库等不属于客户端时通过它�
 Target is up to date 仅表示增量目标没有重编。要证明改动进入二进制，保存实际 Compile/Link 与对应文件版本；Live Coding 成功也不自动证明下一次干净启动加载同一内容。
 
 教程按先创建依赖再引用接线的顺序组织；签名变更查 API，装配变更查 Tutorial，模块定位查 README。正文说明真实原因、网络上下文、失败分支与 Blueprint Impact，不用大段 API 全文替代最小可执行路径。
+
+## Iris UObject 的额外注册合同
+
+先确认实际复制体系和目标版本。Iris 只支持 registered subobject list，旧 ReplicateSubobjects override不能作替代。非Actor/ActorComponent的自定义UObject还需核对 RegisterReplicationFragments、UE_WITH_IRIS条件及模块依赖；仅AddReplicatedSubObject、DOREPLIFETIME或网络引用非空不证明字段/RPC可用。
+
+注销、远端销毁和停止更新后保留客户端副本分别核对Remove/Destroy/TearOff语义；容器转移不能机械当销毁。验证初次映射、字段变更、清理和JIP；没有真实目标复制体系运行证据时保持未测。
+
+来源：[Epic Object Replication](https://dev.epicgames.com/documentation/en-us/unreal-engine/replicating-uobjects-in-unreal-engine)，2026-11-07读取页面显示UE5.8，Additional Steps for Iris；目标版本源码优先。

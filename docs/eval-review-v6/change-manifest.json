@@ -1,0 +1,103 @@
+{
+  "baseline": "v5",
+  "baseline_sha256": "d5192c457c2e79f7fb134d9ae3b4c459dc5056de6079c895ba35e578dfe6e871",
+  "removed": [],
+  "entries": [
+    {
+      "path": "CHANGELOG.md",
+      "operation": "modify",
+      "before": "9b9be2c163e69b3672f0cc86015c60e2e26df64d33c52e5535165a25b2dc138a",
+      "after": "2ec97227b5c0bdf8272a2120cc4302af61ca51203e7412ebd214b734df18df1b"
+    },
+    {
+      "path": "README.md",
+      "operation": "modify",
+      "before": "da33f54696d8be09446f8092fa23a05320b35165489e83f8adf916b5b9fe0d69",
+      "after": "c5dbc22b089b5ac75d510d557236f898c706b8b6691dfe29106887049bdcba24"
+    },
+    {
+      "path": "docs/eval-review-v6/independent-audit.md",
+      "operation": "add",
+      "before": null,
+      "after": "6db4dbb898de5d230fb60d74b03c842c26e9f5a41c372c62b3068ae4a50631b4"
+    },
+    {
+      "path": "docs/eval-review-v6/report.md",
+      "operation": "add",
+      "before": null,
+      "after": "a5ef737921272fdd1e08adc35b1bb5fa3bdaadc8126a5a43228ab31a5b84bcfe"
+    },
+    {
+      "path": "evals/runs/2026-11-07/eval-review-v6/final-addon.log",
+      "operation": "add",
+      "before": null,
+      "after": "ef9b0ecc5e3b958ccab3cefdeda362ceca0b2c6222fcb9535bb680b393f979fb"
+    },
+    {
+      "path": "evals/runs/2026-11-07/eval-review-v6/final-experience.log",
+      "operation": "add",
+      "before": null,
+      "after": "9d3a595dd2598fa5e5cdc237d22c62f4533e83715257f74b5afeabdfb3026a79"
+    },
+    {
+      "path": "evals/runs/2026-11-07/eval-review-v6/final-ida.log",
+      "operation": "add",
+      "before": null,
+      "after": "46840635d327d2d2bca242973f7f13cf24608051cb18ce3913c216ff2d1a42f9"
+    },
+    {
+      "path": "evals/runs/2026-11-07/eval-review-v6/final-index.log",
+      "operation": "add",
+      "before": null,
+      "after": "0336b674260fdffd36ad24f7851ecc7c60a0a8d81b742dc62e000b3263edb8f3"
+    },
+    {
+      "path": "evals/runs/2026-11-07/eval-review-v6/final-lgf.log",
+      "operation": "add",
+      "before": null,
+      "after": "b1b8278cf1b89197aa71deb053749d4486f8fe539ec841c557ba0fd2ca3afe7c"
+    },
+    {
+      "path": "evals/runs/2026-11-07/eval-review-v6/final-library.log",
+      "operation": "add",
+      "before": null,
+      "after": "cd687b8793fd413b65bf6334aa91f788a77059b27324c693f6b0144e1978cbd0"
+    },
+    {
+      "path": "evals/runs/2026-11-07/eval-review-v6/suite-results.json",
+      "operation": "add",
+      "before": null,
+      "after": "3cdbd04a9334a0c7dcf3124dce9b77fae8c7451be96ce09c11d04a0193c61a0e"
+    },
+    {
+      "path": "evals/runs/2026-11-07/eval-review-v6/validator-red.log",
+      "operation": "add",
+      "before": null,
+      "after": "2c23771c932f65d056668a59b85c8f79d4d51f7a3db8178fa3a8e5139cbf2ea1"
+    },
+    {
+      "path": "scripts/validate_skills.py",
+      "operation": "modify",
+      "before": "f629cb38a6530946956fa0d38f124dc6285aefc344be8285658990f643dd4fca",
+      "after": "93c71e178c53e936a13887ad4be8625ad6971578c7750287c6bf0d59c51210c4"
+    },
+    {
+      "path": "skills/skillforge-qt/evals/README.md",
+      "operation": "modify",
+      "before": "6685a0c647586ce80fc39eb04ac1243b42dd0d2db6f501120dfb03f9be621f99",
+      "after": "1569b08c224c91f503d12b06338df0bd6fecb9aa4646814d86c712c9da8e888a"
+    },
+    {
+      "path": "skills/skillforge-ue-cpp/evals/behavior-cases.json",
+      "operation": "modify",
+      "before": "c015eaba5eaa3bbcf6b2b98eb458497a688c289340098bf33a4f6668c61a9c39",
+      "after": "e7d5cc4e804072ee98972191b6d8bd9cce5b37baeb83d71c58464665c15e2949"
+    },
+    {
+      "path": "tests/test_validate_skills.py",
+      "operation": "modify",
+      "before": "82a7217287640a2f37dda2a199066cdb380b84560e845592d4fc1135e41f6e2f",
+      "after": "70e0bb163ef0e2f4244abc140293f8893b91f422bc7237f1c5018cc3b6aa4d36"
+    }
+  ]
+}

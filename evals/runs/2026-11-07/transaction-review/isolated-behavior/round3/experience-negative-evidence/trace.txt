@@ -1,0 +1,8 @@
+实际读取命令（均以 exec_command 执行；只读题面与允许技能目录）：
+1. cat /workspace/shared/skill_evals_v4/round3/experience-negative-evidence/prompt.txt; printf '\n---ENTRY---\n'; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/SKILL.md
+2. for f in capability-contract user-workstyle routing-policy learning-policy; do printf '\n---%s---\n' "$f"; cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-orchestrator/references/$f.md; done; find /workspace/shared/skill_evals_v4/v4/skills -name SKILL.md -not -path '*/evals/*'
+3. for s in skillforge-experience-maintenance skillforge-qt skillforge-debugging; do printf '\n---%s---\n' "$s"; cat /workspace/shared/skill_evals_v4/v4/skills/$s/SKILL.md; done
+4. cat /workspace/shared/skill_evals_v4/v4/skills/skillforge-experience-maintenance/references/promotion-policy.md /workspace/shared/skill_evals_v4/v4/skills/skillforge-experience-maintenance/assets/experience-record.md /workspace/shared/skill_evals_v4/v4/skills/skillforge-qt/references/qobject-threading-shutdown.md /workspace/shared/skill_evals_v4/v4/skills/skillforge-debugging/references/verified-cases.md
+能力检查：exec_command 只读调用成功；skill_discovery=scoped-filesystem；skill_loading=read-file，未原生调用技能。file_read 与 file_write 受任务限定；仅允许写 raw-answer.txt、trace.txt。无项目源码、Qt 版本或运行日志提供，未扫描项目、未编译、未复现。外部连接禁止，未访问参考中的链接。未检查共享写入锁能力，因为本题只审核，不写规则。context_meter/context_compaction=unknown。
+路由：入口 → 经验维护（证据晋升）+ Qt（跨线程生命周期）+ debugging（暂未复现与修复证据）。未读取其他题目、评分或报告。
+输出：使用 shell heredoc 写入本题 raw-answer.txt 与 trace.txt；未修改产品、技能或长期规则。未自行评分。

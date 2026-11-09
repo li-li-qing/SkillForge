@@ -24,6 +24,23 @@ class PatchError(RuntimeError):
     pass
 
 
+class LockCleanupError(PatchError):
+    def __init__(self, cleanup, primary=None):
+        self.cleanup_error = str(cleanup)
+        self.primary_error = None if primary is None else str(primary)
+        super().__init__(("Primary failure: " + str(primary) + "; " if primary else "") +
+                         "Lock cleanup failed: " + str(cleanup))
+
+
+class PatchIncompleteError(PatchError):
+    """已进入更新阶段；即使审计盘失败仍向调用者返回内存中的实际证据。"""
+    def __init__(self, details):
+        self.details = details
+        super().__init__(f"Update {details['status']}; backup={details['backup']}; "
+                         f"state={details['state_path']}; mutation_attempted={details['mutation_attempted']}; "
+                         f"journal_persisted={details['journal_persisted']}; {details['error']}")
+
+
 RETIRABLE = {f"skills/skillforge-orchestrator/{x}" for x in ("agents", "generated", "evals", "scripts", "tests")}
 ALLOWED = {"skills", "development", "adapters", "docs", "evals", "scripts", "tests"}
 
@@ -48,6 +65,11 @@ def safe(root: Path, relative: str) -> Path:
         raise PatchError("Non-canonical or escaping path")
     if any(part.endswith((".", " ")) for part in p.parts):
         raise PatchError("Trailing dot/space components are not portable Windows paths")
+    for part in p.parts:
+        stem = part.split(".", 1)[0].upper()
+        devices = {"CON", "PRN", "AUX", "NUL"} | {prefix + n for prefix in ("COM", "LPT") for n in "123456789¹²³"}
+        if stem in devices or any(ord(c) < 32 or c in '<>"|?*' for c in part):
+            raise PatchError("Reserved Windows device name or invalid portable path character")
     root = root.resolve(strict=True)
     result = root
     for part in p.parts:
@@ -190,8 +212,60 @@ def writer_lock(root: Path):
                     raise PatchError("Interrupted experience transaction exists; recover it first")
         yield
     finally:
-        if path.is_file() and not is_link(path) and path.read_text(encoding="utf-8") == token:
-            path.unlink()
+        primary = sys.exc_info()[1]
+        try:
+            if path.is_file() and not is_link(path) and path.read_text(encoding="utf-8") == token:
+                path.unlink()
+        except (OSError, ValueError) as cleanup:
+            raise LockCleanupError(cleanup, primary) from (primary or cleanup)
+
+
+
+def inspect_pending_updates(root: Path) -> list[dict]:
+    """只读列出未完成日志；不能根据目标已是新内容就当审计完成。"""
+    store = safe(root, ".skillforge-backups")
+    if not store.exists():
+        return []
+    pending = []
+    for directory in sorted(store.iterdir()):
+        relative = directory.relative_to(root).as_posix()
+        safe(root, relative)
+        if not directory.is_dir():
+            raise PatchError(f"Unexpected backup entry; inspect manually: {directory}")
+        state_path = safe(root, relative + "/state.json")
+        try:
+            data = read(state_path)
+            record = json.loads(data.decode("utf-8")) if data is not None else None
+            if not isinstance(record, dict):
+                raise ValueError("missing or invalid state")
+            if record.get("status") == "applied":
+                continue
+            if record.get("status") == "reconciled" and isinstance(record.get("resolution"), str) and record["resolution"].strip():
+                continue
+            item = {"backup":str(directory),"state_path":str(state_path),
+                    "status":record.get("status","unknown"),"recorded_completed":record.get("completed",[]),
+                    "actual_targets":[]}
+            for entry in record.get("planned", []):
+                if not isinstance(entry,dict) or not isinstance(entry.get("path"),str):
+                    raise ValueError("invalid planned entry")
+                actual = digest(read(safe(root,entry["path"])))
+                classification = ("after" if actual == entry.get("after") else
+                                  "before" if actual == entry.get("before") else "conflict")
+                item["actual_targets"].append({"path":entry["path"],"sha256":actual,"matches":classification})
+            pending.append(item)
+        except (OSError, ValueError, TypeError, KeyError, PatchError) as exc:
+            pending.append({"backup":str(directory),"state_path":str(state_path),
+                            "status":"unreadable_or_missing","error":str(exc)})
+    return pending
+
+
+def require_reconciled(root: Path) -> None:
+    pending = inspect_pending_updates(root)
+    if pending:
+        raise PatchError("RECOVERY_REQUIRED: unfinished update evidence at " +
+                         ", ".join(item["state_path"] for item in pending) +
+                         "; use --inspect-pending; no automatic replay or journal dismissal")
+
 
 
 def apply_update(root: Path, package: Path, *, apply: bool = False) -> dict:
@@ -199,6 +273,7 @@ def apply_update(root: Path, package: Path, *, apply: bool = False) -> dict:
     package = Path(package).resolve(strict=True)
     if not root.is_dir() or not package.is_dir():
         raise PatchError("Root and package must be existing directories")
+    require_reconciled(root)  # 必须早于already_current快捷返回。
     manifest = read_manifest(package)
     changes = check(root, package, manifest)
     retirement_needed = any(safe(root, p).exists() for p in manifest.get("retire_dirs", []))
@@ -206,16 +281,20 @@ def apply_update(root: Path, package: Path, *, apply: bool = False) -> dict:
         return dict(status="checked", changes=len(changes), retire_dirs=manifest.get("retire_dirs", []))
     if not changes and not retirement_needed:
         return dict(status="already_current", changes=0)
-    with writer_lock(root):
-        changes = check(root, package, manifest)  # Another cooperative writer may have completed since the initial check.
-        backup = safe(root, ".skillforge-backups/" + uuid.uuid4().hex)
-        backup.mkdir(parents=True, exist_ok=False)
-        state = dict(status="prepared", manifest_sha256=digest(read(package / "manifest.json")), completed=[], planned=changes)
-        state_path = backup / "state.json"
-        def save():
-            atomic_write(state_path, (json.dumps(state, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
-        save()
-        try:
+    state, backup, state_path, attempted = None, None, None, []
+    applied_persisted = False
+    try:
+        with writer_lock(root):
+            require_reconciled(root)
+            changes = check(root, package, manifest)
+            backup = safe(root, ".skillforge-backups/" + uuid.uuid4().hex)
+            backup.mkdir(parents=True, exist_ok=False)
+            state = dict(status="prepared", manifest_sha256=digest(read(package / "manifest.json")),
+                         completed=[], planned=changes, retire_dirs=manifest.get("retire_dirs",[]))
+            state_path = backup / "state.json"
+            def save():
+                atomic_write(state_path, (json.dumps(state, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+            save()
             for entry in changes:
                 current = read(safe(root, entry["path"]))
                 if digest(current) != entry["before"]:
@@ -226,6 +305,8 @@ def apply_update(root: Path, package: Path, *, apply: bool = False) -> dict:
                 target = safe(root, entry["path"])
                 if digest(read(target)) != entry["before"]:
                     raise PatchError(f"Concurrent change before write: {entry['path']}")
+                # 先保存内存中的尝试记录；异常不能被解读成没有发生修改。
+                attempted.append(entry["path"])
                 if entry["after"] is None:
                     target.unlink()
                 else:
@@ -241,20 +322,54 @@ def apply_update(root: Path, package: Path, *, apply: bool = False) -> dict:
             for name in manifest.get("retire_dirs", []):
                 directory = safe(root, name)
                 if directory.exists():
+                    attempted.append(name + "/")
                     for child in sorted(directory.rglob("*"), key=lambda p: len(p.parts), reverse=True):
                         if child.is_dir():
-                            child.rmdir()  # Nonempty or newly added content causes a refusal, never recursive deletion.
+                            child.rmdir()
                     directory.rmdir()
             if check(root, package, manifest):
                 raise PatchError("Final content verification did not converge")
             state["status"] = "applied"
             save()
-            return dict(status="applied", changes=len(changes), backup=str(backup))
-        except (OSError, ValueError, PatchError) as exc:
-            state["status"] = "partial"
-            state["error"] = str(exc)
+            applied_persisted = True
+        # 只有锁释放也完成才报告整体成功。
+        return dict(status="applied", changes=len(changes), backup=str(backup))
+    except (OSError, ValueError, PatchError) as exc:
+        if state is None:
+            raise
+        if applied_persisted and isinstance(exc, LockCleanupError):
+            # Durable applied evidence must not be rewritten as an interrupted mutation.
+            lock_path = root / ".skillforge-memory/write.lock"
+            try:
+                lock_status = "present" if lock_path.lstat() else "unknown"
+            except FileNotFoundError:
+                lock_status = "absent"
+            except OSError:
+                lock_status = "unknown"
+            details = {"status":"cleanup_required", "transaction_status":"applied",
+                       "backup":str(backup), "state_path":str(state_path),
+                       "mutation_attempted":bool(attempted), "attempted_paths":attempted,
+                       "verified_paths":list(state["completed"]), "uncertain_paths":[],
+                       "journal_persisted":True, "journal_error":None,
+                       "lock_path":str(lock_path), "lock_status":lock_status,
+                       "cleanup_error":exc.cleanup_error, "error":str(exc),
+                       "automatic_retry_allowed":False,
+                       "next_action":"Update committed. Inspect lock ownership and clean up explicitly; do not recover or replay the transaction."}
+            raise PatchIncompleteError(details) from exc
+        state["status"] = "partial"
+        state["error"] = str(exc)
+        journal_error = None
+        try:
             save()
-            raise PatchError(f"Update incomplete; no automatic rollback over others' edits. Review {state_path}: {exc}") from exc
+        except (OSError, ValueError, PatchError) as failed_save:
+            journal_error = str(failed_save)
+        details = {"status":"incomplete", "backup":str(backup), "state_path":str(state_path),
+                   "mutation_attempted":bool(attempted), "attempted_paths":attempted,
+                   "verified_paths":list(state["completed"]),
+                   "uncertain_paths":[x for x in attempted if x not in state["completed"]],
+                   "journal_persisted":journal_error is None, "journal_error":journal_error,
+                   "error":str(exc), "automatic_retry_allowed":False}
+        raise PatchIncompleteError(details) from exc
 
 
 def main(argv=None) -> int:
@@ -265,10 +380,21 @@ def main(argv=None) -> int:
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--package", type=Path, default=Path(__file__).resolve().parent)
     parser.add_argument("--apply", action="store_true", help="Apply only after reviewing the read-only check; uses the shared writer lock")
+    parser.add_argument("--inspect-pending", action="store_true", help="Read unfinished update journals and current hashes; never modify or recover automatically")
     args = parser.parse_args(argv)
     try:
-        print(json.dumps(apply_update(args.root, args.package, apply=args.apply), ensure_ascii=False, indent=2))
+        if args.inspect_pending:
+            if args.apply:
+                raise PatchError("--inspect-pending cannot be combined with --apply")
+            output = {"status":"inspection_only", "pending":inspect_pending_updates(args.root.resolve(strict=True))}
+        else:
+            output = apply_update(args.root, args.package, apply=args.apply)
+        print(json.dumps(output, ensure_ascii=False, indent=2))
         return 0
+    except PatchIncompleteError as exc:
+        print(json.dumps(exc.details, ensure_ascii=False, indent=2))
+        print(f"{exc.details['status'].upper()}: {exc}", file=sys.stderr)
+        return 3
     except (OSError, ValueError, KeyError, TypeError, PatchError) as exc:
         print(f"REFUSED: {exc}", file=sys.stderr)
         return 2

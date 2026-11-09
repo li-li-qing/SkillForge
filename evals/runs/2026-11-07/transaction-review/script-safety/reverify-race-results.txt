@@ -1,0 +1,7 @@
+probe stat->FIFO swap: PASS
+hash stat->FIFO swap: PASS
+reader stat->FIFO swap: PASS
+probe grow: PASS
+probe shrink: PASS
+hash grow: PASS
+hash shrink: PASS

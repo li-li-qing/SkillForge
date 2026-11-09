@@ -41,9 +41,14 @@ Serializer 负责：
 - Authority Add/Modify 时 `MarkItemDirty`；结构增删时 `MarkArrayDirty`；
 - `PostReplicatedAdd` 重建 ItemId/GridOrigin/Slot 到对象或条目的本地索引；
 - `PostReplicatedChange` 更新派生缓存并发布表现事件；
-- `PreReplicatedRemove` 在条目离开前清理占格、索引和 UI 投影；
+- `PreReplicatedRemove` 在条目离开前记录被删ItemId、清理该身份的占格/UI投影并使索引失效；不能在这个删除前阶段把当前数组重建成“最终”映射；
+- 删除应用后，从实际剩余数组重建或增量修正ItemId→index；必须覆盖没有Add/Change的纯删除批次，不能只移除被删键而留下其他条目的旧index；
 - JIP 能只靠当前完整 FastArray 快照重建所有非复制 Map；
 - 不复制纯缓存，也不让 Proxy 回调反向修改 Authority 真值。
+
+接收收尾可按目标版本的PostReplicatedReceive合同统一处理失效cache；其后续未映射引用解析可能再次调用，刷新应幂等且只做所需工作。没有该钩子的版本或其他复制路径须核对等价的应用完成点，不能把next-tick本身当作完成证明。回调indices/TArrayView仅本次调用有效；延后UI或异步任务带稳定ItemId与会话/代次，执行时再解析，不持有旧数组位置。Authority本地删除同样维护最终映射，不能等接收回调替主机更新。
+
+版本依据：[Epic PreReplicatedRemove](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/NetCore/FFastArraySerializer/PreReplicatedRemove)及[FPostReplicatedReceiveParameters](https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/NetCore/FFastArraySerializer/FPostReplicatedReceiveParameters)，2026-11-07读取页面显示UE5.8；应用前/后边界须在当前引擎FastArraySerializer.h与实际复制体系复核。本节是缓存合同澄清，不是已证实某项目有bug或真实UE回归通过。
 
 Grid Inventory 的占格表可以是二维 bit/grid 或紧凑数组，而不是必须 `TMap<FIntPoint,bool>`。数据规模大时先测 `TMap` 节点分配、缓存局部性和 Grid 扫描成本，再决定 bitset/flat array/row mask。不要为了“更快”在没有基准时重写。
 
@@ -79,13 +84,21 @@ P2P/Listen Server 只是连接拓扑。库存、装备、掉落仍必须明确 A
 
 ## 5. Equipment + GAS：授予必须可逆
 
-装备带来的 GameplayAbility、GameplayEffect、Attribute/Tag 修饰应由 Authority 授予，并为每个装备来源保存精确 handle：
+装备带来的 GameplayAbility、GameplayEffect、Attribute/Tag 修饰应由 Authority 授予，并记录每个来源实际授予结果及可核验的撤销依据。可能包括以下句柄，但句柄本身不保证逐装备独占或可逆：
 
 - `FGameplayAbilitySpecHandle`；
 - `FActiveGameplayEffectHandle`；
 - 其他项目自定义 grant handle/registration token。
 
-Unequip、weapon swap out、死亡清理、换 Avatar、load/reconnect 时使用**同一来源保存的 handles 精确撤销**。不要通过“遍历所有能力，按类或 Tag 猜着删”来清理，因为同一 Ability/Effect 可能同时来自技能树、Buff、另一件装备或职业默认授予。
+Unequip、weapon swap out、死亡清理、换 Avatar、load/reconnect 时，按来源撤销其实际贡献，而非把所有 handle 都当作独占实例：
+
+- Ability：保存该来源实际授予的 `FGameplayAbilitySpecHandle`，精确撤销；不按类或 Tag 全局猜删。
+- 独立、非堆叠的 Duration/Infinite GE：确认 apply 成功且该 active handle 属于此来源的独立实例，才可按 handle 移除。
+- `AggregateBySource` / `AggregateByTarget`：handle 可能指向聚合 active effect。前者按 GAS source 聚合，不等于按装备 ItemId/`SourceObject` 隔离；同一 ASC 的两件装备可能共享实例。移除全部 stacks 会损及另一来源。记录实际接受的来源贡献及层数，按项目策略减少贡献或从仍有效的装备来源重建；不能无条件“一次 apply 等于一层、unequip 减一”。还须处理 stack limit/overflow、刷新 duration/period、到期策略和外部移除，不能仅凭 handle 还原这些历史。
+- 周期执行的 Duration/Infinite GE：移除 active effect 通常停止后续周期，不自动反向撤销过去已执行的伤害/治疗；不能把持续 modifier 的移除语义套到周期 execution。若项目要求补偿，需独立明确的结算合同及历史证据，核对自定义移除回调与目标版本实现。
+- Instant GE：通常执行后不留 active effect，不能靠 active handle 撤销既有执行结果；预测的临时表示也不是装备反向结算合同。若装备需要可逆加成，采用明确的持续 modifier 或项目定义的重算/补偿策略。
+
+版本依据：2026-11-07 核对 Epic UE5.8 [StackingType](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/EGameplayEffectStackingType)、[GE lifetime 与 stacking](https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-effects-for-the-gameplay-ability-system-in-unreal-engine)、[ASC removal API](https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/GameplayAbilities/UAbilitySystemComponent)。上述来源贡献账本是设计建议，不是引擎自动提供的逐装备撤销保证；目标版本源码和资产策略仍需核验。
 
 推荐把 `GrantedHandles`（grant handles）标成 Authority-only / `NotReplicated` bookkeeping：客户端只需要最终 GAS/装备复制状态与表现，不需要拿服务器句柄执行删除。
 
