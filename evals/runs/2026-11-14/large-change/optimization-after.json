@@ -1,0 +1,22 @@
+{
+  "SKILL.md": {
+    "sha256": "3ec5643acc207ca3ab2842025ebef7dc043772dd1139046d57fdbb2f0c072997",
+    "utf8_lf_bytes": 5837
+  },
+  "references/large-change-workflow.md": {
+    "sha256": "6c32845faff68ca7ed2f18912c3eae5e88540178de46a65e51d0a82bf991a420",
+    "utf8_lf_bytes": 5986
+  },
+  "references/worklist-workflow.md": {
+    "sha256": "7035d4938f03ff471b3dcacc4cc550ea61593ef36a4c7d4c96c46e1849f65ba3",
+    "utf8_lf_bytes": 10079
+  },
+  "assets/worklist.md": {
+    "sha256": "c9fb5b609ddec6bc1750efac369493aba493309d12aa9401f96367699e161800",
+    "utf8_lf_bytes": 3437
+  },
+  "assets/spec.md": {
+    "sha256": "8dec76eeafe61fa93b02762ac60c088ca56ba1800d5263e420770d2290165c31",
+    "utf8_lf_bytes": 2123
+  }
+}

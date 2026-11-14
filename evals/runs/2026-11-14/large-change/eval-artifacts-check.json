@@ -1,0 +1,11 @@
+{
+  "cases_structurally_valid": 8,
+  "raw_answer_character_counts": {
+    "baseline-turn1.md": 6408,
+    "baseline-turn2.md": 4985,
+    "candidate-turn1.md": 3660,
+    "candidate-turn2.md": 3871
+  },
+  "new_source_whitespace_errors": [],
+  "target_environment_execution": "not_run"
+}
